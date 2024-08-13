@@ -1,8 +1,8 @@
-export default function Sidebar() {
+export default function sidebar() {
+    const ROLE = 'Post Master'
   return (
-    <div className="fixed left-0 h-full">
-      <nav className='w-60 h-full bg-white'>
-      </nav>
+    <div>
+      
     </div>
   )
 }

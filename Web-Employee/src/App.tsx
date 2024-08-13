@@ -1,19 +1,23 @@
 import './App.css'
-import Nav from './navigation/nav'
-import Sidebar from './navigation/sidebar';
-import { BrowserRouter} from 'react-router-dom';
-import Mainarea from './mainarea';
+import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
+import Login from './auth/login';
+import MailOrder from './pages/mail/mailorder';
+import Layout from './navigation/layout';
 
 function App() {
   return (
-      <div>
-      <BrowserRouter>
-        <Nav/>
-        <Sidebar/>
-        <Mainarea/>
-      </BrowserRouter>
-      </div>
+    <Router> 
+      <Routes>
+        <Route path = "/" element={<Login />}/>
+        <Route element={<Layout/>}>
+          <Route path = "/mailorder" element= {<MailOrder />}/>
+        </ Route>
+      </Routes>
+      
+    </Router>
+     
   );
 }
+
 
 export default App;

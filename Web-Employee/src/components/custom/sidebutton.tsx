@@ -4,7 +4,6 @@ interface NavButtonProps extends React.HTMLAttributes<HTMLButtonElement>{
     active?: boolean;
     
 }
-
 const NavButton: FC<NavButtonProps> = ({className, children,...props}) => {  
     return (
         <div>
@@ -13,5 +12,5 @@ const NavButton: FC<NavButtonProps> = ({className, children,...props}) => {
     )
 }
 
-export default NavButton
+export default NavButton;
 

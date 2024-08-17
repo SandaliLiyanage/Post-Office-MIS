@@ -1,8 +1,7 @@
-import NavButton from "../components/navbutton";
+import NavButton from "../components/custom/sidebutton";
 import { useState } from "react";
 
 export default function SideBarComponent() {
-  const role = 'Post Master';
   const clickedColour: string = 'bg-slate-400 text-white';
   const normalColour: string = 'hover:bg-slate-400 hover:text-white'
   const [activeButton, setActiveButton] = useState('Employee Records');

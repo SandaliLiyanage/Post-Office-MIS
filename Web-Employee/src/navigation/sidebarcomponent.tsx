@@ -19,11 +19,11 @@ export default function SideBarComponent() {
         <NavButton className={`${activeButton === 'Mail Assignments' ? clickedColour : normalColour}`}
         onClick={() => handleClick('Mail Assignments')}>Mail Assignments</NavButton>
 
-        <NavButton className={`${activeButton === 'Reports' ? clickedColour : normalColour}`}
-          onClick={() => handleClick('Reports')}>Reports</NavButton>
-
         <NavButton className={`${activeButton === 'Settings' ? clickedColour : normalColour}`} 
           onClick={() => handleClick('Settings') }>Mail Order</NavButton>
+
+        <NavButton className={`${activeButton === 'Reports' ? clickedColour : normalColour}`}
+          onClick={() => handleClick('Reports')}>Reports</NavButton>
 
       </nav>
     </div>

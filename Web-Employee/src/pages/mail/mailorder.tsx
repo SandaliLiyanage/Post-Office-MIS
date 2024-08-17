@@ -1,4 +1,5 @@
-import Button from "../../components/button";
+import Button from "../../components/custom/button";
+
 
 export default function MailOrder() {
   return (
@@ -7,6 +8,7 @@ export default function MailOrder() {
         <p className="text-xl">Mail Order</p>
       </div>
       <div>
+        
         <Button className="bg-slate-800 text-white">Add Mail</Button>
       </div>
     </div>

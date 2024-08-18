@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from './auth/login';
-import MailOrder from './pages/mail/mailorder/mailorder';
+import MailOrder from './pages/mail/mailorder/mailorder2';
 import Layout from './navigation/layout';
 
 function App() {

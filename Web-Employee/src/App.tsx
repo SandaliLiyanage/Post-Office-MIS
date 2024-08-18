@@ -1,7 +1,7 @@
 import './App.css'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import Login from './auth/login';
-import MailOrder from './pages/mail/mailorder';
+import MailOrder from './pages/mail/mailorder/mailorder';
 import Layout from './navigation/layout';
 
 function App() {
@@ -13,9 +13,7 @@ function App() {
           <Route path = "/mailorder" element= {<MailOrder />}/>
         </ Route>
       </Routes>
-      
     </Router>
-     
   );
 }
 

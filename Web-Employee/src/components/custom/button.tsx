@@ -8,7 +8,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement>{
 const Button: FC<ButtonProps> = ({className, children,...props}) => {
     return (
         <div>
-            <button className =  {`pr-4 pt-1 pb-1 pl-4 rounded-2xl  ${className}`} {...props}  >{children}</button>
+            <button className =  {`pr-10 pt-2 pb-1 pl-10 rounded-xl  ${className}`} {...props}  >{children}</button>
         </div>
     )
 }

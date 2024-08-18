@@ -33,9 +33,6 @@ export default function Login() {
   })
   return (
     <div className="bg-stone-300 bg-opacity-15 min-h-screen flex-col">
-      <div className="top-16 pt-8 pb-8 flex justify-between ">
-        <p className="text-xl">Login</p>
-      </div>
       <div className="flex justify-center">
       <Form {...form}>
         <form className="space-y-8">

@@ -1,3 +1,5 @@
+//this is additional implement using shadcn
+
 import { useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 
@@ -11,7 +13,7 @@ interface FormValues {
   telephone: string;
 }
 
-const CustomerDetails = () => {
+const MailOrder = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
@@ -19,9 +21,7 @@ const CustomerDetails = () => {
     console.log(data);
     try {
       await axios.post("/customerDetails", data);
-      // handle success (e.g., show a success message or redirect)
     } catch (error) {
-      // handle error (e.g., show an error message)
     }
   };
 
@@ -114,4 +114,4 @@ const CustomerDetails = () => {
   );
 };
 
-export default CustomerDetails;
+export default MailOrder;

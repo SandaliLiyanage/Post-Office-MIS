@@ -1,68 +1,101 @@
-import InputField from "@/components/custom/inputfield";
-import Button from "../../../components/custom/button";
-import LabelField from "@/components/custom/label";
-import { ChangeEvent, FormEvent, useState } from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+"use client"
 
-const CustomerDetails = () => {
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import axios from "axios"
 
-  const [customerDetails, setCustomerDetails] = useState({
-    firstName: "",
-    lastName: "",
-    number: "",
-    road: "",
-    area: "",
-    city: "",
-    telephone: "",
-  });
+import { Button } from "../../../components/ui/button"
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../../../components/ui/form"
+import { Input } from "../../../components/ui/input"
 
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setCustomerDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
-    }));
-  }; 
+const formSchema = z.object({
+  customerName: z.string(),
+  address: z.string().min(5, {
+  }),
+  telephone: z.string().min(10, {}),
+})
 
-  function saveCustomerDetails(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    console.log("saving customer details");
-    console.log(customerDetails);
-    // axios.post("/customerDetails", customerDetails)
-  }
+export default function MailOrder() {
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      customerName: "",
+      address: "",
+      telephone: "",
+    },
+  })
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      try {
+        const response = await axios.post("http://localhost:5000/mail/customerDetails", values)
+        console.log("Data submitted successfully", response.data)
+      } catch (error) {
+        console.error("Error submitting data", error)
+      }
+      console.log(values)
+    }
+
 
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <p className="text-xl">Mail Order</p>
       </div>
-      <div>
-      <form onSubmit={saveCustomerDetails}>
-      <LabelField label="Customer Name"></LabelField>
-        <div className="grid grid-cols-2">
-          <input onChange={handleInput} name="firstName"
-          value={customerDetails.firstName}
-           type="text" placeholder="First Name"/>
-          <InputField value = {customerDetails.firstName} onChange={handleInput} name="lastName" type="text" placeholder="Second Name" />
-        </div>
-        <LabelField label="Address"></LabelField>
-        <div className="grid grid-cols-2">
-          <InputField value = {customerDetails.firstName} onChange={handleInput} name="number" type="text" placeholder="Number" />
-          <InputField onChange={handleInput} name="road" type="text" placeholder="Road" />
-          <InputField onChange={handleInput} name="area" type="text" placeholder="Area" />
-          <InputField value onChange={handleInput} name="city" type="text" placeholder="City" />
-        </div>
-        <LabelField label="Telephone"></LabelField>
-        <div>
-          <InputField className="w-1/2" onChange={handleInput} name="telephone" type="text" placeholder="Telephone"/>
-        </div>
-        <div>
-
-          <input type = "submit" value={"Add Mail"} className="bg-slate-700 text-white m-4 "/>
-        </div>
-      </form>
-      </div>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <FormField
+              control={form.control}
+              name="customerName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Customer Name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Customer Name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Address" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="telephone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telephone</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Telephone" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button type="submit">Add Mail</Button>
+        </form>
+      </Form>
     </div>
   )
 }
-export default CustomerDetails;
+

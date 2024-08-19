@@ -11,7 +11,7 @@ app.use(express.json()); // Middleware to parse JSON
 
 
 app.use('/mail', MailRoutes);
-app.use('/auth', AuthRoutes)
+app.use('/auth', AuthRoutes);
 
 app.listen(5000, () => {
   console.log('Server is running on port 5000');

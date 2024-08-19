@@ -1,3 +1,4 @@
+import {Request, Response, NextFunction} from 'express';
 import { EmployeeRepository } from "../repositeries/employeerepository";
 import BcryptService from "./cryptservice";
 import JwtService from "./jwtservice";
@@ -30,7 +31,20 @@ class AuthService{
     }catch(error){
         console.error("login error")
         return {message: "login failed"}
-    }
+    }  
+}
+     async authorize(req: Request, res: Response, next: NextFunction) {
+        const token = req.headers.authorization?.split(' ')[1];
+        if (!token) return res.status(401).json({ message: 'No token provided' });
     
-}}
+        try {
+            const decoded = jwtToken.verify(token) as { sessionId: string };
+            console.log("authorized")
+            next();
+        } catch (err) {
+        return res.status(401).json({ message: 'Failed to authenticate token' });
+    }
+  };
+
+}
 export default AuthService;

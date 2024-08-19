@@ -31,11 +31,22 @@ export default function Login() {
       password: "",
     },
   })
+
+  async function handleLoginData(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await axios.post("http://localhost:5000/auth/login", values)
+      console.log("Login data submitted successfully", response.data)
+    } catch (error) {
+      console.error("Error submitting login data", error)
+    }
+    console.log(values)
+  }
+
   return (
     <div className="bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="flex justify-center">
       <Form {...form}>
-        <form className="space-y-8">
+        <form onSubmit= {form.handleSubmit(handleLoginData)} className="space-y-8">
           <div>
             <FormField
               control={form.control}
@@ -57,7 +68,8 @@ export default function Login() {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input placeholder="*******" {...field} />
+                    <Input type="password" 
+                    placeholder="*******" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

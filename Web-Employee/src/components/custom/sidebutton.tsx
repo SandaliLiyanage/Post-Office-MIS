@@ -6,7 +6,7 @@ interface NavButtonProps extends React.HTMLAttributes<HTMLButtonElement>{
 const NavButton: FC<NavButtonProps> = ({className, children,...props}) => {  
     return (
         <div>
-            <button className =  {`p-4 h-15 w-60 pt-4 pb-4 rounded-md text-black text-left ${className}`}{...props}  >{children}</button>
+            <button className =  {`p-4 h-15 w-60 pt-4 pb-4 text-black text-left ${className}`}{...props}  >{children}</button>
         </div>
     )
 }

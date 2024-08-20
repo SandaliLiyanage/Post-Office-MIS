@@ -1,4 +1,4 @@
-import {Prisma, PrismaClient, Employee} from "@prisma/client"
+import {Prisma, PrismaClient, Employee, Role} from "@prisma/client"
 const prisma = new PrismaClient();
 
 class EmployeeRepository {
@@ -10,17 +10,29 @@ class EmployeeRepository {
         return EmployeeRepository.instance;
     }
 
-    async getPasswordfromDB(username: string): Promise<string>{
-        let password = ("postmaster2")
-        console.log(password);
-        return password;
+    async findUserbyDB(username: string): Promise<Employee|null>{
+        try {
+            const res = await prisma.employee.findUnique({
+                where: {
+                    employeeID: username,
+                },
+            });
+            return res;
+        } catch (error) {
+            console.error("Error getting password from DB:", error);
+            throw error;
+        }
     }
-
-    async registerUser(userName: string, hashedPassword: string): Promise<Employee | null> {
+    async registerUser(userName: string, hashedPassword: string, postalCode: string, employeeName:string, email:string, telephone: string, role: Role): Promise<Employee | null> {
         try {
             const res = await prisma.employee.create({
                 data: {
-                    employee_id: userName,
+                    employeeID: userName,
+                    postalCode: postalCode,
+                    employeeName: employeeName,
+                    email: email,
+                    telephone: telephone,
+                    role: role,
                     password: hashedPassword,
                 },
             });

@@ -9,14 +9,14 @@ const cryptService = new BcryptService();
 const session = SessionStore.getInstance();
 const jwtToken = new JwtService()
 class AuthService{
-    async login(username: string, password: string):Promise<{message: string; token? : string}>{
+    async login(username: string, password: string):Promise<{name?: string; post_office_area?:string; role?: string; message: string; token? : string;}>{
         try{      
-            const hashedPasswordfromDB = await employeeRepository.getPasswordfromDB(username);
-            console.log(hashedPasswordfromDB)
-            if(!hashedPasswordfromDB){
+            const user = await employeeRepository.findUserbyDB(username);
+            console.log(user?.password)
+            if(!user?.password){
                 return {message: "Incorrect username"}
             }
-            const hashedPassword = await cryptService.hashPassword(hashedPasswordfromDB)
+            const hashedPassword = await cryptService.hashPassword(user.password)
             const isVerified = await cryptService.comparePassword(password, hashedPassword)
             if (isVerified){
                 console.log("verified")

@@ -17,6 +17,7 @@ class EmployeeRepository {
                     employeeID: username,
                 },
             });
+            console.log("employee queried", res) 
             return res;
         } catch (error) {
             console.error("Error getting password from DB:", error);

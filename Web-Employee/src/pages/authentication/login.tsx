@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from "../../components/ui/form"
 import { Input } from "../../components/ui/input"
+import { useUser } from './usercontext';
 
 const formSchema = z.object({
   username: z.string(),
@@ -25,6 +26,7 @@ const formSchema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
+  const { setUser } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -37,7 +39,15 @@ export default function Login() {
     try {
       console.log("Submitting login data", values)
       const user = await axios.post("http://localhost:5000/auth/login", values)
-      localStorage.setItem('user', JSON.stringify(user.data))
+      console.log("Data submitted successfully", user.data)
+      setUser(
+        {
+          name: user.data.employeeName,
+          role: user.data.role,
+          token: user.data.token,
+          postalCode: user.data.postalCode,
+        }
+      )
       navigate('/dashboard')
     } catch (error) {
       console.error("Error submitting login data", error)
@@ -79,7 +89,7 @@ export default function Login() {
               )}
             />
           </div >
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-2">
             <Button type="submit">Log in</Button>
             <Button type="button"onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>

@@ -15,6 +15,7 @@ import {
   FormMessage,
 } from "../../../components/ui/form"
 import { Input } from "../../../components/ui/input"
+import { useUser } from "@/pages/authentication/usercontext"
 
 const formSchema = z.object({
   customerName: z.string(),
@@ -24,6 +25,7 @@ const formSchema = z.object({
 })
 
 export default function MailOrder() {
+  const {user} = useUser();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,6 +37,8 @@ export default function MailOrder() {
   })
     async function onSubmit(values: z.infer<typeof formSchema>) {
       try {
+        const role = user?.role;
+        console.log("This is the postmaster",role)
         const response = await axios.post("http://localhost:5000/mail/customerDetails", values)
         console.log("Data submitted successfully", response.data)
       } catch (error) {

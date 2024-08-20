@@ -8,29 +8,41 @@ const employeeRepository = EmployeeRepository.getInstance();
 const cryptService = new BcryptService();
 const session = SessionStore.getInstance();
 const jwtToken = new JwtService()
+
+interface LoginResponse {
+    name?: string;
+    postalCode?: string;
+    role?: string;
+    message: string;
+    token?: string;
+  }
 class AuthService{
-    async login(username: string, password: string):Promise<{name?: string; post_office_area?:string; role?: string; message: string; token? : string;}>{
+    async login(username: string, password: string):Promise<LoginResponse>{
         try{      
-            const user = await employeeRepository.findUserbyDB(username);
-            console.log(user?.password)
-            if(!user?.password){
-                return {message: "Incorrect username"}
+            const employee = await employeeRepository.findUserbyDB(username);
+            console.log(employee?.password)
+            if(!employee?.password){
+                const loginResponse: LoginResponse = {message: "Incorrect username"}
+                return loginResponse
             }
-            const hashedPassword = await cryptService.hashPassword(user.password)
+            const hashedPassword = await cryptService.hashPassword(employee.password)
             const isVerified = await cryptService.comparePassword(password, hashedPassword)
             if (isVerified){
                 console.log("verified")
                 const sessionId = new Date().toISOString();
                 await session.storeSession(username)
                 const token = jwtToken.sign({sessionId})
-                return {message: "login success", token}
+                const loginResponse: LoginResponse = {name: employee.employeeName, postalCode: employee.postalCode, role: employee.role, message: "login success", token: token}
+                return loginResponse
             }else{
                 console.log("notverified")
-                return {message: "login denied"}
+                const loginResponse:LoginResponse = {message: "login denied"}
+                return loginResponse
             }
     }catch(error){
         console.error("login error")
-        return {message: "login failed"}
+        const loginResponse: LoginResponse = {message: "login failed"}
+        return loginResponse
     }  
 }
      async authorize(req: Request, res: Response, next: NextFunction) {

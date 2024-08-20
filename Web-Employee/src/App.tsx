@@ -7,12 +7,13 @@ import EmpRegistration from "./pages/employees/registration";
 
 function App() {
   return (
+    
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route element={<Layout />}>
-          <Route path="/register" element={<EmpRegistration />} />
-          <Route path="/dashboard" element={<MailOrder/>} />
+        <Route path= "/dashboard" element={<Layout/>}>
+          <Route path="register" element={<EmpRegistration />} />
+          <Route path="mail" element={<MailOrder />} />
         </Route>
       </Routes>
     </Router>

@@ -1,18 +1,20 @@
 import NavButton from "../components/custom/sidebutton";
 import { useState } from "react";
 import { useUser } from "@/pages/authentication/usercontext"
+import { useNavigate } from "react-router-dom";
 
-export default function SideBarComponent() {
-  const clickedColour: string = 'bg-slate-400 text-white';
+export default function SideBar() {
+  const clickedColour: string = ' mt-16 bg-slate-400 text-white';
   const normalColour: string = 'hover:bg-slate-300 hover:text-black';
   const [activeButton, setActiveButton] = useState('Employee Records');
   const {user} = useUser();
+  const navigate = useNavigate();
 
   const handleClick = (button: string) => {
     setActiveButton(button);
   };
   const EmployeeRecords = <NavButton className={`${activeButton === 'Employee Records' ? clickedColour : normalColour}`}
-                          onClick={() => handleClick('Employee Records') }>Employee Records</NavButton>
+                          onClick={() =>{handleClick('Employee Records') }}> Employee Records</NavButton>
 
   const MailAssignments = <NavButton className={`${activeButton === 'Mail Assignments'? clickedColour : normalColour}`}
                           onClick={() => handleClick('Mail Assignments')}>Mail Assignments</NavButton>
@@ -46,8 +48,8 @@ export default function SideBarComponent() {
           <>
             {EmployeeRecords}
             {PostmanAssignments}
-            {RevenueReports}
             {ViewLeaveRequests}
+            {RevenueReports}
             {EmployeeRegistrations}
           </>
         )}

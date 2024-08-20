@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import axios from "axios"
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "../../components/ui/button"
 import {
@@ -23,7 +24,7 @@ const formSchema = z.object({
 })
 
 export default function Login() {
-
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,8 +35,10 @@ export default function Login() {
 
   async function handleLoginData(values: z.infer<typeof formSchema>) {
     try {
-      const response = await axios.post("http://localhost:5000/auth/login", values)
-      console.log("Login data submitted successfully", response.data)
+      console.log("Submitting login data", values)
+      const user = await axios.post("http://localhost:5000/auth/login", values)
+      localStorage.setItem('user', JSON.stringify(user.data))
+      navigate('/dashboard')
     } catch (error) {
       console.error("Error submitting login data", error)
     }
@@ -43,7 +46,7 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-stone-300 bg-opacity-15 min-h-screen flex-col">
+    <div className="bg-stone-300 bg-opacity-15 min-h-screen flex items-center justify-center">
       <div className="flex justify-center">
       <Form {...form}>
         <form onSubmit= {form.handleSubmit(handleLoginData)} className="space-y-8">
@@ -75,12 +78,14 @@ export default function Login() {
                 </FormItem>
               )}
             />
+          </div >
+          <div className="flex justify-between">
+            <Button type="submit">Log in</Button>
+            <Button type="button"onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
-          <Button type="submit">Log in</Button>
         </form>
       </Form>
       </div>
-      
     </div>
   )
 }

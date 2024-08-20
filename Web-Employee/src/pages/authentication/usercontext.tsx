@@ -1,24 +1,35 @@
 import React, { createContext, useState, ReactNode } from 'react';
 
-interface User {
-    name: string;
-    role: string;
-    postalCode: string;
-    token: string;
-}
 
-interface UserContextType {
+
+  interface User {
+    name: string;
+    postalCode: string;
+    role: string;
+    token: string;
+  }
+  
+  interface UserContextType {
     user: User | null;
-    setUser: (user: User | null) => void;
+    saveUser: (user: User | null) => void;
   }
   
   const UserContext = createContext<UserContextType | undefined>(undefined);
-
+  
   export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
   
+    const saveUser = (user: User | null) => {
+      setUser(user);
+        if (user) {
+          localStorage.setItem('user', JSON.stringify(user));
+        } else {
+          localStorage.removeItem('user');
+      }
+    };
+  
     return (
-      <UserContext.Provider value={{ user, setUser }}>
+      <UserContext.Provider value={{ user, saveUser }}>
         {children}
       </UserContext.Provider>
     );

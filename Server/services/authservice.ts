@@ -46,7 +46,9 @@ class AuthService{
     }  
 }
      async authorize(req: Request, res: Response, next: NextFunction) {
+        console.log("token header", req.headers.authorization?.split(' ')[1])
         const token = req.headers.authorization?.split(' ')[1];
+        console.log("in authorize")
         if (!token) return res.status(401).json({ message: 'No token provided' });
     
         try {

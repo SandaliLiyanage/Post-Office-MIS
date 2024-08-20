@@ -26,7 +26,7 @@ const formSchema = z.object({
 
 export default function Login() {
   const navigate = useNavigate();
-  const { setUser } = useUser();
+  const { saveUser } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,7 +40,7 @@ export default function Login() {
       console.log("Submitting login data", values)
       const user = await axios.post("http://localhost:5000/auth/login", values)
       console.log("Data submitted successfully", user.data)
-      setUser(
+      saveUser(
         {
           name: user.data.employeeName,
           role: user.data.role,

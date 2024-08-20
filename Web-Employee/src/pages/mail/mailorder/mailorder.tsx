@@ -39,7 +39,15 @@ export default function MailOrder() {
       try {
         const role = user?.role;
         console.log("This is the postmaster",role)
-        const response = await axios.post("http://localhost:5000/mail/customerDetails", values)
+        const response = await axios.post(
+          "http://localhost:5000/mail/customerDetails", 
+          values, 
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          }
+        );
         console.log("Data submitted successfully", response.data)
       } catch (error) {
         console.error("Error submitting data", error)

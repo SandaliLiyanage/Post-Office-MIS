@@ -1,0 +1,103 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  POSTMASTER
+  SUPERVISOR
+  RECEPTIONIST
+  DISPATCHER
+  POSTMAN
+}
+
+model Employee { 
+  employeeID   String  @id 
+  password     String?
+  postalCode String  
+  postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
+  employeeName String
+  email         String @unique
+  telephone    String 
+  role         Role
+}
+
+enum PostOfficeCategory {
+  HEAD_OFFICE
+  SUB_OFFICE
+}
+
+model PostOffice {
+  postalCode        String                @id
+  postOfficeCategory PostOfficeCategory
+  postOfficeName     String
+  headOfficeID       String?
+  address          Address[]
+  mail	  	         Mail[]
+  employee          Employee[]
+}
+
+model Address {
+  addressID     Int      @id @default(autoincrement())
+  postalCode    String
+  postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
+  address       String
+  latitude      Float
+  longitude     Float
+  customer Customer[]
+}
+
+enum MailCategory {
+  LETTER
+  COURIER
+  MONEY_ORDER
+  REGISTERED_MAIL
+}
+
+model Customer {
+  customerID   Int  @id 
+  customerName String   
+  telephone    String?
+  addressID    Int
+  address      Address @relation(fields: [addressID], references: [addressID])
+  mail         Mail[]
+  transaction  Transaction[]
+}
+
+model Mail {
+  barcodeID         Int         @id @default(autoincrement())
+  category          MailCategory
+  recepientID       Int
+  bundleID          Int
+  bundle            Bundle     @relation(fields: [bundleID], references: [barcodeID])
+  recepient         Customer   @relation(fields: [recepientID], references: [customerID])
+  postalCode        String
+  postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
+  mailstatus        MailStatus
+  transactionID     Int
+  transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
+}
+
+model Bundle {
+  barcodeID              Int          @id @default(autoincrement())
+  mail                  Mail[]
+}
+
+enum MailStatus {
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+}
+
+model Transaction {
+  transactionID Int      @id @default(autoincrement())
+  date          DateTime
+  amount        Float
+  customerID    Int
+  customer      Customer @relation(fields: [customerID], references: [customerID])
+  mail          Mail[]
+}

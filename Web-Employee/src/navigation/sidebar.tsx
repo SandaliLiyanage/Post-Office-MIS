@@ -60,7 +60,7 @@ export default function SideBar() {
                         onClick={() => {
                           handleClick('Assigned Postmen')
                           navigate("/dashboard/postmanAssignments")
-                        } }>Assigned Postmen</NavButton>
+                        }}>Assigned Postmen</NavButton>
 
   const EmployeeRegistrations = <NavButton className={`${activeButton === 'Employee Registrations' ? clickedColour : normalColour}`} 
                         onClick={() => {
@@ -79,6 +79,9 @@ export default function SideBar() {
             {ViewLeaveRequests}
             {RevenueReports}
             {EmployeeRegistrations}
+            {MailOrder}
+            {ViewMail}
+            {LeaveRequest}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (

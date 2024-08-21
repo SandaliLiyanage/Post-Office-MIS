@@ -23,7 +23,7 @@ function App() {
           <Route path="viewleaverequests" element={<></>}></Route>
           <Route path="viewmailassignments" element={<></>}></Route>
           <Route path="revenuereports" element={<></>}></Route>
-          <Route path="employeeregistrations" element={<></>}></Route>
+          <Route path="employeeregistrations" element={<EmpRegistration/>}></Route>
           <Route path="postmanassignments" element={<></>}></Route>
           <Route path="mailassignments" element={<></>}></Route>
         </Route>

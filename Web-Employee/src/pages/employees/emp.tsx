@@ -1,15 +1,8 @@
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import {Employee, columns} from './columns';
+import {DataTable} from './datatable';
 import { useUser } from '../authentication/usercontext';
-
-interface Employee {
-  employeeId: number;
-  employeeName: string;
-  email: string;
-  telephone: string;
-  role: string;
-}
-
+import axios from 'axios';
+import {useEffect, useState} from 'react';
 export default function EmployeeRecords() {
   const {user} = useUser();
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -49,17 +42,7 @@ export default function EmployeeRecords() {
         <p className="text-xl">Employee Records</p>
     </div>
     <div className="flex flex-col space-y-4">
-      {employees.map(employee => (
-        <div key={employee.employeeId} className="flex justify-between">
-          <p>{employee.employeeName}</p>
-          <p>{employee.email}</p>
-          <p>{employee.telephone}</p>
-          <p>{employee.role}</p>
-          <button>View</button>
-          <button>Edit</button>
-          <button>Delete</button>
-        </div>
-      ))}
+      <DataTable columns={columns} data={employees} />
       </div>
     </div>
   )

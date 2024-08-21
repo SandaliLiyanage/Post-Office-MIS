@@ -4,8 +4,8 @@ import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
-  const clickedColour: string = ' mt-16 bg-slate-400 text-white';
-  const normalColour: string = 'hover:bg-slate-300 hover:text-black';
+  const clickedColour: string = 'bg-slate-400 text-white';
+  const normalColour: string = 'hover:bg-slate-300 text-black';
   const [activeButton, setActiveButton] = useState('Employee Records');
   const {user} = useUser();
   const navigate = useNavigate();
@@ -14,7 +14,10 @@ export default function SideBar() {
     setActiveButton(button);
   };
   const EmployeeRecords = <NavButton className={`${activeButton === 'Employee Records' ? clickedColour : normalColour}`}
-                          onClick={() =>{handleClick('Employee Records') }}> Employee Records</NavButton>
+                          onClick={() =>{
+                            handleClick('Employee Records');
+                            navigate("employeeRecords")
+                          }}> Employee Records</NavButton>
 
   const MailAssignments = <NavButton className={`${activeButton === 'Mail Assignments'? clickedColour : normalColour}`}
                           onClick={() => handleClick('Mail Assignments')}>Mail Assignments</NavButton>
@@ -23,7 +26,11 @@ export default function SideBar() {
                         onClick={() => handleClick('Revenue Reports')}>Revenue Reports</NavButton>
 
   const MailOrder = <NavButton className={`${activeButton === 'Mail Order' ? clickedColour : normalColour}`} 
-                        onClick={() => handleClick('Mail Order') }>Mail Order</NavButton>
+                        onClick={() => {
+                          handleClick('Mail Order');
+                          navigate("mailorder");
+                        }
+                         }>Mail Order</NavButton>
 
   const ViewMail = <NavButton className={`${activeButton === 'View Mail' ? clickedColour : normalColour}`} 
                         onClick={() => handleClick('View Mail') }>View Mail</NavButton>
@@ -42,7 +49,7 @@ export default function SideBar() {
   
 
   return (
-    <div className="fixed left-0 h-full">
+    <div className="mt-16 fixed left-0 top-0 h-full">
       <nav className="w-60 h-full bg-slate-300 bg-opacity-25">
       {user?.role === 'POSTMASTER' && (
           <>

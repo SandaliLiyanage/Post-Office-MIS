@@ -1,9 +1,11 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "./pages/authentication/login";
-import MailOrder from "./pages/mail/mailorder/mailorder";
+import MailOrder from "./pages/mail/mailorder/customerdetails";
+import MailDetails from "./pages/mail/mailorder/maildetails";
 import Layout from "./navigation/layout";
 import EmpRegistration from "./pages/employees/registration";
+import LeaveRequest from "./pages/employees/leaverequets";
 
 function App() {
   return (
@@ -13,7 +15,9 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path= "/dashboard" element={<Layout/>}>
           <Route path="register" element={<EmpRegistration />} />
-          <Route path="mail" element={<MailOrder />} />
+          <Route path="mailorder" element={<MailOrder/>} />
+          <Route path="maildetails" element={<MailDetails/>} />
+          <Route path="leaverequest" element={<LeaveRequest/>}/>
         </Route>
       </Routes>
     </Router>

@@ -16,6 +16,7 @@ import {
 } from "../../../components/ui/form"
 import { Input } from "../../../components/ui/input"
 import { useUser } from "@/pages/authentication/usercontext"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
   customerName: z.string(),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 
 export default function MailOrder() {
   const {user} = useUser();
+  const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,8 +56,6 @@ export default function MailOrder() {
       }
       console.log(values)
     }
-
-
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
@@ -67,7 +67,7 @@ export default function MailOrder() {
             <FormField
               control={form.control}
               name="customerName"
-              render={({ field }) => (
+              render={({field}) => (
                 <FormItem>
                   <FormLabel>Customer Name</FormLabel>
                   <FormControl>
@@ -104,7 +104,7 @@ export default function MailOrder() {
               )}
             />
           </div>
-          <Button type="submit">Add Mail</Button>
+          <Button type="submit" onClick={ ()=> navigate("maildetails")}>Proceed</Button>
         </form>
       </Form>
     </div>

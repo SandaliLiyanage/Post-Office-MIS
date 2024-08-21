@@ -1,7 +1,7 @@
 import { Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Mails = () => {
+const Mail = () => {
   return (
     <SafeAreaView>
       <Text>Mails</Text>
@@ -9,4 +9,4 @@ const Mails = () => {
   );
 };
 
-export default Mails;
+export default Mail;

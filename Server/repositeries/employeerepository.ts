@@ -43,6 +43,19 @@ class EmployeeRepository {
             throw error;
         }
     }
+    async getEmployees(postalCode: string): Promise<Employee[]> {
+        try {
+            const res = await prisma.employee.findMany({
+                where:{
+                    postalCode: postalCode,
+                },
+            });
+            return res;
+        } catch (error) {
+            console.error("Error getting employees:", error);
+            throw error;
+        }
+    }
 }
 export {EmployeeRepository}
 

@@ -104,7 +104,7 @@ export default function MailOrder() {
               )}
             />
           </div>
-          <Button type="submit" onClick={ ()=> navigate("maildetails")}>Proceed</Button>
+          <Button type="submit" onClick={ ()=> navigate("/dashboard/maildetails")}>Proceed</Button>
         </form>
       </Form>
     </div>

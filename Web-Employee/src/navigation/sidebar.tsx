@@ -16,36 +16,57 @@ export default function SideBar() {
   const EmployeeRecords = <NavButton className={`${activeButton === 'Employee Records' ? clickedColour : normalColour}`}
                           onClick={() =>{
                             handleClick('Employee Records');
-                            navigate("employeeRecords")
+                            navigate("/dashboard/employeeRecords")
                           }}> Employee Records</NavButton>
 
   const MailAssignments = <NavButton className={`${activeButton === 'Mail Assignments'? clickedColour : normalColour}`}
-                          onClick={() => handleClick('Mail Assignments')}>Mail Assignments</NavButton>
+                          onClick={() => {
+                            handleClick('Mail Assignments');
+                            navigate("/dashboard/mailAssignments");
+                            }}>Mail Assignments</NavButton>
 
   const RevenueReports = <NavButton className={`${activeButton === 'Revenue Reports'? clickedColour : normalColour}`}
-                        onClick={() => handleClick('Revenue Reports')}>Revenue Reports</NavButton>
+                        onClick={() => {
+                          handleClick('Revenue Reports')
+                          navigate("/dashboard/revenueReports")
+                        }}>Revenue Reports</NavButton>
 
   const MailOrder = <NavButton className={`${activeButton === 'Mail Order' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('Mail Order');
-                          navigate("mailorder");
+                          navigate("/dashboard/mailorder");
                         }
                          }>Mail Order</NavButton>
 
   const ViewMail = <NavButton className={`${activeButton === 'View Mail' ? clickedColour : normalColour}`} 
-                        onClick={() => handleClick('View Mail') }>View Mail</NavButton>
+                        onClick={() => {
+                          handleClick('View Mail')
+                          navigate("/dashboard/viewMail")
+                        } }>View Mail</NavButton>
 
   const LeaveRequest = <NavButton className={`${activeButton === 'Leave Requests' ? clickedColour : normalColour}`} 
-                        onClick={() => handleClick('Leave Requests') }>Leave Requests</NavButton>
+                        onClick={() => {
+                          handleClick('Leave Requests')
+                          navigate("/dashboard/leaveRequest")
+                        } }>Leave Requests</NavButton>
 
   const ViewLeaveRequests = <NavButton className={`${activeButton === 'Mail Assignments' ? clickedColour : normalColour}`} 
-                        onClick={() => handleClick('Mail Assignments') }>Mail Assignments</NavButton>
+                        onClick={() => {
+                          handleClick('Mail Assignments')
+                          navigate("/dashboard/viewLeaveRequests")
+                        } }>Mail Assignments</NavButton>
 
   const PostmanAssignments = <NavButton className={`${activeButton === 'Assigned Postmen' ? clickedColour : normalColour}`} 
-                        onClick={() => handleClick('Assigned Postmen') }>Assigned Postmen</NavButton>
+                        onClick={() => {
+                          handleClick('Assigned Postmen')
+                          navigate("/dashboard/postmanAssignments")
+                        } }>Assigned Postmen</NavButton>
 
   const EmployeeRegistrations = <NavButton className={`${activeButton === 'Employee Registrations' ? clickedColour : normalColour}`} 
-                        onClick={() => handleClick('Employee Registrations') }>Employee Registrations</NavButton>
+                        onClick={() => {
+                          handleClick('Employee Registrations')
+                          navigate("/dashboard/employeeRegistrations")
+                        } }>Employee Registrations</NavButton>
   
 
   return (

@@ -6,7 +6,7 @@ import MailDetails from "./pages/mail/mailorder/maildetails";
 import Layout from "./navigation/layout";
 import EmpRegistration from "./pages/employees/registration";
 import LeaveRequest from "./pages/employees/leaverequets";
-
+import EmployeeRecords from "./pages/employees/employeerecords";
 function App() {
   return (
     
@@ -18,6 +18,8 @@ function App() {
           <Route path="mailorder" element={<MailOrder/>} />
           <Route path="maildetails" element={<MailDetails/>} />
           <Route path="leaverequest" element={<LeaveRequest/>}/>
+          <Route path="employeerecords" element={<EmployeeRecords/>}/>
+          <Route path="viewMail" element={<></>}></Route>
         </Route>
       </Routes>
     </Router>

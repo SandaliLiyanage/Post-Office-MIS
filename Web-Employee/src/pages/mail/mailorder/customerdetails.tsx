@@ -38,23 +38,9 @@ export default function MailOrder() {
     },
   })
     async function onSubmit(values: z.infer<typeof formSchema>) {
-      try {
         const role = user?.role;
         console.log("This is the postmaster",role)
-        const response = await axios.post(
-          "http://localhost:5000/mail/customerDetails", 
-          values, 
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`, 
-            },
-          }
-        );
-        console.log("Data submitted successfully", response.data)
-      } catch (error) {
-        console.error("Error submitting data", error)
-      }
-      console.log(values)
+        localStorage.setItem("customerDetails", JSON.stringify(values))
     }
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
@@ -103,8 +89,6 @@ export default function MailOrder() {
                 </FormItem>
               )}
             />
-            
-            
           </div>
           <Button type="submit" onClick={ ()=> navigate("/dashboard/maildetails")}>Proceed</Button>
         </form>

@@ -20,6 +20,12 @@ function App() {
           <Route path="leaverequest" element={<LeaveRequest/>}/>
           <Route path="employeerecords" element={<EmployeeRecords/>}/>
           <Route path="viewMail" element={<></>}></Route>
+          <Route path="viewleaverequests" element={<></>}></Route>
+          <Route path="viewmailassignments" element={<></>}></Route>
+          <Route path="revenuereports" element={<></>}></Route>
+          <Route path="employeeregistrations" element={<></>}></Route>
+          <Route path="postmanassignments" element={<></>}></Route>
+          <Route path="mailassignments" element={<></>}></Route>
         </Route>
       </Routes>
     </Router>

@@ -79,19 +79,6 @@ export default function MailOrder() {
             />
             <FormField
               control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Address" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
               name="telephone"
               render={({ field }) => (
                 <FormItem>
@@ -103,6 +90,21 @@ export default function MailOrder() {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name="address"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Address</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Address" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            
+            
           </div>
           <Button type="submit" onClick={ ()=> navigate("/dashboard/maildetails")}>Proceed</Button>
         </form>
@@ -110,4 +112,3 @@ export default function MailOrder() {
     </div>
   )
 }
-

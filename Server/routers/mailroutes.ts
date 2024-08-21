@@ -8,4 +8,5 @@ const router = Router();
 console.log("in mail routes");
 router.use(authService.authorize);
 router.post('/customerDetails', customerDetails);
+router.post('/customerDetails', customerDetails);
 export default router;

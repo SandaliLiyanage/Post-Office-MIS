@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
                 <Button className="btn btn-primary bg-slate-400">Edit</Button>
                 </TableCell>
                 <TableCell>
-                <Button className="btn btn-primary bg-slate-200 hover:bg-slate-600 text-black">Delete</Button>
+                <Button className="btn btn-primary bg-teal-600 ">Delete</Button>
                 </TableCell>
                   </TableRow>
                 ))

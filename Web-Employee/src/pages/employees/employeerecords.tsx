@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useUser } from '../authentication/usercontext';
-
+import {Button} from '../../components/ui/button';
 interface Employee {
   employeeId: number;
   employeeName: string;
@@ -50,14 +50,15 @@ export default function EmployeeRecords() {
     </div>
     <div className="flex flex-col space-y-4">
       {employees.map(employee => (
-        <div key={employee.employeeId} className="flex justify-between">
+        <div key={employee.employeeId} className="bg-white p-4 border-1 border-slate-600 rounded-sm flex justify-between">
           <p>{employee.employeeName}</p>
           <p>{employee.email}</p>
           <p>{employee.telephone}</p>
           <p>{employee.role}</p>
-          <button>View</button>
-          <button>Edit</button>
-          <button>Delete</button>
+          <div/>
+          <Button className='bg-slate-600'>View</Button>
+          <Button className='bg-slate-600'>Edit</Button>
+          <Button className='bg-slate-600'>Delete</Button>
         </div>
       ))}
       </div>

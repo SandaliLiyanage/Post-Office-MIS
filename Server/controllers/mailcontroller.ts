@@ -1,5 +1,5 @@
-import { MailRepository } from "../repositeries/mailRepository";
 import { Request, Response } from "express";
+import { MailRepository } from "../repositeries/mailrepository";
 const mailService = new MailRepository();
 
 const CalculatePrice = async (req: Request, res: Response) =>  {

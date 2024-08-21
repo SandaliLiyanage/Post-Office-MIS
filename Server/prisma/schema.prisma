@@ -34,7 +34,7 @@ enum PostOfficeCategory {
 model PostOffice {
   postalCode        String                @id
   postOfficeCategory PostOfficeCategory
-  postOfficeName     String
+  postOfficeName    String
   headOfficeID       String?
   address          Address[]
   mail	  	         Mail[]
@@ -45,9 +45,11 @@ model Address {
   addressID     Int      @id @default(autoincrement())
   postalCode    String
   postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
-  address       String
-  latitude      Float
-  longitude     Float
+  addressNo    String
+  streetName    String?
+  Locality      String?
+  latitude      Float?
+  longitude     Float?
   customer Customer[]
 }
 

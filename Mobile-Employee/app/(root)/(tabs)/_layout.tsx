@@ -73,7 +73,6 @@ const Layout = () => (
       },
       headerTintColor: "white",
       headerTitle: () => <Header />,
-      //headerTitleAlign: "center",
     }}
   >
     <Tabs.Screen

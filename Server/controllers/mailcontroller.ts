@@ -18,11 +18,12 @@ const MailBundles = async (req: Request, res: Response) => {
     console.log("Bundles received in controller:", result);
     return res.status(200).json(result);
 }
+const Mails = async(req: Request, res: Response) =>{
+    console.log("Request received in mail");
+    const {postalCode} = req.body;
+    const result = await mailRepository.getMail(postalCode);
+    return res.status(200).json(result);
+}
 
-// const Mails = async(req: Request, res: Response) =>{
-//     console.log("Request received in mail");
-//     const result = await mailRepository.getMail();
-//     return res.status(200).json(result);
-// }
 
-export {CalculatePrice, MailBundles};    
+export {CalculatePrice, MailBundles, Mails};    

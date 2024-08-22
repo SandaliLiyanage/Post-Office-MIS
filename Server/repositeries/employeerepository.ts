@@ -1,4 +1,4 @@
-import {Prisma, PrismaClient, Employee, Role} from "@prisma/client"
+import {PrismaClient, Employee, Role} from "@prisma/client"
 const prisma = new PrismaClient();
 
 class EmployeeRepository {

@@ -7,7 +7,8 @@ import Layout from "./navigation/layout";
 import EmpRegistration from "./pages/employees/registration";
 import LeaveRequest from "./pages/employees/leaverequets";
 import Emp from "./pages/employees/emp";
-import Bundle from "./pages/mail/mailorder/bundle";
+import Bundle from "./pages/mail/bundles/bundle";
+import Mails from "./pages/mail/mails/mail";
 function App() {
   return (
     
@@ -21,17 +22,16 @@ function App() {
           <Route path="leaverequest" element={<LeaveRequest/>}/>
           <Route path="employeerecords" element={<Emp/>}/>
           <Route path="mailbundles" element={<Bundle/>}/>
-          <Route path="viewMail" element={<></>}/>
           <Route path="viewleaverequests" element={<></>}></Route>
-          <Route path="viewmailassignments" element={<></>}></Route>
+          <Route path="viewmailassignments" element={<Mails/>}></Route>
           <Route path="revenuereports" element={<></>}></Route>
           <Route path="employeeregistrations" element={<EmpRegistration/>}></Route>
           <Route path="postmanassignments" element={<></>}></Route>
           <Route path="mailassignments" element={<></>}></Route>
+          <Route path="viewmail" element={<Mails/>}></Route>
         </Route>
       </Routes>
     </Router>
   );
 }
-
 export default App;

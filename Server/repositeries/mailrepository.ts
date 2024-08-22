@@ -7,5 +7,6 @@ class MailRepository{
         console.log("Weight:", weight);
         return "Price calculated";  
     }
+  
 }
 export {MailRepository}

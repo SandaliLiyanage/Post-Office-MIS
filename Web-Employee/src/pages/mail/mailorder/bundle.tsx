@@ -1,35 +1,36 @@
-import {Employee, columns} from './columnsemp';
-import {DataTable} from './datatableemp';
-import { useUser } from '../authentication/usercontext';
+import {IBundle, columns} from './columnsbundles';
+import {DataTable} from './datatablebundles';
+import { useUser } from '../../authentication/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-export default function EmployeeRecords() {
+import { Input } from '../../../components/ui/input';
+
+export default function Bundle() {
   const {user} = useUser();
-  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [bundle, setBundle] = useState<IBundle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
 
   useEffect(() => {
-    async function fetchEmployees() {
-      try {
+    async function fetchBundles() {
+      try { 
         console.log(user?.token)
-        const response = await axios.post('http://localhost:5000/employee/employeeRecords', 
+        const response = await axios.post('http://localhost:5000/mail/bundles', 
           user?.postalCode,
           {
             headers: {
               Authorization: `Bearer ${user?.token}`, 
             },
           });
-        setEmployees(response.data);
+        console.log(response.data)
+        setBundle(response.data);
       } catch (error) {
-        setError('Failed to fetch employees');
+        setError('Failed to fetch bundles');
       } finally {
         setLoading(false);
       }
     }
-    fetchEmployees();
+    fetchBundles();
   }, []);
   if (loading) {
     return <p>Loading...</p>;
@@ -42,14 +43,13 @@ export default function EmployeeRecords() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl">Employee Records</p>
+        <p className="text-xl">Bundles</p>
         <div className='flex flex-end gap-2 '>
-        <Input type="email" placeholder="Search Employee"className='w-50'  />
-        <Button className="bg-slate-600">Add Employee</Button>
+        <Input type="email" placeholder="Search Bundle"className='w-50'  />
         </div>
     </div>
     <div className="flex flex-col space-y-4 bg-white border-0">
-      <DataTable columns={columns} data={employees} />
+      <DataTable columns={columns} data={bundle} />
       </div>
     </div>
   )

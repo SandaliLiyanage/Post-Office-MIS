@@ -17,7 +17,7 @@ export default function SideBar() {
                           onClick={() =>{
                             handleClick('Employee Records');
                             navigate("/dashboard/employeeRecords")
-                          }}> Employee Records</NavButton>
+                          }}> Employee Accounts</NavButton>
 
   const MailAssignments = <NavButton className={`${activeButton === 'Mail Assignments'? clickedColour : normalColour}`}
                           onClick={() => {
@@ -67,8 +67,6 @@ export default function SideBar() {
                           handleClick('Employee Registrations')
                           navigate("/dashboard/employeeRegistrations")
                         } }>Employee Registrations</NavButton>
-  
-
   return (
     <div className="mt-16 fixed left-0 top-0 h-full">
       <nav className="w-60 h-full bg-slate-300 bg-opacity-25">

@@ -9,6 +9,7 @@ import LeaveRequest from "./pages/employees/leaverequets";
 import Emp from "./pages/employees/emp";
 import Bundle from "./pages/mail/bundles/bundle";
 import Mails from "./pages/mail/mails/mail";
+import Employeeupdate from "./pages/employees/employeeupdate";
 function App() {
   return (
     
@@ -29,7 +30,7 @@ function App() {
           <Route path="postmanassignments" element={<></>}></Route>
           <Route path="mailassignments" element={<></>}></Route>
           <Route path="viewmail" element={<Mails/>}></Route>
-          <Route path="view" element={<></>}></Route>
+          <Route path="view" element={<Employeeupdate/>}></Route>
         </Route>
       </Routes>
     </Router>

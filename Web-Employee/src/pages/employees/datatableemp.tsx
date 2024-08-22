@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
                       <TableCell>
                         <Button className="bg-slate-700" onClick={()=>{console.log(row.original);
                           navigate('/dashboard/view', {state: row.original})
-                        }}>Update</Button>
+                        }}>View</Button>
                 </TableCell>
                   </TableRow>
                 ))

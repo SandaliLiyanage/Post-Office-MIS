@@ -6,7 +6,7 @@ export interface Employee {
     email: string;
     telephone: string;
     role: string;
-  }
+}
 
 const columns: ColumnDef<Employee>[] = [
     {

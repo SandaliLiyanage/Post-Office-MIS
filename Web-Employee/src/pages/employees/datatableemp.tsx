@@ -16,12 +16,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { useNavigate } from "react-router-dom"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
   }
-
 export function DataTable<TData, TValue>({
     columns,
     data,
@@ -31,6 +31,8 @@ export function DataTable<TData, TValue>({
       columns,
       getCoreRowModel: getCoreRowModel(),
     })
+  const navigate = useNavigate()
+
     return (
         <div className="rounded-md border">
           <Table>
@@ -61,12 +63,15 @@ export function DataTable<TData, TValue>({
                   >
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
-                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                        {typeof cell.getValue() === 'string'
+              ? (cell.getValue() as string).toLowerCase()
+              : flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}
                       <TableCell>
-                
-                <Button className="btn btn-primary bg-slate-400">Edit</Button>
+                        <Button className="bg-slate-700" onClick={()=>{console.log(row.original);
+                          navigate('/dashboard/view', {state: row.original})
+                        }}>Update</Button>
                 </TableCell>
                   </TableRow>
                 ))

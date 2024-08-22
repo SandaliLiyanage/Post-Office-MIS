@@ -29,6 +29,7 @@ function App() {
           <Route path="postmanassignments" element={<></>}></Route>
           <Route path="mailassignments" element={<></>}></Route>
           <Route path="viewmail" element={<Mails/>}></Route>
+          <Route path="view" element={<></>}></Route>
         </Route>
       </Routes>
     </Router>

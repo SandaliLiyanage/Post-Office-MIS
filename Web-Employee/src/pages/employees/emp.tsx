@@ -5,12 +5,13 @@ import axios from 'axios';
 import {useEffect, useState} from 'react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
+import { useNavigate } from 'react-router-dom';
 export default function EmployeeRecords() {
   const {user} = useUser();
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
-
+  const navigate = useNavigate();
   useEffect(() => {
     async function fetchEmployees() {
       try {
@@ -45,7 +46,7 @@ export default function EmployeeRecords() {
         <p className="text-xl">Employee Records</p>
         <div className='flex flex-end gap-2 '>
         <Input type="email" placeholder="Search Employee"className='w-50'  />
-        <Button className="bg-slate-600">Add Employee</Button>
+        <Button className="bg-teal-600" onClick={()=>navigate('/dashboard/employeeRegistrations')}>Add Employee</Button>
         </div>
     </div>
     <div className="flex flex-col space-y-4 bg-white border-0">

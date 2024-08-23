@@ -1,10 +1,7 @@
 "use client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import axios from "axios"
-
 import { Button } from "../../../components/ui/button"
 import {
   Form,
@@ -38,23 +35,9 @@ export default function MailOrder() {
     },
   })
     async function onSubmit(values: z.infer<typeof formSchema>) {
-      try {
         const role = user?.role;
         console.log("This is the postmaster",role)
-        const response = await axios.post(
-          "http://localhost:5000/mail/customerDetails", 
-          values, 
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`, 
-            },
-          }
-        );
-        console.log("Data submitted successfully", response.data)
-      } catch (error) {
-        console.error("Error submitting data", error)
-      }
-      console.log(values)
+        localStorage.setItem("customerDetails", JSON.stringify(values))
     }
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
@@ -79,12 +62,12 @@ export default function MailOrder() {
             />
             <FormField
               control={form.control}
-              name="address"
+              name="telephone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Address</FormLabel>
+                  <FormLabel>Telephone</FormLabel>
                   <FormControl>
-                    <Input placeholder="Address" {...field} />
+                    <Input placeholder="Telephone" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,12 +75,12 @@ export default function MailOrder() {
             />
             <FormField
               control={form.control}
-              name="telephone"
+              name="address"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Telephone</FormLabel>
+                  <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="Telephone" {...field} />
+                    <Input placeholder="Address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -110,4 +93,3 @@ export default function MailOrder() {
     </div>
   )
 }
-

@@ -1,0 +1,56 @@
+import {IBundle, columns} from './columnsbundles';
+import {DataTable} from './datatablebundles';
+import { useUser } from '../../authentication/usercontext';
+import axios from 'axios';
+import {useEffect, useState} from 'react';
+import { Input } from '../../../components/ui/input';
+
+export default function Bundle() {
+  const {user} = useUser();
+  const [bundle, setBundle] = useState<IBundle[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<null|string>(null);
+
+  useEffect(() => {
+    async function fetchBundles() {
+      try { 
+        console.log(user?.token)
+        const response = await axios.post('http://localhost:5000/mail/bundles', 
+          user?.postalCode,
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          });
+        console.log(response.data)
+        setBundle(response.data);
+      } catch (error) {
+        setError('Failed to fetch bundles');
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchBundles();
+  }, []);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  return (
+    <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
+      <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
+        <p className="text-xl">Bundles</p>
+        <div className='flex flex-end gap-2 '>
+        <Input type="email" placeholder="Search Bundle"className='w-50'  />
+        </div>
+    </div>
+    <div className="flex flex-col space-y-4 bg-white border-0">
+      <DataTable columns={columns} data={bundle} />
+      </div>
+    </div>
+  )
+}

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function SideBar() {
   const clickedColour: string = 'bg-slate-400 text-white';
   const normalColour: string = 'hover:bg-slate-300 text-black';
-  const [activeButton, setActiveButton] = useState('Employee Records');
+  const [activeButton, setActiveButton] = useState('');
   const {user} = useUser();
   const navigate = useNavigate();
 
@@ -17,7 +17,7 @@ export default function SideBar() {
                           onClick={() =>{
                             handleClick('Employee Records');
                             navigate("/dashboard/employeeRecords")
-                          }}> Employee Records</NavButton>
+                          }}> Employee Accounts</NavButton>
 
   const MailAssignments = <NavButton className={`${activeButton === 'Mail Assignments'? clickedColour : normalColour}`}
                           onClick={() => {
@@ -50,35 +50,34 @@ export default function SideBar() {
                           navigate("/dashboard/leaveRequest")
                         } }>Leave Requests</NavButton>
 
-  const ViewLeaveRequests = <NavButton className={`${activeButton === 'Mail Assignments' ? clickedColour : normalColour}`} 
+  const ViewLeaveRequests = <NavButton className={`${activeButton === 'Mail Bundles' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Mail Assignments')
-                          navigate("/dashboard/viewLeaveRequests")
-                        } }>Mail Assignments</NavButton>
+                          handleClick('Mail Bundles')
+                          navigate("/dashboard/mailBundles")
+                        } }>Mail Bundles</NavButton>
 
   const PostmanAssignments = <NavButton className={`${activeButton === 'Assigned Postmen' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('Assigned Postmen')
                           navigate("/dashboard/postmanAssignments")
-                        } }>Assigned Postmen</NavButton>
+                        }}>Assigned Postmen</NavButton>
 
   const EmployeeRegistrations = <NavButton className={`${activeButton === 'Employee Registrations' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('Employee Registrations')
                           navigate("/dashboard/employeeRegistrations")
                         } }>Employee Registrations</NavButton>
-  
-
   return (
     <div className="mt-16 fixed left-0 top-0 h-full">
       <nav className="w-60 h-full bg-slate-300 bg-opacity-25">
       {user?.role === 'POSTMASTER' && (
           <>
             {EmployeeRecords}
-            {PostmanAssignments}
             {ViewLeaveRequests}
-            {RevenueReports}
             {EmployeeRegistrations}
+            {MailOrder}
+            {ViewMail}
+            {LeaveRequest}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (

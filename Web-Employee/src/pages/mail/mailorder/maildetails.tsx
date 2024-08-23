@@ -1,10 +1,10 @@
 "use client"
 
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
+import { set, useForm } from "react-hook-form"
 import { z } from "zod"
 import axios from "axios"
-
+import { useState } from "react"
 import { Button } from "../../../components/ui/button"
 import {
   Form,
@@ -16,34 +16,40 @@ import {
 } from "../../../components/ui/form"
 import { Input } from "../../../components/ui/input"
 import { useUser } from "@/pages/authentication/usercontext"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {
   }),
-  address: z.string().min(10, {}),
+  address: z.string().min(1, {}),
   weight: z.string().min(1, {}),
 })
 
 export default function MailDetails() {
   const {user} = useUser();
-
+  const [price, setPrice] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       mailType: "",
       recepientName: "",
       address: "",
-      weight: "",
+      weight: ""
     },
   })
-    async function onSubmit(values: z.infer<typeof formSchema>) {
-      try {
-        const role = user?.role;
-        console.log("This is the postmaster",role)
+    async function onClickCalculate() {
+        const { mailType, weight } = form.getValues(); 
+        if (mailType === "" || weight === "") {
+          setError("Fill Weight and Mail Type");
+          return;
+        }
+        const calculationData = { mailType, weight };
         const response = await axios.post(
-          "http://localhost:5000/mail/customerDetails", 
-          values, 
+          "http://localhost:5000/mail/calculatePrice", 
+          calculationData, 
           {
             headers: {
               Authorization: `Bearer ${user?.token}`, 
@@ -51,6 +57,29 @@ export default function MailDetails() {
           }
         );
         console.log("Data submitted successfully", response.data)
+        setError(null);
+        setPrice(response.data)
+    }
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+      try {
+        const role = user?.role;
+        console.log("This is the postmaster",role);
+        if (!price) {
+          let response = await axios.post(
+            "http://localhost:5000/mail/customerDetails", 
+            {
+              ...values,
+              price: price,
+            }, 
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`, 
+              },
+            }
+          );
+        navigate('/dashboard/mailorder'	)
+        console.log("Data submitted successfully", response.data)
+        }
       } catch (error) {
         console.error("Error submitting data", error)
       }
@@ -117,9 +146,16 @@ export default function MailDetails() {
               )}
             />
           </div>
-          <div className="flex justify-between" >
-          <Button className="bg-teal-600" type="button">Calculate</Button>
-          <Button type="submit">Add Mail</Button>
+          <div className="flex justify-between" > 
+          <div className="flex justify-start gap-4">
+            <Button className="bg-slate-700" onClick={onClickCalculate} type="button">Calculate</Button>
+            {error !== null && price== null && <div className="text-sm text-red-500 p-2 rounded-sm font-bold">{error}</div> }
+            {price !== null && <div className="bg-white p-2 border-opacity-45">{price}</div> }
+          </div>         
+          <div className="flex justify-end gap-2">
+          <Button type="button" className="bg-slate-600">Print Barcode</Button>
+          <Button type="submit"  className="bg-teal-600">Confirm Transaction</Button>
+          </div>
           </div>
         </form>
       </Form>

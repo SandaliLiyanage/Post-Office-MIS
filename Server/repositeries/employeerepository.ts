@@ -1,4 +1,4 @@
-import {Prisma, PrismaClient, Employee, Role} from "@prisma/client"
+import {PrismaClient, Employee, Role} from "@prisma/client"
 const prisma = new PrismaClient();
 
 class EmployeeRepository {
@@ -40,6 +40,19 @@ class EmployeeRepository {
             return res;
         } catch (error) {
             console.error("Error registering user:", error);
+            throw error;
+        }
+    }
+    async getEmployees(postalCode: string): Promise<Employee[]> {
+        try {
+            const res = await prisma.employee.findMany({
+                where:{
+                    postalCode: postalCode,
+                },
+            });
+            return res;
+        } catch (error) {
+            console.error("Error getting employees:", error);
             throw error;
         }
     }

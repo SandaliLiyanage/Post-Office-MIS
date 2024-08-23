@@ -34,25 +34,28 @@ enum PostOfficeCategory {
 model PostOffice {
   postalCode        String                @id
   postOfficeCategory PostOfficeCategory
-  postOfficeName     String
+  postOfficeName    String
   headOfficeID       String?
   address          Address[]
   mail	  	         Mail[]
   employee          Employee[]
+  bundle            Bundle[]
 }
 
 model Address {
   addressID     Int      @id @default(autoincrement())
   postalCode    String
   postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
-  address       String
-  latitude      Float
-  longitude     Float
+  addressNo    String
+  streetName    String?
+  Locality      String?
+  latitude      Float?
+  longitude     Float?
   customer Customer[]
 }
 
 enum MailCategory {
-  LETTER
+  NORMAL_MAIL
   COURIER
   MONEY_ORDER
   REGISTERED_MAIL
@@ -73,7 +76,7 @@ model Mail {
   category          MailCategory
   recepientID       Int
   bundleID          Int
-  bundle            Bundle     @relation(fields: [bundleID], references: [barcodeID])
+  bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
   recepient         Customer   @relation(fields: [recepientID], references: [customerID])
   postalCode        String
   postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
@@ -83,7 +86,10 @@ model Mail {
 }
 
 model Bundle {
-  barcodeID              Int          @id @default(autoincrement())
+  bundleID              Int          @id @default(autoincrement())
+  destPostalCode        String
+  destPostOffice        PostOffice @relation(fields: [destPostalCode], references: [postalCode])
+  barcodeID              Int          
   mail                  Mail[]
 }
 

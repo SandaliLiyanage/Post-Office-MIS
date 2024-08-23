@@ -24,20 +24,19 @@ class EmployeeRepository {
             throw error;
         }
     }
-    async registerUser(userName: string, hashedPassword: string, postalCode: string, employeeName:string, email:string, telephone: string, role: Role): Promise<Employee | null> {
+    async registerUser(employeeID:string, userName:string, postalCode:string, telephone:string, email:string, role:Role ): Promise<Employee | null> {
         try {
-            const res = await prisma.employee.create({
+            const result = await prisma.employee.create({
                 data: {
-                    employeeID: userName,
+                    employeeID: employeeID,
                     postalCode: postalCode,
-                    employeeName: employeeName,
+                    employeeName: userName,
                     email: email,
                     telephone: telephone,
                     role: role,
-                    password: hashedPassword,
                 },
             });
-            return res;
+            return result;
         } catch (error) {
             console.error("Error registering user:", error);
             throw error;

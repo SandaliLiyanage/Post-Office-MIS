@@ -20,7 +20,7 @@ const ROLES = ['Supervisor', 'Postmaster', 'Receptionist', 'postman', 'dispatche
 
 const formSchema = z.object({
   employeeName: z.string(),
-  employeeID: z.string().min(5, {}),
+  employeeID: z.string().min(1, {}),
   role: z.enum(ROLES),
   telephone: z.string().min(10, {}),
   email: z.string().email(),

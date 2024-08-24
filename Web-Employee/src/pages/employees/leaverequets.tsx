@@ -23,7 +23,10 @@ const formSchema = z.object({
   }),
   startDate: z.string().min(10, {}),
   endDate: z.string().min(1, {}),
-  description: z.string()
+  description: z.string(),
+   dob: z.date({
+    required_error: "A date of birth is required.",
+  }),
 })
 
 export default function LeaveRequest() {

@@ -24,6 +24,7 @@ model Employee {
   email         String @unique
   telephone    String 
   role         Role
+  leave       Leave[]
 }
 
 enum PostOfficeCategory {
@@ -106,4 +107,22 @@ model Transaction {
   customerID    Int
   customer      Customer @relation(fields: [customerID], references: [customerID])
   mail          Mail[]
+}
+
+model Leave{
+  employeeID String   @id
+  leaveType String
+  startDate DateTime
+  endDate DateTime
+  employee Employee @relation(fields: [employeeID], references: [employeeID])
+  description String
+  status String
+  RequestStatus RequestStatus @default(PENDING)
+
+}
+
+enum RequestStatus{
+  PENDING
+  APPROVED
+  REJECTED
 }

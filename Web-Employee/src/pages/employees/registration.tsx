@@ -16,7 +16,13 @@ import {
 } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
 
-const ROLES = ['Supervisor', 'Postmaster', 'Receptionist', 'postman', 'dispatcher'] as const;
+const ROLES = [
+  "Supervisor",
+  "Postmaster",
+  "Receptionist",
+  "postman",
+  "dispatcher",
+] as const;
 
 const formSchema = z.object({
   employeeName: z.string(),
@@ -42,7 +48,7 @@ export default function EmpRegistration() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await axios.post(
-        "http://localhost:5000/employee/employeeDetails",
+        "http://localhost:5000/employee/employeeRecords",
         values
       );
       console.log("Data submitted successfully", response.data);
@@ -123,8 +129,8 @@ export default function EmpRegistration() {
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-                 )}
-                />
+              )}
+            />
             <FormField
               control={form.control}
               name="postalCode"
@@ -136,8 +142,8 @@ export default function EmpRegistration() {
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-                 )}
-                />
+              )}
+            />
           </div>
           <Button type="submit">Submit</Button>
         </form>

@@ -26,8 +26,7 @@ const ROLES = [
 
 const formSchema = z.object({
   employeeName: z.string(),
-  address: z.string().min(5, {}),
-  employeeID: z.string().min(5, {}),
+  employeeID: z.string().min(1, {}),
   role: z.enum(ROLES),
   telephone: z.string().min(10, {}),
   email: z.string().email(),
@@ -40,15 +39,17 @@ export default function EmpRegistration() {
     defaultValues: {
       employeeName: "",
       employeeID: "",
-      address: "",
       telephone: "",
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      console.log(values);
       const response = await axios.post(
-        "http://localhost:5000/employee/employeeRecords",
+
+        "http://localhost:5000/employee/registration",
+
         values
       );
       console.log("Data submitted successfully", response.data);
@@ -86,20 +87,7 @@ export default function EmpRegistration() {
                 <FormItem>
                   <FormLabel>Employee ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="Employee Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Address" {...field} />
+                    <Input placeholder="Employee ID" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,8 +130,22 @@ export default function EmpRegistration() {
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              )}
-            />
+
+                 )}
+                />
+                 <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Employee Role</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Employee Role" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+                 )}
+                />
           </div>
           <Button type="submit">Submit</Button>
         </form>

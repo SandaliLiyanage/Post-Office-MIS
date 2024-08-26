@@ -1,5 +1,7 @@
 import { Tabs } from "expo-router";
+
 import { View, Text, Image, TouchableOpacity } from "react-native";
+
 import icons from "../../../assets/icons";
 import { useNavigationState } from "@react-navigation/native";
 
@@ -45,6 +47,7 @@ const Header = () => {
           }}
         />
       </TouchableOpacity>
+
     </View>
   );
 };

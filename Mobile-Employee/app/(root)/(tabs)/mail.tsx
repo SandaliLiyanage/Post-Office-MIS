@@ -1,3 +1,4 @@
+
 // import React, { useState, useEffect } from "react";
 // import {
 //   View,
@@ -178,6 +179,7 @@ const Mail = () => {
   );
 };
 
+
 // Styles
 const styles = StyleSheet.create({
   container: {
@@ -220,5 +222,6 @@ const styles = StyleSheet.create({
     color: "#C60024",
   },
 });
+
 
 export default Mail;

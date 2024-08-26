@@ -81,11 +81,11 @@ const Home = () => {
           <Text style={styles.branch}>{userData.branch}</Text>
         </View>
       </View>
-
       <View style={styles.deliveriesContainer}>
         <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
         <View style={styles.deliveryTypes}>
           <View style={styles.deliveryItem}>
+
             <Text style={styles.deliveryCount}>{deliveryCounts.normal}</Text>
             <Text style={styles.deliveryLabel}>Normal</Text>
           </View>
@@ -97,10 +97,12 @@ const Home = () => {
           </View>
           <View style={styles.deliveryItem}>
             <Text style={styles.deliveryCount}>{deliveryCounts.parcel}</Text>
+
             <Text style={styles.deliveryLabel}>Parcel</Text>
           </View>
         </View>
       </View>
+
 
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.actionButton}>
@@ -114,6 +116,7 @@ const Home = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Image
             source={require("../../../assets/icons/address.png")}
+
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Add Address</Text>
@@ -122,6 +125,7 @@ const Home = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Image
             source={require("../../../assets/icons/leave.png")}
+
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Leaves</Text>
@@ -130,6 +134,7 @@ const Home = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Image
             source={require("../../../assets/icons/feedback.png")}
+
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Feedback</Text>
@@ -170,6 +175,7 @@ const styles = StyleSheet.create({
   branch: {
     fontSize: 14,
     color: "white",
+
   },
   bellIcon: {
     position: "absolute",
@@ -200,16 +206,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deliveryCount: {
+
     fontSize: 45,
     color: "white",
+
     fontWeight: "bold",
   },
   deliveryLabel: {
     fontSize: 14,
+
     color: "white",
   },
   actionsContainer: {
     marginTop: 19,
+
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
@@ -219,6 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
+
     alignItems: "center",
     marginBottom: 20,
   },
@@ -231,11 +242,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
   },
+
   errorText: {
     color: "white",
     fontSize: 18,
     textAlign: "center",
   },
+
 });
 
 export default Home;

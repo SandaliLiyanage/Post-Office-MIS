@@ -1,3 +1,5 @@
+// Home screen
+
 import React, { useEffect, useState } from "react";
 import {
   View,
@@ -10,31 +12,35 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Home = () => {
+  // State to store user data
   const [userData, setUserData] = useState<{
     employeeName: string;
     role: string;
     branch: string;
-  } | null>(null);
+  } | null>(null); // Set the initial value null
+
+  // State to store delivery counts
   const [deliveryCounts, setDeliveryCounts] = useState<{
     normal: number;
     registered: number;
     parcel: number;
-  } | null>(null);
+  } | null>(null); // Set the initial value null
+
+  // State to store loading status
   const [loading, setLoading] = useState(true);
 
+  // Fetch data from the backend
   useEffect(() => {
-    // Fetch user data from the backend
+    // Fetch user data
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.1.8:5000/employee/user?employeeID=12345"
+          "http://192.168.1.8:5000/employee/user?employeeID=12345" // Send GET request
         );
-        const data = await response.json();
-        setUserData(data);
+        const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
+        setUserData(data); // Update userData
       } catch (error) {
         console.error("Error fetching user data:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -42,24 +48,26 @@ const Home = () => {
     const fetchDeliveryCounts = async () => {
       try {
         const response = await fetch(
-          "http://192.168.1.8:5000/mail/employee?employeeID=12345"
+          "http://192.168.1.8:5000/mail/employee?employeeID=12345" // Send GET request
         );
-        const data = await response.json();
-        setDeliveryCounts(data);
+        const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
+        setDeliveryCounts(data); // Update deliveryCounts
       } catch (error) {
         console.error("Error fetching delivery counts:", error);
       }
     };
 
+    // Fetch user data and delivery counts
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([fetchUserData(), fetchDeliveryCounts()]);
+      await Promise.all([fetchUserData(), fetchDeliveryCounts()]); // Waits for both fetchUserData and fetchDeliveryCounts to complete
       setLoading(false);
     };
 
-    fetchData();
+    fetchData(); // This is called when the useEffect hook triggers
   }, []);
 
+  // Handle loading state
   if (loading) {
     return (
       <View style={styles.container}>
@@ -70,39 +78,43 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.profDetailsContainer}>
-        {/* <Image
+      {userData && ( // Check if userData is not null
+        <View style={styles.profDetailsContainer}>
+          {/* <Image
           source={{ uri: userData.profilePicture }}
           style={styles.profileImage}
         /> */}
-        <View>
-          <Text style={styles.name}>{userData.employeeName}</Text>
-          <Text style={styles.role}>{userData.role}</Text>
-          <Text style={styles.branch}>{userData.branch}</Text>
-        </View>
-      </View>
-      <View style={styles.deliveriesContainer}>
-        <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
-        <View style={styles.deliveryTypes}>
-          <View style={styles.deliveryItem}>
-
-            <Text style={styles.deliveryCount}>{deliveryCounts.normal}</Text>
-            <Text style={styles.deliveryLabel}>Normal</Text>
-          </View>
-          <View style={styles.deliveryItem}>
-            <Text style={styles.deliveryCount}>
-              {deliveryCounts.registered}
-            </Text>
-            <Text style={styles.deliveryLabel}>Registered</Text>
-          </View>
-          <View style={styles.deliveryItem}>
-            <Text style={styles.deliveryCount}>{deliveryCounts.parcel}</Text>
-
-            <Text style={styles.deliveryLabel}>Parcel</Text>
+          <View>
+            <Text style={styles.name}>{userData.employeeName}</Text>
+            <Text style={styles.role}>{userData.role}</Text>
+            <Text style={styles.branch}>{userData.branch}</Text>
           </View>
         </View>
-      </View>
+      )}
+      {deliveryCounts && ( // Check if deliveryCounts is not null
+        <View style={styles.deliveriesContainer}>
+          <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
 
+          <View style={styles.deliveryTypes}>
+            <View style={styles.deliveryItem}>
+              <Text style={styles.deliveryCount}>{deliveryCounts.normal}</Text>
+              <Text style={styles.deliveryLabel}>Normal</Text>
+            </View>
+
+            <View style={styles.deliveryItem}>
+              <Text style={styles.deliveryCount}>
+                {deliveryCounts.registered}
+              </Text>
+              <Text style={styles.deliveryLabel}>Registered</Text>
+            </View>
+
+            <View style={styles.deliveryItem}>
+              <Text style={styles.deliveryCount}>{deliveryCounts.parcel}</Text>
+              <Text style={styles.deliveryLabel}>Parcel</Text>
+            </View>
+          </View>
+        </View>
+      )}
 
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.actionButton}>
@@ -116,7 +128,6 @@ const Home = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Image
             source={require("../../../assets/icons/address.png")}
-
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Add Address</Text>
@@ -125,7 +136,6 @@ const Home = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Image
             source={require("../../../assets/icons/leave.png")}
-
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Leaves</Text>
@@ -134,7 +144,6 @@ const Home = () => {
         <TouchableOpacity style={styles.actionButton}>
           <Image
             source={require("../../../assets/icons/feedback.png")}
-
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Feedback</Text>
@@ -153,9 +162,9 @@ const styles = StyleSheet.create({
   profDetailsContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 40,
+    marginBottom: 55,
     marginLeft: 5,
-    height: 60,
+    height: 50,
   },
   // profileImage: {
   //   width: 70,
@@ -175,7 +184,6 @@ const styles = StyleSheet.create({
   branch: {
     fontSize: 14,
     color: "white",
-
   },
   bellIcon: {
     position: "absolute",
@@ -188,7 +196,9 @@ const styles = StyleSheet.create({
   deliveriesContainer: {
     backgroundColor: "#C60024",
     borderRadius: 10,
-    padding: 24,
+    padding: 20,
+    paddingTop: 15,
+    paddingBottom: 25,
     marginBottom: 20,
   },
   deliveriesTitle: {
@@ -206,7 +216,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deliveryCount: {
-
     fontSize: 45,
     color: "white",
 
@@ -219,19 +228,21 @@ const styles = StyleSheet.create({
   },
   actionsContainer: {
     marginTop: 19,
-
+    marginLeft: 8,
+    marginRight: 8,
+    paddingLeft: 10,
+    paddingRight: 10,
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
   },
   actionButton: {
-    width: "45%",
+    width: "42%",
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
-
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 25,
   },
   actionIcon: {
     width: 50,
@@ -248,7 +259,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: "center",
   },
-
 });
 
 export default Home;

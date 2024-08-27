@@ -1,5 +1,7 @@
 import { Tabs } from "expo-router";
-import { View, Text, Image } from "react-native";
+
+import { View, Text, Image, TouchableOpacity } from "react-native";
+
 import icons from "../../../assets/icons";
 import { useNavigationState } from "@react-navigation/native";
 
@@ -34,15 +36,18 @@ const Header = () => {
       >
         {route.name.charAt(0).toUpperCase() + route.name.slice(1)}
       </Text>
-      <Image
-        source={icons.notifications}
-        style={{
-          left: 325,
-          top: 10,
-          width: 30,
-          height: 30,
-        }}
-      />
+      <TouchableOpacity>
+        <Image
+          source={icons.notifications}
+          style={{
+            left: 325,
+            top: 10,
+            width: 30,
+            height: 30,
+          }}
+        />
+      </TouchableOpacity>
+
     </View>
   );
 };

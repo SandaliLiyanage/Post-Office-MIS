@@ -1,128 +1,90 @@
-generator client {
-  provider = "prisma-client-js"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  POSTMASTER
-  SUPERVISOR
-  RECEPTIONIST
-  DISPATCHER
-  POSTMAN
+model address {
+  address_id     Int          @id
+  address        String?      @db.VarChar(255)
+  location       String?      @db.VarChar(255)
+  post_office_id Int?
+  customer_id    Int?
+  post_office    post_office? @relation(fields: [post_office_id], references: [post_office_id], onDelete: NoAction, onUpdate: NoAction)
+  delivery       delivery[]
 }
 
-model Employee { 
-  employeeID   String  @id 
-  password     String?
-  postalCode String  
-  postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
-  employeeName String
-  email         String @unique
-  telephone    String 
-  role         Role
-  leave       Leave[]
+model area {
+  area_id     Int           @id
+  area_name   String?       @db.VarChar(100)
+  post_office post_office[]
+  sub_area    sub_area[]
 }
 
-enum PostOfficeCategory {
-  HEAD_OFFICE
-  SUB_OFFICE
+model delivery {
+  delivery_id          Int         @id
+  transaction_id       Int?
+  recipient_address_id Int?
+  recipient_name       String?     @db.VarChar(100)
+  address              address?    @relation(fields: [recipient_address_id], references: [address_id], onDelete: NoAction, onUpdate: NoAction)
+  mail_item            mail_item[]
 }
 
-model PostOffice {
-  postalCode        String                @id
-  postOfficeCategory PostOfficeCategory
-  postOfficeName    String
-  headOfficeID       String?
-  address          Address[]
-  mail	  	         Mail[]
-  employee          Employee[]
-  bundle            Bundle[]
+model employee {
+  employee_id          Int          @id
+  employment_status    String?      @db.VarChar(50)
+  employee_name        String?      @db.VarChar(100)
+  employee_category_id Int?
+  post_office_id       Int?
+  telephone            String?      @db.VarChar(15)
+  email                String?      @db.VarChar(100)
+  password             String?      @db.VarChar(255)
+  post_office          post_office? @relation(fields: [post_office_id], references: [post_office_id], onDelete: NoAction, onUpdate: NoAction)
+  postman              postman[]
 }
 
-model Address {
-  addressID     Int      @id @default(autoincrement())
-  postalCode    String
-  postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
-  addressNo    String
-  streetName    String?
-  Locality      String?
-  latitude      Float?
-  longitude     Float?
-  customer Customer[]
+model mail_item {
+  mail_item_id       Int                 @id
+  category_id        Int?
+  bundle_id          Int?
+  delivery_id        Int?
+  weight             Decimal?            @db.Decimal(10, 2)
+  price              Decimal?            @db.Decimal(10, 2)
+  mail_item_category mail_item_category? @relation(fields: [category_id], references: [mail_item_category_id], onDelete: NoAction, onUpdate: NoAction)
+  delivery           delivery?           @relation(fields: [delivery_id], references: [delivery_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-enum MailCategory {
-  NORMAL_MAIL
-  COURIER
-  MONEY_ORDER
-  REGISTERED_MAIL
+model mail_item_category {
+  mail_item_category_id       Int         @id
+  category_name               String?     @db.VarChar(100)
+  category_price_per1g_per1km Decimal?    @db.Decimal(10, 2)
+  mail_item                   mail_item[]
 }
 
-model Customer {
-  customerID   Int  @id 
-  customerName String   
-  telephone    String?
-  addressID    Int
-  address      Address @relation(fields: [addressID], references: [addressID])
-  mail         Mail[]
-  transaction  Transaction[]
+model post_office {
+  post_office_id          Int        @id
+  post_office_category_id Int?
+  post_office_name        String?    @db.VarChar(100)
+  location                String?    @db.VarChar(255)
+  area_id                 Int?
+  head_office_post_id     Int?
+  address                 address[]
+  employee                employee[]
+  area                    area?      @relation(fields: [area_id], references: [area_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
-model Mail {
-  barcodeID         Int         @id @default(autoincrement())
-  category          MailCategory
-  recepientID       Int
-  bundleID          Int
-  bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
-  recepient         Customer   @relation(fields: [recepientID], references: [customerID])
-  postalCode        String
-  postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
-  mailstatus        MailStatus
-  transactionID     Int
-  transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
+model postman {
+  employee_id Int
+  sub_area_id Int
+  employee    employee @relation(fields: [employee_id], references: [employee_id], onDelete: NoAction, onUpdate: NoAction)
+  sub_area    sub_area @relation(fields: [sub_area_id], references: [sub_area_id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([employee_id, sub_area_id])
 }
 
-model Bundle {
-  bundleID              Int          @id @default(autoincrement())
-  destPostalCode        String
-  destPostOffice        PostOffice @relation(fields: [destPostalCode], references: [postalCode])
-  barcodeID              Int          
-  mail                  Mail[]
-}
-
-enum MailStatus {
-  IN_TRANSIT
-  DELIVERED
-  RETURNED
-}
-
-model Transaction {
-  transactionID Int      @id @default(autoincrement())
-  date          DateTime
-  amount        Float
-  customerID    Int
-  customer      Customer @relation(fields: [customerID], references: [customerID])
-  mail          Mail[]
-}
-
-model Leave{
-  employeeID String   @id
-  leaveType String
-  startDate DateTime
-  endDate DateTime
-  employee Employee @relation(fields: [employeeID], references: [employeeID])
-  description String
-  status String
-  RequestStatus RequestStatus @default(PENDING)
-
-}
-
-enum RequestStatus{
-  PENDING
-  APPROVED
-  REJECTED
+model sub_area {
+  sub_area_id   Int       @id
+  sub_area_name String?   @db.VarChar(100)
+  area_id       Int?
+  postman       postman[]
+  area          area?     @relation(fields: [area_id], references: [area_id], onDelete: NoAction, onUpdate: NoAction)
 }

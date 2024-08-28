@@ -3,7 +3,7 @@
 import express from "express";
 import MailRoutes from "./routers/mailroutes";
 import EmployeeRoutes from "./routers/employeeroutes";
-import AuthRoutes from "./routers/authroutes";
+//import AuthRoutes from "./routers/authroutes";
 import cors from "cors";
 
 // Initialize the Express application
@@ -19,7 +19,7 @@ app.use(express.json()); // Middleware to parse JSON (convert JSON to JavaScript
 
 app.use("/mail", MailRoutes); // Requests to /mail will be handled by the mailroutes
 app.use("/employee", EmployeeRoutes); // Requests to /employee will be handled by the employeeroutes
-app.use("/auth", AuthRoutes); // Requests to /auth will be handled by the authroutes
+//app.use("/auth", AuthRoutes); // Requests to /auth will be handled by the authroutes
 
 // Start the Express server
 app.listen(5000, () => {

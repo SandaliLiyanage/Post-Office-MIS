@@ -11,11 +11,11 @@ INSERT INTO Post_Office (Post_Office_ID, Post_Office_Category_ID, Post_Office_Na
 
 -- Insert data into Employee
 INSERT INTO Employee (Employee_ID, Employment_Status, Employee_Name, Employee_Category_ID, Post_Office_ID, Telephone, Email, password) VALUES
-(001, 'Active', 'John Doe', 1, 1, '555-1234', 'john.doe@example.com', 'hashedpassword1'),
-(002, 'Active', 'Jane Smith', 2, 2, '555-5678', 'jane.smith@example.com', 'hashedpassword2'),
-(003, 'Active', 'Emily Davis', 1, 1, '555-8765', 'emily.davis@example.com', 'hashedpassword3'),
-(004, 'Active', 'Michael Brown', 1, 2, '555-4321', 'michael.brown@example.com', 'hashedpassword4'),
-(005, 'Active', 'Sarah Wilson', 2, 2, '555-9876', 'sarah.wilson@example.com', 'hashedpassword5');
+(1, 'Active', 'John Doe', 1, 1, '555-1234', 'john.doe@example.com', 'hashedpassword1'),
+(2, 'Active', 'Jane Smith', 2, 2, '555-5678', 'jane.smith@example.com', 'hashedpassword2'),
+(3, 'Active', 'Emily Davis', 1, 1, '555-8765', 'emily.davis@example.com', 'hashedpassword3'),
+(4, 'Active', 'Michael Brown', 1, 2, '555-4321', 'michael.brown@example.com', 'hashedpassword4'),
+(5, 'Active', 'Sarah Wilson', 2, 2, '555-9876', 'sarah.wilson@example.com', 'hashedpassword5');
 
 -- Insert data into Sub_Area
 INSERT INTO Sub_Area (Sub_Area_ID, Sub_Area_Name, Area_ID) VALUES
@@ -24,9 +24,9 @@ INSERT INTO Sub_Area (Sub_Area_ID, Sub_Area_Name, Area_ID) VALUES
 
 -- Insert data into Postman
 INSERT INTO Postman (Employee_ID, Sub_Area_ID) VALUES
-(001, 1),
-(002, 2),
-(003, 1);
+(1, 1),
+(2, 2),
+(3, 1);
 
 -- Insert data into Address
 INSERT INTO Address (Address_ID, Address, Location, Post_Office_ID, Customer_ID) VALUES

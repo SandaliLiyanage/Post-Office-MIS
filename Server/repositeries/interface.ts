@@ -1,3 +1,3 @@
-interface IUserRepository {
-    create(email: string, password:string):Promise<string>
-}
+// interface IUserRepository {
+//     create(email: string, password:string):Promise<string>
+// }

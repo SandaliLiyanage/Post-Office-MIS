@@ -15,8 +15,7 @@ const Home = () => {
   // State to store user data
   const [userData, setUserData] = useState<{
     employeeName: string;
-    role: string;
-    branch: string;
+    postOfficeName: string;
   } | null>(null); // Set the initial value null
 
   // State to store delivery counts
@@ -35,7 +34,7 @@ const Home = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "http://192.168.1.8:5000/employee/user?employeeID=12345" // Send GET request
+          "http://192.168.1.8:5000/employee/user?employeeID=1" // Send GET request
         );
         const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
         setUserData(data); // Update userData
@@ -48,7 +47,7 @@ const Home = () => {
     const fetchDeliveryCounts = async () => {
       try {
         const response = await fetch(
-          "http://192.168.1.8:5000/mail/employee?employeeID=12345" // Send GET request
+          "http://192.168.1.8:5000/mail/employee?employeeID=1" // Send GET request
         );
         const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
         setDeliveryCounts(data); // Update deliveryCounts
@@ -86,8 +85,7 @@ const Home = () => {
         /> */}
           <View>
             <Text style={styles.name}>{userData.employeeName}</Text>
-            <Text style={styles.role}>{userData.role}</Text>
-            <Text style={styles.branch}>{userData.branch}</Text>
+            <Text style={styles.branch}>{userData.postOfficeName}</Text>
           </View>
         </View>
       )}

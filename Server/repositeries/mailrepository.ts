@@ -1,26 +1,45 @@
-import {PrismaClient, Mail} from "@prisma/client"
+import { PrismaClient } from "@prisma/client"; // Import your Prisma client
+
 const prisma = new PrismaClient();
 
-class MailRepository{
-    async calculatePrice(mailType: string, weight: number){
-        console.log("Mail type:", mailType);
-        console.log("Weight:", weight);
-        return "40";  
-    }
-    async getMail(postalCode:string): Promise<Mail[]> {
-            console.log("in mail repository");
-            try {
-                const res = await prisma.mail.findMany({
-                    where:{
-                        postalCode: postalCode,
-                    },
-                });
-                console.log("Mails queried", res)
-                return res;
-            } catch (error) {
-                console.error("Error getting mails:", error);
-                throw error;
-            }
-        }
-    }
-export {MailRepository}
+const getMailItemsByPostman = async (employeeID: number) => {
+  //   try {
+  //     // Fetch the sub-area IDs for the given postman
+  //     const subAreas = await prisma.postman.findMany({
+  //       where: {
+  //         employee_id: employeeID,
+  //       },
+  //       select: {
+  //         sub_area_id: true,
+  //       },
+  //     });
+  //     const subAreaIds = subAreas.map((subArea) => subArea.sub_area_id);
+  //     // Fetch the count of mail items for each category where the recipient address ID is in the sub-area of the relevant postman
+  //     const mailCounts = await prisma.mail_item_category.findMany({
+  //       select: {
+  //         category_name: true,
+  //         _count: {
+  //           select: {
+  //             mail_item: {
+  //               where: {
+  //                 delivery: {
+  //                   address: {
+  //                     sub_area_id: {
+  //                       in: subAreaIds,
+  //                     },
+  //                   },
+  //                 },
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //     });
+  //     return mailCounts;
+  //   } catch (error) {
+  //     console.error("Error fetching mail counts by postman:", error);
+  //     throw error;
+  //   }
+};
+
+export { getMailItemsByPostman };

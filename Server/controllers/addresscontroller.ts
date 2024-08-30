@@ -1,6 +1,12 @@
 import { Request, Response } from 'express';
-const AddressController = async (req: Request, res: Response) => {
-    console.log("Address details received:", req.body);
-    res.send({address: [440, 441]});	
+import AdderessService from "../services/addressservice"
+
+const addressService = new AdderessService();
+
+const Address = async (req: Request, res: Response) => {
+    const search = req.body.search;
+    const addressList = await addressService.searchSuggestions(search);
+    console.log("In the address repository", addressList)
+    res.send(addressList);	
 }
-export default AddressController;
+export default Address;

@@ -4,6 +4,7 @@ import {CalculatePrice} from '../controllers/mailcontroller';
 import AuthService from '../services/authservice';
 import { MailBundles } from '../controllers/mailcontroller';
 import {Mails} from '../controllers/mailcontroller';
+import Address from '../controllers/addresscontroller';
 const authService = new AuthService();
 
 const router = Router();
@@ -13,4 +14,5 @@ router.post('/customerDetails', CustomerDetails);
 router.post('/calculatePrice', CalculatePrice);
 router.post('/bundles', MailBundles);
 router.post('/viewmails', Mails);
+router.post('/addresssearch', Address)
 export default router;

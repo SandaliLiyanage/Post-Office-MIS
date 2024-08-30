@@ -27,6 +27,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+
 const formSchema = z.object({
   customerName: z.string(),
   address: z.string().min(5, {}),
@@ -49,15 +50,16 @@ export default function MailOrder() {
     },
   });
 
-  const getAddress = async (value: string) => {
+  const getAddress = async (search: string) => {
     try {
       if (search !== "") {
         const response = await axios.post(
-          "http://localhost:5000/search/getAddress",
-          value
+          "http://localhost:5000/mail/addresssearch",
+          search
         );
-        console.log("This is the response", response);
-        setSearchResults(response.data.address);
+        await setSearchResults(response.data);
+        console.log("this is searchresults", searchResults)
+        
       }
     } catch (error) {
       console.log("This is the error", error);
@@ -78,9 +80,6 @@ export default function MailOrder() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("he he")
-    // const role = user?.role;
-    // console.log("This is the postmaster", role);
-    // localStorage.setItem("customerDetails", JSON.stringify(values));
     console.log("he he proceed is working", values);
   }
 
@@ -140,14 +139,13 @@ export default function MailOrder() {
                 value={search}
               />
               <CommandList>
-                {searchResults.length == 0 &&
-                  search != "" &&
+                {search != "" &&
                   searchSelect == false && (
                     <CommandEmpty>No address found.</CommandEmpty>
                   )}
-                {searchResults.length > 0 && search != "" && (
+                {search != "" && (
                   <CommandGroup>
-                    {searchResults.map((result) => (
+                    {searchResults?.map((result) => (
                       <CommandItem
                         key={result}
                         onSelect={(value) => {
@@ -165,7 +163,7 @@ export default function MailOrder() {
             </Command>
           </div>
           <Button type="submit" 
-          // onClick={() => navigate("/dashboard/maildetails")}
+          onClick={() => navigate("/dashboard/maildetails")}
           >
              Proceed </Button>
         </form>

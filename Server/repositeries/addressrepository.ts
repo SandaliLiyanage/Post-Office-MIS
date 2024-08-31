@@ -13,7 +13,14 @@ class AddressRepository{
                 WHERE "addressNo" LIKE  ANY (array[${Array}])
                 UNION
                 SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
-                WHERE "streetName" LIKE ANY (array[${Array}]);`
+                WHERE "streetName" LIKE ANY (array[${Array}])
+                UNION
+                SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
+                WHERE "postalCode" LIKE  ANY (array[${Array}])
+                UNION
+                SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
+                WHERE "Locality" LIKE  ANY (array[${Array}])
+                ;`
                 ;
             console.log("this is what was queried",res); 
             return res

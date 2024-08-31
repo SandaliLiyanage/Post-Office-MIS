@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { EmployeeDetails } from "../controllers/employeecontroller";
-import { Registration } from "../controllers/employeecontroller";
+
+import {
+  EmployeeDetails,
+  getEmployeeDetails,
+  Registration,
+} from "../controllers/employeecontroller";
+
 const router = Router();
 router.post("/employeeRecords", EmployeeDetails);
 router.post("/registration",Registration)
-router
+router.get("/user", getEmployeeDetails);
+
 export default router;

@@ -7,6 +7,7 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
     postalCode: string;
     role: string;
     token: string;
+    postOfficeName: string;
   }
   
   interface UserContextType {
@@ -18,7 +19,7 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
   
   export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
-
+    
     // Get the user from the local storage
     useEffect(() => {
       const user = localStorage.getItem('user');

@@ -10,18 +10,14 @@ export default function Bundle() {
   const [bundle, setBundle] = useState<IBundle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
-
+  axios.defaults.headers.common['Authorization'] = `Bearer ${user?.token}`
+  
   useEffect(() => {
     async function fetchBundles() {
       try { 
         console.log(user?.token)
         const response = await axios.post('http://localhost:5000/mail/bundles', 
-          user?.postalCode,
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`, 
-            },
-          });
+          user?.postalCode,);
         console.log(response.data)
         setBundle(response.data);
       } catch (error) {

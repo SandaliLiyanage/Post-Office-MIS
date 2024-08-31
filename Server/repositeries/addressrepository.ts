@@ -4,13 +4,16 @@ const prisma = new PrismaClient();
 class AddressRepository{
     async queryAddresses(search: string): Promise<Address[]>{
         try{
-            console.log("in query",search)
-            const res = await prisma.$queryRaw<Address[]> `SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
-                WHERE "addressNo" LIKE  ${`%${search}%`}
+            const searchArray = search.split(",") 
+            const Array = searchArray.map(item => `${'%'}${item}${'%'}`)
+            console.log(Array)
+            console.log("in query",searchArray)
 
+            const res = await prisma.$queryRaw<Address[]> `SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
+                WHERE "addressNo" LIKE  ANY (array[${Array}])
                 UNION
                 SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
-                WHERE "streetName" LIKE ${`%${search}%`};`
+                WHERE "streetName" LIKE ANY (array[${Array}]);`
                 ;
             console.log("this is what was queried",res); 
             return res

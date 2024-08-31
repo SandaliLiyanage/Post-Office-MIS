@@ -6,10 +6,11 @@ class AddressRepository{
         try{
             console.log("in query",search)
             const res = await prisma.$queryRaw<Address[]> `SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
-                WHERE "addressNo" LIKE '%${search.valueOf}%' 
+                WHERE "addressNo" LIKE  ${`%${search}%`}
+
                 UNION
                 SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
-                WHERE "streetName" LIKE '%${search.valueOf}%';`
+                WHERE "streetName" LIKE ${`%${search}%`};`
                 ;
             console.log("this is what was queried",res); 
             return res

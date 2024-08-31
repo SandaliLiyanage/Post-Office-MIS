@@ -1,5 +1,6 @@
+import {useUser} from "../pages/authentication/usercontext"
 export default function Nav() {
-  const Area: string = 'Matara';
+  const {user} = useUser()
  
 
   return (
@@ -7,7 +8,7 @@ export default function Nav() {
       <nav className=' h-16 bg-slate-700' >
       <div className="flex justify-between">
       <div className="p-4 flex items-center ">
-      <p className="text-xl text-white">Post-Office-{Area}</p>
+      <p className="text-xl text-white">Post-Office-{user?.postOfficeName}</p>
       </div>
       </div>
       </nav>

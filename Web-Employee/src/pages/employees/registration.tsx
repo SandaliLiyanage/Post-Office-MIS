@@ -138,7 +138,7 @@ export default function EmpRegistration() {
                  )}
                 />
           </div>
-          <Button type="submit">Submit</Button>
+          <Button className="bg-teal-800" type="submit">Submit</Button>
         </form>
       </Form>
     </div>

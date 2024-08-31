@@ -1,7 +1,14 @@
-import {PrismaClient, Employee, Role} from "@prisma/client"
+import {PrismaClient, Employee, Role, PostOffice} from "@prisma/client"
 const prisma = new PrismaClient();
 
+interface User {
+    postOfficeName: string,
+    employeeName: string,
+    postalCode: string,
+    role: string,
+}
 class EmployeeRepository {
+   
     private static instance: EmployeeRepository;
     static getInstance(): EmployeeRepository{
         if(!EmployeeRepository.instance){
@@ -9,14 +16,31 @@ class EmployeeRepository {
         }
         return EmployeeRepository.instance;
     }
-
-    async findUserbyDB(username: string): Promise<Employee|null>{
+    async getUserData(userName: string): Promise<User>{
+        try{
+            const res = await prisma.$queryRaw<User[]>`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName" 
+            FROM "Employee" AS e 
+            JOIN 
+            "PostOffice" AS p 
+            ON
+            e."postalCode" = p."postalCode"
+            WHERE e."employeeID" = ${userName}`
+            console.log("res res res", res[0])
+            return res[0];
+        }catch(error){
+            console.log("error", error)
+            throw error
+        }
+    }
+    async findUserbyDB(username: string): Promise<(Employee) |null>{
         try {
             const res = await prisma.employee.findUnique({
-                where: {
+                where :{
                     employeeID: username,
-                },
+                    
+                }
             });
+
             console.log("employee queried", res) 
             return res;
         } catch (error) {

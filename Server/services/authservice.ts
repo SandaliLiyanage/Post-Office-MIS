@@ -14,6 +14,7 @@ interface LoginResponse {
     postalCode?: string;
     role?: string;
     message: string;
+    postOfficeName?: string;
     token?: string;
   }
 class AuthService{
@@ -32,7 +33,10 @@ class AuthService{
                 const sessionId = new Date().toISOString();
                 await session.storeSession(username)
                 const token = jwtToken.sign({sessionId})
-                const loginResponse: LoginResponse = {name: employee.employeeName, postalCode: employee.postalCode, role: employee.role, message: "login success", token: token}
+                const user = await employeeRepository.getUserData(username)
+                console.log(user.employeeName)
+                const loginResponse: LoginResponse = { name: user.employeeName, postalCode:user.postalCode, role: user.role, message: "login success", postOfficeName: user.postOfficeName, token: token}
+                console.log("login resoponse", loginResponse)
                 return loginResponse
             }else{
                 console.log("notverified")

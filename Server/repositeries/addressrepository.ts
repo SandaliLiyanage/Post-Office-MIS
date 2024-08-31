@@ -5,7 +5,7 @@ class AddressRepository{
     async queryAddresses(search: string): Promise<Address[]>{
         try{
             const searchArray = search.split(",") 
-            const Array = searchArray.map(item => `${'%'}${item}${'%'}`)
+            const Array = searchArray.map(item => `${item}${'%'}`)
             console.log(Array)
             console.log("in query",searchArray)
 

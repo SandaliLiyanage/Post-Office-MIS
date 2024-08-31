@@ -45,6 +45,7 @@ export default function Login() {
           role: user.data.role,
           token: user.data.token,
           postalCode: user.data.postalCode,
+          postOfficeName: user.data.postOfficeName
         }
       )
       navigate('/dashboard')
@@ -55,9 +56,13 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-stone-300 bg-opacity-15 min-h-screen flex items-center justify-center">
-      <div className="flex justify-center">
-      <Form {...form}>
+    <div className="bg-primaryk-50 min-h-screen flex items-center justify-center">
+      <div className=" bg-white rounded-lg w-1/2 h-96">
+      <div className="mr-20 mt-8 flex flex-col items-end ">
+        <div>
+        <h1 className="text-primaryk-50 text-2xl mb-5 mt-5">Employee Login</h1>
+
+        <Form {...form}>
         <form onSubmit= {form.handleSubmit(handleLoginData)} className="space-y-8">
           <div>
             <FormField
@@ -89,11 +94,15 @@ export default function Login() {
             />
           </div >
           <div className="flex justify-between gap-2">
-            <Button type="submit">Log in</Button>
-            <Button type="button"onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
+            <Button type="submit" className="bg-primaryk-50">Log in</Button>
+            <Button type="button" className="bg-primaryk-50" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
         </form>
       </Form>
+        </div>
+      
+      </div>
+      
       </div>
     </div>
   )

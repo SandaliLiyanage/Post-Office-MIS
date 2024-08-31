@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
   const clickedColour: string = 'bg-slate-400 text-white';
-  const normalColour: string = 'hover:bg-slate-300 text-black';
+  const normalColour: string = 'hover:bg-violet-300 text-black hover:bg-opacity-15';
   const [activeButton, setActiveButton] = useState('');
   const {user} = useUser();
   const navigate = useNavigate();

@@ -18,8 +18,6 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-  CommandSeparator,
-  CommandShortcut,
 } from "@/components/ui/command";
 import { Input } from "../../../components/ui/input";
 import { useUser } from "@/pages/authentication/usercontext";
@@ -35,7 +33,6 @@ const formSchema = z.object({
 });
 
 export default function MailOrder() {
-  const { user } = useUser();
   const navigate = useNavigate();
   const [search, setSearch] = useState<string>("");
   const [searchSelect, setSearchSelect] = useState<boolean>(false);
@@ -53,11 +50,12 @@ export default function MailOrder() {
   const getAddress = async (search: string) => {
     try {
       if (search !== "") {
+        console.log("this is search", search)
         const response = await axios.post(
           "http://localhost:5000/mail/addresssearch",
-          search
+          {search}
         );
-        await setSearchResults(response.data);
+        setSearchResults(response.data);
         console.log("this is searchresults", searchResults)
         
       }

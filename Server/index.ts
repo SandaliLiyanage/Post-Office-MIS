@@ -3,7 +3,6 @@ import MailRoutes from './routers/mailroutes'
 import EmployeeRoutes from "./routers/employeeroutes";
 import AuthRoutes from './routers/authroutes'
 import cors from 'cors';
-import Search from './routers/search'
 const app = express();
 const router = express.Router();
 

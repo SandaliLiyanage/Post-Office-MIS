@@ -1,13 +1,10 @@
 import {useLocation} from 'react-router-dom';
 import { Button } from "../../components/ui/button"
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
-
 import {
   Form,
   FormControl,
@@ -17,9 +14,11 @@ import {
   FormMessage,
 } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
+import axios from "axios"
+import {useUser} from "../authentication/usercontext"
 
 const ROLES = ['Supervisor', 'Postmaster', 'Receptionist', 'postman', 'dispatcher'] as const;
-
+const {user} = useUser()
 const formSchema = z.object({
   address: z.string().min(5, {}),
   role: z.enum(ROLES),
@@ -27,8 +26,6 @@ const formSchema = z.object({
   email: z.string().email(),
   postalCode: z.string().min(5, {}),
 });
-
-
 export default function Employeeupdate() {
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -39,7 +36,19 @@ export default function Employeeupdate() {
     },});	
     const location = useLocation();
     const employee = location.state;
+  async function handleUpdate(values: z.infer<typeof formSchema>){
+    try{
+      const response = await axios.post(
+        "http://localhost:5000/employee/update",
+        values,
+        employee.employeeID,
+      )
+      console.log("successfully submitted data", response.data)
+    }catch(error){
+
+    }
     
+  }
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
@@ -53,7 +62,7 @@ export default function Employeeupdate() {
         <div className="bg-white p-4 m-4 rounded-sm">
           <p className='text-xl mb-8'>Update Employee Records</p>
           <Form {...form}>
-        <form className="space-y-8">
+        <form onSubmit= {form.handleSubmit(handleUpdate)} className="space-y-8">
           <div className="grid grid-cols-2 gap-4 mb-4">
           <FormField
               control={form.control}
@@ -62,7 +71,7 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Employee Role</FormLabel>
                   <FormControl>
-                    <Input placeholder="Employee Role" {...field} />
+                    <Input placeholder={employee.role.toLowerCase()} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -75,7 +84,7 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="Address" {...field} />
+                    <Input placeholder="address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -88,7 +97,7 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Telephone</FormLabel>
                   <FormControl>
-                    <Input placeholder="Telephone" {...field} />
+                    <Input placeholder={employee.telephone} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -101,13 +110,13 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder={employee.email}{...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
                  )}
                 />
-            <FormField
+            {/* <FormField
               control={form.control}
               name="postalCode"
               render={({ field }) => (
@@ -119,9 +128,9 @@ export default function Employeeupdate() {
                   <FormMessage />
                 </FormItem>
                  )}
-                />
+                /> */}
           </div>
-          <Button type="submit" className='bg-teal-600 justify-end' onClick={()=> navigate("dashboard/employeeRecords")}>Update</Button>
+        <Button type="submit" className='bg-teal-600 justify-end' onClick={()=> {navigate("dashboard/employeeRecords")}}>Update</Button>
         </form>
       </Form>
       </div>

@@ -15,6 +15,7 @@ interface LoginResponse {
     role?: string;
     message: string;
     postOfficeName?: string;
+    email?: string;
     token?: string;
   }
 class AuthService{
@@ -35,7 +36,7 @@ class AuthService{
                 const token = jwtToken.sign({sessionId})
                 const user = await employeeRepository.getUserData(username)
                 console.log(user.employeeName)
-                const loginResponse: LoginResponse = { name: user.employeeName, postalCode:user.postalCode, role: user.role, message: "login success", postOfficeName: user.postOfficeName, token: token}
+                const loginResponse: LoginResponse = { name: user.employeeName, postalCode:user.postalCode, role: user.role, message: "login success", postOfficeName: user.postOfficeName, token: token, email: user.email}
                 console.log("login resoponse", loginResponse)
                 return loginResponse
             }else{

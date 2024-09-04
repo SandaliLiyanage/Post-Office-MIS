@@ -6,12 +6,8 @@ const Layout = () =>{
     return (
         <div>
         <Sidebar />
-        <div>
             <Nav />
-            <div>
             <Outlet />
-            </div>
-        </div>
         </div>
     )};
 export default Layout

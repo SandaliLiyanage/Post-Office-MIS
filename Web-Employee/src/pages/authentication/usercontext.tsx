@@ -8,11 +8,13 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
     role: string;
     token: string;
     postOfficeName: string;
+    email: string;
   }
   
   interface UserContextType {
     user: User | null;
     saveUser: (user: User | null) => void;
+    removeUser: () => void;
   }
   
   const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -37,9 +39,14 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
           localStorage.removeItem('user');
       }
     };
+
+    const removeUser = () => {
+      setUser(null);
+      localStorage.removeItem('user')
+    };
   
     return (
-      <UserContext.Provider value={{ user, saveUser }}>
+      <UserContext.Provider value={{ user, saveUser, removeUser }}>
         {children}
       </UserContext.Provider>
     );

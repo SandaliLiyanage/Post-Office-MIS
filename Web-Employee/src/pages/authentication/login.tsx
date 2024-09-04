@@ -41,11 +41,12 @@ export default function Login() {
       console.log("Data submitted successfully", user.data)
       saveUser(
         {
-          name: user.data.employeeName,
+          name: user.data.name,
           role: user.data.role,
           token: user.data.token,
           postalCode: user.data.postalCode,
-          postOfficeName: user.data.postOfficeName
+          postOfficeName: user.data.postOfficeName,
+          email: user.data.email
         }
       )
       navigate('/dashboard')
@@ -56,12 +57,17 @@ export default function Login() {
   }
 
   return (
-    <div className="bg-primaryk-50 min-h-screen flex items-center justify-center">
-      <div className=" bg-white rounded-lg w-1/2 h-96">
-      <div className="mr-20 mt-8 flex flex-col items-end ">
+    <div className="bg-slate-800 min-h-screen flex items-center justify-center">
+      <div className=" bg-white rounded-lg h-96 lg:flex">
+      {/* <div className="lg:w-1/2 flex lg:justify-center lg:items-center">
+        <h1 className="lg:text-3xl pt-4 pl-8">Post Office Management Information System</h1>
+      </div> */}
+      <div className="mr-20 ml-20 mt-8 flex flex-col items-end ">
         <div>
-        <h1 className="text-primaryk-50 text-2xl mb-5 mt-5">Employee Login</h1>
-
+        <div>
+        <h1 className="text-2xl mb-5 mt-5">Employee Login</h1>
+        </div>
+ 
         <Form {...form}>
         <form onSubmit= {form.handleSubmit(handleLoginData)} className="space-y-8">
           <div>
@@ -94,15 +100,13 @@ export default function Login() {
             />
           </div >
           <div className="flex justify-between gap-2">
-            <Button type="submit" className="bg-primaryk-50">Log in</Button>
-            <Button type="button" className="bg-primaryk-50" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
+            <Button type="submit" className="bg-teal-600" >Log in</Button>
+            <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
         </form>
       </Form>
         </div>
-      
       </div>
-      
       </div>
     </div>
   )

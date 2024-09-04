@@ -6,6 +6,7 @@ interface User {
     employeeName: string,
     postalCode: string,
     role: string,
+    email: string,
 }
 class EmployeeRepository {
    
@@ -18,7 +19,7 @@ class EmployeeRepository {
     }
     async getUserData(userName: string): Promise<User>{
         try{
-            const res = await prisma.$queryRaw<User[]>`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName" 
+            const res = await prisma.$queryRaw<User[]>`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email"
             FROM "Employee" AS e 
             JOIN 
             "PostOffice" AS p 

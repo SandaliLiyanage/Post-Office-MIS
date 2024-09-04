@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getMailItemsByPostman } from "../repositeries/mailrepository"; // Adjust the path as needed
+import { getMailItemsByPostman } from "../repositeries/mailrepository";
 
 const getMailItems = async (req: Request, res: Response) => {
   try {

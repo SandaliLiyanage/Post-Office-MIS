@@ -34,21 +34,22 @@
 
 import { PrismaClient } from "@prisma/client";
 
+// Create a new Prisma Client instance
 const prisma = new PrismaClient();
 
 export const getEmployeeDetailsById = async (employeeID: number) => {
   try {
     const employee = await prisma.employee.findUnique({
-      where: { employee_id: employeeID }, // Use employee_id
-      include: { post_office: true }, // Use post_office
+      where: { employee_id: employeeID },
+      include: { post_office: true },
     });
 
     if (!employee) throw new Error("Employee not found");
 
     return {
-      employeeName: employee.employee_name, // Use employee_name
+      employeeName: employee.employee_name,
       postOfficeName:
-        employee.post_office?.post_office_name || "No Post Office Assigned", // Use post_office_name
+        employee.post_office?.post_office_name || "No Post Office Assigned",
     };
   } catch (error) {
     console.error("Error fetching employee details:", error);

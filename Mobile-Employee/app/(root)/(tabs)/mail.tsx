@@ -1,4 +1,3 @@
-
 // import React, { useState, useEffect } from "react";
 // import {
 //   View,
@@ -141,18 +140,16 @@ import {
 } from "react-native";
 
 const Mail = () => {
-  // Example hardcoded mail data
+  // Hardcoded mail data
   const mails = [
     { id: "1", category: "Normal", status: "Delivered" },
     { id: "2", category: "Registered", status: "Not Delivered" },
     { id: "3", category: "Parcel", status: "To Be Delivered" },
-    // Add more mail items as needed
   ];
 
   // Handle mail item press
   const handlePress = (id) => {
     console.log(`Mail item with ID ${id} pressed`);
-    // Implement further actions here, such as navigation or displaying details
   };
 
   // Render each mail item
@@ -179,7 +176,6 @@ const Mail = () => {
   );
 };
 
-
 // Styles
 const styles = StyleSheet.create({
   container: {
@@ -202,7 +198,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 2,
     elevation: 2,
-    position: "relative", // For absolute positioning of the status
+    position: "relative",
   },
   mailId: {
     fontSize: 18,
@@ -211,7 +207,7 @@ const styles = StyleSheet.create({
   mailCategory: {
     fontSize: 16,
     color: "gray",
-    marginTop: 4, // Space between mail ID and category
+    marginTop: 4,
   },
   mailStatus: {
     position: "absolute",
@@ -222,6 +218,5 @@ const styles = StyleSheet.create({
     color: "#C60024",
   },
 });
-
 
 export default Mail;

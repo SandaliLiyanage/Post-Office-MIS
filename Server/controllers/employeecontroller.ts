@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { EmployeeRepository } from "../repositeries/employeerepository";
 
-
 const EmployeeDetails = async (req: Request, res: Response) => {
   const employeeRepo = EmployeeRepository.getInstance();
   const employees = await employeeRepo.getEmployees(req.body.postalCode);
@@ -18,7 +17,7 @@ const EmployeeDetails = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-export const getEmployeeDetails = async (req: Request, res: Response) => {
+const getEmployeeDetails = async (req: Request, res: Response) => {
   try {
     const employeeID = req.query.employeeID as string;
 
@@ -59,4 +58,16 @@ const Registration = async (req: Request, res: Response) => {
   console.log("Employee registered:", employee);
   return res.status(200).json(employee);
 }
-export {EmployeeDetails, Registration}
+
+const updateEmployee = async (req: Request, res: Response)=>{
+  console.log("in update Employee", req.body);
+  const employeeRepo = EmployeeRepository.getInstance();
+  const { values, employeeID } = req.body;
+  const {role, address, telephone, email} = values
+  console.log(employeeID);
+  console.log(role)
+  const response = await employeeRepo.updateEmployee(employeeID, telephone, role.toUpperCase(), email);
+  console.log("hi hi",response)
+  return res.json(response)
+}
+export {EmployeeDetails, Registration, getEmployeeDetails, updateEmployee}

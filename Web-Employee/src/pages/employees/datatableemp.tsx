@@ -69,7 +69,7 @@ export function DataTable<TData, TValue>({
                       </TableCell>
                     ))}
                       <TableCell>
-                        <Button className="bg-slate-700" onClick={()=>{console.log(row.original);
+                        <Button className="rounded-full bg-sky-600" size={"sm"} onClick={()=>{console.log(row.original);
                           navigate('/dashboard/view', {state: row.original})
                         }}>View</Button>
                 </TableCell>

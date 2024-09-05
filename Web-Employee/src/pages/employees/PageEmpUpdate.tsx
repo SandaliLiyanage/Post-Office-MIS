@@ -16,17 +16,20 @@ import {
 import { Input } from "../../components/ui/input";
 import axios from "axios"
 import {useUser} from "../authentication/usercontext"
+import {Toaster} from "../../components/ui/toaster"
+import { useToast } from '../../hooks/use-toast';
 
 const ROLES = ['Supervisor', 'Postmaster', 'Receptionist', 'postman', 'dispatcher'] as const;
-const {user} = useUser()
+
 const formSchema = z.object({
   address: z.string().min(5, {}),
   role: z.enum(ROLES),
   telephone: z.string().min(10, {}),
   email: z.string().email(),
-  postalCode: z.string().min(5, {}),
 });
 export default function Employeeupdate() {
+  const { toast } = useToast()
+
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,12 +41,21 @@ export default function Employeeupdate() {
     const employee = location.state;
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
+      const employeeID =employee.employeeID;
+      console.log(employeeID);
+      console.log("heeh");
       const response = await axios.post(
         "http://localhost:5000/employee/update",
-        values,
-        employee.employeeID,
+        {values,
+        employeeID}
       )
-      console.log("successfully submitted data", response.data)
+      if(response.data){
+        toast({
+          description:response.data,
+        })
+      }
+      console.log("successfully submitted data", response)
+      return response
     }catch(error){
 
     }
@@ -52,15 +64,15 @@ export default function Employeeupdate() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-      <p className="text-xl"> Account Summary </p>
+      <p className="text-xl font-bold"> Account Summary </p>
         </div>
         <div className="bg-white p-4 rounded-sm m-4">
-        <p className='text-xl mb-8'>Employee</p>
-          <p className="m-2">Employee Name: {employee.employeeName} </p>
-          <p className="m-2">Employee Account:{employee.employeeID} </p>
+        <p className='text-xl mb-8 font-semibold'>Employee</p>
+          <p className="m-2 ">Employee Name:  {employee.employeeName}</p>
+          <p className="m-2 ">Employee Account:{employee.employeeID} </p>
         </div>
         <div className="bg-white p-4 m-4 rounded-sm">
-          <p className='text-xl mb-8'>Update Employee Records</p>
+          <p className='text-xl mb-8 font-semibold'>Update Employee Records</p>
           <Form {...form}>
         <form onSubmit= {form.handleSubmit(handleUpdate)} className="space-y-8">
           <div className="grid grid-cols-2 gap-4 mb-4">
@@ -130,16 +142,20 @@ export default function Employeeupdate() {
                  )}
                 /> */}
           </div>
-        <Button type="submit" className='bg-teal-600 justify-end' onClick={()=> {navigate("dashboard/employeeRecords")}}>Update</Button>
+        <Button type="submit" className='bg-teal-600 justify-end' onClick={()=> {
+        
+      }}>Update</Button>
+              <Toaster />
+
         </form>
       </Form>
       </div>
       <div className="bg-white p-4 rounded-sm m-4">
-        <p className='text-xl mb-8'>Delete Employee Account</p>
+        <p className='text-xl mb-8 font-semibold'>Delete Employee Account</p>
         <div className='flex justify-between'>
           <p>The account will be deleted</p>
         <div className="flex justify-end">
-          <Button type="submit" className="bg-red-600">Update</Button>
+          <Button  className="bg-red-600">Delete</Button>
         </div>  
         </div>
           

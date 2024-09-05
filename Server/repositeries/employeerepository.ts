@@ -1,4 +1,6 @@
 import {PrismaClient, Employee, Role, PostOffice} from "@prisma/client"
+import { response } from "express";
+import { FileWatcherEventKind } from "typescript";
 const prisma = new PrismaClient();
 
 interface User {
@@ -78,6 +80,22 @@ class EmployeeRepository {
         } catch (error) {
             console.error("Error getting employees:", error);
             throw error;
+        }
+    }
+
+    async updateEmployee(employeeID: string, telephone: string, role: string, email: string): Promise<string>{
+        try{
+            console.log("hehe role", role, telephone, email, employeeID)
+            const employee: Employee = await prisma.employee.update({
+                where: { employeeID: employeeID },
+                data: { telephone: telephone  }
+              });
+              console.log(employee)
+              console.log("employee updated")
+            return "Employee Updated" 
+        }catch(error){
+            throw error
+
         }
     }
 }

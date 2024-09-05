@@ -1,15 +1,15 @@
 import "./App.css";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Login from "./pages/authentication/login";
-import MailOrder from "./pages/mail/mailorder/customerdetails";
-import MailDetails from "./pages/mail/mailorder/maildetails";
+import Login from "./pages/authentication/PageLogin";
+import MailOrder from "./pages/mail/mailorder/PageCustomerDetails";
+import MailDetails from "./pages/mail/mailorder/PageMailDetails";
 import Layout from "./navigation/layout";
-import EmpRegistration from "./pages/employees/registration";
-import LeaveRequest from "./pages/employees/leaverequets";
-import Emp from "./pages/employees/emp";
-import Bundle from "./pages/mail/bundles/bundle";
+import EmpRegistration from "./pages/employees/PageEmpRegistrations";
+import LeaveRequest from "./pages/employees/PageLeaveRequests";
+import Emp from "./pages/employees/PageEmpRecords";
+import Bundle from "./pages/mail/bundles/PageBundles";
 import Mails from "./pages/mail/mails/mail";
-import Employeeupdate from "./pages/employees/employeeupdate";
+import Employeeupdate from "./pages/employees/PageEmpUpdate";
 function App() {
   return (
     

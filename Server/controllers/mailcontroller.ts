@@ -11,7 +11,7 @@ const getMailItems = async (req: Request, res: Response) => {
     }
 
     // Fetch mail counts categorized by their categories
-    // const mailCounts = await getMailItemsByPostman(employeeID);
+    // const deliveryCounts = await getMailItemsByPostman(employeeID);
     const deliveryCounts = {
       normal: 27,
       registered: 9,

@@ -25,6 +25,7 @@ model Employee {
   telephone    String 
   role         Role
   leave       Leave[]
+  area        Area[]
 }
 
 enum PostOfficeCategory {
@@ -41,6 +42,7 @@ model PostOffice {
   mail	  	         Mail[]
   employee          Employee[]
   bundle            Bundle[]
+  area        Area[]
 }
 
 model Address {
@@ -55,11 +57,11 @@ model Address {
   customer Customer[]
 }
 
-enum MailCategory {
-  NORMAL_MAIL
-  COURIER
-  MONEY_ORDER
-  REGISTERED_MAIL
+model MailCategory {
+  mailCategoryID  String  @id
+  categoryName  String
+  PricePer1kg   Decimal?    @db.Decimal(10, 2)
+  mail    Mail[]
 }
 
 model Customer {
@@ -74,7 +76,6 @@ model Customer {
 
 model Mail {
   barcodeID         Int         @id @default(autoincrement())
-  category          MailCategory
   recepientID       Int
   bundleID          Int
   bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
@@ -84,6 +85,9 @@ model Mail {
   mailstatus        MailStatus
   transactionID     Int
   transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
+  mailCategory      MailCategory  @relation(fields: [mailCategoryID], references: [mailCategoryID])
+  mailCategoryID    String
+  weight            Decimal?    @db.Decimal(10, 2)
 }
 
 model Bundle {
@@ -111,7 +115,7 @@ model Transaction {
 
 model Leave{
   employeeID String   @id
-  leaveType String
+  leaveType LeaveType
   startDate DateTime
   endDate DateTime
   employee Employee @relation(fields: [employeeID], references: [employeeID])
@@ -121,8 +125,24 @@ model Leave{
 
 }
 
+enum LeaveType{
+  HALF_DAY
+  FULL_DAY
+}
+
 enum RequestStatus{
   PENDING
   APPROVED
   REJECTED
+}
+
+
+
+model Area{
+  areaID Int @id
+  areaName String     @db.VarChar(100)
+  postalCode String
+  postOffice PostOffice   @relation(fields: [postalCode], references: [postalCode])
+  postman Employee  @relation(fields: [employeeID], references: [employeeID])
+  employeeID String
 }

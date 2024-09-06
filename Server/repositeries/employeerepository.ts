@@ -40,16 +40,16 @@ const prisma = new PrismaClient();
 export const getEmployeeDetailsById = async (employeeID: number) => {
   try {
     const employee = await prisma.employee.findUnique({
-      where: { employee_id: employeeID },
-      include: { post_office: true },
+      where: { employeeID: employeeID.toString() },
+      include: { postOffice: true },
     });
 
     if (!employee) throw new Error("Employee not found");
 
     return {
-      employeeName: employee.employee_name,
+      employeeName: employee.employeeName,
       postOfficeName:
-        employee.post_office?.post_office_name || "No Post Office Assigned",
+        employee.postOffice?.postOfficeName || "No Post Office Assigned",
     };
   } catch (error) {
     console.error("Error fetching employee details:", error);

@@ -24,7 +24,7 @@ export default function Nav() {
       </div>
       <Popover>
       <PopoverTrigger asChild>
-        <Button onClick={handleClick} className="mt-3 pt-1 pb-1 mr-5 rounded-full" variant="outline">{user?.role}</Button>
+        <Button onClick={handleClick} className="mt-3 pt-1 pb-1 mr-5 rounded-full"  variant="outline">{user?.role}</Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 bg-blue-200 bg-opacity-90 mr-5">
         <div className="grid gap-4 ">

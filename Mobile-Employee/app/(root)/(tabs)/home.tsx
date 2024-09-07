@@ -34,8 +34,8 @@ const Home = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          // "http://localhost:5000/mail/employee?employeeID=1"
-          "http://192.168.92.26:5000/employee/user?employeeID=1" // Send GET request
+          "http://localhost:5000/mail/employee?employeeID=1"
+          //"http://192.168.1.8:5000/employee/user?employeeID=1" // Send GET request
         );
         const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
         setUserData(data); // Update userData
@@ -48,8 +48,8 @@ const Home = () => {
     const fetchDeliveryCounts = async () => {
       try {
         const response = await fetch(
-          // "http://localhost:5000/mail/employee?employeeID=1"
-          "http://192.168.92.26:5000/mail/employee?employeeID=1" // Send GET request
+          "http://localhost:5000/mail/employee?employeeID=1"
+          //"http://192.168.1.8:5000/mail/employee?employeeID=1" // Send GET request
         );
         const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
         setDeliveryCounts(data); // Update deliveryCounts

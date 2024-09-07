@@ -18,12 +18,18 @@ const MailBundles = async (req: Request, res: Response) => {
   console.log("Bundles received in controller:", result);
   return res.status(200).json(result);
 };
+
+// const MailDetails = async(req: Request, res: Response) => {
+//   const 
+// }
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail");
   const { postalCode } = req.body;
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
 };
+
+
 
 export const getMailDetails = async (req: Request, res: Response) => {
   try {
@@ -49,6 +55,7 @@ export const getMailDetails = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 // Example function to get mail items for a specific employee
 export const getMailItems = async (req: Request, res: Response) => {
@@ -95,4 +102,4 @@ export const getMailItems = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, MailBundles, Mails };
+export { CalculatePrice, MailBundles, Mails,};

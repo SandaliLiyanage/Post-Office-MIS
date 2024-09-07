@@ -100,8 +100,9 @@ export default function MailOrder() {
     );
     console.log("response", response)
     
-    navigate("/dashboard/maildetails");
-    // localStorage.setItem("df",)
+    navigate(" http://localhost:5173/dashboard/maildetails" );
+    localStorage.setItem("customerID", response.data.customerID)
+    localStorage.setItem("customerDetails", JSON.stringify(values))
   }
 
   return (

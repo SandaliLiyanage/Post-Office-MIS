@@ -7,6 +7,7 @@ import {Mails} from '../controllers/mailcontroller';
 import { getMailDetails } from "../controllers/mailcontroller";
 import { getMailItems } from "../controllers/mailcontroller";
 import Address from '../controllers/addresscontroller';
+// import MailDetails from '../controllers/mailcontroller'
 const authService = new AuthService();
 
 const router = Router();
@@ -16,7 +17,9 @@ router.post('/customerDetails', CustomerDetails);
 router.post('/calculatePrice', CalculatePrice);
 router.post('/bundles', MailBundles);
 router.post('/viewmails', Mails);
-router.get("/employee", getMailDetails);
-router.get("/employee", getMailItems);
+// router.get("/employee", getMailDetails);
+// router.get("/employee", getMailItems);
+// router.post('/addresssearch', Address)
 router.post('/addresssearch', Address)
+// router.post('/mailDetails', MailDetails)
 export default router;

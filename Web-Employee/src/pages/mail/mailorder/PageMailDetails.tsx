@@ -24,12 +24,23 @@ const formSchema = z.object({
   }),
   address: z.string().min(1, {}),
   weight: z.string().min(1, {}),
+  telephone: z.string().min(10, {}),
 })
+type MailDetails={
+  price: number | null;
+    mailType: string;
+    recepientName: string;
+    address: string;
+    weight: string;
+    telephone: string;
+}
 
 export default function MailDetails() {
   const {user} = useUser();
   const [price, setPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [confirm, setConfirm] = useState<boolean>(false);
+
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -37,9 +48,33 @@ export default function MailDetails() {
       mailType: "",
       recepientName: "",
       address: "",
-      weight: ""
+      weight: "",
+      telephone: ""
     },
   })
+
+    async function getReceipt(){
+      const role = user?.role;
+
+      if (!price) {
+        let response = await axios.post(
+          "http://localhost:5000/mail/mailDetails", 
+          {
+            ...values,
+            price: price,
+          }, 
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          }
+        );
+      navigate('/dashboard/mailorder'	)
+      console.log("Data submitted successfully", response.data)
+      }
+    }
+
+    //calculate price of the mail
     async function onClickCalculate() {
         const { mailType, weight } = form.getValues(); 
         if (mailType === "" || weight === "") {
@@ -60,38 +95,71 @@ export default function MailDetails() {
         setError(null);
         setPrice(response.data)
     }
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+
+    //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
+    async function onConfirm(values: z.infer<typeof formSchema>) {
       try {
-        const role = user?.role;
-        console.log("This is the postmaster",role);
-        if (!price) {
-          let response = await axios.post(
-            "http://localhost:5000/mail/mailDetails", 
-            {
-              ...values,
-              price: price,
-            }, 
-            {
-              headers: {
-                Authorization: `Bearer ${user?.token}`, 
-              },
-            }
-          );
-        navigate('/dashboard/mailorder'	)
-        console.log("Data submitted successfully", response.data)
+        const mailDetails = {...values, price}
+        let localMailStorage = localStorage.getItem("mail details");
+        console.log("in confirm", localMailStorage)
+        if(localMailStorage && price && !confirm){
+          let array: MailDetails[] = []
+          let item2 = JSON.parse(localMailStorage)
+          item2.forEach((i: MailDetails) => {
+            array.push(i);
+          });
+          array.push(mailDetails)
+          localStorage.setItem("mail details", JSON.stringify(array))
+          setConfirm(true)
+          const console2 = localStorage.getItem("mail details")
+          console.log("in if", console2)
+
+        }else if(price && !confirm){
+          let array: MailDetails[] = []
+          array.push(mailDetails)
+          localStorage.setItem("mail details", JSON.stringify(array))
+          setConfirm(true)
+
         }
       } catch (error) {
         console.error("Error submitting data", error)
       }
-      console.log(values)
     }
+
+
+  const onConfirmTransaction = (mailArray: MailDetails[])=>{
+    const role = user?.;
+
+    if (!confirm && price) {
+      let response = await axios.post(
+        "http://localhost:5000/mail/mailDetails", 
+        {
+          ...values,
+          price: price,
+        }, 
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, 
+          },
+        }
+      );
+    navigate('/dashboard/mailorder'	)
+    console.log("Data submitted successfully", response.data)
+    }
+    console.log("in" ,mailArray)
+  }
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
-      <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl">Mail Order</p>
+      <div className="top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
+      <p className="text-xl">Mail Order</p>
+
+      <div className='flex justify-end gap-2 '>
+      <Button type="submit" className="bg-white border-b-2 text-black" onClick={()=>{if(confirm){location.reload()}; setConfirm(false)}}>Add new mail item</Button>
+      </div>
+
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onConfirm)} className="space-y-8">
           <div className="grid grid-cols-2 gap-4 mb-4">
           <FormField
               control={form.control}
@@ -114,6 +182,19 @@ export default function MailDetails() {
                   <FormLabel>Address</FormLabel>
                   <FormControl>
                     <Input placeholder="Address" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="telephone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telephone (Optional)</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Telephone" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -153,8 +234,15 @@ export default function MailDetails() {
             {price !== null && <div className="bg-white p-2 border-opacity-45">{price}</div> }
           </div>         
           <div className="flex justify-end gap-2">
+          <Button type="submit" className="bg-slate-600">Confirm</Button>
           <Button type="button" className="bg-slate-600">Print Barcode</Button>
-          <Button type="submit"  className="bg-teal-600">Confirm Transaction</Button>
+          <Button type="button"  className="bg-teal-600" onClick={ ()=> 
+          {const localMalStorage = localStorage.getItem("mail details"); 
+            if(localMalStorage){
+              confirmTransaction(localMalStorage);
+              console.log("in if", localMalStorage);
+              localStorage.removeItem("mail details")
+            }}}>End Transaction</Button>
           </div>
           </div>
         </form>

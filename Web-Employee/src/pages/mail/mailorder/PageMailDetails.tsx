@@ -66,7 +66,7 @@ export default function MailDetails() {
         console.log("This is the postmaster",role);
         if (!price) {
           let response = await axios.post(
-            "http://localhost:5000/mail/customerDetails", 
+            "http://localhost:5000/mail/mailDetails", 
             {
               ...values,
               price: price,

@@ -65,7 +65,8 @@ model MailCategory {
 }
 
 model Customer {
-  customerID   Int  @id 
+  customerID   Int  @id  @default(autoincrement())
+  postalCode    String
   customerName String   
   telephone    String?
   addressID    Int
@@ -135,8 +136,6 @@ enum RequestStatus{
   APPROVED
   REJECTED
 }
-
-
 
 model Area{
   areaID Int @id

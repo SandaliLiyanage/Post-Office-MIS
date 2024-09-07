@@ -27,16 +27,19 @@ import { useEffect } from "react";
 import axios from "axios";
 
 const formSchema = z.object({
-  customerName: z.string(),
+  customerName: z.string().min(5, {}),
   address: z.string().min(5, {}),
   telephone: z.string().min(10, {}),
 });
 
 export default function MailOrder() {
+  const {user} = useUser();
   const navigate = useNavigate();
   const [search, setSearch] = useState<string>("");
   const [searchSelect, setSearchSelect] = useState<boolean>(false);
   const [searchResults, setSearchResults] = useState<string[]>([]);
+  const [addressID, setAddressID] = useState<number|null>(null);
+  const [addressMap, setAddressMap] = useState<{[key: string]: number}| null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,13 +54,17 @@ export default function MailOrder() {
     try {
       if (search !== "") {
         console.log("this is search", search)
-        const response = await axios.post(
+        const result= await axios.post(
           "http://localhost:5000/mail/addresssearch",
           {search}
         );
-        setSearchResults(response.data);
+        console.log(result.data)
+        setAddressMap(result.data);
+        console.log("fslidfa",result.data)
+        const addressArray: string[] = Object.keys(result.data)
+        console.log(addressArray) 
+        setSearchResults(addressArray);
         console.log("this is searchresults", searchResults)
-        
       }
     } catch (error) {
       console.log("This is the error", error);
@@ -77,8 +84,24 @@ export default function MailOrder() {
   }, [search]);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("he he")
-    console.log("he he proceed is working", values);
+    console.log("hi")
+    localStorage.setItem("mailDetails", JSON.stringify(values));
+    const mailDetails = localStorage.getItem("mailDetails");
+    const postalCode = user?.postalCode
+    console.log(mailDetails);
+    const response = await axios.post(
+      "http://localhost:5000/mail/customerDetails", 
+      {values, postalCode, addressID}, 
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`, 
+        },
+      }
+    );
+    console.log("response", response)
+    
+    navigate("/dashboard/maildetails");
+    // localStorage.setItem("df",)
   }
 
   return (
@@ -150,6 +173,13 @@ export default function MailOrder() {
                           setSearch(value);
                           setSearchSelect(true);
                           setSearchResults([]);
+                          if(addressMap){
+                            console.log("hee", value);
+                            console.log(addressMap[value]);
+                            setAddressID(addressMap[value]);
+                            console.log(addressMap);
+                            console.log("address ID", addressID);
+                          }
                         }}
                       >
                         {result}
@@ -160,10 +190,7 @@ export default function MailOrder() {
               </CommandList>
             </Command>
           </div>
-          <Button type="submit" 
-          onClick={() => navigate("/dashboard/maildetails")}
-          >
-             Proceed </Button>
+          <Button type="submit">Proceed </Button>
         </form>
       </Form>
     </div>

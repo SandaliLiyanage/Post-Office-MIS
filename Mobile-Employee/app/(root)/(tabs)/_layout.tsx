@@ -1,10 +1,11 @@
+// Tab based navigation
+
 import { Tabs } from "expo-router";
-
 import { View, Text, Image, TouchableOpacity } from "react-native";
-
 import icons from "../../../assets/icons";
 import { useNavigationState } from "@react-navigation/native";
 
+// Tab icon component
 const TabIcon = ({ source, focused }: { source: any; focused: boolean }) => (
   <View>
     <Image
@@ -18,12 +19,15 @@ const TabIcon = ({ source, focused }: { source: any; focused: boolean }) => (
   </View>
 );
 
+// Header component
 const Header = () => {
-  const navigationState = useNavigationState((state) => state);
-  const route = navigationState.routes[navigationState.index];
+  // Get the navigation state using the useNavigationState hook
+  const navigationState = useNavigationState((state) => state); // Send a function that returns current navigation state as an argument
+  const route = navigationState.routes[navigationState.index]; // Get the current route from the routes array using the index
 
   return (
     <View style={{ flexDirection: "row", height: 50 }}>
+      {/*Header title*/}
       <Text
         style={{
           position: "absolute",
@@ -34,8 +38,11 @@ const Header = () => {
           fontWeight: "bold",
         }}
       >
-        {route.name.charAt(0).toUpperCase() + route.name.slice(1)}
+        {/*Set the header title to the current route name*/}
+        {route.name.charAt(0).toUpperCase() + route.name.slice(1)}{" "}
       </Text>
+
+      {/*Notification icon*/}
       <TouchableOpacity>
         <Image
           source={icons.notifications}
@@ -47,14 +54,14 @@ const Header = () => {
           }}
         />
       </TouchableOpacity>
-
     </View>
   );
 };
 
+// Tab navigation
 const Layout = () => (
   <Tabs
-    initialRouteName="index"
+    initialRouteName="home"
     screenOptions={{
       tabBarActiveTintColor: "black",
       tabBarInactiveTintColor: "white",

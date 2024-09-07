@@ -11,8 +11,8 @@ import {
 import { useEffect, useRef, useState } from "react";
 
 export default function Scan() {
-  const [hasPermission, setHasPermission] = useState(false);
-  const qrLock = useRef(false);
+  const [hasPermission, setHasPermission] = useState(false); // State variable to track if the user has granted camera permissions
+  const qrLock = useRef(false); // Ref object to manage a lock to prevent multiple scans
   const appState = useRef(AppState.currentState);
 
   // Request camera permission

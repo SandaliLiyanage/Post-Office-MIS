@@ -1,6 +1,7 @@
 import {PrismaClient, Mail} from "@prisma/client"
 const prisma = new PrismaClient();
 
+
 class MailRepository{
     async calculatePrice(mailType: string, weight: number){
         console.log("Mail type:", mailType);
@@ -22,5 +23,30 @@ class MailRepository{
                 throw error;
             }
         }
+       
+        async addMail(recepientAddressID: number, price: number, recepientTelephone: string, recepientName: string,  weight: string, postalCode: string, mailCategoryName: string, transactionID: number, bundleID:number): Promise<Mail>{
+            
+            try{
+                const res = await prisma.mail.create({
+                    data:{
+                        recepientAddressID: recepientAddressID,
+                        recepientName: recepientName,
+                        postalCode: postalCode,
+                        mailCategoryName: mailCategoryName,
+                        weight: weight,
+                        transactionID: transactionID,
+                        recepientTelephone: recepientTelephone,
+                        price: price,
+                        bundleID: bundleID
+                    }
+                })
+
+                return res
+            }catch(error){
+                throw error
+        }
+        }
     }
+
+    
 export {MailRepository}

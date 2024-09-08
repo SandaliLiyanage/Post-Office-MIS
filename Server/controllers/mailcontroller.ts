@@ -1,7 +1,9 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { BundleRepository } from "../repositeries/bundlerepository";
+import {TransactionRepository} from "../repositeries/transactionrepository"
 
+const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const bundleRepository = new BundleRepository();
 const CalculatePrice = async (req: Request, res: Response) => {
@@ -18,6 +20,28 @@ const MailBundles = async (req: Request, res: Response) => {
   console.log("Bundles received in controller:", result);
   return res.status(200).json(result);
 };
+
+
+const MailDetails = async (req: Request, res: Response) => {	
+  console.log("Request received in mail details" ,req.body);
+  const mailArray = req.body.mailArray;
+  const cutomerDetails = req.body.customerDetails.values;
+  const {addressID, postalCode} = req.body.customerDetails
+  const {customerName, telephone} = cutomerDetails
+  console.log("hyikjk;" ,customerName, telephone, addressID)
+  const amount = 40
+
+  const transaction = await transactionRepository.createTransactoin(telephone,customerName, amount, addressID )
+  const transactionID  = transaction.transactionID 
+  console.log("dfk", mailArray, transactionID)
+  for (let mail of mailArray) {
+    const {address, mailType, price, recepientName, telephone, weight} = mail
+    const {postalCode} = req.body.postalCode;
+    console.log(postalCode);
+    await mailRepository.addMail(addressID, price, telephone, recepientName, weight, "10120", mailType, transactionID, 1 ); 
+  }
+}
+
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail");
   const { postalCode } = req.body;
@@ -49,6 +73,7 @@ export const getMailDetails = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 // Example function to get mail items for a specific employee
 export const getMailItems = async (req: Request, res: Response) => {
@@ -95,4 +120,4 @@ export const getMailItems = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, MailBundles, Mails };
+export { CalculatePrice, MailBundles, Mails, MailDetails};

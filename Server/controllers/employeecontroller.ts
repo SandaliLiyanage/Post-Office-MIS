@@ -27,13 +27,13 @@ const getEmployeeDetails = async (req: Request, res: Response) => {
 
     // Hardcoded employee details
     const result = {
-      employeeID: "12345",
+      employeeID: "1",
       employeeName: "John Doe",
       email: "john.doe@example.com",
       telephone: "+91 9876543210",
       role: "Postman",
       profilePicture: "pic.png",
-      branch: "Moratuwa Branch",
+      postOfficeName: "Moratuwa Branch",
     };
 
     // Check if the requested employeeID matches the hardcoded one
@@ -51,23 +51,36 @@ const getEmployeeDetails = async (req: Request, res: Response) => {
 
 const Registration = async (req: Request, res: Response) => {
   console.log("Employee registration received:", req.body);
-  const { employeeName, employeeID, role, telephone, email, postalCode } = req.body;
+  const { employeeName, employeeID, role, telephone, email, postalCode } =
+    req.body;
   const upperrole = role.toUpperCase();
   const employeeRepo = EmployeeRepository.getInstance();
-  const employee = await employeeRepo.registerUser( employeeID, employeeName, postalCode, telephone, email, upperrole);
+  const employee = await employeeRepo.registerUser(
+    employeeID,
+    employeeName,
+    postalCode,
+    telephone,
+    email,
+    upperrole
+  );
   console.log("Employee registered:", employee);
   return res.status(200).json(employee);
-}
+};
 
-const updateEmployee = async (req: Request, res: Response)=>{
+const updateEmployee = async (req: Request, res: Response) => {
   console.log("in update Employee", req.body);
   const employeeRepo = EmployeeRepository.getInstance();
   const { values, employeeID } = req.body;
-  const {role, address, telephone, email} = values
+  const { role, address, telephone, email } = values;
   console.log(employeeID);
-  console.log(role)
-  const response = await employeeRepo.updateEmployee(employeeID, telephone, role.toUpperCase(), email);
-  console.log("hi hi",response)
-  return res.json(response)
-}
-export {EmployeeDetails, Registration, getEmployeeDetails, updateEmployee}
+  console.log(role);
+  const response = await employeeRepo.updateEmployee(
+    employeeID,
+    telephone,
+    role.toUpperCase(),
+    email
+  );
+  console.log("hi hi", response);
+  return res.json(response);
+};
+export { EmployeeDetails, Registration, getEmployeeDetails, updateEmployee };

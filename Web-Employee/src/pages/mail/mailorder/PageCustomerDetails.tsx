@@ -60,7 +60,6 @@ export default function MailOrder() {
         );
         console.log(result.data)
         setAddressMap(result.data);
-        console.log("fslidfa",result.data)
         const addressArray: string[] = Object.keys(result.data)
         console.log(addressArray) 
         setSearchResults(addressArray);
@@ -72,7 +71,6 @@ export default function MailOrder() {
   };
 
   const handleChange = (value: string) => {
-    console.log("This is the address so far", value);
     setSearch(value);
     getAddress(value);
   };
@@ -83,26 +81,13 @@ export default function MailOrder() {
     }
   }, [search]);
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("hi")
-    localStorage.setItem("mailDetails", JSON.stringify(values));
-    const mailDetails = localStorage.getItem("mailDetails");
     const postalCode = user?.postalCode
-    console.log(mailDetails);
-    const response = await axios.post(
-      "http://localhost:5000/mail/customerDetails", 
-      {values, postalCode, addressID}, 
-      {
-        headers: {
-          Authorization: `Bearer ${user?.token}`, 
-        },
-      }
-    );
-    console.log("response", response)
-    
-    navigate(" http://localhost:5173/dashboard/maildetails" );
-    localStorage.setItem("customerID", response.data.customerID)
-    localStorage.setItem("customerDetails", JSON.stringify(values))
+    localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
+    const customerDetails = localStorage.getItem("customerDetails");
+    console.log("customer Details set",customerDetails);
+    navigate("/dashboard/maildetails" );
   }
 
   return (

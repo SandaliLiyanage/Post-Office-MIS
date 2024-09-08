@@ -53,27 +53,6 @@ export default function MailDetails() {
     },
   })
 
-    async function getReceipt(){
-      const role = user?.role;
-
-      if (!price) {
-        let response = await axios.post(
-          "http://localhost:5000/mail/mailDetails", 
-          {
-            ...values,
-            price: price,
-          }, 
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`, 
-            },
-          }
-        );
-      navigate('/dashboard/mailorder'	)
-      console.log("Data submitted successfully", response.data)
-      }
-    }
-
     //calculate price of the mail
     async function onClickCalculate() {
         const { mailType, weight } = form.getValues(); 
@@ -127,15 +106,19 @@ export default function MailDetails() {
     }
 
 
-  const onConfirmTransaction = (mailArray: MailDetails[])=>{
-    const role = user?.;
+  const onConfirmTransaction = async function(mailArray: MailDetails[]){
+    const postalCode = user?.postalCode;
+    const localCustomerStorage = localStorage.getItem("customerDetails")
+    
 
-    if (!confirm && price) {
+    if (confirm && price && localCustomerStorage) {
+      const customerDetails = JSON.parse(localCustomerStorage)
       let response = await axios.post(
         "http://localhost:5000/mail/mailDetails", 
         {
-          ...values,
-          price: price,
+          mailArray,
+          postalCode,
+          customerDetails
         }, 
         {
           headers: {
@@ -239,8 +222,9 @@ export default function MailDetails() {
           <Button type="button"  className="bg-teal-600" onClick={ ()=> 
           {const localMalStorage = localStorage.getItem("mail details"); 
             if(localMalStorage){
-              confirmTransaction(localMalStorage);
-              console.log("in if", localMalStorage);
+              onConfirmTransaction(JSON.parse(localMalStorage));
+              
+              console.log("in if", JSON.parse(localMalStorage));
               localStorage.removeItem("mail details")
             }}}>End Transaction</Button>
           </div>

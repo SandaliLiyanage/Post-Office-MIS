@@ -1,31 +1,31 @@
-import CustomerRepository from "../repositeries/customerrepository"
-const customerRepository = CustomerRepository.getInstance()
+// import CustomerRepository from "../repositeries/customerrepository"
+// const customerRepository = CustomerRepository.getInstance()
 
-type Customer = {
-    customerID: number;
-    postalCode: string;
-    customerName: string;
-    telephone: string | null;
-    addressID: number;
-}
-
-
-class CustomerService{
+// type Customer = {
+//     customerID: number;
+//     postalCode: string;
+//     customerName: string;
+//     telephone: string | null;
+//     addressID: number;
+// }
 
 
-    async storeCustomer (postalCode: string, customerName: string, telephone: string, addressID: number):Promise<Customer> {
-        try{
-            const storeCustomer = await customerRepository.createCustomer(postalCode, customerName, telephone, addressID );
-            return storeCustomer;
-        }catch(error){
-            throw error
-        }
+// class CustomerService{
+
+
+//     async storeCustomer (postalCode: string, customerName: string, telephone: string, addressID: number):Promise<Customer> {
+//         try{
+//             const storeCustomer = await customerRepository.createCustomer(postalCode, customerName, telephone, addressID );
+//             return storeCustomer;
+//         }catch(error){
+//             throw error
+//         }
         
-    }
-}
+//     }
+// }
 
 
-export default CustomerService;
+// export default CustomerService;
 
     // private static instance: CustomerService;
     //     static getInstance(): CustomerService{

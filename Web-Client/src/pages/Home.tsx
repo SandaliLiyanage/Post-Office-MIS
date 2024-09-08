@@ -25,8 +25,8 @@ const Home: React.FC = () => {
           <Link to="/track-mail-item" style={{ textDecoration: 'none' }}>
             <ImageCard
               image={img1}
-              title="Track your mail item now!"
-              buttonText="Track your mail item now!"
+              title="Track Your Mail Item!"
+              buttonText="Track Your Mail Item!"
             />
           </Link>
 

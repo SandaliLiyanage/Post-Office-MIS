@@ -21,8 +21,8 @@ const NavBar: React.FC = () => {
         <Box  gap={10} ml={100} color={'white'}>
           <Button color="inherit" component={Link} to="/">Home</Button>
           <Button color="inherit" component={Link} to="/about">About Us</Button>
-          <Button color="inherit">Notices</Button>
-          <Button color="inherit">Contact Us</Button>
+          <Button color="inherit" component={Link} to="/notices">Notices</Button>
+          <Button color="inherit" component={Link} to="/contact-us">Contact Us</Button>
         </Box>
         </Box>
       </Toolbar>

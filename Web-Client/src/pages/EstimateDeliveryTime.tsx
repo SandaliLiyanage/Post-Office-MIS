@@ -1,30 +1,28 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, Select, MenuItem } from '@mui/material';
+import { Box, TextField, Button, Typography } from '@mui/material';
 import NavBar from '../components/ui/NavBar';  
 
 const EstimateDeliveryTime: React.FC = () => {
-  const [destination, setDestination] = useState<string>('');  // Stores the delivery destination
-  const [serviceType, setServiceType] = useState<string>('');  // Stores the selected service type
+  const [trackingNumber, setTrackingNumber] = useState<string>('');  // Stores the tracking number
   const [estimatedTime, setEstimatedTime] = useState<string | null>(null);  // Stores the estimated delivery time
 
-  // Function to estimate delivery time based on destination and service type
-  const calculateEstimatedTime = (serviceType: string) => {
-    // Mock logic for estimating delivery time
-    if (serviceType === 'standard') {
-      return '5-7 Business Days';
-    } else if (serviceType === 'express') {
-      return '2-3 Business Days';
+  // Function to estimate delivery time based on tracking number
+  const calculateEstimatedTime = (trackingNumber: string) => {
+    // Mock logic for estimating delivery time based on tracking number
+    // For simplicity, we're returning static values here
+    if (trackingNumber) {
+      return 'Estimated Delivery Time: 3-5 Business Days'; // Mocked delivery time
     }
     return 'Unknown';
   };
 
   // Event handler for when the user clicks 'Estimate'
   const handleEstimate = () => {
-    if (destination && serviceType) {
-      const estimatedTime = calculateEstimatedTime(serviceType);
+    if (trackingNumber) {
+      const estimatedTime = calculateEstimatedTime(trackingNumber);
       setEstimatedTime(estimatedTime);  // Set the estimated time
     } else {
-      alert('Please fill in all fields.');
+      alert('Please enter a tracking number.');
     }
   };
 
@@ -37,31 +35,20 @@ const EstimateDeliveryTime: React.FC = () => {
         alignItems="center"
         justifyContent="center"
         minHeight="100vh"
+        sx={{ padding: '20px' }}
       >
         <Typography variant="h4" sx={{ marginBottom: '20px' }}>
           Estimate Delivery Time
         </Typography>
 
-        {/* Input field for destination */}
+        {/* Input field for tracking number */}
         <TextField
-          label="Destination"
+          label="Tracking Number"
           variant="outlined"
-          value={destination}
-          onChange={(e) => setDestination(e.target.value)}
+          value={trackingNumber}
+          onChange={(e) => setTrackingNumber(e.target.value)}
           sx={{ marginBottom: '20px', width: '300px' }}
         />
-
-        {/* Select field for service type */}
-        <Select
-          value={serviceType}
-          onChange={(e) => setServiceType(e.target.value)}
-          displayEmpty
-          sx={{ marginBottom: '20px', width: '300px' }}
-        >
-          <MenuItem value="" disabled>Select Service Type</MenuItem>
-          <MenuItem value="standard">Standard Delivery</MenuItem>
-          <MenuItem value="express">Express Delivery</MenuItem>
-        </Select>
 
         {/* Estimate Button */}
         <Button
@@ -75,7 +62,7 @@ const EstimateDeliveryTime: React.FC = () => {
         {/* Display the estimated delivery time */}
         {estimatedTime && (
           <Typography variant="h6" sx={{ marginTop: '20px' }}>
-            Estimated Delivery Time: {estimatedTime}
+            {estimatedTime}
           </Typography>
         )}
       </Box>

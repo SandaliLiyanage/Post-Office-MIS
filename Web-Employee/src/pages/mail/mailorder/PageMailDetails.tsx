@@ -60,6 +60,7 @@ export default function MailDetails() {
   const [addressMap, setAddressMap] = useState<{
     [key: string]: number;
   } | null>(null);
+  const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -113,6 +114,8 @@ export default function MailDetails() {
     setPrice(response.data);
   }
 
+
+
   //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
   async function onConfirm(values: z.infer<typeof formSchema>) {
     try {
@@ -145,9 +148,6 @@ export default function MailDetails() {
     getAddress(value);
   };
 
-  const generatePDF = () => {
-
-  }
 
   useEffect(() => {
     if (search.length > 0) {
@@ -164,6 +164,7 @@ export default function MailDetails() {
 
     if (confirm && price && localCustomerStorage) {
       const customerDetails = JSON.parse(localCustomerStorage);
+      generateInvoice()
       let response = await axios.post(
         "http://localhost:5000/mail/mailDetails",
         {
@@ -354,8 +355,9 @@ export default function MailDetails() {
                   if (localMalStorage) {
                     onConfirmTransaction(JSON.parse(localMalStorage));
                     console.log("in if", JSON.parse(localMalStorage));
+                    
                     // localStorage.removeItem("mail details");
-                    generateInvoice;
+                    
                   }
                 }}
               >

@@ -39,10 +39,10 @@ const MailDetails = async (req: Request, res: Response) => {
     const {addressID, mailType, price, recepientName, telephone, weight} = mail
     const {postalCode} = req.body.postalCode;
     console.log(postalCode);
-    await mailRepository.addMail(addressID, price, telephone, recepientName, weight, "10120", mailType, transactionID, 1 ); 
+    await mailRepository.addMail(addressID, price, telephone, recepientName, weight, postalCode, mailType, transactionID, 1 ); 
+   
   }
 }
-
 
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail");

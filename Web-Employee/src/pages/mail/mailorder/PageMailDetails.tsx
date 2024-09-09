@@ -111,7 +111,7 @@ export default function MailDetails() {
   //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
   async function onConfirm(values: z.infer<typeof formSchema>) {
     try {
-      const mailDetails = { ...values, price };
+      const mailDetails = { ...values, price, addressID };
       let localMailStorage = localStorage.getItem("mail details");
       console.log("in confirm", localMailStorage);
       if (localMailStorage && price && !confirm) {
@@ -155,6 +155,7 @@ export default function MailDetails() {
       let response = await axios.post(
         "http://localhost:5000/mail/mailDetails",
         {
+
           mailArray,
           postalCode,
           customerDetails,
@@ -178,7 +179,7 @@ export default function MailDetails() {
         <div className="flex justify-end gap-2 ">
           <Button
             type="submit"
-            className="bg-white border-b-2 text-black"
+            className="bg-white border-b-2 border border-slate-300 text-slate-800"
             onClick={() => {
               if (confirm) {
                 location.reload();
@@ -307,10 +308,10 @@ export default function MailDetails() {
               )}
             />
           </div>
-          <div className="flex justify-between">
+          <div className="flex justify-between mt-7">
             <div className="flex justify-start gap-4">
               <Button
-                className="bg-slate-700"
+                className="bg-white border border-slate-300 text-slate-800"
                 onClick={onClickCalculate}
                 type="button"
               >
@@ -325,11 +326,11 @@ export default function MailDetails() {
                 <div className="bg-white p-2 border-opacity-45">{price}</div>
               )}
             </div>
-            <div className="flex justify-end gap-2">
-              <Button type="submit" className="bg-slate-600">
+            <div className="flex justify-end gap-2 ">
+              <Button type="submit" className="bg-white border border-slate-300  text-slate-800">
                 Confirm
               </Button>
-              <Button type="button" className="bg-slate-600">
+              <Button type="button" className="bg-white border border-slate-300 text-slate-800">
                 Print Barcode
               </Button>
               <Button

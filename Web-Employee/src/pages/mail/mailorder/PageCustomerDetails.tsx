@@ -82,7 +82,6 @@ export default function MailOrder() {
   }, [search]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("hi")
     const postalCode = user?.postalCode
     localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
     const customerDetails = localStorage.getItem("customerDetails");

@@ -43,6 +43,7 @@ const MailDetails = async (req: Request, res: Response) => {
   }
 }
 
+
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail");
   const { postalCode } = req.body;

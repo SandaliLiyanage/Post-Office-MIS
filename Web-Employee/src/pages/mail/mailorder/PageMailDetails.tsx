@@ -27,6 +27,9 @@ import {
 } from "@/components/ui/command";
 import { useEffect } from "react";
 import { Label } from "../../../components/ui/label";
+import {generateInvoice} from "./generatePDF"
+import {Toaster} from "../../../components/ui/toaster"
+import { useToast } from '../../../hooks/use-toast';
 
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
@@ -45,6 +48,7 @@ type MailDetails = {
 };
 
 export default function MailDetails() {
+  const { toast } = useToast()
   const { user } = useUser();
   const [price, setPrice] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -90,8 +94,9 @@ export default function MailDetails() {
   async function onClickCalculate() {
     const { mailType, weight } = form.getValues();
     if (mailType === "" || weight === "") {
-      setError("Fill Weight and Mail Type");
-      return;
+      toast({
+        description:"Fill mail type and weight"
+      })
     }
     const calculationData = { mailType, weight };
     const response = await axios.post(
@@ -140,6 +145,10 @@ export default function MailDetails() {
     getAddress(value);
   };
 
+  const generatePDF = () => {
+
+  }
+
   useEffect(() => {
     if (search.length > 0) {
       form.setValue("address", search);
@@ -147,6 +156,9 @@ export default function MailDetails() {
   }, [search]);
 
   const onConfirmTransaction = async function (mailArray: MailDetails[]) {
+    toast({
+      description:"Transaction Completed"
+    })
     const postalCode = user?.postalCode;
     const localCustomerStorage = localStorage.getItem("customerDetails");
 
@@ -317,6 +329,7 @@ export default function MailDetails() {
               >
                 Calculate
               </Button>
+              <Toaster />
               {error !== null && price == null && (
                 <div className="text-sm text-red-500 p-2 rounded-sm font-bold">
                   {error}
@@ -340,14 +353,16 @@ export default function MailDetails() {
                   const localMalStorage = localStorage.getItem("mail details");
                   if (localMalStorage) {
                     onConfirmTransaction(JSON.parse(localMalStorage));
-
                     console.log("in if", JSON.parse(localMalStorage));
-                    localStorage.removeItem("mail details");
+                    // localStorage.removeItem("mail details");
+                    generateInvoice;
                   }
                 }}
               >
-                End Transaction
+                <Toaster/>
+                End Transaction and Print Receipt 
               </Button>
+              <Toaster/>
             </div>
           </div>
         </form>

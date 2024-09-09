@@ -26,7 +26,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { useEffect } from "react";
-import {Label} from "../../../components/ui/label"
+import { Label } from "../../../components/ui/label";
 
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
@@ -206,59 +206,65 @@ export default function MailDetails() {
                 </FormItem>
               )}
             />
-            <div><Label>Address</Label>
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="hidden">
-                  <FormControl>
-                    <Input placeholder="Address" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <div>
-              <Command>
-                <CommandInput
-                  placeholder="Address"
-                  onValueChange={(value) => {
-                    handleChange(value);
-                    console.log(value);
-                  }}
-                  value={search}
-                />
-                <CommandList>
-                  {search != "" && searchSelect == false && (
-                    <CommandEmpty>No address found.</CommandEmpty>
-                  )}
-                  {search != "" && (
-                    <CommandGroup>
-                      {searchResults?.map((result) => (
-                        <CommandItem
-                          key={result}
-                          onSelect={(value) => {
-                            setSearch(value);
-                            setSearchSelect(true);
-                            setSearchResults([]);
-                            if (addressMap) {
-                              console.log("hee", value);
-                              console.log(addressMap[value]);
-                              setAddressID(addressMap[value]);
-                              console.log(addressMap);
-                              console.log("address ID", addressID);
-                            }
-                          }}
-                        >
-                          {result}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  )}
-                </CommandList>
-              </Command>
-            </div>
+              <Label>Address</Label>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem className="hidden">
+                    <FormControl>
+                      <Input placeholder="Address" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="relative">
+                <Command className="mt-2">
+                  <CommandInput
+                    placeholder="Address"
+                    onValueChange={(value) => {
+                      handleChange(value);
+                      console.log(value);
+                    }}
+                    value={search}
+                  />
+                  <CommandList className="">
+                    {search != "" && searchSelect == false && (
+                     <div className="absolute top-full left-0 w-full h-min">
+                      <CommandEmpty >No address found.</CommandEmpty>
+                     </div> 
+                    )}
+                    {search != "" && (
+                      <CommandGroup
+                        className="absolute top-full left-0 w-full h-[90px] overflow-y-auto rounded-md 
+                     bg-white"
+                      >
+                        {searchResults?.map((result) => (
+                          <CommandItem
+                            key={result}
+                            onSelect={(value) => {
+                              setSearch(value);
+                              setSearchSelect(true);
+                              setSearchResults([]);
+                              if (addressMap) {
+                                console.log("hee", value);
+                                console.log(addressMap[value]);
+                                setAddressID(addressMap[value]);
+                                console.log(addressMap);
+                                console.log("address ID", addressID);
+                              }
+                            }}
+                          >
+                            {result}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    )}
+                  </CommandList>
+                </Command>
+              </div>
             </div>
 
             <FormField

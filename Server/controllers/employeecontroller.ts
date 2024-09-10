@@ -17,35 +17,40 @@ const EmployeeDetails = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
+// Function to get employee details
 const getEmployeeDetails = async (req: Request, res: Response) => {
-  try {
-    const employeeID = req.query.employeeID as string;
+  const employeeRepo = EmployeeRepository.getInstance();
+  const employeeID = req.query.employeeID as string; // Extract the employeeID
 
+  try {
+    // Check if the employeeID is provided
     if (!employeeID) {
       return res.status(400).json({ error: "Employee ID is required" });
     }
 
-    // Hardcoded employee details
-    const result = {
-      employeeID: "1",
-      employeeName: "John Doe",
-      email: "john.doe@example.com",
-      telephone: "+91 9876543210",
-      role: "Postman",
-      profilePicture: "pic.png",
-      postOfficeName: "Moratuwa Branch",
-    };
+    // Fetch employee details from the repository
+    const userData = await employeeRepo.getUserData(employeeID);
 
     // Check if the requested employeeID matches the hardcoded one
-    if (employeeID !== result.employeeID) {
-      return res.status(404).json({ error: "Employee not found" });
+    if (!userData) {
+      return res.status(404).json({ error: "Employee not found" }); // 404 status code for Not Found
     }
 
+    const formattedRole =
+      userData.role.charAt(0).toUpperCase() +
+      userData.role.slice(1).toLowerCase();
+
+    const result = {
+      employeeName: userData.employeeName,
+      postOfficeName: userData.postOfficeName,
+      role: formattedRole,
+    };
+
     console.log("User details fetched:", result);
-    return res.status(200).json(result);
+    return res.status(200).json(result); // 200 status code for OK
   } catch (error) {
     console.error("Error fetching user details:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
   }
 };
 

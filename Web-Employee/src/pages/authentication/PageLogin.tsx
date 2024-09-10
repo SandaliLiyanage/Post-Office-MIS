@@ -59,9 +59,6 @@ export default function Login() {
   return (
     <div className="bg-slate-800 min-h-screen flex items-center justify-center">
       <div className=" bg-white rounded-lg h-96 lg:flex">
-      {/* <div className="lg:w-1/2 flex lg:justify-center lg:items-center">
-        <h1 className="lg:text-3xl pt-4 pl-8">Post Office Management Information System</h1>
-      </div> */}
       <div className="mr-20 ml-20 mt-8 flex flex-col items-end ">
         <div>
         <div>

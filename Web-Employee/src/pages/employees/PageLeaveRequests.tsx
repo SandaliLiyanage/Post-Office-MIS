@@ -65,7 +65,7 @@ export default function LeaveRequest() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl">Mail Order</p>
+        <p className="text-xl font-bold">Leave Requests</p>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

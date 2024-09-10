@@ -5,7 +5,7 @@ class BundleRepository{
         try {
             const res = await prisma.bundle.findMany({
                 where:{
-                    destPostalCode: postalCode,
+                    currentPostCode: postalCode,
                 },
             });
             console.log("Bundles queried", res)
@@ -13,6 +13,19 @@ class BundleRepository{
         } catch (error) {
             console.error("Error getting bundles:", error);
             throw error;
+        }
+    }
+
+    async findBundle(postalCode: string): Promise <Bundle[]| null>{
+        try{
+            const res = await prisma.bundle.findMany({
+                where:{
+                    destPostalCode : postalCode
+                }
+            })
+            return res
+        }catch(error){
+            throw error
         }
     }
 }

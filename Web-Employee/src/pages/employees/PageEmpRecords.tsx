@@ -60,7 +60,7 @@ export default function EmployeeRecords() {
         <div className='flex flex-end gap-2 '>
        
   
-        <Button className="bg-teal-600" onClick={()=>navigate('/dashboard/employeeRegistrations')}>Add Employee</Button>
+        <Button className="bg-teal-700 " onClick={()=>navigate('/dashboard/employeeRegistrations')}>Add Employee</Button>
         </div>
     </div>
     <div className="flex flex-col space-y-4 bg-white border-0">

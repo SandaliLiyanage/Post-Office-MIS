@@ -4,7 +4,7 @@ import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
-  const clickedColour: string = 'bg-blue-400 text-white';
+  const clickedColour: string = 'bg-blue-200 bg-opacity-90 text-black';
   const normalColour: string = 'hover:bg-blue-200 text-black hover:bg-opacity-90';
   const [activeButton, setActiveButton] = useState('');
   const {user} = useUser();

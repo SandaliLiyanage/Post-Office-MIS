@@ -4,9 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "../components/ui/popover"
-import {Label} from "../components/ui/label"
 import { Button } from "../components/ui/button"
-import {Input} from  "../components/ui/input"
 import { useNavigate } from "react-router-dom"
 export default function Nav() {
 
@@ -24,7 +22,7 @@ export default function Nav() {
       </div>
       <Popover>
       <PopoverTrigger asChild>
-        <Button onClick={handleClick} className="mt-3 pt-1 pb-1 mr-5 rounded-full"  variant="outline">{user?.role}</Button>
+        <Button onClick={handleClick} className="mt-3 pt-1 pb-1 mr-5 bg-slate-800 rounded-full text-white border border-white"  variant="outline">{user?.role}</Button>
       </PopoverTrigger>
       <PopoverContent className="w-80 bg-blue-200 bg-opacity-90 mr-5">
         <div className="grid gap-4 ">
@@ -38,10 +36,9 @@ export default function Nav() {
               </p>
           </div>
           <div className="grid gap-2">
-          <div className="flex justify-center gap-2 mt-20">
-              <Button onClick={()=> {{removeUser}; navigate('/')}}  >Logout</Button>
-              <Button  >Change Password</Button>
-            </div>
+          
+              <Button className="rounded-full text-white border border-white" onClick={()=> {{removeUser}; navigate('/')}}  >Logout</Button>
+              <Button className="rounded-full text-white border border-white">Change Password</Button>
             </div>      
           </div>
       </PopoverContent>

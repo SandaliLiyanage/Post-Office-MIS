@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
                     ))}
                       <TableCell>
                 <div className="flex flex-end gap-2">
-                <Button className="btn btn-primary bg-slate-400">Print Barcode</Button>
+                <Button className="btn btn-primary bg-slate-400 rounded-full bg-sky-600" size={"sm"}>Print Barcode</Button>
                 </div>
                 </TableCell>
                   </TableRow>

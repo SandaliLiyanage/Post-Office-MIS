@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import {TransactionRepository} from "../repositeries/transactionrepository"
+import BundleService from "../services/bundleservice"
+
 
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
@@ -24,6 +26,7 @@ const MailBundles = async (req: Request, res: Response) => {
 
 const MailDetails = async (req: Request, res: Response) => {	
   console.log("Request received in mail details" ,req.body);
+  
   const mailArray = req.body.mailArray;
   const cutomerDetails = req.body.customerDetails.values;
   const {addressID, postalCode} = req.body.customerDetails
@@ -40,7 +43,6 @@ const MailDetails = async (req: Request, res: Response) => {
     const {postalCode} = req.body.postalCode;
     console.log(postalCode);
     await mailRepository.addMail(addressID, price, telephone, recepientName, weight, postalCode, mailType, transactionID, 1 ); 
-   
   }
 }
 

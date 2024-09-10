@@ -41,8 +41,9 @@ model PostOffice {
   address           Address[]
   mail              Mail[]
   employee          Employee[]
-  bundle            Bundle[]
+  destinationBundles Bundle[] @relation("DestPostOfficeRelation")
   area              Area[]
+  currentBundles Bundle[] @relation("CurrentPostOfficeRelation")
 }
 
 model Address {
@@ -88,9 +89,12 @@ model Mail {
 model Bundle {
   bundleID              Int          @id @default(autoincrement())
   destPostalCode        String
-  destPostOffice        PostOffice @relation(fields: [destPostalCode], references: [postalCode])
+  destPostOffice        PostOffice @relation("DestPostOfficeRelation", fields: [destPostalCode], references: [postalCode])
   barcodeID              Int?          
   mail                  Mail[]
+  currentPostCode     String
+  currentPostOffice     PostOffice @relation("CurrentPostOfficeRelation", fields: [currentPostCode], references: [postalCode])
+  date                  DateTime?
 }
 
 enum MailStatus {

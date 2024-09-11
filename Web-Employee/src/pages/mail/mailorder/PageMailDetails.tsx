@@ -168,7 +168,6 @@ export default function MailDetails() {
       let response = await axios.post(
         "http://localhost:5000/mail/mailDetails",
         {
-
           mailArray,
           postalCode,
           customerDetails,
@@ -179,11 +178,13 @@ export default function MailDetails() {
           },
         }
       );
+      localStorage.removeItem("customerDetails")
       navigate("/dashboard/mailorder");
       console.log("Data submitted successfully", response.data);
     }
     console.log("in", mailArray);
   };
+
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
@@ -351,12 +352,12 @@ export default function MailDetails() {
                 type="button"
                 className="bg-teal-600"
                 onClick={() => {
-                  const localMalStorage = localStorage.getItem("mail details");
-                  if (localMalStorage) {
-                    onConfirmTransaction(JSON.parse(localMalStorage));
-                    console.log("in if", JSON.parse(localMalStorage));
+                  const localMailStorage = localStorage.getItem("mail details");
+                  if (localMailStorage) {
+                    onConfirmTransaction(JSON.parse(localMailStorage));
+                    console.log("in if", JSON.parse(localMailStorage));
                     
-                    // localStorage.removeItem("mail details");
+                    localStorage.removeItem("mail details");
                     
                   }
                 }}

@@ -97,7 +97,7 @@ export default function Login() {
             />
           </div >
           <div className="flex justify-between gap-2">
-            <Button type="submit" className="bg-teal-600" >Log in</Button>
+            <Button type="submit" className="bg-slate-800" >Log in</Button>
             <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
         </form>

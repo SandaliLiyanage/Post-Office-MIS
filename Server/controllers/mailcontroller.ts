@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { BundleRepository } from "../repositeries/bundlerepository";
-import {TransactionRepository} from "../repositeries/transactionrepository"
-import BundleService from "../services/bundleservice"
-
+import {TransactionRepository} from "../repositeries/transactionrepository";
+import MailService from "../services/mailservice";
 
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
+const mailService = new MailService();
 const bundleRepository = new BundleRepository();
+
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");
   const { mailType, weight } = req.body;
@@ -23,13 +24,12 @@ const MailBundles = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-
 const MailDetails = async (req: Request, res: Response) => {	
   console.log("Request received in mail details" ,req.body);
-  
   const mailArray = req.body.mailArray;
   const cutomerDetails = req.body.customerDetails.values;
   const {addressID, postalCode} = req.body.customerDetails
+  const currentPostCode = postalCode
   const {customerName, telephone} = cutomerDetails
   console.log("hyikjk;" ,customerName, telephone, addressID)
   const amount = 40
@@ -37,13 +37,8 @@ const MailDetails = async (req: Request, res: Response) => {
   console.log(transaction)
   const transactionID  = transaction.transactionID 
   console.log("dfk", mailArray, transactionID)
-
-  for (let mail of mailArray) {
-    const {addressID, mailType, price, recepientName, telephone, weight} = mail
-    const {postalCode} = req.body.postalCode;
-    console.log(postalCode);
-    await mailRepository.addMail(addressID, price, telephone, recepientName, weight, postalCode, mailType, transactionID, 1 ); 
-  }
+  mailService.insertMail(mailArray, transactionID, postalCode)
+  
 }
 
 const Mails = async (req: Request, res: Response) => {
@@ -52,6 +47,7 @@ const Mails = async (req: Request, res: Response) => {
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
 };
+
 
 export const getMailDetails = async (req: Request, res: Response) => {
   try {

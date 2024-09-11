@@ -82,6 +82,7 @@ export default function MailOrder() {
   }, [search]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(addressID, " address id in onSubmit")
     const postalCode = user?.postalCode
     localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
     const customerDetails = localStorage.getItem("customerDetails");
@@ -166,9 +167,12 @@ export default function MailOrder() {
                               setSearchSelect(true);
                               setSearchResults([]);
                               if (addressMap) {
+                                console.log(" address set")
                                 console.log("hee", value);
                                 console.log(addressMap[value]);
-                                setAddressID(addressMap[value]);
+                                const addrressIDfromMap = addressMap[value]
+                                console.log(addrressIDfromMap, " this is the value from map"  )
+                                setAddressID(addrressIDfromMap);
                                 console.log(addressMap);
                                 console.log("address ID", addressID);
                               }

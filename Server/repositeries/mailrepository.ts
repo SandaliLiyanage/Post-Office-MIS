@@ -25,7 +25,7 @@ class MailRepository{
         }
        
         async addMail(recepientAddressID: number, price: number, recepientTelephone: string, recepientName: string,  weight: string, postalCode: string, mailCategoryName: string, transactionID: number, bundleID:number): Promise<Mail>{
-            
+            console.log("in mail repository")
             try{
                 const res = await prisma.mail.create({
                     data:{

@@ -25,13 +25,13 @@ const getEmployeeDetails = async (req: Request, res: Response) => {
   try {
     // Check if the employeeID is provided
     if (!employeeID) {
-      return res.status(400).json({ error: "Employee ID is required" });
+      return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
     }
 
     // Fetch employee details from the repository
     const userData = await employeeRepo.getUserData(employeeID);
 
-    // Check if the requested employeeID matches the hardcoded one
+    // Check if the employee exists
     if (!userData) {
       return res.status(404).json({ error: "Employee not found" }); // 404 status code for Not Found
     }

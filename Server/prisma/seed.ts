@@ -83,6 +83,7 @@ async function main() {
       Locality: "Central City",
       latitude: 40.7128,
       longitude: -74.006,
+      areaID: 1,
     },
   });
 
@@ -94,6 +95,7 @@ async function main() {
       Locality: "Suburbia",
       latitude: 34.0522,
       longitude: -118.2437,
+      areaID: 1,
     },
   });
 

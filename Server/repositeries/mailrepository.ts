@@ -56,10 +56,9 @@ class MailRepository {
     }
   }
 
-  // mailrepository.ts
+  // Fetch all mail items for the given employee
   async getMailItemsByEmployeeID(employeeID: string): Promise<any[]> {
     try {
-      // Fetch all mail items for the given employee (postman)
       const mailItems = await prisma.$queryRaw<any[]>`
             SELECT 
                 m."mailID",
@@ -68,17 +67,15 @@ class MailRepository {
                 m."mailCategoryName",
                 m."mailstatus",
                 m."weight",
-                m."price",
-                mc."mailCategoryName"
+                m."price"
             FROM "Mail" AS m
-            JOIN "MailCategory" AS mc ON m."mailCategoryName" = mc."mailCategoryName"
             JOIN "Address" AS a ON m."recepientAddressID" = a."addressID"
             JOIN "Area" AS ar ON a."areaID" = ar."areaID"
             JOIN "Employee" AS e ON ar."employeeID" = e."employeeID"
             WHERE e."employeeID" = ${employeeID}
         `;
 
-      console.log("Mail items fetched:", mailItems);
+      // console.log("Mail items fetched:", mailItems);
       return mailItems;
     } catch (error) {
       console.error("Error fetching mail items:", error);

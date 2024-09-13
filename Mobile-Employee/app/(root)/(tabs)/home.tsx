@@ -21,9 +21,9 @@ const Home = () => {
 
   // State to store delivery counts
   const [deliveryCounts, setDeliveryCounts] = useState<{
-    normal: number;
-    registered: number;
-    parcel: number;
+    Normal: number;
+    Registered: number;
+    Parcel: number;
   } | null>(null); // Set the initial value null
 
   // State to store loading status
@@ -35,8 +35,8 @@ const Home = () => {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          //"http://localhost:5000/employee/user?employeeID=0002"
-          "http://192.168.1.64:5000/employee/user?employeeID=0002"
+          "http://localhost:5000/employee/user?employeeID=0002"
+          //"http://192.168.1.64:5000/employee/user?employeeID=0002"
           //`${process.env.REACT_APP_URL}/employee/user?employeeID=0002` // Send GET request
         );
         const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
@@ -50,8 +50,8 @@ const Home = () => {
     const fetchDeliveryCounts = async () => {
       try {
         const response = await fetch(
-          //"http://localhost:5000/mail/employee?employeeID=0002"
-          "http://192.168.1.64:5000/mail/employee?employeeID=0002" // Send GET request
+          "http://localhost:5000/mail/employee?employeeID=0002"
+          //"http://192.168.1.64:5000/mail/employee?employeeID=0002" // Send GET request
         );
         const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
         setDeliveryCounts(data); // Update deliveryCounts
@@ -100,19 +100,19 @@ const Home = () => {
 
           <View style={styles.deliveryTypes}>
             <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>{deliveryCounts.normal}</Text>
+              <Text style={styles.deliveryCount}>{deliveryCounts.Normal}</Text>
               <Text style={styles.deliveryLabel}>Normal</Text>
             </View>
 
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.registered}
+                {deliveryCounts.Registered}
               </Text>
               <Text style={styles.deliveryLabel}>Registered</Text>
             </View>
 
             <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>{deliveryCounts.parcel}</Text>
+              <Text style={styles.deliveryCount}>{deliveryCounts.Parcel}</Text>
               <Text style={styles.deliveryLabel}>Parcel</Text>
             </View>
           </View>

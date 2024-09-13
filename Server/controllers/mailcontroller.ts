@@ -65,6 +65,42 @@ const Mails = async (req: Request, res: Response) => {
 };
 
 // Function to get mail items for a specific employee
+export const getMailItems2 = async (req: Request, res: Response) => {
+  const employeeID = req.query.employeeID as string; // Extract the employeeID
+
+  try {
+    // Check if the employeeID is provided
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
+    }
+
+    // Fetch mail details from the repository
+    const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
+
+    // Group mail items by category
+    // const categorizedMailItems = mailItems.reduce(
+    //   (mail: { [key: string]: any[] }, item) => {
+    //     const category = item.mailCategoryName;
+    //     if (!mail[category]) {
+    //       mail[category] = [];
+    //     }
+    //     mail[category].push(item);
+    //     return mail;
+    //   },
+    //   {}
+    // );
+
+    // Optionally log or process the counts if needed
+    console.log("Delivery counts fetched:", mailItems);
+
+    return res.status(200).json(mailItems); // 200 status code for OK
+  } catch (error) {
+    console.error("Error fetching delivery counts:", error);
+    return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
+  }
+};
+
+// Function to get mail items for a specific employee
 export const getMailItems = async (req: Request, res: Response) => {
   const employeeID = req.query.employeeID as string; // Extract the employeeID
 
@@ -75,20 +111,34 @@ export const getMailItems = async (req: Request, res: Response) => {
     }
 
     // Fetch mail details from the repository
-    const mails = await mailRepository.getMailItemsByEmployeeID(employeeID);
+    const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
 
-    // Hard-coded delivery counts
-    const deliveryCounts = {
-      employeeID: "12345",
-      normal: 27,
-      registered: 9,
-      parcel: 4,
-    };
+    // Group mail items by category
+    const categorizedMailItems = mailItems.reduce(
+      (mail: { [key: string]: any[] }, item) => {
+        const category = item.mailCategoryName;
+        if (!mail[category]) {
+          mail[category] = [];
+        }
+        mail[category].push(item);
+        return mail;
+      },
+      {}
+    );
+
+    // Get the count of each category
+    const categoryCounts = Object.keys(categorizedMailItems).reduce(
+      (countMail: { [key: string]: number }, category) => {
+        countMail[category] = categorizedMailItems[category].length; // Count the items in each category
+        return countMail;
+      },
+      {}
+    );
 
     // Optionally log or process the counts if needed
-    console.log("Delivery counts fetched:", deliveryCounts);
+    // console.log("Delivery counts fetched:", categoryCounts);
 
-    return res.status(200).json(deliveryCounts); // 200 status code for OK
+    return res.status(200).json(categoryCounts); // 200 status code for OK
   } catch (error) {
     console.error("Error fetching delivery counts:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error

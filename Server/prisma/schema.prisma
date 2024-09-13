@@ -55,6 +55,8 @@ model Address {
   Locality      String?
   latitude      Float?
   longitude     Float?
+  areaID        Int?
+  area          Area? @relation(fields: [areaID], references: [areaID])
   transaction   Transaction[]
   mail          Mail[]
 }
@@ -144,4 +146,5 @@ model Area{
   postOffice PostOffice   @relation(fields: [postalCode], references: [postalCode])
   postman Employee  @relation(fields: [employeeID], references: [employeeID])
   employeeID String
+  addresses   Address[]
 }

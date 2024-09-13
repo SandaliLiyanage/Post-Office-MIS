@@ -16,7 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-
+import { FaPrint } from 'react-icons/fa';
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
                     ))}
                       <TableCell>
                 <div className="flex flex-end gap-2">
-                <Button className="btn btn-primary bg-slate-400 rounded-full bg-sky-600" size={"sm"}>Print Barcode</Button>
+                <Button className="btn "  size={"sm"}><FaPrint /></Button>
                 </div>
                 </TableCell>
                   </TableRow>

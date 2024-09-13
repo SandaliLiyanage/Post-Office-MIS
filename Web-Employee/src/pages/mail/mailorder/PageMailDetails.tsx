@@ -35,9 +35,7 @@ import {CardMail} from "./cardMail";
 import {
   Select,
   SelectContent,
-  SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select"
@@ -72,6 +70,12 @@ export default function MailDetails() {
   const [addressMap, setAddressMap] = useState<{
     [key: string]: number;
   } | null>(null);
+  const [mailArray, setMailArray] = useState<{
+    [key: string]: MailDetailsType;
+  } | null>(null);
+
+
+
   const navigate = useNavigate();
 
   const form = useForm<z.infer<typeof formSchema>>({

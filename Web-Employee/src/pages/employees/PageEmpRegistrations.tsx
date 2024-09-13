@@ -15,6 +15,13 @@ import {
   FormMessage,
 } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select"
 
 const ROLES = [
   "Supervisor",
@@ -133,19 +140,30 @@ export default function EmpRegistration() {
 
                  )}
                 />
-                 <FormField
-              control={form.control}
-              name="role"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Employee Role</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Employee Role" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-                 )}
-                />
+                <FormField
+          control={form.control}
+          name="role"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mail Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Employee Role" className="text-slate-500" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="POSTMASTER">postmaster</SelectItem>
+                  <SelectItem value="RECEPTIONIST">receptionist</SelectItem>
+                  <SelectItem value="DISPATCHER">dispatch record manager</SelectItem>
+                  <SelectItem value="POSTMAN">postman</SelectItem>
+                </SelectContent>
+              </Select>
+    
+              <FormMessage />
+            </FormItem>
+          )}
+        />    
           </div>
           <Button className="bg-teal-800" type="submit">Submit</Button>
         </form>

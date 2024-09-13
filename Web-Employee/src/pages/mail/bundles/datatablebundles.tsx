@@ -16,7 +16,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
-import { FaPrint } from 'react-icons/fa';
+import { Printer } from 'lucide-react';
+
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
@@ -65,9 +66,6 @@ export function DataTable<TData, TValue>({
                       </TableCell>
                     ))}
                       <TableCell>
-                <div className="flex flex-end gap-2">
-                <Button className="btn "  size={"sm"}><FaPrint /></Button>
-                </div>
                 </TableCell>
                   </TableRow>
                 ))

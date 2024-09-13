@@ -29,5 +29,22 @@ class AddressRepository{
             throw error
     } 
     }
+
+    async getDestPostalCode(addressID: number): Promise<string | null> {
+        try {
+          const destPostalCode = await prisma.address.findUnique({
+            where: {
+              addressID: addressID,
+            },
+            select: {
+              postalCode: true,
+            },
+          });
+          return destPostalCode?.postalCode || null;
+
+        } catch (error) {
+          throw error;
+        }
+      }
 }
 export {AddressRepository};

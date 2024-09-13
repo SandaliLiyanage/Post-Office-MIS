@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
+import {Label} from "../../../components/ui/label"
 
 const formSchema = z.object({
   customerName: z.string().min(5, {}),
@@ -82,7 +83,7 @@ export default function MailOrder() {
   }, [search]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("hi")
+    console.log(addressID, " address id in onSubmit")
     const postalCode = user?.postalCode
     localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
     const customerDetails = localStorage.getItem("customerDetails");
@@ -93,7 +94,7 @@ export default function MailOrder() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl">Mail Order</p>
+        <p className="text-xl font-bold">Mail Order</p>
       </div>
       <Form {...form}>
        
@@ -124,59 +125,73 @@ export default function MailOrder() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="hidden">
-                  <FormControl>
-                    <Input placeholder="Telephone" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Command>
-              <CommandInput
-                placeholder="Address"
-                onValueChange={(value) => {
-                  handleChange(value);
-                  console.log(value);
-                }}
-                value={search}
-              />
-              <CommandList>
-                {search != "" &&
-                  searchSelect == false && (
-                    <CommandEmpty>No address found.</CommandEmpty>
-                  )}
-                {search != "" && (
-                  <CommandGroup>
-                    {searchResults?.map((result) => (
-                      <CommandItem
-                        key={result}
-                        onSelect={(value) => {
-                          setSearch(value);
-                          setSearchSelect(true);
-                          setSearchResults([]);
-                          if(addressMap){
-                            console.log("hee", value);
-                            console.log(addressMap[value]);
-                            setAddressID(addressMap[value]);
-                            console.log(addressMap);
-                            console.log("address ID", addressID);
-                          }
-                        }}
-                      >
-                        {result}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+           <div>
+              <Label>Address</Label>
+              <FormField
+                control={form.control}
+                name="address"
+                render={({ field }) => (
+                  <FormItem className="hidden">
+                    <FormControl>
+                      <Input placeholder="Address" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </CommandList>
-            </Command>
+              />
+              <div className="relative">
+                <Command className="mt-2">
+                  <CommandInput
+                    placeholder="Address"
+                    onValueChange={(value) => {
+                      handleChange(value);
+                      console.log(value);
+                    }}
+                    value={search}
+                  />
+                  <CommandList className="">
+                    {search != "" && searchSelect == false && (
+                     <div className="absolute top-full left-0 w-full h-min">
+                      <CommandEmpty >No address found.</CommandEmpty>
+                     </div> 
+                    )}
+                    {search != "" && (
+                      <CommandGroup
+                        className="absolute top-full left-0 w-full h-[90px] overflow-y-auto rounded-md 
+                     bg-white"
+                      >
+                        {searchResults?.map((result) => (
+                          <CommandItem
+                            key={result}
+                            onSelect={(value) => {
+                              setSearch(value);
+                              setSearchSelect(true);
+                              setSearchResults([]);
+                              if (addressMap) {
+                                console.log(" address set")
+                                console.log("hee", value);
+                                console.log(addressMap[value]);
+                                const addrressIDfromMap = addressMap[value]
+                                console.log(addrressIDfromMap, " this is the value from map"  )
+                                setAddressID(addrressIDfromMap);
+                                console.log(addressMap);
+                                console.log("address ID", addressID);
+                              }
+                            }}
+                          >
+                            {result}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    )}
+                  </CommandList>
+                </Command>
+              </div>
+            </div>
+            <div className="flex justify-end mt-8">
+            <Button type="submit" className=" bg-teal-600">Proceed </Button>
+            </div>
           </div>
-          <Button type="submit">Proceed </Button>
         </form>
       </Form>
     </div>

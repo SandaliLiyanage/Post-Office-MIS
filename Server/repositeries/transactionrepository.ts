@@ -16,6 +16,7 @@ class TransactionRepository{
 
             }
         })
+        console.log(res)
         return res
     }
 }

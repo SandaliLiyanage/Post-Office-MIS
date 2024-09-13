@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Printer } from 'lucide-react';
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -65,9 +66,6 @@ export function DataTable<TData, TValue>({
                       </TableCell>
                     ))}
                       <TableCell>
-                <div className="flex flex-end gap-2">
-                <Button className="btn btn-primary bg-slate-400">Print Barcode</Button>
-                </div>
                 </TableCell>
                   </TableRow>
                 ))

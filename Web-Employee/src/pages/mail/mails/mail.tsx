@@ -43,7 +43,7 @@ export default function Mails() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl">Mail</p>
+        <p className="text-xl font-bold">Mail</p>
         <div className='flex flex-end gap-2 '>
         <Input type="email" placeholder="Search Mail by ID"className='w-50'  />
         </div>

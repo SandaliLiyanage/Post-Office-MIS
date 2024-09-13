@@ -4,8 +4,11 @@ import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
-  const clickedColour: string = 'bg-blue-400 text-white';
+  const clickedColour: string = 'bg-blue-200 bg-opacity-90 text-black';
   const normalColour: string = 'hover:bg-blue-200 text-black hover:bg-opacity-90';
+
+  // const clickedColour: string = 'bg-slate-800   rounded text-white';
+  // const normalColour: string = 'hover:bg-slate-500 text-white hover:bg-opacity-90 hover:text-black';
   const [activeButton, setActiveButton] = useState('');
   const {user} = useUser();
   const navigate = useNavigate();
@@ -47,11 +50,16 @@ export default function SideBar() {
                         onClick={() => {
                           handleClick('Leave Requests')
                           navigate("/dashboard/leaveRequest")
-                        } }>Leave Requests</NavButton>
+                        } }>Request Leaves</NavButton>
 
-  const ViewLeaveRequests = <NavButton className={`${activeButton === 'Mail Bundles' ? clickedColour : normalColour}`} 
+  const ViewLeaveRequests = <NavButton className={`${activeButton === 'ViewLeaveRequests' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Mail Bundles')
+                          handleClick('ViewLeaveRequests')
+                          navigate("/dashboard/mailBundles")
+                        } }>View Leave Requests</NavButton>
+const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('MailBundles')
                           navigate("/dashboard/mailBundles")
                         } }>Mail Bundles</NavButton>
 
@@ -66,9 +74,11 @@ export default function SideBar() {
                           handleClick('Employee Registrations')
                           navigate("/dashboard/employeeRegistrations")
                         } }>Employee Registrations</NavButton>
+
   return (
     <div className="mt-16 fixed left-0 top-0 h-full">
       <nav className="w-60 h-full bg-slate-300 bg-opacity-25">
+
       {user?.role === 'POSTMASTER' && (
           <>
             {EmployeeRecords}
@@ -77,6 +87,9 @@ export default function SideBar() {
             {MailOrder}
             {ViewMail}
             {LeaveRequest}
+            {RevenueReports}
+            {PostmanAssignments}
+            {MailBundles}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (
@@ -84,6 +97,7 @@ export default function SideBar() {
             {MailAssignments}
             {RevenueReports}
             {ViewMail}
+            {LeaveRequest}
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (

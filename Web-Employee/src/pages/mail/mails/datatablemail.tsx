@@ -66,7 +66,7 @@ export function DataTable<TData, TValue>({
                     ))}
                       <TableCell>
                 <div className="flex flex-end gap-2">
-                <Button className="btn btn-primary bg-slate-400">View</Button>
+                <Button className="btn btn-primary rounded-full bg-sky-600" size={"sm"}>Pending</Button>
                 </div>
                 </TableCell>
                   </TableRow>

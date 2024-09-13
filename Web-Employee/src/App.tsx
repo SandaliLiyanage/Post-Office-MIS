@@ -10,6 +10,7 @@ import Emp from "./pages/employees/PageEmpRecords";
 import Bundle from "./pages/mail/bundles/PageBundles";
 import Mails from "./pages/mail/mails/mail";
 import Employeeupdate from "./pages/employees/PageEmpUpdate";
+import RevenueReports from  "./pages/reports/PageRevenueReports"
 function App() {
   return (
     
@@ -25,12 +26,13 @@ function App() {
           <Route path="mailbundles" element={<Bundle/>}/>
           <Route path="viewleaverequests" element={<></>}></Route>
           <Route path="viewmailassignments" element={<Mails/>}></Route>
-          <Route path="revenuereports" element={<></>}></Route>
+          <Route path="revenuereports" element={<RevenueReports/>}></Route>
           <Route path="employeeregistrations" element={<EmpRegistration/>}></Route>
           <Route path="postmanassignments" element={<></>}></Route>
           <Route path="mailassignments" element={<></>}></Route>
           <Route path="viewmail" element={<Mails/>}></Route>
           <Route path="view" element={<Employeeupdate/>}></Route>
+          
         </Route>
       </Routes>
     </Router>

@@ -112,6 +112,11 @@ export default function MailDetails() {
         description: "Fill mail type and weight",
       });
     }
+    if ( weight > 2000 || weight<0 ) {
+      toast({
+        description: "Weight should be within 0 and 2000",
+      });
+    }
     const calculationData = { mailType, weight };
     const response = await axios.post(
       "http://localhost:5000/mail/calculatePrice",

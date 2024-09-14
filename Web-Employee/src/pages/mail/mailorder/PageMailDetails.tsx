@@ -1,5 +1,5 @@
 "use client";
-
+import { generateInvoice } from "./generatePDF";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { set, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -28,7 +28,7 @@ import {
 } from "@/components/ui/command";
 import { useEffect } from "react";
 import { Label } from "../../../components/ui/label";
-import { generateInvoice } from "./generatePDF";
+
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
 import {CardMail} from "./cardMail";
@@ -45,7 +45,8 @@ const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
   address: z.string().min(1, {}),
-  weight: z.string().min(1, {}),
+  weight: z.coerce.number().min(1, { message: "Weight must be at least 1" }) 
+  .max(2000, { message: "Weight cannot exceed 2000" }),
 });
 
 export type MailDetailsType = {
@@ -53,7 +54,7 @@ export type MailDetailsType = {
   mailType: string;
   recepientName: string;
   address: string;
-  weight: string;
+  weight: number;
   
 };
 
@@ -70,11 +71,7 @@ export default function MailDetails() {
   const [addressMap, setAddressMap] = useState<{
     [key: string]: number;
   } | null>(null);
-  const [mailArray, setMailArray] = useState<{
-    [key: string]: MailDetailsType;
-  } | null>(null);
-
-
+  const [mailArray, setMailArray] = useState<MailDetailsType[]>([]);
 
   const navigate = useNavigate();
 
@@ -84,7 +81,7 @@ export default function MailDetails() {
       mailType: "",
       recepientName: "",
       address: "",
-      weight: ""
+      weight: undefined
      
     },
   });
@@ -110,7 +107,7 @@ export default function MailDetails() {
   //calculate price of the mail
   async function onClickCalculate() {
     const { mailType, weight } = form.getValues();
-    if (mailType === "" || weight === "") {
+    if (mailType === "" || weight === undefined) {
       toast({
         description: "Fill mail type and weight",
       });
@@ -144,6 +141,7 @@ export default function MailDetails() {
           array.push(i);
         });
         array.push(mailDetails);
+        setMailArray(array)
         localStorage.setItem("mail details", JSON.stringify(array));
         setConfirm(true);
         const console2 = localStorage.getItem("mail details");
@@ -153,6 +151,7 @@ export default function MailDetails() {
         array.push(mailDetails);
         localStorage.setItem("mail details", JSON.stringify(array));
         setConfirm(true);
+        setMailArray(array)
       }
     } catch (error) {
       console.error("Error submitting data", error);
@@ -202,7 +201,7 @@ export default function MailDetails() {
     }
     console.log("in", mailArray);
   };
-
+  
   return (
     <div className="flex overflow-hidden ">
       <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
@@ -210,18 +209,8 @@ export default function MailDetails() {
           <p className="text-xl font-bold">Mail Order</p>
 
           <div className="flex justify-end gap-2 ">
-            <Button
-              type="submit"
-              className="bg-white border-b-2 border border-slate-300 text-slate-800"
-              onClick={() => {
-                if (confirm) {
-                  location.reload();
-                }
-                setConfirm(false);
-              }}
-            >
-              Add new mail item
-            </Button>
+         
+            
           </div>
         </div>
         <Form {...form}>
@@ -307,7 +296,7 @@ export default function MailDetails() {
           render={({ field }) => (
             <FormItem>
               <FormLabel>Mail Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} defaultValue={field.value}> 
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Mail Type " className="text-slate-500" />
@@ -332,7 +321,7 @@ export default function MailDetails() {
                   <FormItem>
                     <FormLabel>Weight</FormLabel>
                     <FormControl>
-                      <Input placeholder="Weight" {...field} />
+                      <Input placeholder="Weight"   {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -359,13 +348,29 @@ export default function MailDetails() {
                   <div className="bg-stone-300 bg-opacity-10 p-2 border-opacity-45">{price}</div>
                 )}
               </div>
+
               <div className="flex justify-end gap-2 ">
-                <Button type="submit"   className="bg-white border border-slate-300  text-slate-800">
+
+                <Button type="submit" className="bg-white border border-slate-300  text-slate-800">
                   Save Mail Details
                 </Button>
-                <Button type="button" className="bg-white border border-slate-300 text-slate-800">
-                  Print Barcode
-                </Button>
+
+                <Button
+              type="button"
+              className="bg-white border-b-2 border border-slate-300 text-slate-800"
+              onClick={() => {
+                if (confirm) {
+                  // form.reset()
+                  // setSearch("")
+                  // setPrice(null)
+                  location.reload()
+                  
+                }
+                setConfirm(false);
+              }}>
+              Add new mail item
+            </Button>
+
                
                 <Toaster />
               </div>
@@ -373,10 +378,11 @@ export default function MailDetails() {
           </form>
         </Form>
         <div className="mt-5 flex justify-end">
-      <div className="bottom-0 m-5 absolute">
-      <Button
+      <div >
+      
+      <Button 
         type="button"
-        className="bg-teal-600 "
+        className="bg-slate-600 "
         onClick={() => {
           const localMailStorage =
             localStorage.getItem("mail details");
@@ -400,7 +406,7 @@ export default function MailDetails() {
       </div>
       
       <div className="flex-1 overflow-auto">
-          <CardMail/>
+          <CardMail mailArray={mailArray} confirm ={ confirm}  price={price}/>
       </div>
     </div>
   );

@@ -37,7 +37,7 @@ export default function Nav() {
           </div>
           <div className="grid gap-2">
           
-              <Button className="rounded-full text-white border border-white" onClick={()=> {{removeUser}; navigate('/')}}  >Logout</Button>
+              <Button className="rounded-full text-white border bg-slate-700 border-white" onClick={()=> {{removeUser}; navigate('/')}}  >Logout</Button>
               <Button className="rounded-full text-white border border-white">Change Password</Button>
             </div>      
           </div>

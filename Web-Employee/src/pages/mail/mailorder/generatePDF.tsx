@@ -5,7 +5,7 @@ type MailDetails = {
   mailType: string;
   recepientName: string;
   address: string;
-  weight: string;
+  weight: number;
 };
 
 const generateInvoice = (name: string, telephone: string, mailArray: MailDetails[]) => {

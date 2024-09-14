@@ -97,7 +97,7 @@ export default function MailOrder() {
         <p className="text-xl font-bold">Mail Order</p>
       </div>
       <Form {...form}>
-       
+        
           <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-4 mb-4">
             <FormField

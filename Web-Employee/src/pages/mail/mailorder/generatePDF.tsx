@@ -5,12 +5,12 @@ type MailDetails = {
   mailType: string;
   recepientName: string;
   address: string;
-  weight: string;
+  weight: number;
 };
 
 const generateInvoice = (name: string, telephone: string, mailArray: MailDetails[]) => {
   console.log("generating pdf");
-
+  const date = new Date().toDateString()
   const props = {
     outputType: OutputType.Save, // To save the PDF
     returnJsPDFDocObject: true,  // Return jsPDF object if needed
@@ -35,16 +35,14 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
    
     },
     contact: {
-      label: "Invoice issued for:",
+      label: "Customer Name:",
       name: name,
       address: "Albania, Tirane, Astir",
       phone: telephone,
     },
     invoice: {
-      label: "Invoice #: ",
-      num: 19,
-      invDate: "Payment Date: 01/01/2024 18:12",
-      invGenDate: "Invoice Date: 02/02/2024 10:17",
+      
+      invDate: date,
       header: [
         { title: "#", style: { width: 10 } },
         { title: "Mail Type", style: { width: 30 } },
@@ -52,13 +50,14 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
         { title: "Weight", style: { width: 20 } },
         { title: "Price", style: { width: 20 } }
       ],
-      //--+++++++++++++++++++++++++Format the table with all fields from mailArray
+      
       table: mailArray.map((m, i) => [
         i + 1,
         m.mailType,
         m.address,
         m.weight,
-        typeof m.price === "number" ? `$${m.price.toFixed(2)}` : "N/A", // Format price or show "N/A"
+        m.price
+        // typeof m.price === "number" ? `$${m.price.toFixed(2)}` : "N/A", // Format price or show "N/A"
       ]),
       invDescLabel: "Invoice Note",
       invDesc: "Thank you for your business!",

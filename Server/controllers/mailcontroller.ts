@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { BundleRepository } from "../repositeries/bundlerepository";
-import {TransactionRepository} from "../repositeries/transactionrepository"
+import { TransactionRepository } from "../repositeries/transactionrepository";
 import MailService from "../services/mailservice";
 
 const transactionRepository = new TransactionRepository();
@@ -28,18 +28,22 @@ const MailDetails = async (req: Request, res: Response) => {
   console.log("Request received in mail details", req.body);
   const mailArray = req.body.mailArray;
   const cutomerDetails = req.body.customerDetails.values;
-  const {addressID, postalCode} = req.body.customerDetails
-  const currentPostCode = postalCode
-  const {customerName, telephone} = cutomerDetails
-  console.log("hyikjk;" ,customerName, telephone, addressID)
-  const amount = 40
-  const transaction = await transactionRepository.createTransactoin(telephone,customerName, amount, addressID )
-  console.log(transaction)
-  const transactionID  = transaction.transactionID 
-  console.log("dfk", mailArray, transactionID)
-  mailService.insertMail(mailArray, transactionID, postalCode)
-  
-}
+  const { addressID, postalCode } = req.body.customerDetails;
+  const currentPostCode = postalCode;
+  const { customerName, telephone } = cutomerDetails;
+  console.log("hyikjk;", customerName, telephone, addressID);
+  const amount = 40;
+  const transaction = await transactionRepository.createTransactoin(
+    telephone,
+    customerName,
+    amount,
+    addressID
+  );
+  console.log(transaction);
+  const transactionID = transaction.transactionID;
+  console.log("dfk", mailArray, transactionID);
+  mailService.insertMail(mailArray, transactionID, postalCode);
+};
 
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail");
@@ -75,7 +79,7 @@ export const getMailItems2 = async (req: Request, res: Response) => {
     // );
 
     // Optionally log or process the counts if needed
-    console.log("Delivery counts fetched:", mailItems);
+    console.log("Mail items fetched:", mailItems);
 
     return res.status(200).json(mailItems); // 200 status code for OK
   } catch (error) {

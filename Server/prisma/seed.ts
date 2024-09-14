@@ -135,7 +135,9 @@ async function main() {
   // Seed Bundles
   const bundle = await prisma.bundle.create({
     data: {
+      bundleID: 1,
       destPostalCode: subOffice.postalCode,
+      currentPostCode: subOffice.postalCode,
     },
   });
 

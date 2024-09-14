@@ -40,25 +40,49 @@ var client_1 = require("@prisma/client");
 var prisma = new client_1.PrismaClient();
 function deleteAllRecords() {
     return __awaiter(this, void 0, void 0, function () {
-        var result, error_1;
+        var error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 2, 3, 5]);
-                    return [4 /*yield*/, prisma.employee.deleteMany({})];
+                    _a.trys.push([0, 10, 11, 13]);
+                    return [4 /*yield*/, prisma.mail.deleteMany({})];
                 case 1:
-                    result = _a.sent();
-                    console.log('All records deleted:', result);
-                    return [3 /*break*/, 5];
+                    _a.sent();
+                    return [4 /*yield*/, prisma.bundle.deleteMany({})];
                 case 2:
-                    error_1 = _a.sent();
-                    console.error('Error deleting records:', error_1);
-                    return [3 /*break*/, 5];
-                case 3: return [4 /*yield*/, prisma.$disconnect()];
+                    _a.sent();
+                    return [4 /*yield*/, prisma.transaction.deleteMany({})];
+                case 3:
+                    _a.sent();
+                    return [4 /*yield*/, prisma.address.deleteMany({})];
                 case 4:
+                    _a.sent();
+                    return [4 /*yield*/, prisma.area.deleteMany({})];
+                case 5:
+                    _a.sent();
+                    return [4 /*yield*/, prisma.leave.deleteMany({})];
+                case 6:
+                    _a.sent();
+                    return [4 /*yield*/, prisma.employee.deleteMany({})];
+                case 7:
+                    _a.sent();
+                    return [4 /*yield*/, prisma.postOffice.deleteMany({})];
+                case 8:
+                    _a.sent();
+                    return [4 /*yield*/, prisma.mailCategory.deleteMany({})];
+                case 9:
+                    _a.sent();
+                    console.log("All records deleted:");
+                    return [3 /*break*/, 13];
+                case 10:
+                    error_1 = _a.sent();
+                    console.error("Error deleting records:", error_1);
+                    return [3 /*break*/, 13];
+                case 11: return [4 /*yield*/, prisma.$disconnect()];
+                case 12:
                     _a.sent(); // Always disconnect after operations
                     return [7 /*endfinally*/];
-                case 5: return [2 /*return*/];
+                case 13: return [2 /*return*/];
             }
         });
     });

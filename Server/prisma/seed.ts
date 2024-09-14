@@ -146,11 +146,10 @@ async function main() {
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
       bundleID: bundle.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory1.mailCategoryName,
+      mailType: ,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,

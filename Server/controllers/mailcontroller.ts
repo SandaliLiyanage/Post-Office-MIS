@@ -65,21 +65,7 @@ export const getMailItems2 = async (req: Request, res: Response) => {
     // Fetch mail details from the repository
     const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
 
-    // Group mail items by category
-    // const categorizedMailItems = mailItems.reduce(
-    //   (mail: { [key: string]: any[] }, item) => {
-    //     const category = item.mailCategoryName;
-    //     if (!mail[category]) {
-    //       mail[category] = [];
-    //     }
-    //     mail[category].push(item);
-    //     return mail;
-    //   },
-    //   {}
-    // );
-
-    // Optionally log or process the counts if needed
-    console.log("Mail items fetched:", mailItems);
+    // console.log("Mail items fetched:", mailItems);
 
     return res.status(200).json(mailItems); // 200 status code for OK
   } catch (error) {

@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import { IP } from "../../../config";
 
 const Mail = () => {
   const [mails, setMails] = useState([]);
@@ -17,8 +18,7 @@ const Mail = () => {
     const fetchMails = async () => {
       try {
         const response = await fetch(
-          //"http://localhost:5000/mail/employee2?employeeID=0002"
-          "http://192.168.1.8:5000/mail/employee2?employeeID=0002"
+          `http://${IP}:5000/mail/employee2?employeeID=0002`
         );
         const data = await response.json();
         setMails(data);

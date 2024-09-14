@@ -47,7 +47,7 @@ const Mail = () => {
   // Render each mail item
   interface MailItem {
     mailID: string;
-    mailCategoryName: string;
+    mailType: string;
     mailstatus: string;
   }
 
@@ -57,7 +57,7 @@ const Mail = () => {
       onPress={() => handlePress(item.mailID)}
     >
       <Text style={styles.mailId}>Mail ID: {item.mailID}</Text>
-      <Text style={styles.mailCategory}>Category: {item.mailCategoryName}</Text>
+      <Text style={styles.mailCategory}>Category: {item.mailType}</Text>
       <Text style={styles.mailStatus}>{item.mailstatus}</Text>
     </TouchableOpacity>
   );

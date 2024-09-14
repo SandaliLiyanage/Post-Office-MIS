@@ -90,7 +90,7 @@ export const getMailItems = async (req: Request, res: Response) => {
     // Group mail items by category
     const categorizedMailItems = mailItems.reduce(
       (mail: { [key: string]: any[] }, item) => {
-        const category = item.mailCategoryName;
+        const category = item.mailType;
         if (!mail[category]) {
           mail[category] = [];
         }

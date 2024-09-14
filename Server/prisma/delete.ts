@@ -12,7 +12,6 @@ async function deleteAllRecords() {
     await prisma.leave.deleteMany({});
     await prisma.employee.deleteMany({});
     await prisma.postOffice.deleteMany({});
-    await prisma.mailCategory.deleteMany({});
     console.log("All records deleted:");
   } catch (error) {
     console.error("Error deleting records:", error);

@@ -61,27 +61,25 @@ model Address {
   mail          Mail[]
 }
 
-model MailCategory {
-  mailCategoryName  String    @id
-  PricePer1kg   Decimal?    @db.Decimal(10, 2)
-  mail    Mail[]
+enum MailType {
+  NORMAL_MAIL
+  BULK_MAIL
+  REGISTERED_MAIL
+  COURIER
 }
 
 
-
 model Mail {
+  mailType          MailType
   recepientName      String  
   recepientAddressID         Int
   mailID         Int         @id @default(autoincrement())
-  recepientTelephone  String
   address           Address @relation(fields: [recepientAddressID], references: [addressID])
   bundleID          Int       
   bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
   mailstatus        MailStatus  @default(IN_TRANSIT)
   transactionID     Int
   transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
-  mailCategory      MailCategory  @relation(fields: [mailCategoryName], references: [mailCategoryName])
-  mailCategoryName    String
   weight            Decimal?    @db.Decimal(10, 2)
   price             Decimal?       @db.Decimal(10,2)
   postalCode        String

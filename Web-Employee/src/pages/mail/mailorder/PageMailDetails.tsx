@@ -112,12 +112,12 @@ export default function MailDetails() {
         description: "Fill mail type and weight",
       });
     }
-    if ( weight > 2000 || weight<0 ) {
+    else if ( weight > 2000 || weight<0 ) {
       toast({
         description: "Weight should be within 0 and 2000",
       });
-    }
-    const calculationData = { mailType, weight };
+    }else{
+      const calculationData = { mailType, weight };
     const response = await axios.post(
       "http://localhost:5000/mail/calculatePrice",
       calculationData,
@@ -130,6 +130,8 @@ export default function MailDetails() {
     console.log("Data submitted successfully", response.data);
     setError(null);
     setPrice(response.data);
+    }
+    
   }
 
   //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
@@ -171,9 +173,14 @@ export default function MailDetails() {
     if (search.length > 0) {
       form.setValue("address", search);
     }
+    const customerDetails = localStorage.getItem("customerDetails")
+    if(!customerDetails){
+      navigate("/dashboard/mailorder")
+    }
   }, [search]);
 
   const onConfirmTransaction = async function (mailArray: MailDetailsType[]) {
+    if(mailArray.length > 0){
     toast({
       description: "Transaction Completed",
     });
@@ -203,11 +210,16 @@ export default function MailDetails() {
       localStorage.removeItem("customerDetails");
       navigate("/dashboard/mailorder");
       console.log("Data submitted successfully", response.data);
+    }else{
+      toast({
+        description: "Zero mails added",
+      });
     }
     console.log("in", mailArray);
   };
-  
+  } 
   return (
+    
     <div className="flex overflow-hidden ">
       <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
         <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
@@ -309,7 +321,7 @@ export default function MailDetails() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="normal mail">normal mail</SelectItem>
-                  <SelectItem value="register mail">register mail</SelectItem>
+                  <SelectItem value="registered mail">register mail</SelectItem>
                   <SelectItem value="courier">courier</SelectItem>
                   <SelectItem value="bulk mail">bulk mail</SelectItem>
                 </SelectContent>
@@ -396,7 +408,10 @@ export default function MailDetails() {
             console.log("in if", JSON.parse(localMailStorage));
 
             localStorage.removeItem("mail details");
+            localStorage.removeItem("customerDetails")
+            navigate("/dashboard/mailorder")
           }
+
         }}
       >
         <Toaster />

@@ -10,10 +10,11 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 
+// Scan screen
 export default function Scan() {
   const [hasPermission, setHasPermission] = useState(false); // State variable to track if the user has granted camera permissions
   const qrLock = useRef(false); // Ref object to manage a lock to prevent multiple scans
-  const appState = useRef(AppState.currentState);
+  const appState = useRef(AppState.currentState); // Ref object to store the app state
 
   // Request camera permission
   useEffect(() => {
@@ -24,6 +25,7 @@ export default function Scan() {
 
     // Handle app state changes to reset the lock
     const subscription = AppState.addEventListener("change", (nextAppState) => {
+      // Reset the lock when the app is in the background or inactive
       if (
         appState.current.match(/inactive|background/) &&
         nextAppState === "active"
@@ -33,6 +35,7 @@ export default function Scan() {
       appState.current = nextAppState;
     });
 
+    // Remove the event listener when the component is unmounted
     return () => {
       subscription.remove();
     };
@@ -41,9 +44,10 @@ export default function Scan() {
   // Handle barcode data processing
   const handleBarcodeScanned = ({ data }: { data: string }) => {
     if (data && !qrLock.current) {
-      qrLock.current = true;
+      qrLock.current = true; // Lock the scanner to prevent multiple scans
       console.log("Scanned data:", data);
 
+      // Show an alert with the scanned
       Alert.alert(
         "Scan Successful",
         `Scanned Data: ${data}`,
@@ -51,15 +55,16 @@ export default function Scan() {
           {
             text: "Scan Again",
             onPress: () => {
-              qrLock.current = false;
+              qrLock.current = false; // Unlock the scanner
             },
           },
         ],
-        { cancelable: false }
+        { cancelable: false } // Prevent the user from dismissing the alert
       );
     }
   };
 
+  // // Handle case where the camera permission is still being requested
   if (hasPermission === null) {
     return (
       <SafeAreaView style={styles.container}>
@@ -68,6 +73,7 @@ export default function Scan() {
     );
   }
 
+  // Handle case where the camera permission was denied
   if (hasPermission === false) {
     return (
       <SafeAreaView style={styles.container}>
@@ -76,17 +82,19 @@ export default function Scan() {
     );
   }
 
+  // Render the camera view
   return (
     <SafeAreaView style={StyleSheet.absoluteFillObject}>
       <CameraView
         style={StyleSheet.absoluteFillObject}
-        facing="back"
-        onBarcodeScanned={handleBarcodeScanned}
+        facing="back" // Use the back camera
+        onBarcodeScanned={handleBarcodeScanned} // Handle barcode scanning
       />
     </SafeAreaView>
   );
 }
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

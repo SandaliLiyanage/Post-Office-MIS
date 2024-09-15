@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { IP } from "../../../config";
 
+// Home screen component
 const Home = () => {
   // State to store user data
   const [userData, setUserData] = useState<{
@@ -79,6 +80,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* User data */}
       {userData && ( // Check if userData is not null
         <View style={styles.profDetailsContainer}>
           {/* <Image
@@ -92,11 +94,14 @@ const Home = () => {
           </View>
         </View>
       )}
+
+      {/* Delivery counts */}
       {deliveryCounts && ( // Check if deliveryCounts is not null
         <View style={styles.deliveriesContainer}>
           <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
 
           <View style={styles.deliveryTypes}>
+            {/* Normal mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
                 {deliveryCounts.NORMAL_MAIL}
@@ -104,6 +109,7 @@ const Home = () => {
               <Text style={styles.deliveryLabel}>Normal</Text>
             </View>
 
+            {/* Registered mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
                 {deliveryCounts.REGISTERED_MAIL}
@@ -111,6 +117,7 @@ const Home = () => {
               <Text style={styles.deliveryLabel}>Registered</Text>
             </View>
 
+            {/* Parcel */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>{deliveryCounts.COURIER}</Text>
               <Text style={styles.deliveryLabel}>Parcel</Text>
@@ -119,6 +126,7 @@ const Home = () => {
         </View>
       )}
 
+      {/* Actions */}
       <View style={styles.actionsContainer}>
         <TouchableOpacity style={styles.actionButton}>
           <Image
@@ -156,6 +164,7 @@ const Home = () => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

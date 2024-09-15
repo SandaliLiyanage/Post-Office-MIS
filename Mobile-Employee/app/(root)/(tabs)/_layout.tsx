@@ -31,7 +31,7 @@ const Header = () => {
       <Text
         style={{
           position: "absolute",
-          left: 10,
+          left: 14,
           top: 5,
           color: "#fff",
           fontSize: 24,
@@ -47,7 +47,7 @@ const Header = () => {
         <Image
           source={icons.notifications}
           style={{
-            left: 325,
+            left: 339,
             top: 10,
             width: 30,
             height: 30,

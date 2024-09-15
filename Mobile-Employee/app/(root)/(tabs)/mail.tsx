@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
   mailItem: {
     padding: 12,
     marginBottom: 10,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#F0F0F0",
     borderRadius: 8,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },

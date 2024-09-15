@@ -110,7 +110,7 @@ export const getMailItems = async (req: Request, res: Response) => {
     );
 
     // Optionally log or process the counts if needed
-    // console.log("Delivery counts fetched:", categoryCounts);
+    console.log("Delivery counts fetched:", categoryCounts);
 
     return res.status(200).json(categoryCounts); // 200 status code for OK
   } catch (error) {

@@ -22,9 +22,9 @@ const Home = () => {
 
   // State to store delivery counts
   const [deliveryCounts, setDeliveryCounts] = useState<{
-    Normal: number;
-    Registered: number;
-    Parcel: number;
+    NORMAL_MAIL: number;
+    REGISTERED_MAIL: number;
+    COURIER: number;
   } | null>(null); // Set the initial value null
 
   // State to store loading status
@@ -98,19 +98,21 @@ const Home = () => {
 
           <View style={styles.deliveryTypes}>
             <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>{deliveryCounts.Normal}</Text>
+              <Text style={styles.deliveryCount}>
+                {deliveryCounts.NORMAL_MAIL}
+              </Text>
               <Text style={styles.deliveryLabel}>Normal</Text>
             </View>
 
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.Registered}
+                {deliveryCounts.REGISTERED_MAIL}
               </Text>
               <Text style={styles.deliveryLabel}>Registered</Text>
             </View>
 
             <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>{deliveryCounts.Parcel}</Text>
+              <Text style={styles.deliveryCount}>{deliveryCounts.COURIER}</Text>
               <Text style={styles.deliveryLabel}>Parcel</Text>
             </View>
           </View>

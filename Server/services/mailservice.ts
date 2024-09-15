@@ -29,8 +29,6 @@ class MailService {
               enumMail = MailType.NORMAL_MAIL
             } if (mailType == "registered mail"){
               enumMail = MailType.REGISTERED_MAIL 
-            } if (mailType == "bulk mail"){
-              enumMail = MailType.BULK_MAIL 
             } if (mailType == "courier"){
               enumMail = MailType.COURIER 
             }
@@ -62,10 +60,9 @@ class MailService {
       if (weight > 25000 && weight <= 30000) return '2100.00';
       if (weight > 30000 && weight <= 35000) return '2600.00';
       if (weight > 35000 && weight <= 40000) return '3100.00';
-  
       return 'Rate not available for the entered weight';
     }else{
-      return '40'
+      return '40.00'
     }
       
     }

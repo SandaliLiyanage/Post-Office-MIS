@@ -5,6 +5,7 @@ import {
   LeaveType,
   RequestStatus,
   MailStatus,
+  MailType,
 } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -19,7 +20,6 @@ async function main() {
   await prisma.leave.deleteMany({});
   await prisma.employee.deleteMany({});
   await prisma.postOffice.deleteMany({});
-  await prisma.mailCategory.deleteMany({});
 
   // Seed Post Offices
   const headOffice = await prisma.postOffice.create({
@@ -99,28 +99,6 @@ async function main() {
     },
   });
 
-  // Seed Mail Categories
-  const mailCategory1 = await prisma.mailCategory.create({
-    data: {
-      mailCategoryName: "Normal",
-      PricePer1kg: 5.0,
-    },
-  });
-
-  const mailCategory2 = await prisma.mailCategory.create({
-    data: {
-      mailCategoryName: "Registered",
-      PricePer1kg: 10.0,
-    },
-  });
-
-  const mailCategory3 = await prisma.mailCategory.create({
-    data: {
-      mailCategoryName: "Parcel",
-      PricePer1kg: 15.0,
-    },
-  });
-
   // Seed Transactions
   const transaction = await prisma.transaction.create({
     data: {
@@ -133,9 +111,11 @@ async function main() {
   });
 
   // Seed Bundles
-  const bundle = await prisma.bundle.create({
+  const bundle1 = await prisma.bundle.create({
     data: {
+      bundleID: 1,
       destPostalCode: subOffice.postalCode,
+      currentPostCode: subOffice.postalCode,
     },
   });
 
@@ -144,11 +124,10 @@ async function main() {
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory1.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
@@ -159,11 +138,10 @@ async function main() {
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory1.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
@@ -174,137 +152,178 @@ async function main() {
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory1.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory1.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory1.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory2.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory2.mailCategoryName,
+      mailType: MailType.NORMAL_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory2.mailCategoryName,
+      mailType: MailType.REGISTERED_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory2.mailCategoryName,
+      mailType: MailType.REGISTERED_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory3.mailCategoryName,
+      mailType: MailType.REGISTERED_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory3.mailCategoryName,
+      mailType: MailType.REGISTERED_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,
     },
   });
+
   await prisma.mail.create({
     data: {
       recepientName: "Bob Williams",
       recepientAddressID: address2.addressID,
-      recepientTelephone: "555987654",
       postalCode: headOffice.postalCode,
-      bundleID: bundle.bundleID,
+      bundleID: bundle1.bundleID,
       transactionID: transaction.transactionID,
-      mailCategoryName: mailCategory3.mailCategoryName,
+      mailType: MailType.COURIER,
+      weight: 1.2,
+      price: 6.0,
+      mailstatus: MailStatus.IN_TRANSIT,
+    },
+  });
+
+  await prisma.mail.create({
+    data: {
+      recepientName: "Bob Williams",
+      recepientAddressID: address2.addressID,
+      postalCode: headOffice.postalCode,
+      bundleID: bundle1.bundleID,
+      transactionID: transaction.transactionID,
+      mailType: MailType.COURIER,
+      weight: 1.2,
+      price: 6.0,
+      mailstatus: MailStatus.IN_TRANSIT,
+    },
+  });
+
+  await prisma.mail.create({
+    data: {
+      recepientName: "Bob Williams",
+      recepientAddressID: address2.addressID,
+      postalCode: headOffice.postalCode,
+      bundleID: bundle1.bundleID,
+      transactionID: transaction.transactionID,
+      mailType: MailType.COURIER,
+      weight: 1.2,
+      price: 6.0,
+      mailstatus: MailStatus.IN_TRANSIT,
+    },
+  });
+
+  await prisma.mail.create({
+    data: {
+      recepientName: "Bob Williams",
+      recepientAddressID: address2.addressID,
+      postalCode: headOffice.postalCode,
+      bundleID: bundle1.bundleID,
+      transactionID: transaction.transactionID,
+      mailType: MailType.REGISTERED_MAIL,
       weight: 1.2,
       price: 6.0,
       mailstatus: MailStatus.IN_TRANSIT,

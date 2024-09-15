@@ -51,14 +51,36 @@ const Mail = () => {
     mailstatus: string;
   }
 
+  const mailTypeNames: { [key: string]: string } = {
+    NORMAL_MAIL: "Normal Mail",
+    REGISTERED_MAIL: "Registered Mail",
+    COURIER: "Parcel",
+  };
+
+  const getMailTypeName = (mailType: string): string => {
+    return mailTypeNames[mailType] || "Unknown Type";
+  };
+
+  const mailStatusNames: { [key: string]: string } = {
+    DELIVERED: "Delivered",
+    IN_TRANSIT: "To be Delivered",
+    RETURNED: "Returned",
+  };
+
+  const getMailStatusName = (mailStatus: string): string => {
+    return mailStatusNames[mailStatus] || "Unknown Status";
+  };
+
   const renderItem = ({ item }: { item: MailItem }) => (
     <TouchableOpacity
       style={styles.mailItem}
       onPress={() => handlePress(item.mailID)}
     >
       <Text style={styles.mailId}>Mail ID: {item.mailID}</Text>
-      <Text style={styles.mailCategory}>Category: {item.mailType}</Text>
-      <Text style={styles.mailStatus}>{item.mailstatus}</Text>
+      <Text style={styles.mailCategory}>{getMailTypeName(item.mailType)}</Text>
+      <Text style={styles.mailStatus}>
+        {getMailStatusName(item.mailstatus)}
+      </Text>
     </TouchableOpacity>
   );
 

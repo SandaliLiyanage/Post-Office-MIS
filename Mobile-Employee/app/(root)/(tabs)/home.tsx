@@ -10,10 +10,22 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { ROUTES } from "./routes";
 import { IP } from "../../../config";
 
 // Home screen component
 const Home = () => {
+  const router = useRouter(); // Call useRouter at the top level of the component
+
+  // Define a type for the available routes
+  type RouteKeys = keyof typeof ROUTES;
+
+  // Handle navigation by pushing the route
+  const handleNavigation = (routeName: RouteKeys) => {
+    router.push(ROUTES[routeName] as any); // Navigate to the selected route
+  };
+
   // State to store user data
   const [userData, setUserData] = useState<{
     employeeName: string;
@@ -128,7 +140,10 @@ const Home = () => {
 
       {/* Actions */}
       <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("STATUS")}
+        >
           <Image
             source={require("../../../assets/icons/status.png")}
             style={styles.actionIcon}
@@ -136,7 +151,10 @@ const Home = () => {
           <Text style={styles.actionText}>Status</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("ADD_ADDRESS")}
+        >
           <Image
             source={require("../../../assets/icons/address.png")}
             style={styles.actionIcon}
@@ -144,7 +162,10 @@ const Home = () => {
           <Text style={styles.actionText}>Add Address</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("LEAVES")}
+        >
           <Image
             source={require("../../../assets/icons/leave.png")}
             style={styles.actionIcon}
@@ -152,7 +173,10 @@ const Home = () => {
           <Text style={styles.actionText}>Leaves</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("FEEDBACK")}
+        >
           <Image
             source={require("../../../assets/icons/feedback.png")}
             style={styles.actionIcon}

@@ -4,8 +4,8 @@ import { Redirect } from "expo-router";
 
 const Index = () => {
   // user is dericted to the login page
-  //return <Redirect href="/(auth)/log-in" />;
-  return <Redirect href="/(root)/(tabs)/home" />;
+  //return <Redirect href="/log-in" />;
+  return <Redirect href="/home" />;
 };
 
 export default Index;

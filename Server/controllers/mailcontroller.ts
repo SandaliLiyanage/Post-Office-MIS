@@ -42,7 +42,9 @@ const MailDetails = async (req: Request, res: Response) => {
   console.log(transaction);
   const transactionID = transaction.transactionID;
   console.log("dfk", mailArray, transactionID);
-  mailService.insertMail(mailArray, transactionID, postalCode);
+  const result = await mailService.insertMail(mailArray, transactionID, postalCode);
+  console.log(result, "mail list")
+  return res.status(200).json(result);
 };
 
 const Mails = async (req: Request, res: Response) => {

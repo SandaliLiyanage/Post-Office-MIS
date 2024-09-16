@@ -1,4 +1,4 @@
-import { PrismaClient, Mail, MailType } from "@prisma/client";
+import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class MailRepository {
@@ -83,7 +83,7 @@ class MailRepository {
   }
 
   // Update the mail status
-  updateMailStatus = async (mailID: string, newStatus: string) => {
+  updateMailStatus = async (mailID: number, newStatus: MailStatus) => {
     return await prisma.mail.update({
       where: { mailID },
       data: { mailstatus: newStatus },

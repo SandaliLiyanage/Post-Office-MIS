@@ -10,8 +10,14 @@ import {
 import { IP } from "../../../config";
 
 // Status screen component
+interface Mail {
+  mailID: string;
+  mailType: string;
+  mailstatus: string;
+}
+
 const Status = () => {
-  const [mail, setMail] = useState(null);
+  const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
 
@@ -44,7 +50,7 @@ const Status = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ mailID: mail.mailID, newStatus }),
+        body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
       });
       setUpdating(false);
       // Fetch the next mail item after status update

@@ -154,11 +154,15 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   const { mailID, newStatus } = req.body;
 
   try {
-    await MailRepository.updateMailStatus(mailID, newStatus);
-    return res.json({ message: "Mail status updated successfully." });
+    // Call the method on the instance
+    const updatedMail = await mailRepository.updateMailStatus(
+      mailID,
+      newStatus
+    );
+    res.status(200).json(updatedMail);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Error updating mail status." });
+    console.error("Error updating mail status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

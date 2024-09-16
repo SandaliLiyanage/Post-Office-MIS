@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { IP } from "../../../config";
+import { useFocusEffect } from "@react-navigation/native"; // Import useFocusEffect
 
 // Mail screen component
 const Mail = () => {
@@ -19,28 +20,30 @@ const Mail = () => {
   const [loading, setLoading] = useState(true);
 
   // Fetch mail items from the backend
-  useEffect(() => {
-    const fetchMails = async () => {
-      try {
-        const response = await fetch(
-          `http://${IP}:5000/mail/employee2?employeeID=0002`
-        );
-        const data = await response.json(); // Parse JSON data into an JavaScript object
-        setMails(data); // Update the mails state with the fetched data
-      } catch (error) {
-        console.error("Error fetching mail items:", error);
-      }
-    };
+  const fetchMails = async () => {
+    try {
+      const response = await fetch(
+        `http://${IP}:5000/mail/employee2?employeeID=0002`
+      );
+      const data = await response.json(); // Parse JSON data into a JavaScript object
+      setMails(data); // Update the mails state with the fetched data
+    } catch (error) {
+      console.error("Error fetching mail items:", error);
+    }
+  };
 
-    // Fetch the mail data
-    const fetchData = async () => {
-      setLoading(true);
-      await Promise.all([fetchMails()]); // Ensure fetchMails completes before setting loading to false
-      setLoading(false);
-    };
+  // Use useFocusEffect to refresh the list when the screen is focused
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchData = async () => {
+        setLoading(true);
+        await fetchMails(); // Ensure fetchMails completes before setting loading to false
+        setLoading(false);
+      };
 
-    fetchData();
-  }, []);
+      fetchData();
+    }, [])
+  );
 
   // Handle mail item press
   const handlePress = (id: string) => {

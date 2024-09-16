@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ROUTES } from "./routes";
-import { IP } from "../../config";
+import { IP } from "../../../config";
 
 // Home screen component
 const Home = () => {
@@ -145,7 +145,7 @@ const Home = () => {
           onPress={() => handleNavigation("STATUS")}
         >
           <Image
-            source={require("../../assets/icons/status.png")}
+            source={require("../../../assets/icons/status.png")}
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Status</Text>
@@ -156,7 +156,7 @@ const Home = () => {
           onPress={() => handleNavigation("ADD_ADDRESS")}
         >
           <Image
-            source={require("../../assets/icons/address.png")}
+            source={require("../../../assets/icons/address.png")}
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Add Address</Text>
@@ -167,7 +167,7 @@ const Home = () => {
           onPress={() => handleNavigation("LEAVES")}
         >
           <Image
-            source={require("../../assets/icons/leave.png")}
+            source={require("../../../assets/icons/leave.png")}
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Leaves</Text>
@@ -178,7 +178,7 @@ const Home = () => {
           onPress={() => handleNavigation("FEEDBACK")}
         >
           <Image
-            source={require("../../assets/icons/feedback.png")}
+            source={require("../../../assets/icons/feedback.png")}
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Feedback</Text>

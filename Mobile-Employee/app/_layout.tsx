@@ -35,9 +35,9 @@ export default function RootLayout() {
     // Stack of screens
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="(root)" options={{ headerShown: false }} />
-      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
+      <Stack.Screen name="auth" options={{ headerShown: false }} />
+      <Stack.Screen name="postman" options={{ headerShown: false }} />
+      <Stack.Screen name="dispatch-manager" options={{ headerShown: false }} />
       <Stack.Screen name="+not-found" />
     </Stack>
   );

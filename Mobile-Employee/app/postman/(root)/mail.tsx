@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { IP } from "../../config";
+import { IP } from "../../../config";
 
 // Mail screen component
 const Mail = () => {

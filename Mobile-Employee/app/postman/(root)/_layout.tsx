@@ -43,12 +43,10 @@ const Header = () => {
       </Text>
 
       {/*Notification icon*/}
-      <TouchableOpacity>
+      <TouchableOpacity style={{ left: 339, top: 10 }}>
         <Image
           source={icons.notifications}
           style={{
-            left: 339,
-            top: 10,
             width: 30,
             height: 30,
           }}

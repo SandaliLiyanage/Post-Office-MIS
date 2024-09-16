@@ -3,10 +3,10 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   ActivityIndicator,
   SafeAreaView,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { IP } from "../../../config";
 
 // Status screen component
@@ -20,6 +20,7 @@ const Status = () => {
   const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   // Fetch the first IN_TRANSIT mail item
   const fetchInTransitMail = async () => {
@@ -33,6 +34,7 @@ const Status = () => {
         setMail(null);
       } else {
         setMail(data);
+        setSelectedStatus(data.mailstatus); // Set the current mail status
       }
       setLoading(false);
     } catch (error) {
@@ -89,21 +91,27 @@ const Status = () => {
       <View style={styles.mailInfo}>
         <Text style={styles.label}>Mail ID: {mail.mailID}</Text>
         <Text style={styles.label}>Mail Type: {mail.mailType}</Text>
-        <Text style={styles.label}>Status: {mail.mailstatus}</Text>
+        <Text style={styles.label}>Current Status: {mail.mailstatus}</Text>
+        <Text style={styles.label}>Receipient: </Text>
+        <Text style={styles.label}>Receipient's Address: </Text>
       </View>
-      <View style={styles.buttons}>
-        <Button
-          title="Mark as Delivered"
-          onPress={() => updateMailStatus("DELIVERED")}
-          disabled={updating}
-        />
-        <Button
-          title="Mark as Returned"
-          onPress={() => updateMailStatus("RETURNED")}
-          color="red"
-          disabled={updating}
-        />
-      </View>
+
+      <Text style={styles.label}>Update Status:</Text>
+      <Picker
+        selectedValue={selectedStatus}
+        onValueChange={(itemValue) => {
+          setSelectedStatus(itemValue); // Update selected status
+          updateMailStatus(itemValue); // Call the update function on selection
+        }}
+        enabled={!updating} // Disable if status is updating
+        style={styles.picker}
+      >
+        <Picker.Item label="To be Delivered" value="IN_TRANSIT" />
+        <Picker.Item label="Delivered" value="DELIVERED" />
+        <Picker.Item label="Returned" value="RETURNED" />
+      </Picker>
+
+      {updating && <ActivityIndicator size="small" color="#C60024" />}
     </SafeAreaView>
   );
 };
@@ -122,9 +130,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  picker: {
+    height: 50,
+    marginBottom: 20,
   },
   noMailText: {
     fontSize: 18,

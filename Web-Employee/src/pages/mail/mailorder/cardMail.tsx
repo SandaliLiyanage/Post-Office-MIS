@@ -5,6 +5,8 @@ import { Button } from "../../../components/ui/button";
 import { Printer } from 'lucide-react';
 import { Trash } from 'lucide-react';
 import {MailResponse} from './PageMailDetails';
+import {Barcode} from 'lucide-react';
+import JsBarcode from 'jsbarcode';
 type CardMailProps = {
   mailArray: MailDetailsType[],
   confirm: boolean,
@@ -16,7 +18,7 @@ type CardMailProps = {
 
 export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMailProps) {
   const [mailDetailsArray, setMailDetailsArray] = useState<MailDetailsType[]>(mailArray);
-
+  
   // Fetch mail details from localStorage on component mount
   useEffect(() => {
     const fetchMailDetails = () => {
@@ -35,11 +37,22 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
       window.removeEventListener("storage", fetchMailDetails);
     };
   }, [mailArray]); // Only run on component mount
+
+
   const removeMail = (index: number) => {
     const newMailArray = mailDetailsArray.filter((mail, i) => i !== index); // Remove the mail by index
     setMailDetailsArray(newMailArray); // Update state to re-render the UI
     localStorage.setItem("mail details", JSON.stringify(newMailArray)); // Update localStorage
   };
+
+  const generateBarcode = (mailID: number) => {
+    const barcodeElement = document.getElementById(`barcode-${mailID}`);
+    const ID =  mailID.toString()
+    JsBarcode(barcodeElement, ID,);
+    console.log("generating barcode")
+  } 
+
+
 
   return (
     <div className="mt-16  h-full top-16 bg-slate-300 bg-opacity-25 ">
@@ -92,7 +105,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             <Button className="btn bg-white "  size="icon" onClick={()=>removeMail(index)} ><Trash color="red" size={18} /></Button>
             </div>}
             {transaction && 
-            <Button className="btn bg-white "  size="icon" ><Printer color="black" size={18} /></Button>
+            <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>
             }
           </div>
           <div className="grid grid-cols-2">
@@ -112,14 +125,9 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             <Label className="text-base">MailID: <p className="text-slate-500 font-light text-sm"> {mail.mailID}</p></Label>
           </div>
           </div>
+          <svg id={`barcode-${mail.mailID}`}></svg>
         </div>
       ))}
-
-
-     {}
-      
-      
-      
     </div>
   );
 }

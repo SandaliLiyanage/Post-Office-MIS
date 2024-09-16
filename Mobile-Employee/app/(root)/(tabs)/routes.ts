@@ -1,5 +1,5 @@
 export const ROUTES = {
-  STATUS: "../../screens/status",
+  STATUS: "../../status",
   ADD_ADDRESS: "../../screens/add-address",
   LEAVES: "../../screens/leaves",
   FEEDBACK: "../../screens/feedback",

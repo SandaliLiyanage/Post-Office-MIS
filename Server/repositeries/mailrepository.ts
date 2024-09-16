@@ -81,6 +81,14 @@ class MailRepository {
       throw error;
     }
   }
+
+  // Update the mail status
+  updateMailStatus = async (mailID: string, newStatus: string) => {
+    return await prisma.mail.update({
+      where: { mailID },
+      data: { mailstatus: newStatus },
+    });
+  };
 }
 
 export { MailRepository };

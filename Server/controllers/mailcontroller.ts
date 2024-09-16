@@ -53,6 +53,36 @@ const Mails = async (req: Request, res: Response) => {
 };
 
 // Function to get mail items for a specific employee
+export const getMailItems3 = async (req: Request, res: Response) => {
+  const employeeID = req.query.employeeID as string; // Extract the employeeID
+
+  try {
+    // Check if the employeeID is provided
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
+    }
+
+    // Fetch mail details from the repository
+    const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
+
+    // Filter for the first mail item with status 'IN_TRANSIT'
+    const inTransitMailItem = mailItems.find(
+      (item) => item.mailstatus === "IN_TRANSIT"
+    );
+
+    if (!inTransitMailItem) {
+      return res.status(404).json({ error: "No IN_TRANSIT mail item found" }); // 404 for Not Found
+    }
+
+    // Return the first IN_TRANSIT mail item
+    return res.status(200).json(inTransitMailItem); // 200 status code for OK
+  } catch (error) {
+    console.error("Error fetching mail item:", error);
+    return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
+  }
+};
+
+// Function to get mail items for a specific employee
 export const getMailItems2 = async (req: Request, res: Response) => {
   const employeeID = req.query.employeeID as string; // Extract the employeeID
 
@@ -116,6 +146,19 @@ export const getMailItems = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error fetching delivery counts:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
+  }
+};
+
+// Update mail status
+export const updateMailStatus = async (req: Request, res: Response) => {
+  const { mailID, newStatus } = req.body;
+
+  try {
+    await MailRepository.updateMailStatus(mailID, newStatus);
+    return res.json({ message: "Mail status updated successfully." });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error updating mail status." });
   }
 };
 

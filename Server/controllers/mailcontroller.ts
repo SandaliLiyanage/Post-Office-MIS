@@ -117,8 +117,13 @@ export const getMailItems = async (req: Request, res: Response) => {
     // Fetch mail details from the repository
     const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
 
-    // Group mail items by category
-    const categorizedMailItems = mailItems.reduce(
+    // Filter mail items by status 'IN_TRANSIT'
+    const inTransitMailItems = mailItems.filter(
+      (item) => item.mailstatus === "IN_TRANSIT"
+    );
+
+    // Group the filtered mail items by category (mailType)
+    const categorizedMailItems = inTransitMailItems.reduce(
       (mail: { [key: string]: any[] }, item) => {
         const category = item.mailType;
         if (!mail[category]) {
@@ -140,11 +145,11 @@ export const getMailItems = async (req: Request, res: Response) => {
     );
 
     // Optionally log or process the counts if needed
-    console.log("Delivery counts fetched:", categoryCounts);
+    console.log("Mail counts fetched:", categoryCounts);
 
     return res.status(200).json(categoryCounts); // 200 status code for OK
   } catch (error) {
-    console.error("Error fetching delivery counts:", error);
+    console.error("Error fetching mail counts:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
   }
 };

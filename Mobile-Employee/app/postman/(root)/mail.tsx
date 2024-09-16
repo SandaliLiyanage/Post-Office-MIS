@@ -1,22 +1,46 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
   Text,
   StyleSheet,
-  FlatList,
+  SectionList,
   SafeAreaView,
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import { IP } from "../../../config";
-import { useFocusEffect } from "@react-navigation/native"; // Import useFocusEffect
+
+// Mail item interface
+interface MailItem {
+  mailID: string;
+  mailType: string;
+  mailstatus: string;
+}
+
+// Define the type for mail sections
+interface MailSection {
+  title: string;
+  data: MailItem[];
+}
+
+// Render section header with empty state message
+const SectionHeaderWithEmptyMessage = ({
+  section,
+}: {
+  section: MailSection;
+}) => (
+  <View>
+    <Text style={styles.sectionHeader}>{section.title}</Text>
+    {section.data.length === 0 && (
+      <Text style={styles.emptySectionMessage}>No mail items</Text>
+    )}
+  </View>
+);
 
 // Mail screen component
 const Mail = () => {
-  // State to store the fetched mail items
-  const [mails, setMails] = useState([]);
-
-  // State to store the loading status
+  const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch mail items from the backend
@@ -26,7 +50,24 @@ const Mail = () => {
         `http://${IP}:5000/mail/employee2?employeeID=0002`
       );
       const data = await response.json(); // Parse JSON data into a JavaScript object
-      setMails(data); // Update the mails state with the fetched data
+
+      // Categorize mails by status
+      const delivered = data.filter(
+        (mail: any) => mail.mailstatus === "DELIVERED"
+      );
+      const inTransit = data.filter(
+        (mail: any) => mail.mailstatus === "IN_TRANSIT"
+      );
+      const returned = data.filter(
+        (mail: any) => mail.mailstatus === "RETURNED"
+      );
+
+      // Update the sections state with categorized mail data
+      setMailSections([
+        { title: "To be Delivered", data: inTransit },
+        { title: "Delivered", data: delivered },
+        { title: "Returned", data: returned },
+      ]);
     } catch (error) {
       console.error("Error fetching mail items:", error);
     }
@@ -57,13 +98,6 @@ const Mail = () => {
         <ActivityIndicator size="large" color="#C60024" />
       </SafeAreaView>
     );
-  }
-
-  // Mail item interface
-  interface MailItem {
-    mailID: string;
-    mailType: string;
-    mailstatus: string;
   }
 
   // Mail type names
@@ -102,13 +136,16 @@ const Mail = () => {
     </TouchableOpacity>
   );
 
-  // Render the mail list
+  // Render the mail sectioned list
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        data={mails} // Pass the mail items to the FlatList component
+      <SectionList
+        sections={mailSections} // Sections of categorized mail items
         renderItem={renderItem} // Render each mail item using the renderItem function
         keyExtractor={(item) => item.mailID} // Use the mailID as the key for each item
+        renderSectionHeader={({ section }) => (
+          <SectionHeaderWithEmptyMessage section={section} />
+        )} // Render section headers
       />
     </SafeAreaView>
   );
@@ -118,13 +155,27 @@ const Mail = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingTop: 5,
+    paddingBottom: 10,
     backgroundColor: "#fff",
   },
-  title: {
-    fontSize: 24,
+  sectionHeader: {
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 16,
+    color: "#fff",
+    marginTop: 12,
+    marginBottom: 10,
+    backgroundColor: "#C60024EF",
+    padding: 8,
+    borderRadius: 5,
+  },
+  emptySectionMessage: {
+    fontSize: 14,
+    color: "gray",
+    textAlign: "center",
+    marginTop: 5,
   },
   mailItem: {
     padding: 12,

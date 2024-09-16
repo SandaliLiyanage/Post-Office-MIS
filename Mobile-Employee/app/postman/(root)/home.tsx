@@ -12,6 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ROUTES } from "./routes";
+import { useFocusEffect } from "@react-navigation/native";
 import { IP } from "../../../config";
 
 // Home screen component
@@ -43,43 +44,42 @@ const Home = () => {
   // State to store loading status
   const [loading, setLoading] = useState(true);
 
-  // Fetch data from the backend
-  useEffect(() => {
-    // Fetch user data
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://${IP}:5000/employee/user?employeeID=0002` // Send GET request
-        );
-        const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
-        setUserData(data); // Update userData
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  // Fetch data every time the screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(
+            `http://${IP}:5000/employee/user?employeeID=0002`
+          );
+          const data = await response.json();
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
 
-    // Fetch delivery count data from the backend
-    const fetchDeliveryCounts = async () => {
-      try {
-        const response = await fetch(
-          `http://${IP}:5000/mail/employee?employeeID=0002` // Send GET request
-        );
-        const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
-        setDeliveryCounts(data); // Update deliveryCounts
-      } catch (error) {
-        console.error("Error fetching delivery counts:", error);
-      }
-    };
+      const fetchDeliveryCounts = async () => {
+        try {
+          const response = await fetch(
+            `http://${IP}:5000/mail/employee?employeeID=0002`
+          );
+          const data = await response.json();
+          setDeliveryCounts(data);
+        } catch (error) {
+          console.error("Error fetching delivery counts:", error);
+        }
+      };
 
-    // Fetch user data and delivery counts
-    const fetchData = async () => {
-      setLoading(true);
-      await Promise.all([fetchUserData(), fetchDeliveryCounts()]); // Waits for both fetchUserData and fetchDeliveryCounts to complete
-      setLoading(false);
-    };
+      const fetchData = async () => {
+        setLoading(true);
+        await Promise.all([fetchUserData(), fetchDeliveryCounts()]);
+        setLoading(false);
+      };
 
-    fetchData(); // This is called when the useEffect hook triggers
-  }, []);
+      fetchData(); // Fetch data when screen is focused
+    }, [])
+  );
 
   // Handle loading state
   if (loading) {
@@ -116,7 +116,9 @@ const Home = () => {
             {/* Normal mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.NORMAL_MAIL}
+                {deliveryCounts.NORMAL_MAIL !== undefined
+                  ? deliveryCounts.NORMAL_MAIL
+                  : 0}
               </Text>
               <Text style={styles.deliveryLabel}>Normal</Text>
             </View>
@@ -124,14 +126,20 @@ const Home = () => {
             {/* Registered mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.REGISTERED_MAIL}
+                {deliveryCounts.REGISTERED_MAIL !== undefined
+                  ? deliveryCounts.REGISTERED_MAIL
+                  : 0}
               </Text>
               <Text style={styles.deliveryLabel}>Registered</Text>
             </View>
 
             {/* Parcel */}
             <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>{deliveryCounts.COURIER}</Text>
+              <Text style={styles.deliveryCount}>
+                {deliveryCounts.COURIER !== undefined
+                  ? deliveryCounts.COURIER
+                  : 0}
+              </Text>
               <Text style={styles.deliveryLabel}>Parcel</Text>
             </View>
           </View>

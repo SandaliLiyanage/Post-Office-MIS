@@ -69,9 +69,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
           <div className="flex justify-end" >
             <Button className="btn bg-white "  size="icon" onClick={()=>removeMail(index)} ><Trash color="red" size={18} /></Button>
             </div>}
-            {transaction &&
-            <Button className="btn bg-white "  size="icon" ><Printer color="black" size={18} /></Button>
-            }
+           
           </div>
           <div className="grid grid-cols-2">
           <div >
@@ -105,7 +103,10 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             <Button className="btn bg-white "  size="icon" onClick={()=>removeMail(index)} ><Trash color="red" size={18} /></Button>
             </div>}
             {transaction && 
-            <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>
+            <div>
+            <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>;
+            <Button className="btn bg-white "  size="icon" ><Printer color="black" size={18} /></Button>;
+            </div>
             }
           </div>
           <div className="grid grid-cols-2">

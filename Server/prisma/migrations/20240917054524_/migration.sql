@@ -1,0 +1,14 @@
+-- CreateTable
+CREATE TABLE "OTP" (
+    "employeeID" TEXT NOT NULL,
+    "OTP" VARCHAR(6) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "expiresAt" TIMESTAMP(3) NOT NULL,
+    "used" BOOLEAN NOT NULL DEFAULT false,
+    "otpID" SERIAL NOT NULL,
+
+    CONSTRAINT "OTP_pkey" PRIMARY KEY ("otpID")
+);
+
+-- AddForeignKey
+ALTER TABLE "OTP" ADD CONSTRAINT "OTP_employeeID_fkey" FOREIGN KEY ("employeeID") REFERENCES "Employee"("employeeID") ON DELETE RESTRICT ON UPDATE CASCADE;

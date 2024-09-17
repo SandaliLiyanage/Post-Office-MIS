@@ -26,6 +26,7 @@ model Employee {
   role         Role
   leave       Leave[]
   area        Area[]
+  otp         OTP[]
 }
 
 enum PostOfficeCategory {
@@ -144,4 +145,14 @@ model Area{
   postman Employee  @relation(fields: [employeeID], references: [employeeID])
   employeeID String
   addresses   Address[]
+}
+
+model OTP{
+  employeeID  String
+  employee    Employee  @relation(fields: [employeeID], references: [employeeID])
+  OTP         String  @db.VarChar(6)
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  unused       Boolean @default(true)
+  @@unique([employeeID, unused, expiresAt, createdAt])
 }

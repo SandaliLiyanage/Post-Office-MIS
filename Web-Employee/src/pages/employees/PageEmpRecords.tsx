@@ -7,14 +7,6 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "../../components/ui/select"
 
 
 
@@ -36,6 +28,7 @@ export default function EmployeeRecords() {
             },
           });
         setEmployees(response.data);
+         console.log(employees)
       } catch (error) {
         setError('Failed to fetch employees');
       } finally {

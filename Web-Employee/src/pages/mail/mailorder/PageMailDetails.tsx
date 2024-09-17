@@ -7,7 +7,6 @@ import axios from "axios";
 import { useState } from "react";
 import { Button } from "../../../components/ui/button";
 import {
-  FormDescription,
   Form,
   FormControl,
   FormField,
@@ -58,6 +57,19 @@ export type MailDetailsType = {
   
 };
 
+export interface MailResponse{
+  mailType: string;
+  recepientName: string;
+  recepientAddressID: number;
+  mailID: number;
+  bundleID: number;
+  mailstatus: string;
+  transactionID: number;
+  weight: number | string | null;
+  price: number | string | null;
+  postalCode: string;
+}
+
 export default function MailDetails() {
   const { toast } = useToast();
   const { user } = useUser();
@@ -72,9 +84,9 @@ export default function MailDetails() {
     [key: string]: number;
   } | null>(null);
   const [mailArray, setMailArray] = useState<MailDetailsType[]>([]);
-
+  const [transaction, setTransaction] = useState<boolean>(false);
   const navigate = useNavigate();
-
+  const [confirmedMailArray, setConfrimedMailArray] = useState<MailResponse[]>([]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -189,12 +201,12 @@ export default function MailDetails() {
 
     if (confirm && price && localCustomerStorage) {
       const customerDetails = JSON.parse(localCustomerStorage);
-      generateInvoice(
-        customerDetails.name,
-        customerDetails.telephone,
-        mailArray
-      );
-      let response = await axios.post(
+      // generateInvoice(
+      //   customerDetails.name,
+      //   customerDetails.telephone,
+      //   mailArray
+      // );
+      const response = await axios.post(
         "http://localhost:5000/mail/mailDetails",
         {
           mailArray,
@@ -208,7 +220,9 @@ export default function MailDetails() {
         }
       );
       localStorage.removeItem("customerDetails");
-      navigate("/dashboard/mailorder");
+      setTransaction(true)
+      setConfrimedMailArray(response.data)
+      console.log(confirmedMailArray)
       console.log("Data submitted successfully", response.data);
     }else{
       toast({
@@ -216,6 +230,7 @@ export default function MailDetails() {
       });
     }
     console.log("in", mailArray);
+    
   };
   } 
   return (
@@ -409,7 +424,8 @@ export default function MailDetails() {
 
             localStorage.removeItem("mail details");
             localStorage.removeItem("customerDetails")
-            navigate("/dashboard/mailorder")
+            console.log(confirmedMailArray, "hi hi")
+
           }
 
         }}
@@ -426,7 +442,7 @@ export default function MailDetails() {
       </div>
       
       <div className="flex-1 overflow-auto">
-          <CardMail mailArray={mailArray} confirm ={ confirm}  price={price}/>
+          <CardMail mailArray={mailArray} confirm ={ confirm}  price={price} transaction={transaction} confirmedMailArray={confirmedMailArray}/>
       </div>
     </div>
   );

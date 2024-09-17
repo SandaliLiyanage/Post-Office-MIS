@@ -10,13 +10,19 @@ import Emp from "./pages/employees/PageEmpRecords";
 import Bundle from "./pages/mail/bundles/PageBundles";
 import Mails from "./pages/mail/mails/mail";
 import Employeeupdate from "./pages/employees/PageEmpUpdate";
-import RevenueReports from  "./pages/reports/PageRevenueReports"
+import RevenueReports from  "./pages/reports/PageRevenueReports";
+import ForgotPassword from "./pages/authentication/PageForgotPassword";
+import ValidateOTP from "./pages/authentication/PageValidateOTP";
+import SetPassword from "./pages/authentication/PageSetPassword";
 function App() {
   return (
     
     <Router>
       <Routes>
+        <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         <Route path="/" element={<Login />} />
+        <Route path="/validateOTP" element={< ValidateOTP/>} />
+        <Route path="/setPassword" element={< SetPassword/>} />
         <Route path= "/dashboard" element={<Layout/>}>
           <Route path="register" element={<EmpRegistration />} />
           <Route path="mailorder" element={<MailOrder/>} />

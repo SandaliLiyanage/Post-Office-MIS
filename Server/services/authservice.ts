@@ -4,6 +4,7 @@ import BcryptService from "./cryptservice";
 import JwtService from "./jwtservice";
 import SessionStore from "./sessionstore"
 
+
 const employeeRepository = EmployeeRepository.getInstance();
 const cryptService = new BcryptService();
 const session = SessionStore.getInstance();
@@ -21,7 +22,7 @@ interface LoginResponse {
 class AuthService{
     async login(username: string, password: string):Promise<LoginResponse>{
         try{      
-            const employee = await employeeRepository.findUserbyDB(username);
+            const employee = await employeeRepository.findUserbyID(username);
             console.log(employee?.password)
             if(!employee?.password){
                 const loginResponse: LoginResponse = {message: "Incorrect username"}
@@ -43,13 +44,14 @@ class AuthService{
                 console.log("notverified")
                 const loginResponse:LoginResponse = {message: "login denied"}
                 return loginResponse
-            }
+    }
     }catch(error){
         console.error("login error")
         const loginResponse: LoginResponse = {message: "login failed"}
         return loginResponse
     }  
 }
+
      async authorize(req: Request, res: Response, next: NextFunction) {
         console.log("token header", req.headers.authorization?.split(' ')[1])
         const token = req.headers.authorization?.split(' ')[1];
@@ -64,6 +66,8 @@ class AuthService{
         return res.status(401).json({ message: 'Failed to authenticate token' });
     }
   };
+
+
 
 }
 export default AuthService;

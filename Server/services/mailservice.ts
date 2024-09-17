@@ -5,20 +5,13 @@ import { MailType } from "@prisma/client";
 
 const mailRepository = new MailRepository();
 const bundleservice = new BundleService();
-
-// enum MailType{
-//   NORMAL_MAIL,
-//   REGISTERED_MAIL,
-//   BULK_MAIL,
-//   COURIER
-// }
 class MailService {
     async totalPrice(){   
     }
     
 
     async insertMail(mailArray: [], transactionID: number, postalCode: string){
-
+      const confirmedMail = []
       console.log("in mail insertion")
         for (let mail of mailArray) {
             const {addressID, mailType, price, recepientName, telephone, weight} = mail
@@ -35,10 +28,13 @@ class MailService {
             console.log(enumMail, "enum Mail", bundleID,bundleID)
             if (typeof (bundleID) === "number" && enumMail != null ){
               console.log(enumMail)
-              await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID ); 
+              const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID ); 
+              confirmedMail.push(mail)
             }
           }
+          return confirmedMail
   }
+
 
   calculatePrice(mailType: string, weight: number){
     if(mailType == "normal mail"){

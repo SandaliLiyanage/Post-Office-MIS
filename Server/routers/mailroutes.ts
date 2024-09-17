@@ -15,9 +15,8 @@ import { MailDetails } from "../controllers/mailcontroller";
 const authService = new AuthService();
 
 const router = Router();
-console.log("in mail routes");
+
 // router.use(authService.authorize);
-// router.post('/customerDetails', CustomerDetails);
 
 router.post("/calculatePrice", CalculatePrice);
 router.post("/bundles", MailBundles);

@@ -66,7 +66,11 @@ class MailRepository {
                 m."mailType",
                 m."mailstatus",
                 m."weight",
-                m."price"
+                m."price",
+                a."addressNo",
+                a."streetName",
+                a."Locality",
+                ar."areaName"
             FROM "Mail" AS m
             JOIN "Address" AS a ON m."recepientAddressID" = a."addressID"
             JOIN "Area" AS ar ON a."areaID" = ar."areaID"

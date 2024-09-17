@@ -14,6 +14,11 @@ interface Mail {
   mailID: string;
   mailType: string;
   mailstatus: string;
+  recepientName: string;
+  addressNo: string;
+  streetName: string;
+  Locality: string;
+  areaName: string;
 }
 
 const Status = () => {
@@ -22,7 +27,6 @@ const Status = () => {
   const [updating, setUpdating] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<string>("");
 
-  // Fetch the first IN_TRANSIT mail item
   const fetchInTransitMail = async () => {
     try {
       setLoading(true);
@@ -34,7 +38,7 @@ const Status = () => {
         setMail(null);
       } else {
         setMail(data);
-        setSelectedStatus(data.mailstatus); // Set the current mail status
+        setSelectedStatus(data.mailstatus);
       }
       setLoading(false);
     } catch (error) {
@@ -43,7 +47,6 @@ const Status = () => {
     }
   };
 
-  // Update mail status
   const updateMailStatus = async (newStatus: string) => {
     try {
       setUpdating(true);
@@ -55,7 +58,6 @@ const Status = () => {
         body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
       });
       setUpdating(false);
-      // Fetch the next mail item after status update
       fetchInTransitMail();
     } catch (error) {
       console.error("Error updating mail status:", error);
@@ -64,11 +66,9 @@ const Status = () => {
   };
 
   useEffect(() => {
-    // Fetch the first in-transit mail when the component mounts
     fetchInTransitMail();
   }, []);
 
-  // Handle loading state
   if (loading) {
     return (
       <SafeAreaView style={styles.container}>
@@ -77,7 +77,6 @@ const Status = () => {
     );
   }
 
-  // If no mail is found
   if (!mail) {
     return (
       <SafeAreaView style={styles.container}>
@@ -86,30 +85,61 @@ const Status = () => {
     );
   }
 
+  const mailTypeNames: { [key: string]: string } = {
+    NORMAL_MAIL: "Normal Mail",
+    REGISTERED_MAIL: "Registered Mail",
+    COURIER: "Parcel",
+  };
+
+  const getMailTypeName = (mailType: string): string => mailTypeNames[mailType];
+
+  const mailStatusNames: { [key: string]: string } = {
+    DELIVERED: "Delivered",
+    IN_TRANSIT: "To be Delivered",
+    RETURNED: "Returned",
+  };
+
+  const getMailStatusName = (mailStatus: string): string =>
+    mailStatusNames[mailStatus];
+
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.mailInfo}>
-        <Text style={styles.label}>Mail ID: {mail.mailID}</Text>
-        <Text style={styles.label}>Mail Type: {mail.mailType}</Text>
-        <Text style={styles.label}>Current Status: {mail.mailstatus}</Text>
-        <Text style={styles.label}>Receipient: </Text>
-        <Text style={styles.label}>Receipient's Address: </Text>
+      <Text style={styles.title}>Next to Deliver</Text>
+      <View style={styles.card}>
+        <Text style={styles.label}>Mail ID:</Text>
+        <Text style={styles.value}>{mail.mailID}</Text>
+
+        <Text style={styles.label}>Type:</Text>
+        <Text style={styles.value}>{getMailTypeName(mail.mailType)}</Text>
+
+        <Text style={styles.label}>Current Status:</Text>
+        <Text style={styles.value}>{getMailStatusName(mail.mailstatus)}</Text>
+
+        <Text style={styles.label}>Receipient:</Text>
+        <Text style={styles.value}>{mail.recepientName}</Text>
+
+        <Text style={styles.label}>Receipient's Address:</Text>
+        <Text style={styles.value}>
+          {mail.addressNo}, {mail.streetName}, {mail.Locality}, {mail.areaName}
+        </Text>
       </View>
 
-      <Text style={styles.label}>Update Status:</Text>
-      <Picker
-        selectedValue={selectedStatus}
-        onValueChange={(itemValue) => {
-          setSelectedStatus(itemValue); // Update selected status
-          updateMailStatus(itemValue); // Call the update function on selection
-        }}
-        enabled={!updating} // Disable if status is updating
-        style={styles.picker}
-      >
-        <Picker.Item label="To be Delivered" value="IN_TRANSIT" />
-        <Picker.Item label="Delivered" value="DELIVERED" />
-        <Picker.Item label="Returned" value="RETURNED" />
-      </Picker>
+      <Text style={styles.title}>Update the Status</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={selectedStatus}
+          onValueChange={(itemValue) => {
+            setSelectedStatus(itemValue);
+            updateMailStatus(itemValue);
+          }}
+          enabled={!updating}
+          style={styles.picker}
+        >
+          <Picker.Item label="To be Delivered" value="IN_TRANSIT" />
+          <Picker.Item label="Delivered" value="DELIVERED" />
+          <Picker.Item label="Returned" value="RETURNED" />
+        </Picker>
+      </View>
 
       {updating && <ActivityIndicator size="small" color="#C60024" />}
     </SafeAreaView>
@@ -120,20 +150,62 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#fff",
+    backgroundColor: "#f0f4f7", // Soft background color
   },
-  mailInfo: {
-    marginBottom: 20,
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    paddingBottom: 15,
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 2,
+    elevation: 2,
+    marginBottom: 19,
+    marginTop: 5,
   },
   label: {
-    fontSize: 18,
+    fontSize: 17,
     fontWeight: "bold",
-    marginBottom: 10,
+    color: "#333",
+    marginBottom: 5,
   },
+  value: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 15,
+  },
+  title: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#fff",
+    marginTop: 16,
+    marginBottom: 10,
+    backgroundColor: "#C60024EF",
+    padding: 8,
+    borderRadius: 5,
+  },
+  pickerContainer: {
+    backgroundColor: "#fff",
+    borderColor: "#fff",
+    borderRadius: 10,
+    paddingBottom: 7,
+    marginBottom: 5,
+    marginTop: 5,
+    overflow: "hidden", // Ensure Picker is clipped to the border radius
+    shadowColor: "#000",
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 1 },
+    shadowRadius: 2,
+    elevation: 2,
+  },
+
   picker: {
     height: 50,
-    marginBottom: 20,
+    width: "100%",
   },
+
   noMailText: {
     fontSize: 18,
     textAlign: "center",

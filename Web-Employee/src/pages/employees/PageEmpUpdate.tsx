@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from 'react-router-dom';
 import {
+  FormDescription,
   Form,
   FormControl,
   FormField,
@@ -83,10 +84,15 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Employee Role</FormLabel>
                   <FormControl>
-                    <Input placeholder={employee.role.toLowerCase()} {...field} />
+                    <Input placeholder= "Updated Employee Role" {...field} />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription>
+                The current role is: {employee.role.toLowerCase()}
+
+              </FormDescription>
                 </FormItem>
+                
                  )}
                 />
             <FormField
@@ -96,7 +102,7 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="address" {...field} />
+                    <Input placeholder="Updated Address" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -109,9 +115,13 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Telephone</FormLabel>
                   <FormControl>
-                    <Input placeholder={employee.telephone} {...field} />
+                    <Input placeholder= "Updated Telephone" {...field} />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription>
+                Existing telephone number: {employee.telephone}
+
+              </FormDescription>
                 </FormItem>
               )}
             />
@@ -122,9 +132,13 @@ export default function Employeeupdate() {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder={employee.email}{...field} />
+                    <Input placeholder="Updated Email" {...field} />
                   </FormControl>
                   <FormMessage />
+                  <FormDescription>
+                Existing email: {employee.email}
+
+              </FormDescription>
                 </FormItem>
                  )}
                 />

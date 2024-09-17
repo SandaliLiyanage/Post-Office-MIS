@@ -17,24 +17,28 @@ import {
 
 
 import { Input } from "../../components/ui/input"
-import { useUser } from './usercontext';
 
 const formSchema = z.object({
-  username: z.string(),
-  pin: z.string(),
+  employeeID: z.string(),
 })
 
 
 export default function ForgotPassword() {
 
-    const navigate = useNavigate();
-    const { saveUser } = useUser();
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-        username: "",
-        },
-    })
+  const navigate = useNavigate();
+  const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+        employeeID: "",
+      },
+  })
+
+  const  generateOTP= async function(values: z.infer<typeof formSchema>){
+    console.log("generating OTP in front end")
+    const result =await axios.post("http://localhost:5000/auth/generateOTP", values)
+    navigate("/validateOTP")
+    console.log(result)
+  }
   return (
     <div className="bg-slate-800 min-h-screen flex items-center justify-center">
     <div className=" bg-white rounded-lg h-96 lg:flex">
@@ -44,11 +48,11 @@ export default function ForgotPassword() {
       <h1 className="text-2xl mb-5 mt-5">Reset Password</h1>
       </div>
       <Form {...form}>
-      <form className="space-y-8">
+      <form onSubmit= {form.handleSubmit(generateOTP)} className="space-y-8">
         <div className="grid " >
           <FormField
             control={form.control}
-            name="username"
+            name="employeeID"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Employee ID</FormLabel>
@@ -59,10 +63,8 @@ export default function ForgotPassword() {
               </FormItem>
             )}
           />
-          <Button type="submit" className="bg-slate-600 mt-5"  onClick={()=>navigate("/validateOTP")}>Send OTP</Button>
-        </div >
-        
-       
+          <Button type="submit" className="bg-slate-600 mt-5">Send OTP</Button>
+        </div>
       </form>
     </Form>
       </div>

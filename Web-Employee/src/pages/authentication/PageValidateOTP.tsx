@@ -14,12 +14,10 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form"
-import { Input } from "../../components/ui/input"
 import { useUser } from './usercontext';
 import {
     InputOTP,
     InputOTPGroup,
-    InputOTPSeparator,
     InputOTPSlot,
   } from "@/components/ui/input-otp"
 
@@ -32,7 +30,6 @@ const formSchema = z.object({
 export default function ValidateOTP() {
 
     const navigate = useNavigate();
-    const { saveUser } = useUser();
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -77,7 +74,7 @@ export default function ValidateOTP() {
         />
         <div className="grid grid-cols-2 gap-2">
         <Button type="submit" className="bg-slate-600 " onClick={()=>navigate("/setpassword")}>Validate OTP</Button>
-        <Button type="submit" className="bg-slate-800 " >Send OTP</Button>
+        <Button type="button" className="bg-slate-800 " >Send OTP</Button>
 
         </div>
           

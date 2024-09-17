@@ -115,10 +115,10 @@ const Status = () => {
         <Text style={styles.label}>Current Status:</Text>
         <Text style={styles.value}>{getMailStatusName(mail.mailstatus)}</Text>
 
-        <Text style={styles.label}>Receipient:</Text>
+        <Text style={styles.label}>Recipient:</Text>
         <Text style={styles.value}>{mail.recepientName}</Text>
 
-        <Text style={styles.label}>Receipient's Address:</Text>
+        <Text style={styles.label}>Recipient's Address:</Text>
         <Text style={styles.value}>
           {mail.addressNo}, {mail.streetName}, {mail.Locality}, {mail.areaName}
         </Text>

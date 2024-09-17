@@ -23,11 +23,15 @@ class OTPService{
     }
 
     async validateOTP(employeeID:string, time:Date, otp: string){
+        console.log("in validate OTP")
         const validOTP =await otprepository.getOTP(employeeID, time);
+        console.log("thisis the otp queried")
         if(validOTP == otp){
-            return "otp validated"
+            console.log("valid")
+            return "valid"
         }else{
-            return "not valid otp"
+            console.log("not valid")
+            return "not valid"
         }
     }
 }

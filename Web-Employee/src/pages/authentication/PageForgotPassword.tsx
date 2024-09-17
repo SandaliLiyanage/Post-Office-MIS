@@ -35,6 +35,7 @@ export default function ForgotPassword() {
 
   const  generateOTP= async function(values: z.infer<typeof formSchema>){
     console.log("generating OTP in front end")
+    localStorage.setItem("employeeID", values.employeeID)
     const result =await axios.post("http://localhost:5000/auth/generateOTP", values)
     navigate("/validateOTP")
     console.log(result)

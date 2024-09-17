@@ -14,12 +14,14 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form"
-import { useUser } from './usercontext';
+import axios from "axios"
 import {
     InputOTP,
     InputOTPGroup,
     InputOTPSlot,
   } from "@/components/ui/input-otp"
+import {Toaster} from "../../components/ui/toaster"
+import { useToast } from '../../hooks/use-toast';
 
 const formSchema = z.object({
   pin: z.string(),
@@ -28,25 +30,43 @@ const formSchema = z.object({
 
 
 export default function ValidateOTP() {
+  const { toast } = useToast()
+  const navigate = useNavigate();
+  const form = useForm<z.infer<typeof formSchema>>({
+      resolver: zodResolver(formSchema),
+      defaultValues: {
+      pin: "",
+      
+      },
+  })
+  async function validateOTP(values: z.infer<typeof formSchema>){
+    const employeeID = localStorage.getItem("employeeID")
+    const response = await axios.post("http://localhost:5000/auth/validateOTP", 
+      {values,
+      time : new Date(),
+      employeeID
 
-    const navigate = useNavigate();
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-        pin: "",
-       
-        },
-    })
+  })
+    console.log(response)
+    if(response.data == "valid"){
+      navigate("/setpassword")
+    }else{
+        toast({
+          description:response.data,
+        })
+    }
+    
+  }
   return (
     <div className="bg-slate-800 min-h-screen flex items-center justify-center">
     <div className=" bg-white rounded-lg h-96 lg:flex">
     <div className="mr-20 ml-20 mt-8 flex flex-col items-end ">
       <div>
       <div>
-      <h1 className="text-2xl mb-5 mt-5">Reset Password</h1>
+      <h1 className="text-2xl mb-5 mt-5">Enter OTP</h1>
       </div>
       <Form {...form}>
-      <form  className="w-2/3 space-y-6">
+      <form onSubmit= {form.handleSubmit(validateOTP)} className="w-2/3 space-y-6">
       <FormField
           control={form.control}
           name="pin"
@@ -73,7 +93,8 @@ export default function ValidateOTP() {
           )}
         />
         <div className="grid grid-cols-2 gap-2">
-        <Button type="submit" className="bg-slate-600 " onClick={()=>navigate("/setpassword")}>Validate OTP</Button>
+        <Button type="submit" className="bg-slate-600 ">Validate OTP</Button>
+        <Toaster />
         <Button type="button" className="bg-slate-800 " >Send OTP</Button>
 
         </div>

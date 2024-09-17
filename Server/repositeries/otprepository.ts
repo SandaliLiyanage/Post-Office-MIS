@@ -20,14 +20,16 @@ class OTPRepository{
     }
 
     async getOTP(employeeID:string, time: Date){
+    console.log("heeh in getOTP")
+    console.log(employeeID, time)
     const res = await prisma.oTP.findFirst({
         where: {
             employeeID: employeeID,
             createdAt: {
-                gt: time
+                lt: time
             },
             expiresAt:{
-                lt:time
+                gt:time
             },
             unused: true
 
@@ -36,6 +38,7 @@ class OTPRepository{
             createdAt: 'desc'
         }
     })
+    console.log(res)
     console.log(res?.OTP)
     return (res?.OTP)
     }

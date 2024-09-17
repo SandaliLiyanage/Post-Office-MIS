@@ -35,12 +35,15 @@ const GenerateOTP = async(req: Request, res: Response)=>{
         
     }
 }
-
 const ValidateOTP = async(req: Request, res: Response)=> {
-    const {employeeID, time, inputOTP} = req.body;
+    console.log(req.body)
+    const {employeeID, time} = req.body;
+    const {pin} = req.body.values
+    console.log(employeeID, time, pin)
     try{
-        const result = otpService.validateOTP(employeeID, time, inputOTP);
-        return result
+        const result = await otpService.validateOTP(employeeID, time, pin);
+        console.log("validated")
+        return res.status(200).json(result);
     }catch(error){
         throw error
     }

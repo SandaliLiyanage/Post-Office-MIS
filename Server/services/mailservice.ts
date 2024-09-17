@@ -5,13 +5,6 @@ import { MailType } from "@prisma/client";
 
 const mailRepository = new MailRepository();
 const bundleservice = new BundleService();
-
-// enum MailType{
-//   NORMAL_MAIL,
-//   REGISTERED_MAIL,
-//   BULK_MAIL,
-//   COURIER
-// }
 class MailService {
     async totalPrice(){   
     }

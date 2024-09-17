@@ -1,4 +1,4 @@
-import { PrismaClient, Mail, MailType } from "@prisma/client";
+import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
 const prisma = new PrismaClient();
 
 class MailRepository {
@@ -66,7 +66,11 @@ class MailRepository {
                 m."mailType",
                 m."mailstatus",
                 m."weight",
-                m."price"
+                m."price",
+                a."addressNo",
+                a."streetName",
+                a."Locality",
+                ar."areaName"
             FROM "Mail" AS m
             JOIN "Address" AS a ON m."recepientAddressID" = a."addressID"
             JOIN "Area" AS ar ON a."areaID" = ar."areaID"
@@ -81,6 +85,14 @@ class MailRepository {
       throw error;
     }
   }
+
+  // Update the mail status
+  updateMailStatus = async (mailID: number, newStatus: MailStatus) => {
+    return await prisma.mail.update({
+      where: { mailID },
+      data: { mailstatus: newStatus },
+    });
+  };
 }
 
 export { MailRepository };

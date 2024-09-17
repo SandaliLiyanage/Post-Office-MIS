@@ -42,8 +42,12 @@ const MailDetails = async (req: Request, res: Response) => {
   console.log(transaction);
   const transactionID = transaction.transactionID;
   console.log("dfk", mailArray, transactionID);
-  const result = await mailService.insertMail(mailArray, transactionID, postalCode);
-  console.log(result, "mail list")
+  const result = await mailService.insertMail(
+    mailArray,
+    transactionID,
+    postalCode
+  );
+  console.log(result, "mail list");
   return res.status(200).json(result);
 };
 
@@ -52,6 +56,36 @@ const Mails = async (req: Request, res: Response) => {
   const { postalCode } = req.body;
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
+};
+
+// Function to get mail items for a specific employee
+export const getMailItems3 = async (req: Request, res: Response) => {
+  const employeeID = req.query.employeeID as string; // Extract the employeeID
+
+  try {
+    // Check if the employeeID is provided
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
+    }
+
+    // Fetch mail details from the repository
+    const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
+
+    // Filter for the first mail item with status 'IN_TRANSIT'
+    const inTransitMailItem = mailItems.find(
+      (item) => item.mailstatus === "IN_TRANSIT"
+    );
+
+    if (!inTransitMailItem) {
+      return res.status(404).json({ error: "No IN_TRANSIT mail item found" }); // 404 for Not Found
+    }
+
+    // Return the first IN_TRANSIT mail item
+    return res.status(200).json(inTransitMailItem); // 200 status code for OK
+  } catch (error) {
+    console.error("Error fetching mail item:", error);
+    return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
+  }
 };
 
 // Function to get mail items for a specific employee
@@ -89,8 +123,13 @@ export const getMailItems = async (req: Request, res: Response) => {
     // Fetch mail details from the repository
     const mailItems = await mailRepository.getMailItemsByEmployeeID(employeeID);
 
-    // Group mail items by category
-    const categorizedMailItems = mailItems.reduce(
+    // Filter mail items by status 'IN_TRANSIT'
+    const inTransitMailItems = mailItems.filter(
+      (item) => item.mailstatus === "IN_TRANSIT"
+    );
+
+    // Group the filtered mail items by category (mailType)
+    const categorizedMailItems = inTransitMailItems.reduce(
       (mail: { [key: string]: any[] }, item) => {
         const category = item.mailType;
         if (!mail[category]) {
@@ -112,12 +151,29 @@ export const getMailItems = async (req: Request, res: Response) => {
     );
 
     // Optionally log or process the counts if needed
-    console.log("Delivery counts fetched:", categoryCounts);
+    console.log("Mail counts fetched:", categoryCounts);
 
     return res.status(200).json(categoryCounts); // 200 status code for OK
   } catch (error) {
-    console.error("Error fetching delivery counts:", error);
+    console.error("Error fetching mail counts:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
+  }
+};
+
+// Update mail status
+export const updateMailStatus = async (req: Request, res: Response) => {
+  const { mailID, newStatus } = req.body;
+
+  try {
+    // Call the method on the instance
+    const updatedMail = await mailRepository.updateMailStatus(
+      mailID,
+      newStatus
+    );
+    res.status(200).json(updatedMail);
+  } catch (error) {
+    console.error("Error updating mail status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

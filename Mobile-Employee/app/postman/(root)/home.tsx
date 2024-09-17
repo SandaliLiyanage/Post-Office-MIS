@@ -10,9 +10,23 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useRouter } from "expo-router";
+import { ROUTES } from "./routes";
+import { useFocusEffect } from "@react-navigation/native";
 import { IP } from "../../../config";
 
+// Home screen component
 const Home = () => {
+  const router = useRouter(); // Call useRouter at the top level of the component
+
+  // Define a type for the available routes
+  type RouteKeys = keyof typeof ROUTES;
+
+  // Handle navigation by pushing the route
+  const handleNavigation = (routeName: RouteKeys) => {
+    router.push(ROUTES[routeName] as any); // Navigate to the selected route
+  };
+
   // State to store user data
   const [userData, setUserData] = useState<{
     employeeName: string;
@@ -30,43 +44,42 @@ const Home = () => {
   // State to store loading status
   const [loading, setLoading] = useState(true);
 
-  // Fetch data from the backend
-  useEffect(() => {
-    // Fetch user data
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://${IP}:5000/employee/user?employeeID=0002` // Send GET request
-        );
-        const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
-        setUserData(data); // Update userData
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
+  // Fetch data every time the screen comes into focus
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUserData = async () => {
+        try {
+          const response = await fetch(
+            `http://${IP}:5000/employee/user?employeeID=0002`
+          );
+          const data = await response.json();
+          setUserData(data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
 
-    // Fetch delivery count data from the backend
-    const fetchDeliveryCounts = async () => {
-      try {
-        const response = await fetch(
-          `http://${IP}:5000/mail/employee?employeeID=0002` // Send GET request
-        );
-        const data = await response.json(); // Parse JSON data into an JavaScript object and store it in the data variable
-        setDeliveryCounts(data); // Update deliveryCounts
-      } catch (error) {
-        console.error("Error fetching delivery counts:", error);
-      }
-    };
+      const fetchDeliveryCounts = async () => {
+        try {
+          const response = await fetch(
+            `http://${IP}:5000/mail/employee?employeeID=0002`
+          );
+          const data = await response.json();
+          setDeliveryCounts(data);
+        } catch (error) {
+          console.error("Error fetching delivery counts:", error);
+        }
+      };
 
-    // Fetch user data and delivery counts
-    const fetchData = async () => {
-      setLoading(true);
-      await Promise.all([fetchUserData(), fetchDeliveryCounts()]); // Waits for both fetchUserData and fetchDeliveryCounts to complete
-      setLoading(false);
-    };
+      const fetchData = async () => {
+        setLoading(true);
+        await Promise.all([fetchUserData(), fetchDeliveryCounts()]);
+        setLoading(false);
+      };
 
-    fetchData(); // This is called when the useEffect hook triggers
-  }, []);
+      fetchData(); // Fetch data when screen is focused
+    }, [])
+  );
 
   // Handle loading state
   if (loading) {
@@ -79,6 +92,7 @@ const Home = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      {/* User data */}
       {userData && ( // Check if userData is not null
         <View style={styles.profDetailsContainer}>
           {/* <Image
@@ -92,35 +106,52 @@ const Home = () => {
           </View>
         </View>
       )}
+
+      {/* Delivery counts */}
       {deliveryCounts && ( // Check if deliveryCounts is not null
         <View style={styles.deliveriesContainer}>
           <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
 
           <View style={styles.deliveryTypes}>
+            {/* Normal mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.NORMAL_MAIL}
+                {deliveryCounts.NORMAL_MAIL !== undefined
+                  ? deliveryCounts.NORMAL_MAIL
+                  : 0}
               </Text>
               <Text style={styles.deliveryLabel}>Normal</Text>
             </View>
 
+            {/* Registered mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.REGISTERED_MAIL}
+                {deliveryCounts.REGISTERED_MAIL !== undefined
+                  ? deliveryCounts.REGISTERED_MAIL
+                  : 0}
               </Text>
               <Text style={styles.deliveryLabel}>Registered</Text>
             </View>
 
+            {/* Parcel */}
             <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>{deliveryCounts.COURIER}</Text>
+              <Text style={styles.deliveryCount}>
+                {deliveryCounts.COURIER !== undefined
+                  ? deliveryCounts.COURIER
+                  : 0}
+              </Text>
               <Text style={styles.deliveryLabel}>Parcel</Text>
             </View>
           </View>
         </View>
       )}
 
+      {/* Actions */}
       <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("STATUS")}
+        >
           <Image
             source={require("../../../assets/icons/status.png")}
             style={styles.actionIcon}
@@ -128,7 +159,10 @@ const Home = () => {
           <Text style={styles.actionText}>Status</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("ADD_ADDRESS")}
+        >
           <Image
             source={require("../../../assets/icons/address.png")}
             style={styles.actionIcon}
@@ -136,7 +170,10 @@ const Home = () => {
           <Text style={styles.actionText}>Add Address</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("LEAVES")}
+        >
           <Image
             source={require("../../../assets/icons/leave.png")}
             style={styles.actionIcon}
@@ -144,7 +181,10 @@ const Home = () => {
           <Text style={styles.actionText}>Leaves</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={() => handleNavigation("FEEDBACK")}
+        >
           <Image
             source={require("../../../assets/icons/feedback.png")}
             style={styles.actionIcon}
@@ -156,6 +196,7 @@ const Home = () => {
   );
 };
 
+// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -171,49 +171,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-// Example function to get mail items for a specific employee
-// export const getMailItems = async (req: Request, res: Response) => {
-//   try {
-//     const employeeID = req.query.employeeID as string;
-
-//     if (!employeeID) {
-//       return res.status(400).json({ error: "Employee ID is required" });
-//     }
-
-//     // Hardcoded mail items for demonstration purposes
-//     const mailItems = [
-//       { id: "1", category: "Normal", status: "Delivered", employeeID: "12345" },
-//       {
-//         id: "2",
-//         category: "Registered",
-//         status: "Not Delivered",
-//         employeeID: "12345",
-//       },
-//       {
-//         id: "3",
-//         category: "Parcel",
-//         status: "To Be Delivered",
-//         employeeID: "12345",
-//       },
-//     ];
-
-//     // Filter mail items based on employeeID
-//     const filteredMailItems = mailItems.filter(
-//       (mail) => mail.employeeID === employeeID
-//     );
-
-//     if (filteredMailItems.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ error: "No mail items found for this employee" });
-//     }
-
-//     // Return filtered mail items
-//     return res.status(200).json(filteredMailItems);
-//   } catch (error) {
-//     console.error("Error fetching mail items:", error);
-//     return res.status(500).json({ error: "Internal Server Error" });
-//   }
-// };
-
 export { CalculatePrice, MailBundles, Mails, MailDetails };

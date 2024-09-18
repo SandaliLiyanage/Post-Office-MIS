@@ -17,6 +17,11 @@ interface MailItem {
   mailID: string;
   mailType: string;
   mailstatus: string;
+  recepientName: string;
+  addressNo: string;
+  streetName: string;
+  Locality: string;
+  areaName: string;
 }
 
 // Define the type for mail sections
@@ -89,10 +94,6 @@ const Mail = () => {
   );
 
   // Handle mail item press
-  // const handlePress = (id: string) => {
-  //   console.log(`Mail item with ID ${id} pressed`);
-  // };
-
   const handlePress = (mail: MailItem) => {
     setSelectedMail(mail); // Store the selected mail item
   };
@@ -153,12 +154,15 @@ const Mail = () => {
       <Modal
         isVisible={!!selectedMail}
         onBackdropPress={() => setSelectedMail(null)}
+        animationIn="zoomIn" // Animation for appearing
+        animationOut="zoomOut" // Animation for disappearing
+        backdropTransitionOutTiming={0} // To avoid flickering when closing
       >
         <View style={styles.modalContent}>
           <Text style={styles.modalTitle}>Recipient Details</Text>
           {selectedMail && (
             <Text style={styles.modalText}>
-              Recipient: {selectedMail.mailID}
+              Recipient: {selectedMail.recepientName}
             </Text>
           )}
         </View>

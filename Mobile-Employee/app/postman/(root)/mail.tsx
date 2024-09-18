@@ -158,12 +158,32 @@ const Mail = () => {
         animationOut="zoomOut" // Animation for disappearing
         backdropTransitionOutTiming={0} // To avoid flickering when closing
       >
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Recipient Details</Text>
+        <View style={styles.card}>
+          <Text style={styles.title}>Mail Details</Text>
           {selectedMail && (
-            <Text style={styles.modalText}>
-              Recipient: {selectedMail.recepientName}
-            </Text>
+            <View>
+              <Text style={styles.label}>Mail ID:</Text>
+              <Text style={styles.value}>{selectedMail.mailID}</Text>
+
+              <Text style={styles.label}>Type:</Text>
+              <Text style={styles.value}>
+                {getMailTypeName(selectedMail.mailType)}
+              </Text>
+
+              <Text style={styles.label}>Current Status:</Text>
+              <Text style={styles.value}>
+                {getMailStatusName(selectedMail.mailstatus)}
+              </Text>
+
+              <Text style={styles.label}>Recipient:</Text>
+              <Text style={styles.value}>{selectedMail.recepientName}</Text>
+
+              <Text style={styles.label}>Recipient's Address:</Text>
+              <Text style={styles.value}>
+                {selectedMail.addressNo}, {selectedMail.streetName},{" "}
+                {selectedMail.Locality}, {selectedMail.areaName}
+              </Text>
+            </View>
           )}
         </View>
       </Modal>
@@ -237,14 +257,34 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
-  modalTitle: {
-    fontSize: 20,
+  title: {
+    textAlign: "center",
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 10,
+    color: "#fff",
+    marginTop: 16,
+    marginBottom: 20,
+    backgroundColor: "#C60024EF",
+    padding: 8,
+    borderRadius: 5,
   },
-  modalText: {
-    fontSize: 16,
+  label: {
+    fontSize: 17,
+    fontWeight: "bold",
     color: "#333",
+    marginBottom: 5,
+  },
+  value: {
+    fontSize: 16,
+    color: "#555",
+    marginBottom: 15,
+  },
+  card: {
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    paddingTop: 13,
+    paddingBottom: 13,
   },
 });
 

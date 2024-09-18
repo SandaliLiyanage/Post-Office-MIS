@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import Modal from "react-native-modal";
 import { IP } from "../../../config";
 
 // Mail item interface
@@ -42,6 +43,7 @@ const SectionHeaderWithEmptyMessage = ({
 const Mail = () => {
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);
 
   // Fetch mail items from the backend
   const fetchMails = async () => {
@@ -87,8 +89,12 @@ const Mail = () => {
   );
 
   // Handle mail item press
-  const handlePress = (id: string) => {
-    console.log(`Mail item with ID ${id} pressed`);
+  // const handlePress = (id: string) => {
+  //   console.log(`Mail item with ID ${id} pressed`);
+  // };
+
+  const handlePress = (mail: MailItem) => {
+    setSelectedMail(mail); // Store the selected mail item
   };
 
   // Handle loading state
@@ -124,10 +130,7 @@ const Mail = () => {
 
   // Render each mail item
   const renderItem = ({ item }: { item: MailItem }) => (
-    <TouchableOpacity
-      style={styles.mailItem}
-      onPress={() => handlePress(item.mailID)}
-    >
+    <TouchableOpacity style={styles.mailItem} onPress={() => handlePress(item)}>
       <Text style={styles.mailId}>Mail ID: {item.mailID}</Text>
       <Text style={styles.mailCategory}>{getMailTypeName(item.mailType)}</Text>
       <Text style={styles.mailStatus}>
@@ -147,6 +150,19 @@ const Mail = () => {
           <SectionHeaderWithEmptyMessage section={section} />
         )} // Render section headers
       />
+      <Modal
+        isVisible={!!selectedMail}
+        onBackdropPress={() => setSelectedMail(null)}
+      >
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Recipient Details</Text>
+          {selectedMail && (
+            <Text style={styles.modalText}>
+              Recipient: {selectedMail.mailID}
+            </Text>
+          )}
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -210,6 +226,21 @@ const styles = StyleSheet.create({
     color: "red",
     fontSize: 18,
     textAlign: "center",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalText: {
+    fontSize: 16,
+    color: "#333",
   },
 });
 

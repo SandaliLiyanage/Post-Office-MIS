@@ -17,8 +17,8 @@ import { Input } from "../../components/ui/input"
 import { useUser } from './usercontext';
 
 const formSchema = z.object({
-  username: z.string(),
-  password: z.string().min(5, {
+  newPassword: z.string(),
+  passwordCopy: z.string().min(5, {
   }),
 })
 
@@ -30,8 +30,8 @@ export default function SetPassword() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-        username: "",
-        password: "",
+          newPassword: "",
+          passwordCopy: "",
         },
     })
   return (
@@ -48,12 +48,12 @@ export default function SetPassword() {
         <div>
           <FormField
             control={form.control}
-            name="username"
+            name="newPassword"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>New Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Employee ID" {...field} />
+                  <Input placeholder="New Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -61,12 +61,12 @@ export default function SetPassword() {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="passwordCopy"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Confirm Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Employee ID" {...field} />
+                  <Input placeholder="Confirm" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

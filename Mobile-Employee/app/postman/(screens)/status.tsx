@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -6,9 +6,8 @@ import {
   ActivityIndicator,
   SafeAreaView,
   TouchableOpacity,
-  Alert,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { IP } from "../../../config";
 
 // Status screen component
@@ -66,6 +65,7 @@ const Status = () => {
         });
         fetchInTransitMail();
       }
+
       setUpdating(false);
     } catch (error) {
       console.error("Error updating mail status:", error);
@@ -73,9 +73,11 @@ const Status = () => {
     }
   };
 
-  useEffect(() => {
-    fetchInTransitMail();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchInTransitMail();
+    }, [])
+  );
 
   if (loading) {
     return (

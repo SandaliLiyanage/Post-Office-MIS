@@ -94,6 +94,20 @@ class MailRepository {
       data: { mailstatus: newStatus },
     });
   };
+
+  updateMailStatusWithSignature = async (
+    mailID: number,
+    newStatus: MailStatus,
+    signature: string
+  ) => {
+    return await prisma.mail.update({
+      where: { mailID },
+      data: {
+        mailstatus: newStatus,
+        signature: signature, // Assuming the `mail` table has a `signature` column
+      },
+    });
+  };
 }
 
 export { MailRepository };

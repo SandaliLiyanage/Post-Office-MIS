@@ -1,5 +1,5 @@
-import React, { useRef, useState } from "react";
-import { View, Button, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet } from "react-native";
 import Signature from "react-native-signature-canvas";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { IP } from "../../../config";
@@ -11,11 +11,9 @@ const SignatureScreen = () => {
   const route = useRoute();
   const { mailID } = route.params as { mailID: string };
 
-  const handleSignature = (signature: string) => {
+  // This function will handle both setting the signature and submitting it
+  const handleSignatureAndSubmit = async (signature: string) => {
     setSignature(signature);
-  };
-
-  const handleSubmit = async () => {
     if (signature) {
       try {
         // Send signature to the server along with the status update
@@ -30,6 +28,7 @@ const SignatureScreen = () => {
             signature, // Include signature in the request
           }),
         });
+
         navigation.goBack();
       } catch (error) {
         console.error("Error submitting signature:", error);
@@ -37,15 +36,45 @@ const SignatureScreen = () => {
     }
   };
 
+  // Customize the appearance of the buttons with webStyle prop
+  const webStyle = `
+    .m-signature-pad--footer {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px;
+    }
+    .button {
+      background-color: #007AFF; /* iOS blue color */
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .button:active {
+      background-color: #0056b3; /* Darker blue */
+    }
+    .button.clear {
+      background-color: #FF3B30; /* Red for clear button */
+    }
+    .button.clear:active {
+      background-color: #c12721; /* Darker red */
+    }
+  `;
+
   return (
     <View style={styles.container}>
       <Signature
-        onOK={handleSignature}
+        onOK={handleSignatureAndSubmit} // Call handleSignatureAndSubmit on save
         descriptionText="Sign Below"
         clearText="Clear"
-        confirmText="Save"
+        confirmText="Submit"
+        webStyle={webStyle} // Pass custom styles here
       />
-      <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
 };
@@ -54,6 +83,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
+    padding: 20,
   },
 });
 

@@ -162,14 +162,21 @@ export const getMailItems = async (req: Request, res: Response) => {
 
 // Update mail status
 export const updateMailStatus = async (req: Request, res: Response) => {
-  const { mailID, newStatus } = req.body;
+  const { mailID, newStatus, signature } = req.body;
 
   try {
-    // Call the method on the instance
-    const updatedMail = await mailRepository.updateMailStatus(
-      mailID,
-      newStatus
-    );
+    let updatedMail;
+    if (newStatus === "DELIVERED" && signature) {
+      // Ensure signature is provided for Registered Mail
+      // Store the signature in the database
+      updatedMail = await mailRepository.updateMailStatusWithSignature(
+        mailID,
+        newStatus,
+        signature
+      );
+    } else {
+      updatedMail = await mailRepository.updateMailStatus(mailID, newStatus);
+    }
     res.status(200).json(updatedMail);
   } catch (error) {
     console.error("Error updating mail status:", error);

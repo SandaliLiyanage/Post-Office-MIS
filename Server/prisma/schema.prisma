@@ -38,7 +38,7 @@ model PostOffice {
   postalCode        String                @id
   postOfficeCategory PostOfficeCategory
   postOfficeName    String
-  headOfficeID      String?
+  headOfficeID      String
   address           Address[]
   mail              Mail[]
   employee          Employee[]
@@ -95,6 +95,7 @@ model Bundle {
   currentPostCode     String
   currentPostOffice     PostOffice @relation("CurrentPostOfficeRelation", fields: [currentPostCode], references: [postalCode])
   date                  DateTime?
+  route                 String[]
 }
 
 enum MailStatus {

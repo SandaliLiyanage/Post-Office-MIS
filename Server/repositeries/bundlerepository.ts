@@ -31,14 +31,15 @@ class BundleRepository{
         }
     }
 
-    async createBundle(barcodeID: number, destPostalCode: string, sourcePostalCode: string): Promise<number>{
+    async createBundle(barcodeID: number, destPostalCode: string, sourcePostalCode: string, bundleRoute: string[]): Promise<number>{
         console.log("in create bundle")
         try{
             const res = await prisma.bundle.create({
                 data: { 
                 barcodeID:barcodeID,
                 destPostalCode: destPostalCode,
-                currentPostCode : sourcePostalCode, 
+                currentPostCode : sourcePostalCode,
+                route : bundleRoute,
                 date: new Date()}
             })
             console.log("bundle created", res)

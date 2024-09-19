@@ -22,327 +22,84 @@ async function main() {
   await prisma.postOffice.deleteMany({});
 
   // Seed Post Offices
-  const headOffice = await prisma.postOffice.create({
-    data: {
-      postalCode: "10000",
-      postOfficeCategory: PostOfficeCategory.HEAD_OFFICE,
-      postOfficeName: "Central Head Office",
-    },
-  });
-
-  const subOffice = await prisma.postOffice.create({
-    data: {
-      postalCode: "20000",
-      postOfficeCategory: PostOfficeCategory.SUB_OFFICE,
-      postOfficeName: "Moratuwa Post Office",
-      headOfficeID: headOffice.postalCode,
-    },
-  });
-
-  // Seed Employees
-  const employee1 = await prisma.employee.create({
-    data: {
-      employeeID: "0001",
-      employeeName: "John Doe",
-      email: "john.doe@gmail.com",
-      telephone: "123456789",
-      role: Role.POSTMASTER,
-      postalCode: headOffice.postalCode,
-      password: "password234",
-    },
-  });
-
-  const employee2 = await prisma.employee.create({
-    data: {
-      employeeID: "0002",
-      employeeName: "Jane Smith",
-      email: "jane.smith@gmail.com",
-      telephone: "987654321",
-      role: Role.POSTMAN,
-      postalCode: subOffice.postalCode,
-      password: "password123",
-    },
-  });
-
-  // Seed Areas
-  await prisma.area.create({
-    data: {
-      areaID: 1,
-      areaName: "Area01",
-      postalCode: subOffice.postalCode,
-      employeeID: employee2.employeeID,
-    },
-  });
-
-  // Seed Addresses
-  const address1 = await prisma.address.create({
-    data: {
-      postalCode: headOffice.postalCode,
-      addressNo: "123",
-      streetName: "Main St",
-      Locality: "Central City",
-      latitude: 40.7128,
-      longitude: -74.006,
-      areaID: 1,
-    },
-  });
-
-  const address2 = await prisma.address.create({
-    data: {
-      postalCode: subOffice.postalCode,
-      addressNo: "456",
-      streetName: "Market St",
-      Locality: "Suburbia",
-      latitude: 34.0522,
-      longitude: -118.2437,
-      areaID: 1,
-    },
-  });
-
-  // Seed Transactions
-  const transaction = await prisma.transaction.create({
-    data: {
-      customerName: "Alice Johnson",
-      customerTelephone: "555123456",
-      customerAddressID: address1.addressID,
-      date: new Date(),
-      amount: 10.5,
-    },
-  });
-
-  // Seed Bundles
-  const bundle1 = await prisma.bundle.create({
-    data: {
-      bundleID: 1,
-      destPostalCode: subOffice.postalCode,
-      currentPostCode: subOffice.postalCode,
-    },
-  });
-
-  // Seed Mail
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.NORMAL_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.REGISTERED_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.REGISTERED_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.REGISTERED_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.REGISTERED_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.COURIER,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.COURIER,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.COURIER,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  await prisma.mail.create({
-    data: {
-      recepientName: "Bob Williams",
-      recepientAddressID: address2.addressID,
-      postalCode: headOffice.postalCode,
-      bundleID: bundle1.bundleID,
-      transactionID: transaction.transactionID,
-      mailType: MailType.REGISTERED_MAIL,
-      weight: 1.2,
-      price: 6.0,
-      mailstatus: MailStatus.IN_TRANSIT,
-    },
-  });
-
-  // Seed Leaves
-  await prisma.leave.create({
-    data: {
-      employeeID: employee1.employeeID,
-      leaveType: LeaveType.FULL_DAY,
-      startDate: new Date("2024-09-10"),
-      endDate: new Date("2024-09-11"),
-      description: "Annual Leave",
-      status: "Pending",
-      RequestStatus: RequestStatus.PENDING,
-    },
-  });
-
+  async function seedPostOffices() {
+    await prisma.postOffice.createMany({
+      data: [
+        {
+          postalCode: '00100',
+          postOfficeCategory: 'HEAD_OFFICE',
+          postOfficeName: 'Colombo Main',
+          headOfficeID: '00100',
+        },
+        {
+          postalCode: '20000',
+          postOfficeCategory: 'HEAD_OFFICE',
+          postOfficeName: 'Kandy',
+          headOfficeID: '20000',
+        },
+        {
+          postalCode: '10250',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Nugegoda',
+          headOfficeID: '00100',
+        },
+        {
+          postalCode: '80000',
+          postOfficeCategory: 'HEAD_OFFICE',
+          postOfficeName: 'Galle',
+          headOfficeID: '80000',
+        },
+        {
+          postalCode: '11500',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Negombo',
+          headOfficeID: '00100',
+        },
+        {
+          postalCode: '40000',
+          postOfficeCategory: 'HEAD_OFFICE',
+          postOfficeName: 'Jaffna',
+          headOfficeID: '40000',
+        },
+        {
+          postalCode: '10300',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Mount Lavinia',
+          headOfficeID: '00100',
+        },
+        {
+          postalCode: '11000',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Maharagama',
+          headOfficeID: '00100',
+        },
+        {
+          postalCode: '30600',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Kurunegala',
+          headOfficeID: '30000',
+        },
+        {
+          postalCode: '60100',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Matara',
+          headOfficeID: '80000',
+        },
+        {
+          postalCode: '41000',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Anuradhapura',
+          headOfficeID: '40000',
+        },
+        {
+          postalCode: '50100',
+          postOfficeCategory: 'SUB_OFFICE',
+          postOfficeName: 'Batticaloa',
+          headOfficeID: '50000',
+        },
+      ],
+    });
+  }
   console.log("Database has been seeded successfully!");
 }
 

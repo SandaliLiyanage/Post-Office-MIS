@@ -111,9 +111,9 @@ export default function Employeeupdate() {
                 
                  )}
                 />
-            <div className='grid grid-2'>
+            {/* <div className='grid grid-2'>
             <AddressSearch/>
-            </div>
+            </div> */}
             <FormField
               control={form.control}
               name="telephone"

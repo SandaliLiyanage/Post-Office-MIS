@@ -55,7 +55,7 @@ export default function SideBar() {
   const ViewLeaveRequests = <NavButton className={`${activeButton === 'ViewLeaveRequests' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('ViewLeaveRequests')
-                          navigate("/dashboard/mailBundles")
+                          navigate("/dashboard/viewLeaveRequests")
                         } }>View Leave Requests</NavButton>
 const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? clickedColour : normalColour}`} 
                         onClick={() => {

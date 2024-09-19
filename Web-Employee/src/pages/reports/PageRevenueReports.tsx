@@ -20,74 +20,115 @@ import {
     PopoverContent,
     PopoverTrigger,
   } from "@/components/ui/popover"
+  import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
+import {useEffect, useState} from 'react';
+import { Input } from "@/components/ui/input";
 
-  const FormSchema = z.object({
-    dob: z.date({
-      required_error: "A date of birth is required.",
-    }),
+  const formSchema = z.object({
+    startDate: z.date(),
+    endDate: z.date(),
+    serviceType: z.string()
+
   })
   import { cn } from "@/lib/utils" 
+import { Value } from "@radix-ui/react-select";
  
 
 export default function RevenueReports() {
-    const form = useForm<z.infer<typeof FormSchema>>({
-        resolver: zodResolver(FormSchema),
-      })
-    const [date, setDate] = React.useState<Date | undefined>(new Date())
+  const [endDate, setendDate] = React.useState<Date>()
+  const [startDate, setStartDate] = React.useState<Date>()
+  const [type, setType] = useState<string>("")
+
+  useEffect(()=>{
+    async function generateReports(){
+      console.log("in generate reports")
+    }
+    generateReports();
+  }, [endDate, startDate, type])
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      startDate: new Date(),
+      endDate:new Date(),
+      serviceType: "",
+
+    },
+  })
+  
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <p className="text-xl font-bold">Revenue Reports</p>
       </div>
-      <Form {...form}>
-      <form  className="space-y-8">
-        <FormField
-          control={form.control}
-          name="dob"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date of birth</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormDescription>
-                Your date of birth is used to calculate your age.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
+    
+        <div className="grid grid-cols-3 gap-4">
+        <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-[240px] justify-start text-left font-normal",
+            !startDate && "text-muted-foreground"
           )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {startDate ? format(startDate, "PPP") : <span>Pick start date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={startDate}
+          onSelect={setStartDate}
+          initialFocus
         />
-        <Button type="submit">Submit</Button>
-      </form>
-    </Form>
+      </PopoverContent>
+    </Popover>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button
+          variant={"outline"}
+          className={cn(
+            "w-[240px] justify-start text-left font-normal",
+            !endDate && "text-muted-foreground"
+          )}
+        >
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          {endDate ? format(endDate, "PPP") : <span>Pick end date</span>}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start">
+        <Calendar
+          mode="single"
+          selected={endDate}
+          onSelect={setendDate}
+          initialFocus
+        />
+      </PopoverContent>
+    </Popover>
+    <Select>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select Mail Type" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+        <SelectItem value="all" onSelect={() => setType("all")}>all</SelectItem>
+        <SelectItem value="normal mail" onSelect={() => setType("normal mail")}>normal mail</SelectItem>
+      <SelectItem value="registered mail" onSelect={() => setType("registered mail")}>registered mail</SelectItem>
+      <SelectItem value="courier" onSelect={() => setType("courier")}>courier</SelectItem>
+      <SelectItem value="bulk mail" onSelect={() => setType("bulk mail")}>bulk mail</SelectItem>
+        </SelectGroup>
+      </SelectContent>
+    </Select>
+        </div>
     </div>
   )
 }

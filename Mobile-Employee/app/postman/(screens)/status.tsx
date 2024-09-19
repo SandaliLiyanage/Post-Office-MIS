@@ -53,7 +53,7 @@ const Status = () => {
       setUpdating(true);
       if (mail?.mailType === "REGISTERED_MAIL" && newStatus === "DELIVERED") {
         // If it's registered mail and delivered, navigate to the signature screen
-        (navigation as any).navigate("SignatureScreen", {
+        (navigation as any).navigate("signaturescreen", {
           mailID: mail.mailID,
         });
       } else {

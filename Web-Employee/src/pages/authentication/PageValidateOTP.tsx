@@ -70,16 +70,23 @@ export default function ValidateOTP() {
       })
       console.log(response)
       if(response.data == "valid"){
+        toast({
+          description:"OTP Validated",
+        })
         navigate("/setpassword")
+        localStorage.removeItem("count")
+        localStorage.removeItem("employeeID")
+        
       }if(response.data == "expired"){
         localStorage.removeItem("employeeID")
         toast({
-          description:response.data,
+          description:"OTP Expired",
         })
       }
         else{
+          form.reset()
           toast({
-            description:response.data,
+            description:"OTP Incorrect",
           })
       }
 
@@ -133,7 +140,7 @@ export default function ValidateOTP() {
                   </InputOTP>
                 </FormControl>
                 <FormDescription>
-                  Please enter the one-time password sent to your phone.
+                  Please enter the one-time password sent to your Email.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
@@ -141,7 +148,7 @@ export default function ValidateOTP() {
           />
           <div className="grid grid-cols-2 gap-2">
           <Button type="submit" className="bg-slate-600 ">Validate OTP</Button>
-          <Toaster />
+          <Toaster/>
           <Button type="button" className="bg-slate-800 " >Send OTP</Button>
           </div>
         </form>
@@ -151,5 +158,5 @@ export default function ValidateOTP() {
       </div>
     </div>
     
-)
+  )
 }

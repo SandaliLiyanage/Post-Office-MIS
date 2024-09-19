@@ -16,20 +16,23 @@ import {
 } from "../../components/ui/form"
 import { Input } from "../../components/ui/input"
 import { useUser } from './usercontext';
+import {Toaster} from "../../components/ui/toaster";
+import { useToast } from '../../hooks/use-toast';
 
 const formSchema = z.object({
-  username: z.string(),
+  employeeID: z.string(),
   password: z.string().min(5, {
   }),
 })
 
 export default function Login() {
+  const { toast } = useToast()
   const navigate = useNavigate();
   const { saveUser } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      employeeID: "",
       password: "",
     },
   })
@@ -37,7 +40,11 @@ export default function Login() {
   async function handleLoginData(values: z.infer<typeof formSchema>) {
     try {
       console.log("Submitting login data", values)
+      const validateID = await axios.post("http://localhost:5000/auth/validateID", values)
+      if(validateID.data == true){
       const user = await axios.post("http://localhost:5000/auth/login", values)
+      if(user.data.login == true){
+      console.log(user.data.login)
       console.log("Data submitted successfully", user.data)
       saveUser(
         {
@@ -49,7 +56,20 @@ export default function Login() {
           email: user.data.email
         }
       )
-      navigate('/dashboard')
+      navigate('/dashboard')}
+      else{
+        form.reset();
+        toast({
+          description: "Invalid Password",
+        })
+      }
+    }
+      else{
+        form.reset();
+        toast({
+          description: "Employee ID does not Exist",
+        })
+      }
     } catch (error) {
       console.error("Error submitting login data", error)
     }
@@ -70,7 +90,7 @@ export default function Login() {
           <div>
             <FormField
               control={form.control}
-              name="username"
+              name="employeeID"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Employee ID</FormLabel>
@@ -98,6 +118,7 @@ export default function Login() {
           </div >
           <div className="flex justify-between gap-2">
             <Button type="submit" className="bg-slate-800" >Log in</Button>
+            <Toaster/>
             <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
         </form>

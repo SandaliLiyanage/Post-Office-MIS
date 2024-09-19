@@ -88,4 +88,6 @@ const updateEmployee = async (req: Request, res: Response) => {
   console.log("hi hi", response);
   return res.json(response);
 };
+
+
 export { EmployeeDetails, Registration, getEmployeeDetails, updateEmployee };

@@ -15,6 +15,7 @@ interface LoginResponse {
     postalCode?: string;
     role?: string;
     message: string;
+    login: boolean;
     postOfficeName?: string;
     email?: string;
     token?: string;
@@ -25,7 +26,7 @@ class AuthService{
             const employee = await employeeRepository.findUserbyID(username);
             console.log(employee?.password)
             if(!employee?.password){
-                const loginResponse: LoginResponse = {message: "Incorrect username"}
+                const loginResponse: LoginResponse = {message: "Incorrect employeeID", login: false}
                 return loginResponse
             }
             const hashedPassword = await cryptService.hashPassword(employee.password)
@@ -37,17 +38,17 @@ class AuthService{
                 const token = jwtToken.sign({sessionId})
                 const user = await employeeRepository.getUserData(username)
                 console.log(user.employeeName)
-                const loginResponse: LoginResponse = { name: user.employeeName, postalCode:user.postalCode, role: user.role, message: "login success", postOfficeName: user.postOfficeName, token: token, email: user.email}
+                const loginResponse: LoginResponse = { name: user.employeeName, postalCode:user.postalCode, role: user.role, message: "login success", login: true, postOfficeName: user.postOfficeName, token: token, email: user.email}
                 console.log("login resoponse", loginResponse)
                 return loginResponse
             }else{
                 console.log("notverified")
-                const loginResponse:LoginResponse = {message: "login denied"}
+                const loginResponse:LoginResponse = {message: "login denied", login: false}
                 return loginResponse
     }
     }catch(error){
         console.error("login error")
-        const loginResponse: LoginResponse = {message: "login failed"}
+        const loginResponse: LoginResponse = {message: "login failed", login: false}
         return loginResponse
     }  
 }
@@ -67,7 +68,12 @@ class AuthService{
     }
   };
 
-
+  async setPassword(employeeID: string, newPassword: string, passwordCopy: string){
+    console.log("in set password");
+    const response = await employeeRepository.changePassword(employeeID, newPassword)
+    console.log("hehe response in auth service", response)
+    return response
+  }
 
 }
 export default AuthService;

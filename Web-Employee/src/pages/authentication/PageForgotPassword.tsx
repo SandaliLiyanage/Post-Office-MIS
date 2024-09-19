@@ -14,17 +14,19 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form"
-
-
 import { Input } from "../../components/ui/input"
+import {Toaster} from "../../components/ui/toaster"
+import { useToast } from '../../hooks/use-toast';
 
 const formSchema = z.object({
-  employeeID: z.string(),
+  employeeID: z.string().min(3, {
+    message: "Incorrect EmployeeID",
+  }),
 })
 
 
 export default function ForgotPassword() {
-
+  const { toast } = useToast()
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -33,13 +35,24 @@ export default function ForgotPassword() {
       },
   })
 
-  const  generateOTP= async function(values: z.infer<typeof formSchema>){
-    console.log("generating OTP in front end")
+  const generateOTP= async function(values: z.infer<typeof formSchema>){
+    console.log("generating OTP ---  in front end")
     localStorage.setItem("employeeID", values.employeeID)
-    const result =await axios.post("http://localhost:5000/auth/generateOTP", values)
-    navigate("/validateOTP")
+    console.log("hehe", values.employeeID)
+    const result = await axios.post("http://localhost:5000/auth/validateID", values)
     console.log(result)
+    if(result.data == true){
+      const result =await axios.post("http://localhost:5000/auth/generateOTP", values)
+      navigate("/validateOTP")
+      console.log(result)}
+    else{
+      form.reset();
+      toast({
+        description:"Invalid Employee ID",
+      })
+    }
   }
+    
   return (
     <div className="bg-slate-800 min-h-screen flex items-center justify-center">
     <div className=" bg-white rounded-lg h-96 lg:flex">
@@ -65,6 +78,7 @@ export default function ForgotPassword() {
             )}
           />
           <Button type="submit" className="bg-slate-600 mt-5">Send OTP</Button>
+          <Toaster/>
         </div>
       </form>
     </Form>

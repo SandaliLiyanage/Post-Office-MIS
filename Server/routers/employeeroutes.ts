@@ -1,11 +1,7 @@
 import { Router } from "express";
 
 import {
-  EmployeeDetails,
-  getEmployeeDetails,
-  Registration,
-  updateEmployee
-} from "../controllers/employeecontroller";
+  EmployeeDetails, getEmployeeDetails, Registration, updateEmployee} from "../controllers/employeecontroller";
 
 const router = Router();
 router.post("/employeeRecords", EmployeeDetails);

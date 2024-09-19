@@ -98,6 +98,19 @@ class EmployeeRepository {
 
         }
     }
+
+    async changePassword(employeeID: string, newPassword: string){
+        try{
+            const response = await prisma.employee.update({
+                where:{employeeID: employeeID},
+                data: {password: newPassword}
+            })
+            console.log(response)
+            return "password updated"
+        }catch(error){
+            throw error
+        }
+    }
 }
 export {EmployeeRepository}
 

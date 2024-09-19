@@ -76,6 +76,7 @@ class MailRepository {
             JOIN "Area" AS ar ON a."areaID" = ar."areaID"
             JOIN "Employee" AS e ON ar."employeeID" = e."employeeID"
             WHERE e."employeeID" = ${employeeID}
+            ORDER BY m."mailID"
         `;
 
       console.log("Mail items fetched:", mailItems);

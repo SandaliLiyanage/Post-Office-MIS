@@ -39,7 +39,15 @@ const SectionHeaderWithEmptyMessage = ({
   <View>
     <Text style={styles.sectionHeader}>{section.title}</Text>
     {section.data.length === 0 && (
-      <Text style={styles.emptySectionMessage}>No mail items</Text>
+      <Text
+        style={
+          section.title === "Returned"
+            ? styles.emptySectionMessage2 // Style for "Returned" section
+            : styles.emptySectionMessage1 // Style for "Delivered" and "To be Delivered" sections
+        }
+      >
+        {section.title === "Returned" ? "No mail items" : "No mail items"}
+      </Text>
     )}
   </View>
 );
@@ -49,6 +57,7 @@ const Mail = () => {
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);
+  const [updating, setUpdating] = useState(false);
 
   // Fetch mail items from the backend
   const fetchMails = async () => {
@@ -140,6 +149,26 @@ const Mail = () => {
     </TouchableOpacity>
   );
 
+  const updateMailStatus = async (newStatus: string) => {
+    try {
+      setUpdating(true);
+      await fetch(`http://${IP}:5000/mail/update-status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ mailID: selectedMail?.mailID, newStatus }),
+      });
+
+      setUpdating(false);
+      setSelectedMail(null);
+      fetchMails();
+    } catch (error) {
+      console.error("Error updating mail status:", error);
+      setUpdating(false);
+    }
+  };
+
   // Render the mail sectioned list
   return (
     <SafeAreaView style={styles.container}>
@@ -162,27 +191,53 @@ const Mail = () => {
           <Text style={styles.title}>Mail Details</Text>
           {selectedMail && (
             <View>
-              <Text style={styles.label}>Mail ID:</Text>
-              <Text style={styles.value}>{selectedMail.mailID}</Text>
+              {/* Mail data section */}
+              <View>
+                <Text style={styles.label}>Mail ID:</Text>
+                <Text style={styles.value}>{selectedMail.mailID}</Text>
 
-              <Text style={styles.label}>Type:</Text>
-              <Text style={styles.value}>
-                {getMailTypeName(selectedMail.mailType)}
-              </Text>
+                <Text style={styles.label}>Type:</Text>
+                <Text style={styles.value}>
+                  {getMailTypeName(selectedMail.mailType)}
+                </Text>
 
-              <Text style={styles.label}>Current Status:</Text>
-              <Text style={styles.value}>
-                {getMailStatusName(selectedMail.mailstatus)}
-              </Text>
+                <Text style={styles.label}>Current Status:</Text>
+                <Text style={styles.value}>
+                  {getMailStatusName(selectedMail.mailstatus)}
+                </Text>
 
-              <Text style={styles.label}>Recipient:</Text>
-              <Text style={styles.value}>{selectedMail.recepientName}</Text>
+                <Text style={styles.label}>Recipient:</Text>
+                <Text style={styles.value}>{selectedMail.recepientName}</Text>
 
-              <Text style={styles.label}>Recipient's Address:</Text>
-              <Text style={styles.value}>
-                {selectedMail.addressNo}, {selectedMail.streetName},{" "}
-                {selectedMail.Locality}, {selectedMail.areaName}
-              </Text>
+                <Text style={styles.label}>Recipient's Address:</Text>
+                <Text style={styles.value}>
+                  {selectedMail.addressNo}, {selectedMail.streetName},{" "}
+                  {selectedMail.Locality}, {selectedMail.areaName}
+                </Text>
+              </View>
+
+              {/* Buttons section */}
+              <View style={styles.buttonsContainer}>
+                {(selectedMail.mailstatus === "DELIVERED" ||
+                  selectedMail.mailstatus === "RETURNED") && (
+                  <TouchableOpacity
+                    style={styles.markAsButton}
+                    onPress={() => updateMailStatus("IN_TRANSIT")}
+                  >
+                    <Text style={styles.buttonText}>
+                      {"  "}
+                      Mark as {"\n"} "To be Delivered"
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setSelectedMail(null)}
+                >
+                  <Text style={styles.closeButtonText}>Close</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           )}
         </View>
@@ -197,25 +252,33 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingTop: 5,
-    paddingBottom: 10,
+    paddingTop: 6,
+    paddingBottom: 6,
     backgroundColor: "#fff",
   },
   sectionHeader: {
     fontSize: 22,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 12,
+    marginTop: 15,
     marginBottom: 10,
     backgroundColor: "#C60024EF",
     padding: 8,
     borderRadius: 5,
   },
-  emptySectionMessage: {
+  emptySectionMessage1: {
     fontSize: 14,
     color: "gray",
     textAlign: "center",
     marginTop: 5,
+    paddingBottom: 2,
+  },
+  emptySectionMessage2: {
+    fontSize: 14,
+    color: "gray",
+    textAlign: "center",
+    marginTop: 5,
+    paddingBottom: 12,
   },
   mailItem: {
     padding: 12,
@@ -262,7 +325,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 16,
+    marginTop: 14,
     marginBottom: 20,
     backgroundColor: "#C60024EF",
     padding: 8,
@@ -285,6 +348,47 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 13,
     paddingBottom: 13,
+  },
+
+  buttonsContainer: {
+    flexDirection: "row", // Aligns buttons in a row
+    justifyContent: "space-between", // Space between the buttons
+    marginTop: 15, // Adds space between the buttons and mail details
+    marginBottom: 12, // Adds space between the buttons and the bottom of the modal
+  },
+  markAsButton: {
+    backgroundColor: "#C60024",
+    paddingVertical: 5,
+    paddingBottom: 7,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    flex: 1, // Takes equal space as close button
+    marginRight: 5, // Adds space between two buttons
+    justifyContent: "center", // Centers text vertically
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    paddingRight: 7,
+  },
+  closeButton: {
+    backgroundColor: "#747474",
+    paddingVertical: 10,
+    paddingHorizontal: 2,
+    borderRadius: 5,
+    flex: 1, // Takes equal space as markAsButton
+    marginLeft: 5, // Adds space between two buttons
+    justifyContent: "center", // Centers text vertically
+    alignItems: "center",
+  },
+  closeButtonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });
 

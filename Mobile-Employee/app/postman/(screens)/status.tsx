@@ -5,8 +5,8 @@ import {
   StyleSheet,
   ActivityIndicator,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
 import { IP } from "../../../config";
 
 // Status screen component
@@ -25,7 +25,6 @@ const Status = () => {
   const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
 
   const fetchInTransitMail = async () => {
     try {
@@ -38,7 +37,6 @@ const Status = () => {
         setMail(null);
       } else {
         setMail(data);
-        setSelectedStatus(data.mailstatus);
       }
       setLoading(false);
     } catch (error) {
@@ -124,21 +122,21 @@ const Status = () => {
         </Text>
       </View>
 
-      <Text style={styles.title}>Update the Status</Text>
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={selectedStatus}
-          onValueChange={(itemValue) => {
-            setSelectedStatus(itemValue);
-            updateMailStatus(itemValue);
-          }}
-          enabled={!updating}
-          style={styles.picker}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#00AC11" }]}
+          onPress={() => updateMailStatus("DELIVERED")}
+          disabled={updating}
         >
-          <Picker.Item label="To be Delivered" value="IN_TRANSIT" />
-          <Picker.Item label="Delivered" value="DELIVERED" />
-          <Picker.Item label="Returned" value="RETURNED" />
-        </Picker>
+          <Text style={styles.buttonText}>Delivered</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#D80000" }]}
+          onPress={() => updateMailStatus("RETURNED")}
+          disabled={updating}
+        >
+          <Text style={styles.buttonText}>Returned</Text>
+        </TouchableOpacity>
       </View>
 
       {updating && <ActivityIndicator size="small" color="#C60024" />}
@@ -180,32 +178,30 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 16,
-    marginBottom: 10,
+    marginTop: 28,
+    marginBottom: 22,
     backgroundColor: "#C60024EF",
     padding: 8,
     borderRadius: 5,
+    textAlign: "center",
   },
-  pickerContainer: {
-    backgroundColor: "#fff",
-    borderColor: "#fff",
-    borderRadius: 10,
-    paddingBottom: 7,
-    marginBottom: 5,
-    marginTop: 5,
-    overflow: "hidden", // Ensure Picker is clipped to the border radius
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
-    elevation: 2,
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 22,
   },
-
-  picker: {
-    height: 50,
-    width: "100%",
+  button: {
+    flex: 1,
+    paddingVertical: 15,
+    borderRadius: 5,
+    marginHorizontal: 15,
   },
-
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
   noMailText: {
     fontSize: 18,
     textAlign: "center",

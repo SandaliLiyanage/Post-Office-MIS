@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 import { Input } from '../../../components/ui/input';
 
 export default function Bundle() {
-  const {user} = useUser();
+  const {user, removeUser} = useUser();
   const [bundle, setBundle] = useState<IBundle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
@@ -15,11 +15,13 @@ export default function Bundle() {
   useEffect(() => {
     async function fetchBundles() {
       try { 
-        console.log(user?.token)
+        if(user != null){
+        console.log(user.token)
+        console.log(user.postalCode, "user")
         const response = await axios.post('http://localhost:5000/mail/bundles', 
-          user?.postalCode,);
+          {postalCode: user.postalCode});
         console.log(response.data)
-        setBundle(response.data);
+        setBundle(response.data);}
       } catch (error) {
         setError('Failed to fetch bundles');
       } finally {

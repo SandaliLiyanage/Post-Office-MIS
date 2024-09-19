@@ -18,5 +18,18 @@ class PostOfficeRepository{
           throw error
         }
       }
+
+      async getPostOfficeName(postalCode: string){
+        const name = await prisma.postOffice.findUnique({
+          where: {
+            postalCode: postalCode
+          },
+          select: {
+            postOfficeName: true
+          }
+        })
+      return name
+
+      }
 }
 export default PostOfficeRepository

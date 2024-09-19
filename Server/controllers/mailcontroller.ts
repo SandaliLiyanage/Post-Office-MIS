@@ -3,11 +3,12 @@ import { MailRepository } from "../repositeries/mailrepository";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
 import MailService from "../services/mailservice";
+import BundleService from "../services/bundleservice";
 
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const mailService = new MailService();
-const bundleRepository = new BundleRepository();
+const bundleservice = new BundleService();
 
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");
@@ -17,9 +18,9 @@ const CalculatePrice = async (req: Request, res: Response) => {
 };
 
 const MailBundles = async (req: Request, res: Response) => {
-  console.log("Request received in mail bundle controller");
+  console.log("Request received in mail bundle controller", req.body);
   const { postalCode } = req.body;
-  const result = await bundleRepository.getBundles(postalCode);
+  const result = await bundleservice.getBundles(postalCode);
   console.log("Bundles received in controller:", result);
   return res.status(200).json(result);
 };
@@ -52,7 +53,7 @@ const MailDetails = async (req: Request, res: Response) => {
 };
 
 const Mails = async (req: Request, res: Response) => {
-  console.log("Request received in mail");
+  console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);

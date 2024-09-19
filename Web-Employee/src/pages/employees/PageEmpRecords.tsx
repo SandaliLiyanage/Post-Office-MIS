@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 export default function EmployeeRecords() {
-  const {user} = useUser();
+  const {removeUser, user} = useUser()
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
@@ -18,16 +18,17 @@ export default function EmployeeRecords() {
   useEffect(() => {
     async function fetchEmployees() {
       try {
-        console.log(user?.token)
+        if(user){
+        console.log(user, "token")
         const response = await axios.post('http://localhost:5000/employee/employeeRecords', 
-          user?.postalCode,
+          {postalCode: user.postalCode},
           {
             headers: {
-              Authorization: `Bearer ${user?.token}`, 
+              Authorization: `Bearer ${user.token}`, 
             },
           });
         setEmployees(response.data);
-         console.log(employees)
+         console.log(employees)}
       } catch (error) {
         setError('Failed to fetch employees');
       } finally {

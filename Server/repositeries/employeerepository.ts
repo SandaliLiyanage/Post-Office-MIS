@@ -22,6 +22,7 @@ class EmployeeRepository {
     }
     async getUserData(userName: string): Promise<User>{
         try{
+            console.log(userName, "hee")
             const res = await prisma.$queryRaw<User[]>`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email"
             FROM "Employee" AS e 
             JOIN 
@@ -72,6 +73,7 @@ class EmployeeRepository {
     }
     async getEmployees(postalCode: string): Promise<Employee[]> {
         try {
+            console.log(postalCode)
             const res = await prisma.employee.findMany({
                 where:{
                     postalCode: postalCode,

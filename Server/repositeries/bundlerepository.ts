@@ -1,7 +1,9 @@
 import {Prisma, PrismaClient, Bundle} from "@prisma/client"
 const prisma = new PrismaClient();
 class BundleRepository{
-    async getBundles(postalCode: string): Promise<Bundle[]> {
+    async getBundles(postalCode: string): Promise<Bundle[]| null> {
+        console.log("get bundles", postalCode)
+        if(postalCode){
         try {
             const res = await prisma.bundle.findMany({
                 where:{
@@ -13,7 +15,8 @@ class BundleRepository{
         } catch (error) {
             console.error("Error getting bundles:", error);
             throw error;
-        }
+        }}
+        return null
     }
 
     async findBundle(postalCode: string): Promise <Bundle[]>{

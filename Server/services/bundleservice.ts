@@ -27,7 +27,7 @@ class BundleService {
             }else{
                 console.log("bundle not found. creating a new bundle")
                 const bundleRoute = await this.bundleRouteCreation( destPostalCode, sourcePostalCode)
-                const bundleID = await bundleRepository.createBundle(10, destPostalCode, sourcePostalCode, bundleRoute );
+                const bundleID = await bundleRepository.createBundle(destPostalCode, sourcePostalCode, bundleRoute );
                 console.log("this is the newly found bundle" , bundleID)
                 return bundleID
             }

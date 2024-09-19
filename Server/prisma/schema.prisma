@@ -89,8 +89,7 @@ model Mail {
 model Bundle {
   bundleID              Int          @id @default(autoincrement())
   destPostalCode        String
-  destPostOffice        PostOffice @relation("DestPostOfficeRelation", fields: [destPostalCode], references: [postalCode])
-  barcodeID              Int?          
+  destPostOffice        PostOffice @relation("DestPostOfficeRelation", fields: [destPostalCode], references: [postalCode])     
   mail                  Mail[]
   currentPostCode     String
   currentPostOffice     PostOffice @relation("CurrentPostOfficeRelation", fields: [currentPostCode], references: [postalCode])

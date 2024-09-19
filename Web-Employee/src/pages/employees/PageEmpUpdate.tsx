@@ -17,8 +17,20 @@ import {
 import { Input } from "../../components/ui/input";
 import axios from "axios"
 import {useUser} from "../authentication/usercontext"
+import AddressSearch from '../mail/mailorder/address';
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 const ROLES = ['Supervisor', 'Postmaster', 'Receptionist', 'postman', 'dispatcher'] as const;
 
@@ -38,8 +50,9 @@ export default function Employeeupdate() {
       address: "",
       telephone: "",
     },});	
-    const location = useLocation();
-    const employee = location.state;
+  const location = useLocation();
+  const employee = location.state;
+
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
       const employeeID =employee.employeeID;
@@ -58,9 +71,13 @@ export default function Employeeupdate() {
       console.log("successfully submitted data", response)
       return response
     }catch(error){
-
     }
-    
+  }
+
+  const deleteAccount = async(employeeID: string)=>{
+    console.log(employeeID)
+    const response  = await axios.post("http://localhost:5000/employee/delete", {employeeID})
+    console.log(response)
   }
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
@@ -89,25 +106,14 @@ export default function Employeeupdate() {
                   <FormMessage />
                   <FormDescription>
                 The current role is: {employee.role.toLowerCase()}
-
               </FormDescription>
                 </FormItem>
                 
                  )}
                 />
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Address</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Updated Address" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className='grid grid-2'>
+            <AddressSearch/>
+            </div>
             <FormField
               control={form.control}
               name="telephone"
@@ -142,19 +148,7 @@ export default function Employeeupdate() {
                 </FormItem>
                  )}
                 />
-            {/* <FormField
-              control={form.control}
-              name="postalCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Postal Code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Postal Code" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-                 )}
-                /> */}
+           
           </div>
         <Button type="submit" className='bg-teal-600 justify-end' onClick={()=> {
         
@@ -165,11 +159,29 @@ export default function Employeeupdate() {
       </Form>
       </div>
       <div className="bg-white p-4 rounded-sm m-4">
+      
         <p className='text-xl mb-8 font-semibold'>Delete Employee Account</p>
         <div className='flex justify-between'>
           <p>The account will be deleted</p>
         <div className="flex justify-end">
-          <Button  className="bg-red-600">Delete</Button>
+          <AlertDialog>
+        <AlertDialogTrigger asChild>
+        <Button  variant="outline" className="bg-red-600" onClick={()=>{deleteAccount(employee.employeeID)}}>Delete</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
         </div>  
         </div>
           

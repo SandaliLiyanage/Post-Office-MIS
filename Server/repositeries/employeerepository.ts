@@ -1,6 +1,7 @@
 import {PrismaClient, Employee, Role, PostOffice} from "@prisma/client"
 import { response } from "express";
 import { FileWatcherEventKind } from "typescript";
+import { DeleteEmployee } from "../controllers/employeecontroller";
 const prisma = new PrismaClient();
 
 interface User {
@@ -110,6 +111,16 @@ class EmployeeRepository {
         }catch(error){
             throw error
         }
+    }
+
+    async deleteEmployee(employeeID: string){
+        console.log(employeeID)
+        console.log("in delete repository")
+        // const response = await prisma.employee.delete({
+        //     where: {
+        //         employeeID: employeeID
+        //     }
+        // })
     }
 }
 export {EmployeeRepository}

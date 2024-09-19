@@ -6,7 +6,9 @@ import {
   ActivityIndicator,
   SafeAreaView,
   TouchableOpacity,
+  Alert,
 } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { IP } from "../../../config";
 
 // Status screen component
@@ -25,6 +27,7 @@ const Status = () => {
   const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const navigation = useNavigation();
 
   const fetchInTransitMail = async () => {
     try {
@@ -48,15 +51,22 @@ const Status = () => {
   const updateMailStatus = async (newStatus: string) => {
     try {
       setUpdating(true);
-      await fetch(`http://${IP}:5000/mail/update-status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
-      });
+      if (mail?.mailType === "REGISTERED_MAIL" && newStatus === "DELIVERED") {
+        // If it's registered mail and delivered, navigate to the signature screen
+        (navigation as any).navigate("SignatureScreen", {
+          mailID: mail.mailID,
+        });
+      } else {
+        await fetch(`http://${IP}:5000/mail/update-status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
+        });
+        fetchInTransitMail();
+      }
       setUpdating(false);
-      fetchInTransitMail();
     } catch (error) {
       console.error("Error updating mail status:", error);
       setUpdating(false);

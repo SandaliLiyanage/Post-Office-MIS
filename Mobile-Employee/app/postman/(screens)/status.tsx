@@ -35,7 +35,7 @@ const Status = () => {
         `http://${IP}:5000/mail/in-transit?employeeID=0002`
       );
       const data = await response.json();
-      if (data.message) {
+      if (!data || !data.mailID) {
         setMail(null);
       } else {
         setMail(data);
@@ -90,7 +90,7 @@ const Status = () => {
   if (!mail) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.noMailText}>No mail items in transit.</Text>
+        <Text style={styles.noMailText}>No mail items to be delivered</Text>
       </SafeAreaView>
     );
   }
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
   noMailText: {
     fontSize: 18,
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 301,
     color: "gray",
   },
 });

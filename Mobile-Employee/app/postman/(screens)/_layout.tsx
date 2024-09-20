@@ -23,6 +23,7 @@ const Layout = () => {
         <Stack.Screen name="add-address" options={{ title: "Add Address" }} />
         <Stack.Screen name="leaves" options={{ title: "Leaves" }} />
         <Stack.Screen name="feedback" options={{ title: "Feedback" }} />
+        <Stack.Screen name="signaturescreen" options={{ title: "Signature" }} />
       </Stack>
 
       {/* Footer component */}

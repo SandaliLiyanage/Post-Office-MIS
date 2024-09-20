@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
   StyleSheet,
   ActivityIndicator,
   SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
-import { Picker } from "@react-native-picker/picker";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { IP } from "../../../config";
 
 // Status screen component
@@ -25,7 +26,7 @@ const Status = () => {
   const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
+  const navigation = useNavigation();
 
   const fetchInTransitMail = async () => {
     try {
@@ -34,11 +35,10 @@ const Status = () => {
         `http://${IP}:5000/mail/in-transit?employeeID=0002`
       );
       const data = await response.json();
-      if (data.message) {
+      if (!data || !data.mailID) {
         setMail(null);
       } else {
         setMail(data);
-        setSelectedStatus(data.mailstatus);
       }
       setLoading(false);
     } catch (error) {
@@ -50,24 +50,34 @@ const Status = () => {
   const updateMailStatus = async (newStatus: string) => {
     try {
       setUpdating(true);
-      await fetch(`http://${IP}:5000/mail/update-status`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
-      });
+      if (mail?.mailType === "REGISTERED_MAIL" && newStatus === "DELIVERED") {
+        // If it's registered mail and delivered, navigate to the signature screen
+        (navigation as any).navigate("signaturescreen", {
+          mailID: mail.mailID,
+        });
+      } else {
+        await fetch(`http://${IP}:5000/mail/update-status`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
+        });
+        fetchInTransitMail();
+      }
+
       setUpdating(false);
-      fetchInTransitMail();
     } catch (error) {
       console.error("Error updating mail status:", error);
       setUpdating(false);
     }
   };
 
-  useEffect(() => {
-    fetchInTransitMail();
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchInTransitMail();
+    }, [])
+  );
 
   if (loading) {
     return (
@@ -80,7 +90,7 @@ const Status = () => {
   if (!mail) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.noMailText}>No mail items in transit.</Text>
+        <Text style={styles.noMailText}>No mail items to be delivered</Text>
       </SafeAreaView>
     );
   }
@@ -124,21 +134,21 @@ const Status = () => {
         </Text>
       </View>
 
-      <Text style={styles.title}>Update the Status</Text>
-      <View style={styles.pickerContainer}>
-        <Picker
-          selectedValue={selectedStatus}
-          onValueChange={(itemValue) => {
-            setSelectedStatus(itemValue);
-            updateMailStatus(itemValue);
-          }}
-          enabled={!updating}
-          style={styles.picker}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#00AC11" }]}
+          onPress={() => updateMailStatus("DELIVERED")}
+          disabled={updating}
         >
-          <Picker.Item label="To be Delivered" value="IN_TRANSIT" />
-          <Picker.Item label="Delivered" value="DELIVERED" />
-          <Picker.Item label="Returned" value="RETURNED" />
-        </Picker>
+          <Text style={styles.buttonText}>Delivered</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: "#D80000" }]}
+          onPress={() => updateMailStatus("RETURNED")}
+          disabled={updating}
+        >
+          <Text style={styles.buttonText}>Returned</Text>
+        </TouchableOpacity>
       </View>
 
       {updating && <ActivityIndicator size="small" color="#C60024" />}
@@ -180,36 +190,34 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "bold",
     color: "#fff",
-    marginTop: 16,
-    marginBottom: 10,
+    marginTop: 28,
+    marginBottom: 22,
     backgroundColor: "#C60024EF",
     padding: 8,
     borderRadius: 5,
+    textAlign: "center",
   },
-  pickerContainer: {
-    backgroundColor: "#fff",
-    borderColor: "#fff",
-    borderRadius: 10,
-    paddingBottom: 7,
-    marginBottom: 5,
-    marginTop: 5,
-    overflow: "hidden", // Ensure Picker is clipped to the border radius
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 1 },
-    shadowRadius: 2,
-    elevation: 2,
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 22,
   },
-
-  picker: {
-    height: 50,
-    width: "100%",
+  button: {
+    flex: 1,
+    paddingVertical: 15,
+    borderRadius: 5,
+    marginHorizontal: 15,
   },
-
+  buttonText: {
+    color: "#fff",
+    textAlign: "center",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
   noMailText: {
     fontSize: 18,
     textAlign: "center",
-    marginTop: 20,
+    marginTop: 301,
     color: "gray",
   },
 });

@@ -76,6 +76,7 @@ class MailRepository {
             JOIN "Area" AS ar ON a."areaID" = ar."areaID"
             JOIN "Employee" AS e ON ar."employeeID" = e."employeeID"
             WHERE e."employeeID" = ${employeeID}
+            ORDER BY m."mailID"
         `;
 
       console.log("Mail items fetched:", mailItems);
@@ -91,6 +92,20 @@ class MailRepository {
     return await prisma.mail.update({
       where: { mailID },
       data: { mailstatus: newStatus },
+    });
+  };
+
+  updateMailStatusWithSignature = async (
+    mailID: number,
+    newStatus: MailStatus,
+    signature: string
+  ) => {
+    return await prisma.mail.update({
+      where: { mailID },
+      data: {
+        mailstatus: newStatus,
+        signature: signature, // Assuming the `mail` table has a `signature` column
+      },
     });
   };
 }

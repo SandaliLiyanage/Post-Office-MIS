@@ -24,6 +24,7 @@ const Login = async (req: Request, res: Response) => {
     }
 };
 const ValidateID = async(req: Request, res: Response)=>{
+    console.log("validating id")
     const {employeeID} = req.body;
     try{
         const employee = await employeeService.validateEmployeeID(employeeID)

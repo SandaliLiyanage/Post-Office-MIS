@@ -34,6 +34,17 @@ class MailService {
           }
           return confirmedMail
   }
+  calculateTotal(mailArray: []){
+    let total = 0
+    for (let mail of mailArray){
+      const {addressID, mailType,  recepientName, telephone, weight} = mail
+      let price = this.calculatePrice(mailType, weight)
+      let amount = Number(price)
+      total = total+amount 
+      console.log(total)
+    }
+    return total
+  }
 
 
   calculatePrice(mailType: string, weight: number){

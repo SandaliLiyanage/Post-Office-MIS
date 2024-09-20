@@ -47,7 +47,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
 
   const generateBarcode = (mailID: number) => {
     const barcodeElement = document.getElementById(`barcode-${mailID}`);
-    const ID =  mailID.toString()
+    const ID =  mailID.toString();
     JsBarcode(barcodeElement, ID,);
     console.log("generating barcode")
   } 

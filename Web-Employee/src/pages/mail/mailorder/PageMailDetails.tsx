@@ -201,11 +201,6 @@ export default function MailDetails() {
 
     if (confirm && price && localCustomerStorage) {
       const customerDetails = JSON.parse(localCustomerStorage);
-      // generateInvoice(
-      //   customerDetails.name,
-      //   customerDetails.telephone,
-      //   mailArray
-      // );
       const response = await axios.post(
         "http://localhost:5000/mail/mailDetails",
         {
@@ -219,6 +214,15 @@ export default function MailDetails() {
           },
         }
       );
+      const total = response.data
+      console.log(total)
+      generateInvoice(
+        customerDetails.name,
+        customerDetails.telephone,
+        mailArray,
+        total
+      );
+      
       localStorage.removeItem("customerDetails");
       setTransaction(true)
       setConfrimedMailArray(response.data)
@@ -421,16 +425,17 @@ export default function MailDetails() {
             console.log("in if", JSON.parse(localMailStorage));
 
             localStorage.removeItem("mail details");
-            localStorage.removeItem("customerDetails")
-            console.log(confirmedMailArray, "hi hi")
+            localStorage.removeItem("customerDetails");
+            console.log(confirmedMailArray, "hi hi");
 
           }
 
         }}
       >
-        <Toaster />
+        
         End Transaction and Print Receipt
       </Button>
+      <Toaster />
       </div>
       
       </div>

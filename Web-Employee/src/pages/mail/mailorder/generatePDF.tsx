@@ -1,4 +1,5 @@
 import jsPDFInvoiceTemplate, { OutputType } from "jspdf-invoice-template";
+import img from '../../../assets/logo.png';
 
 type MailDetails = {
   price: number | null;
@@ -8,7 +9,7 @@ type MailDetails = {
   weight: number;
 };
 
-const generateInvoice = (name: string, telephone: string, mailArray: MailDetails[]) => {
+const generateInvoice = (name: string, telephone: string, mailArray: MailDetails[], total: string) => {
   console.log("generating pdf");
   const date = new Date().toDateString()
   const props = {
@@ -18,15 +19,15 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
     orientationLandscape: false, // PDF orientation
     compress: true,              // Compress PDF
     logo: {
-      src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/logo.png",
+      src: "",
       type: "PNG",
       width: 53.33,
       height: 26.66,
     },
     stamp: {
       inAllPages: true,
-      src: "https://raw.githubusercontent.com/edisonneza/jspdf-invoice-template/demo/images/qr_code.jpg",
-      type: "JPG",
+      src: img,
+      type: "PNG",
       width: 20,
       height: 20,
     },
@@ -59,6 +60,13 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
         m.price
         // typeof m.price === "number" ? `$${m.price.toFixed(2)}` : "N/A", // Format price or show "N/A"
       ]),
+      additionalRows: [{
+        col1: 'Total:',
+        col2: total,
+        style: {
+            fontSize: 12 //optional, default 12
+        }
+    }],
       invDescLabel: "Invoice Note",
       invDesc: "Thank you for your business!",
     },

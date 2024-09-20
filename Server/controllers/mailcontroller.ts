@@ -33,7 +33,7 @@ const MailDetails = async (req: Request, res: Response) => {
   const currentPostCode = postalCode;
   const { customerName, telephone } = cutomerDetails;
   console.log("hyikjk;", customerName, telephone, addressID);
-  const amount = 40;
+  const amount = mailService.calculateTotal(mailArray)
   const transaction = await transactionRepository.createTransactoin(
     telephone,
     customerName,
@@ -49,7 +49,7 @@ const MailDetails = async (req: Request, res: Response) => {
     postalCode
   );
   console.log(result, "mail list");
-  return res.status(200).json(result);
+  return res.status(200).json(transaction.amount);
 };
 
 const Mails = async (req: Request, res: Response) => {

@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
   noMailText: {

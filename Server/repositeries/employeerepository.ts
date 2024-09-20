@@ -1,6 +1,7 @@
 import {PrismaClient, Employee, Role, PostOffice} from "@prisma/client"
 import { response } from "express";
 import { FileWatcherEventKind } from "typescript";
+import { DeleteEmployee } from "../controllers/employeecontroller";
 const prisma = new PrismaClient();
 
 interface User {
@@ -21,6 +22,7 @@ class EmployeeRepository {
     }
     async getUserData(userName: string): Promise<User>{
         try{
+            console.log(userName, "hee")
             const res = await prisma.$queryRaw<User[]>`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email"
             FROM "Employee" AS e 
             JOIN 
@@ -71,6 +73,7 @@ class EmployeeRepository {
     }
     async getEmployees(postalCode: string): Promise<Employee[]> {
         try {
+            console.log(postalCode)
             const res = await prisma.employee.findMany({
                 where:{
                     postalCode: postalCode,
@@ -97,6 +100,29 @@ class EmployeeRepository {
             throw error
 
         }
+    }
+
+    async changePassword(employeeID: string, newPassword: string){
+        try{
+            const response = await prisma.employee.update({
+                where:{employeeID: employeeID},
+                data: {password: newPassword}
+            })
+            console.log(response)
+            return "password updated"
+        }catch(error){
+            throw error
+        }
+    }
+
+    async deleteEmployee(employeeID: string){
+        console.log(employeeID)
+        console.log("in delete repository")
+        // const response = await prisma.employee.delete({
+        //     where: {
+        //         employeeID: employeeID
+        //     }
+        // })
     }
 }
 export {EmployeeRepository}

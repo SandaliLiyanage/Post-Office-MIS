@@ -1,5 +1,8 @@
 import { BundleRepository } from "../repositeries/bundlerepository";
 import { AddressRepository } from "../repositeries/addressrepository";
+import PostOfficeRepository from "../repositeries/postofficerepository";
+
+const postOfficeRepository = new PostOfficeRepository();
 const bundleRepository = new BundleRepository();
 const addressrepository = new AddressRepository();
 class BundleService {
@@ -23,13 +26,65 @@ class BundleService {
                 
             }else{
                 console.log("bundle not found. creating a new bundle")
-                const bundleID = await bundleRepository.createBundle(10, destPostalCode, sourcePostalCode );
+                const bundleRoute = await this.bundleRouteCreation( destPostalCode, sourcePostalCode)
+                const bundleID = await bundleRepository.createBundle(destPostalCode, sourcePostalCode, bundleRoute );
                 console.log("this is the newly found bundle" , bundleID)
                 return bundleID
             }
         }
         return "dest Postal Code not found"
     }
+
+    async bundleRouteCreation(destPostalCode: string, sourcePostalCode: string){
+
+            const sourceHeadOffice = await postOfficeRepository.getHeadOffice(sourcePostalCode);
+            const destHeadOffice = await postOfficeRepository.getHeadOffice(destPostalCode);
+            let bundleRoute:string[] = [sourcePostalCode]
+            if (sourceHeadOffice && destHeadOffice) {
+                if (sourcePostalCode === destPostalCode) {
+                  return bundleRoute;
+                }
+              
+                if (sourceHeadOffice !== sourcePostalCode) {
+                  bundleRoute.push(sourceHeadOffice);
+                }
+              
+                if (destHeadOffice !== destPostalCode) {
+                  bundleRoute.push(destHeadOffice); 
+                }
+              
+                if (destPostalCode !== destHeadOffice) {
+                  bundleRoute.push(destPostalCode);
+                }
+              
+                return bundleRoute;
+              }
+        
+          return bundleRoute
     }
+
+    async getBundles(postalCode: string){
+        const bundles = await bundleRepository.getBundles(postalCode)
+        let routeNameArray: string[] = []
+        if(bundles){
+            for(const bundle of bundles){
+                const destPostalName = await postOfficeRepository.getPostOfficeName(bundle.destPostalCode)
+                for(const code of bundle.route){
+                    const postalName = await postOfficeRepository.getPostOfficeName(code)
+                    if(postalName){
+                        routeNameArray.push(`${postalName.postOfficeName}`)
+    
+                    }
+                }
+                bundle.destPostalCode = `${destPostalName?.postOfficeName}`
+                bundle.route = routeNameArray
+                routeNameArray = []
+            }
+            
+            return bundles
+        }
+     
+    }
+}
 
 export default BundleService 

@@ -305,11 +305,9 @@ export default function MailDetails() {
                                 setSearchSelect(true);
                                 setSearchResults([]);
                                 if (addressMap) {
-                                  console.log("hee", value);
                                   console.log(addressMap[value]);
                                   setAddressID(addressMap[value]);
                                   console.log(addressMap);
-                                  console.log("address ID", addressID);
                                 }
                               }}
                             >

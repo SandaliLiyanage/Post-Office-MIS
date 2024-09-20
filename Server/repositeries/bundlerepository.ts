@@ -1,7 +1,9 @@
 import {Prisma, PrismaClient, Bundle} from "@prisma/client"
 const prisma = new PrismaClient();
 class BundleRepository{
-    async getBundles(postalCode: string): Promise<Bundle[]> {
+    async getBundles(postalCode: string): Promise<Bundle[]| null> {
+        console.log("get bundles", postalCode)
+        if(postalCode){
         try {
             const res = await prisma.bundle.findMany({
                 where:{
@@ -13,7 +15,8 @@ class BundleRepository{
         } catch (error) {
             console.error("Error getting bundles:", error);
             throw error;
-        }
+        }}
+        return null
     }
 
     async findBundle(postalCode: string): Promise <Bundle[]>{
@@ -31,14 +34,14 @@ class BundleRepository{
         }
     }
 
-    async createBundle(barcodeID: number, destPostalCode: string, sourcePostalCode: string): Promise<number>{
+    async createBundle(destPostalCode: string, sourcePostalCode: string, bundleRoute: string[]): Promise<number>{
         console.log("in create bundle")
         try{
             const res = await prisma.bundle.create({
                 data: { 
-                barcodeID:barcodeID,
                 destPostalCode: destPostalCode,
-                currentPostCode : sourcePostalCode, 
+                currentPostCode : sourcePostalCode,
+                route : bundleRoute,
                 date: new Date()}
             })
             console.log("bundle created", res)

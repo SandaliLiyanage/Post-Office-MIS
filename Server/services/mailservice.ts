@@ -12,7 +12,7 @@ class MailService {
 
     async insertMail(mailArray: [], transactionID: number, postalCode: string){
       const confirmedMail = []
-      console.log("in mail insertion")
+      console.log("in mail insertion", postalCode)
         for (let mail of mailArray) {
             const {addressID, mailType, price, recepientName, telephone, weight} = mail
             const bundleID = await bundleservice.bundleValidation(addressID, postalCode)

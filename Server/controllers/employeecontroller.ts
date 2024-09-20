@@ -72,7 +72,7 @@ const Registration = async (req: Request, res: Response) => {
   return res.status(200).json(employee);
 };
 
-const updateEmployee = async (req: Request, res: Response) => {
+const UpdateEmployee = async (req: Request, res: Response) => {
   console.log("in update Employee", req.body);
   const employeeRepo = EmployeeRepository.getInstance();
   const { values, employeeID } = req.body;
@@ -88,4 +88,12 @@ const updateEmployee = async (req: Request, res: Response) => {
   console.log("hi hi", response);
   return res.json(response);
 };
-export { EmployeeDetails, Registration, getEmployeeDetails, updateEmployee };
+const DeleteEmployee = async (req: Request, res: Response) =>{
+  const employeeRepo = EmployeeRepository.getInstance();
+  const {employeeID} = req.body
+  console.log(employeeID)
+  console.log("in delete employee");
+  const response = await employeeRepo.deleteEmployee(employeeID)
+}
+
+export { EmployeeDetails, Registration, getEmployeeDetails, UpdateEmployee, DeleteEmployee };

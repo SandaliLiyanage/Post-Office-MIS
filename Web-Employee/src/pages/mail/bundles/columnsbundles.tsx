@@ -19,8 +19,8 @@ const columns: ColumnDef<IBundle>[] = [
       header: "Bundle ID",
     },
     {
-      accessorKey: "barcodeID",
-      header: "barcode ID",
+      accessorKey: "route",
+      header: "Bundle Route",
     },
     { 
       accessorKey: "PrintBarcode",

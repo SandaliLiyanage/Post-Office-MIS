@@ -1,15 +1,6 @@
 import { Calendar } from "@/components/ui/calendar"
 import * as React from "react"
 import { Button } from "../../components/ui/button";
-import {
-    Form,
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-  } from "../../components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
@@ -30,7 +21,7 @@ import {
     SelectValue,
   } from "@/components/ui/select"
 import {useEffect, useState} from 'react';
-import { Input } from "@/components/ui/input";
+import Chart from './chart'
 
   const formSchema = z.object({
     startDate: z.date(),
@@ -128,6 +119,7 @@ export default function RevenueReports() {
         </SelectGroup>
       </SelectContent>
     </Select>
+    <Chart/>
         </div>
     </div>
   )

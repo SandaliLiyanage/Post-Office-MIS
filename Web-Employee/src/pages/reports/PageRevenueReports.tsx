@@ -22,7 +22,7 @@ import {
   } from "@/components/ui/select"
 import {useEffect, useState} from 'react';
 import Chart from './chart'
-
+import axios from "axios";
   const formSchema = z.object({
     startDate: z.date(),
     endDate: z.date(),
@@ -32,15 +32,24 @@ import Chart from './chart'
   import { cn } from "@/lib/utils" 
 import { Value } from "@radix-ui/react-select";
  
-
+export interface IChartData {
+  month: string,
+  normal_mail: string,
+  registered_mail: string,
+  courier: string,
+}
 export default function RevenueReports() {
   const [endDate, setendDate] = React.useState<Date>()
   const [startDate, setStartDate] = React.useState<Date>()
   const [type, setType] = useState<string>("")
+  const [chartData, setChartData] = useState<IChartData[]| null>()
 
   useEffect(()=>{
     async function generateReports(){
       console.log("in generate reports")
+      const response = await axios.post("http://localhost:5000/mail/reportData")
+      setChartData(response.data)
+      
     }
     generateReports();
   }, [endDate, startDate, type])
@@ -119,7 +128,10 @@ export default function RevenueReports() {
         </SelectGroup>
       </SelectContent>
     </Select>
-    <Chart/>
+    {chartData &&
+    <Chart data={chartData}/>
+    }
+    
         </div>
     </div>
   )

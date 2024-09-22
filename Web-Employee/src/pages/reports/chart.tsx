@@ -1,7 +1,7 @@
 "use client"
 
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts"
-
+import { IChartData } from "./PageRevenueReports"
 import { ChartConfig, ChartContainer } from "@/components/ui/chart"
 
 const chartData = [
@@ -26,15 +26,12 @@ const chartConfig = {
     label: "courier",
     color: "#60a5fa",
   },
-  money_order: {
-    label: "money order",
-    color: "#60a5fa",
-  },
-
 } satisfies ChartConfig
 
-export default function Chart() {
+export default function Chart({ data }: { data: IChartData[] } ) {
+  const chartData = data;
   return (
+ 
     <ChartContainer config={chartConfig} className="min-h-[200px] w-full">
       <BarChart accessibilityLayer data={chartData}>
       <CartesianGrid vertical={false} />

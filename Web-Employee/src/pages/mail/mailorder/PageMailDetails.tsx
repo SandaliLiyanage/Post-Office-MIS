@@ -404,8 +404,6 @@ export default function MailDetails() {
               }}>
               Add new mail item
             </Button>
-
-               
                 <Toaster />
               </div>
             </div>
@@ -427,12 +425,9 @@ export default function MailDetails() {
             localStorage.removeItem("mail details");
             localStorage.removeItem("customerDetails");
             console.log(confirmedMailArray, "hi hi");
-
           }
-
         }}
       >
-        
         End Transaction and Print Receipt
       </Button>
       <Toaster />

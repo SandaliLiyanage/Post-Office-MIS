@@ -58,7 +58,6 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
         m.address,
         m.weight,
         m.price
-        // typeof m.price === "number" ? `$${m.price.toFixed(2)}` : "N/A", // Format price or show "N/A"
       ]),
       additionalRows: [{
         col1: 'Total:',

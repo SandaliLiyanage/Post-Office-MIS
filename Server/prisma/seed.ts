@@ -124,7 +124,40 @@ async function main() {
       password: "password123",
     },
   });
-  console.log("Database has been seeded successfully!");
+
+  const employee3 = await prisma.employee.create({
+    data: {
+      employeeID: "0003",
+      employeeName: "Jane Smith",
+      email: "abc@gmail.com",
+      telephone: "987654321",
+      role: Role.SUPERVISOR,
+      postalCode: "00100",
+      password: "password123",
+    },
+  });
+  const employee4 = await prisma.employee.create({
+    data: {
+      employeeID: "0004",
+      employeeName: "Jane Smith",
+      email: "bcd@gmail.com",
+      telephone: "987654321",
+      role: Role.RECEPTIONIST,
+      postalCode: "00100",
+      password: "password123",
+    },
+  });
+  const employee5 = await prisma.employee.create({
+    data: {
+      employeeID: "0005",
+      employeeName: "Jane Smith",
+      email: "cde@gmail.com",
+      telephone: "987654321",
+      role: Role.DISPATCHER,
+      postalCode: "00100",
+      password: "password123",
+    },
+  });
 
   // Seed Areas
   await prisma.area.create({
@@ -404,6 +437,8 @@ async function main() {
       RequestStatus: RequestStatus.PENDING,
     },
   });
+
+  console.log("Database has been seeded successfully!");
 }
 
 main()

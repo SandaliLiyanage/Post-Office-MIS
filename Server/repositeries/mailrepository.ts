@@ -1,6 +1,6 @@
 import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
 const prisma = new PrismaClient();
-
+import { Decimal } from "@prisma/client/runtime/library";
 class MailRepository {
   async calculatePrice(mailType: string, weight: number) {
     console.log("Mail type:", mailType);
@@ -26,9 +26,9 @@ class MailRepository {
 
   async addMail(
     recepientAddressID: number,
-    price: number,
+    price:  null | Decimal,
     recepientName: string,
-    weight: string,
+    weight: null | Decimal,
     postalCode: string,
     mailCategoryName: MailType,
     transactionID: number,

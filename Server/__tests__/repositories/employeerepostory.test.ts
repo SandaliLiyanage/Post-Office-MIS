@@ -2,15 +2,9 @@ import prisma from "../../client";
 import { EmployeeRepository } from "../../repositeries/employeerepository";
 import { prismaMock } from '../../singleton'
 
-jest.mock('@prisma/client', () => {
-    return {
-        PrismaClient: jest.fn().mockImplementation(() => ({
-            employee: {
-                findUnique: jest.fn(),
-            },
-        })),
-    };
-});
+jest.mock('@prisma/client', () => ({
+    PrismaClient: jest.fn(() => prismaMock),
+}));
 
 describe('EmployeeRepository.findUserbyID', () => {
     const employeeRepository = EmployeeRepository.getInstance();

@@ -40,9 +40,11 @@ const Route = () => {
             }}
           >
             {/* Custom View for the numbered pointer marker */}
-            <View style={styles.marker}>
-              <Text style={styles.markerText}>{location.id}</Text>
-              <View style={styles.pointer} />
+            <View style={styles.markerContainer}>
+              <View style={styles.marker}>
+                <Text style={styles.markerText}>{location.id}</Text>
+              </View>
+              <View style={styles.anchorPointer} />
             </View>
           </Marker>
         ))}
@@ -59,12 +61,15 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  markerContainer: {
+    alignItems: "center", // Center the marker and the pointer
+  },
   marker: {
-    backgroundColor: "blue",
-    padding: 10,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: "#fff",
+    backgroundColor: "red",
+    paddingHorizontal: 7,
+    paddingVertical: 4,
+    borderRadius: 5, // Circular top part
+    justifyContent: "center",
     alignItems: "center",
   },
   markerText: {
@@ -72,16 +77,16 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 16,
   },
-  pointer: {
+  anchorPointer: {
     width: 0,
     height: 0,
     borderLeftWidth: 10,
     borderRightWidth: 10,
-    borderTopWidth: 15,
+    borderTopWidth: 20,
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
-    borderTopColor: "blue",
-    marginTop: -2,
+    borderTopColor: "red", // Match the marker color
+    marginTop: -4, // Slight overlap with the top marker
   },
 });
 

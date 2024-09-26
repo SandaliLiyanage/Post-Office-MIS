@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, Polyline } from "react-native-maps";
 import { StyleSheet, View, Text } from "react-native";
 
 const Route = () => {
@@ -19,18 +19,32 @@ const Route = () => {
     { id: 11, latitude: 6.9359585237643095, longitude: 79.98390472475725 },
   ];
 
+  // State to store polyline coordinates for the route
+  const [routeCoordinates, setRouteCoordinates] = useState<
+    { latitude: number; longitude: number }[]
+  >([]);
+
+  useEffect(() => {
+    // Generate a simple sequential route through the locations (in the order given)
+    const computedRoute = locations.map((location) => ({
+      latitude: location.latitude,
+      longitude: location.longitude,
+    }));
+    setRouteCoordinates(computedRoute);
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 6.93365203450841, // Centering on the first location
-          longitude: 79.9835312139157,
+          latitude: locations[0].latitude,
+          longitude: locations[0].longitude,
           latitudeDelta: 0.02,
           longitudeDelta: 0.02,
         }}
       >
-        {/* Add a Marker with a pointer-like custom view for each location */}
+        {/* Add a Marker for each location */}
         {locations.map((location) => (
           <Marker
             key={location.id}
@@ -39,7 +53,6 @@ const Route = () => {
               longitude: location.longitude,
             }}
           >
-            {/* Custom View for the numbered pointer marker */}
             <View style={styles.markerContainer}>
               <View style={styles.marker}>
                 <Text style={styles.markerText}>{location.id}</Text>
@@ -48,6 +61,15 @@ const Route = () => {
             </View>
           </Marker>
         ))}
+
+        {/* Draw the polyline for the route */}
+        {routeCoordinates.length > 0 && (
+          <Polyline
+            coordinates={routeCoordinates}
+            strokeColor="blue"
+            strokeWidth={5}
+          />
+        )}
       </MapView>
     </SafeAreaView>
   );

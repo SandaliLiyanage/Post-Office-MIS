@@ -2,8 +2,15 @@ import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { StyleSheet, View, Text } from "react-native";
+import axios from "axios"; // For making the API request
 
 const Route = () => {
+  const [routeCoordinates, setRouteCoordinates] = useState<
+    { latitude: number; longitude: number }[]
+  >([]);
+  const [error, setError] = useState<string | null>(null); // Error state
+  const API_KEY = "AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk"; // Replace with your API key
+
   // Define the set of locations with their coordinates
   const locations = [
     { id: 1, latitude: 6.93365203450841, longitude: 79.9835312139157 },
@@ -19,18 +26,78 @@ const Route = () => {
     { id: 11, latitude: 6.9359585237643095, longitude: 79.98390472475725 },
   ];
 
-  // State to store polyline coordinates for the route
-  const [routeCoordinates, setRouteCoordinates] = useState<
-    { latitude: number; longitude: number }[]
-  >([]);
+  // Function to fetch directions between the locations
+  const getDirections = async () => {
+    try {
+      // Google Maps Directions API
+      const origin = `${locations[0].latitude},${locations[0].longitude}`;
+      const destination = `${locations[locations.length - 1].latitude},${
+        locations[locations.length - 1].longitude
+      }`;
+      const waypoints = locations
+        .slice(1, -1) // All locations except the first and last
+        .map((loc) => `${loc.latitude},${loc.longitude}`)
+        .join("|");
+
+      // Request to Google Maps Directions API
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&waypoints=${waypoints}&key=${API_KEY}`;
+
+      const response = await axios.get(url);
+      console.log("Directions API response:", response.data); // Log the entire response
+
+      if (response.data.routes && response.data.routes.length > 0) {
+        const points = decodePolyline(
+          response.data.routes[0].overview_polyline.points
+        );
+        setRouteCoordinates(points); // Set polyline for the route
+      } else {
+        console.error("No routes found in response");
+        setError("No routes found in the API response.");
+      }
+    } catch (error) {
+      console.error("Error fetching directions:", error);
+      setError("Failed to fetch directions.");
+    }
+  };
+
+  // Decode polyline to get route coordinates
+  const decodePolyline = (t: string) => {
+    let points: { latitude: number; longitude: number }[] = [];
+    let index = 0,
+      lat = 0,
+      lng = 0;
+
+    while (index < t.length) {
+      let b,
+        shift = 0,
+        result = 0;
+      do {
+        b = t.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      let dlat = result & 1 ? ~(result >> 1) : result >> 1;
+      lat += dlat;
+
+      shift = result = 0;
+      do {
+        b = t.charCodeAt(index++) - 63;
+        result |= (b & 0x1f) << shift;
+        shift += 5;
+      } while (b >= 0x20);
+      let dlng = result & 1 ? ~(result >> 1) : result >> 1;
+      lng += dlng;
+
+      points.push({
+        latitude: lat / 1e5,
+        longitude: lng / 1e5,
+      });
+    }
+    return points;
+  };
 
   useEffect(() => {
-    // Generate a simple sequential route through the locations (in the order given)
-    const computedRoute = locations.map((location) => ({
-      latitude: location.latitude,
-      longitude: location.longitude,
-    }));
-    setRouteCoordinates(computedRoute);
+    getDirections();
   }, []);
 
   return (
@@ -44,7 +111,7 @@ const Route = () => {
           longitudeDelta: 0.02,
         }}
       >
-        {/* Add a Marker for each location */}
+        {/* Render markers with numbers */}
         {locations.map((location) => (
           <Marker
             key={location.id}
@@ -66,11 +133,18 @@ const Route = () => {
         {routeCoordinates.length > 0 && (
           <Polyline
             coordinates={routeCoordinates}
-            strokeColor="blue"
+            strokeColor="#4285F4" // Google Maps light blue
             strokeWidth={5}
           />
         )}
       </MapView>
+
+      {/* Display error if fetching directions failed */}
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>{error}</Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -84,13 +158,13 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   markerContainer: {
-    alignItems: "center", // Center the marker and the pointer
+    alignItems: "center",
   },
   marker: {
     backgroundColor: "red",
     paddingHorizontal: 7,
     paddingVertical: 4,
-    borderRadius: 5, // Circular top part
+    borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -107,8 +181,19 @@ const styles = StyleSheet.create({
     borderTopWidth: 20,
     borderLeftColor: "transparent",
     borderRightColor: "transparent",
-    borderTopColor: "red", // Match the marker color
-    marginTop: -4, // Slight overlap with the top marker
+    borderTopColor: "red",
+    marginTop: -4,
+  },
+  errorContainer: {
+    position: "absolute",
+    bottom: 50,
+    left: 0,
+    right: 0,
+    alignItems: "center",
+  },
+  errorText: {
+    color: "red",
+    fontWeight: "bold",
   },
 });
 

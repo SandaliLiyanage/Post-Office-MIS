@@ -1,11 +1,9 @@
 import { Calendar } from "@/components/ui/calendar"
 import * as React from "react"
 import { Button } from "../../components/ui/button";
-import { zodResolver } from "@hookform/resolvers/zod"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+
 import {
     Popover,
     PopoverContent,
@@ -16,22 +14,15 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
 import {useEffect, useState} from 'react';
 import Chart from './chart'
 import axios from "axios";
-  const formSchema = z.object({
-    startDate: z.date(),
-    endDate: z.date(),
-    serviceType: z.string()
-
-  })
-  import { cn } from "@/lib/utils" 
-import { Value } from "@radix-ui/react-select";
  
+  import { cn } from "@/lib/utils" 
+
 export interface IChartData {
   month: string,
   normal_mail: string,
@@ -46,23 +37,14 @@ export default function RevenueReports() {
 
   useEffect(()=>{
     async function generateReports(){
-      console.log("in generate reports")
-      const response = await axios.post("http://localhost:5000/mail/reportData")
+      console.log("in generate reports", startDate,endDate, type)
+      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type})
+      console.log(response.data)
       setChartData(response.data)
-      
     }
     generateReports();
   }, [endDate, startDate, type])
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      startDate: new Date(),
-      endDate:new Date(),
-      serviceType: "",
-
-    },
-  })
-  
+    
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
@@ -114,24 +96,23 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
-    <Select>
+    <Select 
+            onValueChange={(newValue) => setType(newValue)}>
       <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select Mail Type" />
+        <SelectValue placeholder="Select Mail Type" onSelect={()=>setType(Select.name)} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-        <SelectItem value="all" onSelect={() => setType("all")}>all</SelectItem>
-        <SelectItem value="normal mail" onSelect={() => setType("normal mail")}>normal mail</SelectItem>
-      <SelectItem value="registered mail" onSelect={() => setType("registered mail")}>registered mail</SelectItem>
-      <SelectItem value="courier" onSelect={() => setType("courier")}>courier</SelectItem>
-      <SelectItem value="bulk mail" onSelect={() => setType("bulk mail")}>bulk mail</SelectItem>
+        <SelectItem value="all">all</SelectItem>
+        <SelectItem value="NORMAL_MAIL" onClick={() => setType("normal mail")}>normal mail</SelectItem>
+      <SelectItem value="REGISTERED_MAIL" onClick={() => setType("registered mail")}>registered mail</SelectItem>
+      <SelectItem value="COURIER" onClick={() => setType("courier")}>courier</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
     {chartData &&
     <Chart data={chartData}/>
     }
-    
         </div>
     </div>
   )

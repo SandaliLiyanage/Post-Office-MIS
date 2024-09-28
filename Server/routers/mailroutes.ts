@@ -12,6 +12,7 @@ import { Mails } from "../controllers/mailcontroller";
 import { getMailItems } from "../controllers/mailcontroller";
 import Address from "../controllers/addresscontroller";
 import { MailDetails } from "../controllers/mailcontroller";
+import {ReportData} from "../controllers/reportcontroller"
 const authService = new AuthService();
 
 const router = Router();
@@ -25,7 +26,7 @@ router.get("/employee", getMailItems);
 router.get("/employee2", getMailItems2);
 router.get("/in-transit", getMailItems3);
 router.patch("/update-status", updateMailStatus);
-// router.post('/addresssearch', Address)
+router.post("/reportData", ReportData);
 router.post("/addresssearch", Address);
 router.post("/mailDetails", MailDetails);
 export default router;

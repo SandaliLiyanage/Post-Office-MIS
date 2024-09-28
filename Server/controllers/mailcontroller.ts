@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
-import { BundleRepository } from "../repositeries/bundlerepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
 import MailService from "../services/mailservice";
 import BundleService from "../services/bundleservice";

@@ -1,7 +1,9 @@
 import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
+import { start } from "repl";
 const prisma = new PrismaClient();
 
 class MailRepository {
+
   async calculatePrice(mailType: string, weight: number) {
     console.log("Mail type:", mailType);
     console.log("Weight:", weight);
@@ -104,10 +106,28 @@ class MailRepository {
       where: { mailID },
       data: {
         mailstatus: newStatus,
-        signature: signature, // Assuming the `mail` table has a `signature` column
+        signature: signature, 
       },
     });
   };
-}
 
-export { MailRepository };
+  getMailCountByType = async(mailtype: MailType, startDate: Date, endDate:Date)=>{
+    console.log("in mail count")
+    const res = await prisma.transaction.findMany({
+      where: {
+          date: {
+              gte: startDate,
+              lt: endDate,
+          },
+      },
+      select: {
+          date: true,  
+          mail: true,   
+      },
+  });
+    console.log(res)
+    return res
+  }
+}
+  
+export {MailRepository};

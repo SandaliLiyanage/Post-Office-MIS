@@ -152,7 +152,7 @@ async function main() {
       email: "jane.smith@gmail.com",
       telephone: "987654321",
       role: Role.POSTMAN,
-      postalCode: "00100",
+      postalCode: "10640",
       password: "password123",
     },
   });
@@ -196,7 +196,7 @@ async function main() {
     data: {
       areaID: 1,
       areaName: "Area01",
-      postalCode: "00100",
+      postalCode: "10640",
       employeeID: employee2.employeeID,
     },
   });

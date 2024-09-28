@@ -1,23 +1,13 @@
 import Nav from './header';
 import { Outlet } from 'react-router-dom';
-import SidebarComponent from './sidebarcomponent';
+import Sidebar from './sidebar';
 
-const Layout = () => {
-    const ROLE = 'Post Master'
-    
+const Layout = () =>{
     return (
         <div>
-            {ROLE === 'Post Master' && 
-            <>
-                <Nav />
-                <SidebarComponent />
-                <Outlet />
-            </>
-            
-            } 
-                
+        <Sidebar />
+            <Nav />
+            <Outlet />
         </div>
-    )
-}
-
+    )};
 export default Layout

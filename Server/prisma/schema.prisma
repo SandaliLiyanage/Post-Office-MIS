@@ -1,0 +1,159 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  POSTMASTER
+  SUPERVISOR
+  RECEPTIONIST
+  DISPATCHER
+  POSTMAN
+}
+
+model Employee { 
+  employeeID   String  @id 
+  password     String?
+  postalCode String  
+  postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
+  employeeName String
+  email         String @unique
+  telephone    String 
+  role         Role
+  leave       Leave[]
+  area        Area[]
+  otp         OTP[]
+}
+
+enum PostOfficeCategory {
+  HEAD_OFFICE
+  SUB_OFFICE
+}
+
+model PostOffice {
+  postalCode        String                @id
+  postOfficeCategory PostOfficeCategory
+  postOfficeName    String
+  headOfficeID      String
+  address           Address[]
+  mail              Mail[]
+  employee          Employee[]
+  destinationBundles Bundle[] @relation("DestPostOfficeRelation")
+  area              Area[]
+  currentBundles Bundle[] @relation("CurrentPostOfficeRelation")
+}
+
+model Address {
+  addressID     Int      @id @default(autoincrement())
+  postalCode    String
+  postOffice  PostOffice @relation(fields: [postalCode], references: [postalCode])
+  addressNo    String
+  streetName    String?
+  Locality      String?
+  latitude      Float?
+  longitude     Float?
+  areaID        Int?
+  area          Area? @relation(fields: [areaID], references: [areaID])
+  transaction   Transaction[]
+  mail          Mail[]
+}
+
+enum MailType {
+  NORMAL_MAIL
+  REGISTERED_MAIL
+  COURIER
+}
+
+
+model Mail {
+  mailType          MailType
+  recepientName      String  
+  recepientAddressID         Int
+  mailID         Int         @id @default(autoincrement())
+  address           Address @relation(fields: [recepientAddressID], references: [addressID])
+  bundleID          Int       
+  bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
+  mailstatus        MailStatus  @default(IN_TRANSIT)
+  transactionID     Int
+  transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
+  weight            Decimal?    @db.Decimal(10, 2)
+  price             Decimal?       @db.Decimal(10,2)
+  postalCode        String
+  postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
+  signature     String?
+}
+
+model Bundle {
+  bundleID              Int          @id @default(autoincrement())
+  destPostalCode        String
+  destPostOffice        PostOffice @relation("DestPostOfficeRelation", fields: [destPostalCode], references: [postalCode])     
+  mail                  Mail[]
+  currentPostCode     String
+  currentPostOffice     PostOffice @relation("CurrentPostOfficeRelation", fields: [currentPostCode], references: [postalCode])
+  date                  DateTime?
+  route                 String[]
+}
+
+enum MailStatus {
+  IN_TRANSIT
+  DELIVERED
+  RETURNED
+}
+
+model Transaction {
+  customerTelephone    String?
+  customerAddressID    Int
+  address      Address @relation(fields: [customerAddressID], references: [addressID])
+  customerName String
+  transactionID Int      @id @default(autoincrement())
+  date          DateTime
+  amount        Decimal?       @db.Decimal(10,2)
+  mail          Mail[]
+}
+
+model Leave{
+  employeeID String   @id
+  leaveType LeaveType
+  startDate DateTime
+  endDate DateTime
+  employee Employee @relation(fields: [employeeID], references: [employeeID])
+  description String
+  status String
+  RequestStatus RequestStatus @default(PENDING)
+
+}
+
+enum LeaveType{
+  HALF_DAY
+  FULL_DAY
+}
+
+enum RequestStatus{
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Area{
+  areaID Int @id
+  areaName String     @db.VarChar(100)
+  postalCode String
+  postOffice PostOffice   @relation(fields: [postalCode], references: [postalCode])
+  postman Employee  @relation(fields: [employeeID], references: [employeeID])
+  employeeID String
+  addresses   Address[]
+}
+
+model OTP{
+  employeeID  String
+  employee    Employee  @relation(fields: [employeeID], references: [employeeID])
+  OTP         String  @db.VarChar(6)
+  createdAt  DateTime @default(now())
+  expiresAt  DateTime
+  unused       Boolean @default(true)
+  @@unique([employeeID, unused, expiresAt, createdAt])
+}

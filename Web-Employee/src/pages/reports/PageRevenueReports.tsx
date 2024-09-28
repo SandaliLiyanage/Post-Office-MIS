@@ -96,7 +96,7 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
-    <Select 
+    {/* <Select 
             onValueChange={(newValue) => setType(newValue)}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select Mail Type" onSelect={()=>setType(Select.name)} />
@@ -109,8 +109,20 @@ export default function RevenueReports() {
       <SelectItem value="COURIER" onClick={() => setType("courier")}>courier</SelectItem>
         </SelectGroup>
       </SelectContent>
+    </Select> */}
+    <Select 
+            onValueChange={(newValue) => setType(newValue)}>
+      <SelectTrigger className="w-[180px]">
+        <SelectValue placeholder="Select Report Type" onSelect={()=>setType(Select.name)} />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectGroup>
+        <SelectItem value="Revenue" onClick={() => setType("Tranaction Count")}>Tranaction Count</SelectItem>
+      <SelectItem value="Transaction_Count" onClick={() => setType("Revenue")}>Revenue</SelectItem>
+        </SelectGroup>
+      </SelectContent>
     </Select>
-    {chartData &&
+    {chartData && 
     <Chart data={chartData}/>
     }
         </div>

@@ -24,11 +24,11 @@ import {
 } from "../../components/ui/select"
 
 const ROLES = [
-  "Supervisor",
-  "Postmaster",
-  "Receptionist",
-  "postman",
-  "dispatcher",
+  "SUPERVISOR",
+  "POSTMASTER",
+  "RECEPTIONIST",
+  "POSTMAN",
+  "DISPATCHER",
 ] as const;
 
 const formSchema = z.object({

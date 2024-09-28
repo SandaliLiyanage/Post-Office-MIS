@@ -56,9 +56,11 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
 
   return (
     <div className="mt-16  h-full top-16 bg-slate-300 bg-opacity-25 ">
-        <div className="font-bold pt-10 pl-2 pb-4 mt-16 ml-4">
+      <div>
+        <div className="font-bold pt-10 pl-2 pb-4 mt-16 ml-4 justify-start">
           <p>Current Mail List</p></div>
-      
+          
+        </div>
       { !transaction && mailDetailsArray.map((mail, index) => (
         <div key={index} className="m-5  p-4 bg-white">
           <div className="flex justify-between"> 
@@ -129,6 +131,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
           <svg id={`barcode-${mail.mailID}`}></svg>
         </div>
       ))}
+      
     </div>
   );
 }

@@ -82,6 +82,17 @@ export default function MailOrder() {
     }
   }, [search]);
 
+  useEffect(()=>{
+    const checkforOngoingTransaction = ()=>{
+      const customer = localStorage.getItem("customerDetails");
+      if(customer != null){
+        navigate("/dashboard/maildetails" );
+
+      }
+    }
+    checkforOngoingTransaction()
+  })
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(addressID, " address id in onSubmit")
     const postalCode = user?.postalCode

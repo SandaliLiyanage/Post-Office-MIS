@@ -2,6 +2,7 @@ import express from "express";
 import MailRoutes from "./routers/mailroutes";
 import EmployeeRoutes from "./routers/employeeroutes";
 import AuthRoutes from "./routers/authroutes";
+import DeliveryRoutes from "./routers/deliveryroutes"
 import cors from "cors";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(express.json()); // Middleware to parse JSON
 app.use("/mail", MailRoutes);
 app.use("/employee", EmployeeRoutes);
 app.use("/auth", AuthRoutes);
+app.use("/delivery", DeliveryRoutes)
 
 app.listen(5000, () => {
   console.log("Server is running on port 5000");

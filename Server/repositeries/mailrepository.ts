@@ -80,7 +80,6 @@ class MailRepository {
             WHERE e."employeeID" = ${employeeID}
             ORDER BY m."mailID"
         `;
-
       console.log("Mail items fetched:", mailItems);
       return mailItems;
     } catch (error) {

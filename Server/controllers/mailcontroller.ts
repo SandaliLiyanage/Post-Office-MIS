@@ -54,6 +54,7 @@ const MailDetails = async (req: Request, res: Response) => {
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
+  console.log(postalCode)
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
 };

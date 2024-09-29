@@ -335,8 +335,7 @@ export default function MailDetails() {
                                   setAddressID(addressMap[value]);
                                   console.log(addressMap);
                                 }
-                              }}
-                            >
+                              }}>
                               {result}
                             </CommandItem>
                           ))}
@@ -365,7 +364,6 @@ export default function MailDetails() {
                   <SelectItem value="bulk mail">bulk mail</SelectItem>
                 </SelectContent>
               </Select>
-    
               <FormMessage />
             </FormItem>
           )}

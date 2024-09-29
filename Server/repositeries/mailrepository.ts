@@ -111,7 +111,7 @@ class MailRepository {
     });
   };
 
-  getMailCountByType = async(mailtype: MailType, startDate: Date, endDate:Date)=>{
+  getMailCountByType = async(startDate: Date, endDate:Date)=>{
     console.log("in mail count")
     const res = await prisma.transaction.findMany({
       where: {

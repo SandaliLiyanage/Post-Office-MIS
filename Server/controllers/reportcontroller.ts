@@ -10,7 +10,5 @@ const ReportData = async (req: Request, res: Response) => {
     const result = await reportService.getReportData(startDate,endDate,type)
     console.log("in if. mail data", result)
     return res.json(result)
-    
 }
-
 export {ReportData}

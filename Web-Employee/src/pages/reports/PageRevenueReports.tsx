@@ -3,11 +3,12 @@ import * as React from "react"
 import { Button } from "../../components/ui/button";
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
-
+import ChartRevenue from './chartRevenue'
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
+
   } from "@/components/ui/popover"
   import {
     Select,
@@ -48,7 +49,7 @@ export default function RevenueReports() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl font-bold">Revenue Reports</p>
+        <p className="text-xl font-bold">Reports</p>
       </div>
     
         <div className="grid grid-cols-3 gap-4">
@@ -117,12 +118,15 @@ export default function RevenueReports() {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-        <SelectItem value="Revenue" onClick={() => setType("Tranaction Count")}>Tranaction Count</SelectItem>
-      <SelectItem value="Transaction_Count" onClick={() => setType("Revenue")}>Revenue</SelectItem>
+        <SelectItem value="Revenue" onClick={() => setType("Revenue")}>Revenue</SelectItem>
+      <SelectItem value="Transaction_Count" onClick={() => setType("Tranaction_Count")}>Tranaction Count</SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
-    {chartData && 
+    {chartData && type=="Revenue" &&
+    <ChartRevenue data={chartData}/>
+    }
+    {chartData && type=="Transaction_Count" &&
     <Chart data={chartData}/>
     }
         </div>

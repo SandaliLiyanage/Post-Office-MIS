@@ -28,10 +28,6 @@ const columns: ColumnDef<IMail>[] = [
       header: "Price",
     },
     {
-      accessorKey: "currentPostOffice",
-      header: "Current Post Office",
-    },
-    {
       accessorKey: "recepientAddressID",
       header: "Address ID",
     },

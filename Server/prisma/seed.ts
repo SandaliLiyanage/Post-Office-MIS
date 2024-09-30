@@ -457,20 +457,58 @@ async function main() {
         price: 6.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
+      {
+        mailID: 278,
+        recepientName: "Bob Williams",
+        recepientAddressID: 29,
+        postalCode: "00100",
+        bundleID: 1,
+        transactionID: 1,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 1.2,
+        price: 6.0,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 279,
+        recepientName: "Bob Williams",
+        recepientAddressID: 35,
+        postalCode: "00100",
+        bundleID: 1,
+        transactionID: 1,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 1.2,
+        price: 6.0,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 280,
+        recepientName: "Bob Williams",
+        recepientAddressID: 32,
+        postalCode: "00100",
+        bundleID: 1,
+        transactionID: 1,
+        mailType: MailType.REGISTERED_MAIL,
+        weight: 1.2,
+        price: 6.0,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
     ],
   });
 
   // Seed Leaves
-  await prisma.leave.create({
-    data: {
-      employeeID: "0003",
-      leaveType: LeaveType.FULL_DAY,
-      startDate: new Date("2024-09-10"),
-      endDate: new Date("2024-09-11"),
-      description: "Annual Leave",
-      status: "Pending",
-      RequestStatus: RequestStatus.PENDING,
-    },
+  await prisma.leave.createMany({
+    data: [
+      {
+        employeeID: "0003",
+        leaveType: LeaveType.FULL_DAY,
+        startDate: new Date("2024-09-10"),
+        endDate: new Date("2024-09-11"),
+        description: "Annual Leave",
+        status: "Pending",
+        RequestStatus: RequestStatus.PENDING,
+      },
+    ],
   });
 
   console.log("Database has been seeded successfully!");

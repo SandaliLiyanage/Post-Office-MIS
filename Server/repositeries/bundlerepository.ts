@@ -1,13 +1,34 @@
-import {Prisma, PrismaClient, Bundle} from "@prisma/client"
+import {Prisma, PrismaClient, Bundle, BundleStatus} from "@prisma/client"
 const prisma = new PrismaClient();
 class BundleRepository{
-    async getBundles(postalCode: string): Promise<Bundle[]| null> {
+    async getCreatedBundles(postalCode: string): Promise<Bundle[]| null> {
         console.log("get bundles", postalCode)
         if(postalCode){
         try {
             const res = await prisma.bundle.findMany({
                 where:{
                     currentPostCode: postalCode,
+                    bundleStatus: BundleStatus.CREATED
+                },
+            });
+            console.log("Bundles queried", res)
+            return res;
+        } catch (error) {
+            console.error("Error getting bundles:", error);
+            throw error;
+        }}
+        return null
+    }
+
+    async getDeliveryBundles(postalCode: string): Promise<Bundle[]| null> {
+        console.log("get bundles", postalCode)
+        if(postalCode){
+        try {
+            const res = await prisma.bundle.findMany({
+                where:{
+                    destPostalCode: postalCode,
+                    bundleStatus: BundleStatus.ARRIVED,
+                    currentPostCode: postalCode
                 },
             });
             console.log("Bundles queried", res)
@@ -42,7 +63,10 @@ class BundleRepository{
                 destPostalCode: destPostalCode,
                 currentPostCode : sourcePostalCode,
                 route : bundleRoute,
-                date: new Date()}
+                date: new Date(),
+                bundleStatus: BundleStatus.CREATED
+            },
+                
             })
             console.log("bundle created", res)
             return res.bundleID

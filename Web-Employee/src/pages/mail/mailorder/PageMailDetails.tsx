@@ -234,12 +234,13 @@ export default function MailDetails() {
       );
       const total = response.data
       console.log(total)
-      generateInvoice(
-        customerDetails.name,
-        customerDetails.telephone,
-        mailArray,
-        total
-      );
+      console.log(total)
+      // generateInvoice(
+      //   customerDetails.name,
+      //   customerDetails.telephone,
+      //   mailArray,
+      //   total
+      // );
       
       localStorage.removeItem("customerDetails");
       setTransaction(true)
@@ -463,7 +464,7 @@ export default function MailDetails() {
           if (localMailStorage) {
             onConfirmTransaction(JSON.parse(localMailStorage));
             console.log("in if", JSON.parse(localMailStorage));
-
+            form.reset()
             localStorage.removeItem("mail details");
             localStorage.removeItem("customerDetails");
             console.log(confirmedMailArray, "hi hi");

@@ -15,12 +15,12 @@ export default function Bundle() {
   axios.defaults.headers.common['Authorization'] = `Bearer ${user?.token}`
   
   useEffect(() => {
-    async function fetchBundles() {
+    async function fetchCreatedBundles() {
       try { 
         if(user != null){
         console.log(user.token)
         console.log(user.postalCode, "user")
-        const response = await axios.post('http://localhost:5000/mail/bundles', 
+        const response = await axios.post('http://localhost:5000/mail/createdBundles', 
           {postalCode: user.postalCode});
         console.log(response.data)
         setBundle(response.data);}
@@ -30,7 +30,21 @@ export default function Bundle() {
         setLoading(false);
       }
     }
-    fetchBundles();
+
+    async function fetchDeliveryBundles(){
+      try{
+        if(user !=null){
+          console.log(user.token)
+        console.log(user.postalCode, "user")
+        const response = await axios.post('http://localhost:5000/mail/deliveryBundles', 
+          {postalCode: user.postalCode})
+        }
+      }catch(error){
+        console.log(error)
+      }
+    }
+    fetchCreatedBundles();
+    fetchDeliveryBundles();
   }, [user]);
   if (loading) {
     return <p>Loading...</p>;

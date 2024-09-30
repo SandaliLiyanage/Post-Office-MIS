@@ -16,10 +16,18 @@ const CalculatePrice = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-const MailBundles = async (req: Request, res: Response) => {
+const CreatedBundles = async (req: Request, res: Response) => {
   console.log("Request received in mail bundle controller", req.body);
   const { postalCode } = req.body;
-  const result = await bundleservice.getBundles(postalCode);
+  const result = await bundleservice.getCreatedBundles(postalCode);
+  console.log("Bundles received in controller:", result);
+  return res.status(200).json(result);
+};
+
+const DeliveryBundles = async (req: Request, res: Response) => {
+  console.log("Request received in mail bundle controller", req.body);
+  const { postalCode } = req.body;
+  const result = await bundleservice.getDeliveryBundles(postalCode);
   console.log("Bundles received in controller:", result);
   return res.status(200).json(result);
 };
@@ -185,4 +193,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, MailBundles, Mails, MailDetails };
+export { CalculatePrice, CreatedBundles, Mails, MailDetails, DeliveryBundles };

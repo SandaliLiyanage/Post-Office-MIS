@@ -31,9 +31,12 @@ export interface IChartData {
   courier: string,
 }
 export default function RevenueReports() {
-  const [endDate, setendDate] = React.useState<Date>()
-  const [startDate, setStartDate] = React.useState<Date>()
-  const [type, setType] = useState<string>("")
+  const today = new Date();  // Get today's date
+  const lastYearTimestamp = today.setFullYear(today.getFullYear() - 1);  // Modify the year
+  const lastYearDate = new Date(lastYearTimestamp);
+  const [endDate, setendDate] = React.useState<Date|undefined>(new Date())
+  const [startDate, setStartDate] = React.useState<Date|undefined>(lastYearDate)
+  const [type, setType] = useState<string>("Revenue")
   const [chartData, setChartData] = useState<IChartData[]| null>()
 
   useEffect(()=>{

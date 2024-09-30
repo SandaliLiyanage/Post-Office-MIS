@@ -26,6 +26,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
       if (localMailStorage) {
         setMailDetailsArray(JSON.parse(localMailStorage));
       }
+      console.log(confirmedMailArray, "hi" )
     };
 
     fetchMailDetails(); // Fetch initial mail details

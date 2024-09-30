@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useUser } from '../../authentication/usercontext';
-
+import { Label } from "../../../components/ui/label";
+interface AreaAssignments{
+  areaID: number,
+  employeeName: string,
+  mailID: number
+}
 export default function MailDelivery() {
     const {user} = useUser();
-    const [areaDet, setAreaDet] = useState<null|string[]>(null);
+    const [areaDet, setAreaDet] = useState<null|AreaAssignments[]>(null);
 
   useEffect(()=>{
     const fetchPostmanAssignments = async()=>{
@@ -12,7 +17,7 @@ export default function MailDelivery() {
         try{
             if(user){
             console.log("he")
-            const response = await axios.post('http://localhost:5000/delivery/areaDet',
+            const response= await axios.post('http://localhost:5000/delivery/areaDet',
                 {postalCode: user.postalCode},
                 {
                     headers: {
@@ -21,6 +26,7 @@ export default function MailDelivery() {
                   }
             )
             console.log(response)
+            console.log(areaDet)
             setAreaDet(response.data)
         }}
         catch(error){
@@ -36,11 +42,23 @@ export default function MailDelivery() {
         <p></p>
     </div>
     {
-        // areaDet && areaDet.map((area, index)=>(
-        //     <div> 
-        //         <p>dhfoaihfdd</p>
-        //     </div>
-        // ))
+        areaDet !=null && areaDet.map((area, index)=>(
+            <div> 
+            <div className="bg-slate-300  w-1/2 m-5 p-5 rounded-sm">
+            <div >
+            <Label className="text-base text-black">Area Name: <p className="text-slate-500  text-sm"> {area.areaID} </p></Label>
+          </div>
+          {/* <div>
+            <Label className="text-base">Mail Type: <p className="text-slate-500 font-light text-sm"> {area.employeeName}</p></Label>
+          </div>
+          <div>
+            <Label className="text-base">Weight:<p className="text-slate-500 font-light text-sm">  {area.mailID}</p></Label>
+          </div> */}
+          
+          </div>
+          
+            </div>
+        ))
     }
  </div>
   )

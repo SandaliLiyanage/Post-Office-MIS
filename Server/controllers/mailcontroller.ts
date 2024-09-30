@@ -48,7 +48,7 @@ const MailDetails = async (req: Request, res: Response) => {
     postalCode
   );
   console.log(result, "mail list");
-  return res.status(200).json(transaction.amount);
+  return res.status(200).json(result);
 };
 
 const Mails = async (req: Request, res: Response) => {

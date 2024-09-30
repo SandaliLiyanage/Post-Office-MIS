@@ -16,7 +16,6 @@ const EmployeeDetails = async (req: Request, res: Response) => {
   console.log("Employee details received:", result);
   return res.status(200).json(result);
 };
-
 // Function to get employee details
 const getEmployeeDetails = async (req: Request, res: Response) => {
   const employeeRepo = EmployeeRepository.getInstance();

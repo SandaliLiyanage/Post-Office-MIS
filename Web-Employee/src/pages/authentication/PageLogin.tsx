@@ -18,7 +18,7 @@ import { Input } from "../../components/ui/input"
 import { useUser } from './usercontext';
 import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
-
+import logo from '../../assets/logo.png';
 const formSchema = z.object({
   employeeID: z.string(),
   password: z.string().min(5, {
@@ -78,8 +78,11 @@ export default function Login() {
 
   return (
     <div className="bg-slate-800 min-h-screen flex items-center justify-center">
-      <div className=" bg-white rounded-lg h-96 lg:flex">
-      <div className="mr-20 ml-20 mt-8 flex flex-col items-end ">
+      <div className=" bg-white rounded-lg h-96 grid grid-cols-2 w-full max-w-3xl">
+      <div className="flex justify-center items-center">
+      <img src={logo} alt="Post Office Logo" className="w-2/3 h-auto" />
+      </div>
+      <div className="mr-20 ml-20 mt-8 ">
         <div>
         <div>
         <h1 className="text-2xl mb-5 mt-5">Employee Login</h1>

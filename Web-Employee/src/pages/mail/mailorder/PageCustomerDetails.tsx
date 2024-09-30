@@ -87,6 +87,7 @@ export default function MailOrder() {
     const checkforOngoingTransaction = ()=>{
       const customer = localStorage.getItem("customerDetails");
       if(customer != null){
+        console.log(customer)
         navigate("/dashboard/maildetails" );
 
       }

@@ -29,7 +29,7 @@ export default function Bundle() {
       }
     }
     fetchBundles();
-  }, []);
+  }, [user]);
   if (loading) {
     return <p>Loading...</p>;
   }

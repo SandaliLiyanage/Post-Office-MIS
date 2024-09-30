@@ -186,7 +186,11 @@ export default function MailDetails() {
   useEffect(() => {
     if (search.length > 0) {
       form.setValue("address", search);
-    }    
+    }   
+    const customerDetails = localStorage.getItem("customerDetails")
+    if(!customerDetails){
+      navigate("/dashboard/mailorder")
+    } 
   }, [search]);
 
   useEffect(()=>{
@@ -239,6 +243,7 @@ export default function MailDetails() {
       
       localStorage.removeItem("customerDetails");
       setTransaction(true)
+      console.log("adata", response)
       setConfrimedMailArray(response.data)
       console.log(confirmedMailArray)
       console.log("Data submitted successfully", response.data);
@@ -361,7 +366,6 @@ export default function MailDetails() {
                   <SelectItem value="normal mail">normal mail</SelectItem>
                   <SelectItem value="registered mail">register mail</SelectItem>
                   <SelectItem value="courier">courier</SelectItem>
-                  <SelectItem value="bulk mail">bulk mail</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

@@ -71,6 +71,7 @@ class EmployeeRepository {
             return null
         }
     }
+    
     async getEmployees(postalCode: string): Promise<Employee[]> {
         try {
             console.log(postalCode)

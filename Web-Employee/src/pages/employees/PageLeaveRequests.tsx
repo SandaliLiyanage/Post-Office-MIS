@@ -125,8 +125,7 @@ export default function LeaveRequest() {
                 </FormItem>
               )}
             />
-          </div>
-          <FormField
+            <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
@@ -139,6 +138,8 @@ export default function LeaveRequest() {
                 </FormItem>
               )}
             />
+          </div>
+          
           <Button className="bg-teal-600" type="button">Submit Request</Button>
         </form>
       </Form>

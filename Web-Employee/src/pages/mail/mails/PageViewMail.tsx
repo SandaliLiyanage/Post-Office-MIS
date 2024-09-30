@@ -32,7 +32,7 @@ export default function Mails() {
       }
     }
     fetchMails();
-  }, []);
+  }, [user]);
   if (loading) {
     return <p>Loading...</p>;
   }

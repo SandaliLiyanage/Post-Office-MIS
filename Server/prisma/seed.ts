@@ -187,9 +187,15 @@ async function main() {
     data: [
       {
         areaID: 1,
-        areaName: "Area01",
+        areaName: "Area001",
         postalCode: "10640",
         employeeID: "0002",
+      },
+      {
+        areaID: 658,
+        areaName: "Area658",
+        postalCode: "00100",
+        employeeID: "0005",
       },
     ],
   });
@@ -298,6 +304,7 @@ async function main() {
         areaID: 1,
       },
       {
+        addressID: 36,
         postalCode: "00100",
         addressNo: "123",
         streetName: "Main St",
@@ -316,7 +323,7 @@ async function main() {
         transactionID: 1,
         customerName: "Alice Johnson",
         customerTelephone: "555123456",
-        customerAddressID: 658,
+        customerAddressID: 36,
         date: new Date(),
         amount: 10.5,
       },

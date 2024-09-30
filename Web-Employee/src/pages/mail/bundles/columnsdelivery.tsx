@@ -9,7 +9,7 @@ export interface IBundle {
     bundleId: string;
     barcodeId: string;	
   }
-const columnstoTransfer: ColumnDef<IBundle>[] = [
+const columnsforDelivery: ColumnDef<IBundle>[] = [
     {
       accessorKey: "destPostalCode",
       header: "Destination Post Code",
@@ -24,7 +24,7 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
     },
     { 
       accessorKey: "PrintBarcode",
-      header: "Print Barcode",
+      header: "Confirm for delivery",
       id: "actions",
       cell: ({ row }) => {
         const bundle = row.original
@@ -37,4 +37,4 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
     // ...
   
   ]
-export { columnstoTransfer }
+export { columnsforDelivery }

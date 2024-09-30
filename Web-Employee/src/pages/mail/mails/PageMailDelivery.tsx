@@ -48,12 +48,12 @@ export default function MailDelivery() {
             <div >
             <Label className="text-base text-black">Area Name: <p className="text-slate-500  text-sm"> {area.areaID} </p></Label>
           </div>
-          {/* <div>
+          <div>
             <Label className="text-base">Mail Type: <p className="text-slate-500 font-light text-sm"> {area.employeeName}</p></Label>
           </div>
           <div>
             <Label className="text-base">Weight:<p className="text-slate-500 font-light text-sm">  {area.mailID}</p></Label>
-          </div> */}
+          </div>
           
           </div>
           

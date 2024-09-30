@@ -1,9 +1,11 @@
-import {IBundle, columns} from './columnsbundles';
+import {IBundle, columnstoTransfer} from './columnsbundles';
 import {DataTable} from './datatablebundles';
 import { useUser } from '../../authentication/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import { Input } from '../../../components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {columnsforDelivery} from './columnsdelivery';
 
 export default function Bundle() {
   const {user, removeUser} = useUser();
@@ -46,8 +48,17 @@ export default function Bundle() {
         <Input type="email" placeholder="Search Bundle"className='w-50'  />
         </div>
     </div>
+    <div className=''>
+    <Tabs defaultValue="account">
+      <TabsList>
+        <TabsTrigger value="account">Mail Bundles for Transfer</TabsTrigger>
+        <TabsTrigger value="password">Mail Bundles for Delivery</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account" ><div className='bg-white'><DataTable columns={columnstoTransfer} data={bundle} /></div></TabsContent>
+      <TabsContent value="password"><div className='bg-white'><DataTable columns={columnsforDelivery} data={bundle} /></div></TabsContent>
+    </Tabs>
+    </div>
     <div className="flex flex-col space-y-4 bg-white border-0">
-      <DataTable columns={columns} data={bundle} />
       </div>
     </div>
   )

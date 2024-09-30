@@ -6,7 +6,7 @@ import { Printer } from 'lucide-react';
 
 export interface IBundle {
     destPostCode: string;
-    bundleId: string;
+    bundleID: number;
     barcodeId: string;	
   }
 const columnstoTransfer: ColumnDef<IBundle>[] = [

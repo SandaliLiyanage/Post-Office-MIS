@@ -2,12 +2,10 @@ import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
 import MailService from "../services/mailservice";
-import BundleService from "../services/bundleservice";
 
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const mailService = new MailService();
-const bundleservice = new BundleService();
 
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");
@@ -16,21 +14,7 @@ const CalculatePrice = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-const CreatedBundles = async (req: Request, res: Response) => {
-  console.log("Request received in mail bundle controller", req.body);
-  const { postalCode } = req.body;
-  const result = await bundleservice.getCreatedBundles(postalCode);
-  console.log("Bundles received in controller:", result);
-  return res.status(200).json(result);
-};
 
-const DeliveryBundles = async (req: Request, res: Response) => {
-  console.log("Request received in mail bundle controller", req.body);
-  const { postalCode } = req.body;
-  const result = await bundleservice.getDeliveryBundles(postalCode);
-  console.log("Bundles received in controller:", result);
-  return res.status(200).json(result);
-};
 
 const MailDetails = async (req: Request, res: Response) => {
   console.log("Request received in mail details", req.body);
@@ -50,13 +34,13 @@ const MailDetails = async (req: Request, res: Response) => {
   console.log(transaction);
   const transactionID = transaction.transactionID;
   console.log("dfk", mailArray, transactionID);
-  const result = await mailService.insertMail(
+  let result = await mailService.insertMail(
     mailArray,
     transactionID,
     postalCode
   );
   console.log(result, "mail list");
-  return res.status(200).json(result);
+  return res.status(200).json({result, total: transaction.amount} );
 };
 
 const Mails = async (req: Request, res: Response) => {
@@ -193,4 +177,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, CreatedBundles, Mails, MailDetails, DeliveryBundles };
+export { CalculatePrice, Mails, MailDetails };

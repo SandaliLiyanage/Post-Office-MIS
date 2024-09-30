@@ -21,7 +21,7 @@ class BundleRepository{
     }
 
     async getDeliveryBundles(postalCode: string): Promise<Bundle[]| null> {
-        console.log("get bundles", postalCode)
+        console.log("get bundles in delivery", postalCode)
         if(postalCode){
         try {
             const res = await prisma.bundle.findMany({
@@ -67,6 +67,20 @@ class BundleRepository{
                 bundleStatus: BundleStatus.CREATED
             },
                 
+            })
+            console.log("bundle created", res)
+            return res.bundleID
+        }catch(error){
+            throw error
+        }
+    }
+    
+    async updateBundle(bundleID: number){
+        console.log("in create bundle")
+        try{
+            const res = await prisma.bundle.update({
+               where:{bundleID: bundleID},
+               data:{bundleStatus: BundleStatus.DISTRIBUTED}
             })
             console.log("bundle created", res)
             return res.bundleID

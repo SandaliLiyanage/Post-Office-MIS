@@ -37,4 +37,5 @@ class AreaRepository{
     }}
 }
 
+
 export default AreaRepository

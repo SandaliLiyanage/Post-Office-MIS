@@ -2,13 +2,17 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Printer } from 'lucide-react';
-
+import axios from 'axios';
+import { useUser } from '../../authentication/usercontext';
+import { resolve } from "path";
 
 export interface IBundle {
     destPostCode: string;
-    bundleId: string;
+    bundleID: number;
     barcodeId: string;	
   }
+
+  
 const columnsforDelivery: ColumnDef<IBundle>[] = [
     {
       accessorKey: "destPostalCode",
@@ -28,9 +32,19 @@ const columnsforDelivery: ColumnDef<IBundle>[] = [
       id: "actions",
       cell: ({ row }) => {
         const bundle = row.original
-   
+        const {user, removeUser} = useUser();
+
+        const sendForDistribution = async(bundleID: number)=>{
+          if(user){
+            console.log(bundle, "bundleID")
+            const response = await axios.post('http://localhost:5000/bundles/updateBundleStatus', 
+              {postalCode: user.postalCode, bundleID: bundleID});
+            console.log(response)
+          }
+          
+        }
         return (
-          <Button className="btn bg-white "  size="icon" ><Printer color="black" size={18} /></Button>
+          <Button className="btn rounded-xl bg-sky-600" size={"sm"}  onClick={()=>sendForDistribution(bundle.bundleID)}>Send for Distribution</Button>
         )
       },
     },

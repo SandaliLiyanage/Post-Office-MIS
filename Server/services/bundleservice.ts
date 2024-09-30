@@ -108,6 +108,11 @@ class BundleService {
         }
      
     }
+
+    async updateStatus(bundleID: number){
+        const res = await bundleRepository.updateBundle(bundleID);
+        return res
+    }
 }
 
 export default BundleService 

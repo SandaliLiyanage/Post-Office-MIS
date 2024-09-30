@@ -232,22 +232,23 @@ export default function MailDetails() {
           },
         }
       );
-      const total = response.data
+      const total = response.data.total
       console.log(total)
       console.log(total)
-      // generateInvoice(
-      //   customerDetails.name,
-      //   customerDetails.telephone,
-      //   mailArray,
-      //   total
-      // );
+      generateInvoice(
+        customerDetails.name,
+        customerDetails.telephone,
+        mailArray,
+        total
+      );
       
       localStorage.removeItem("customerDetails");
       setTransaction(true)
       console.log("adata", response)
-      setConfrimedMailArray(response.data)
+      setConfrimedMailArray(response.data.result)
       console.log(confirmedMailArray)
       console.log("Data submitted successfully", response.data);
+      // navigate("/dashboard/endtransaction")
     }else{
       toast({
         description: "Zero mails added",
@@ -469,14 +470,11 @@ export default function MailDetails() {
             localStorage.removeItem("customerDetails");
             console.log(confirmedMailArray, "hi hi");
           }
-        }}
-      >
+        }}>
         End Transaction and Print Receipt
       </Button>
       <Toaster />
       </div>
-      
-
       </div>
       </div>
       </div>

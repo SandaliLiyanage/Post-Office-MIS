@@ -7,8 +7,6 @@ import {
   updateMailStatus,
 } from "../controllers/mailcontroller";
 import AuthService from "../services/authservice";
-import { CreatedBundles } from "../controllers/mailcontroller";
-import { DeliveryBundles } from "../controllers/mailcontroller";
 import { Mails } from "../controllers/mailcontroller";
 import { getMailItems } from "../controllers/mailcontroller";
 import Address from "../controllers/addresscontroller";
@@ -21,8 +19,7 @@ const router = Router();
 // router.use(authService.authorize);
 
 router.post("/calculatePrice", CalculatePrice);
-router.post("/createdBundles", CreatedBundles);
-router.post("/deliveryBundles", DeliveryBundles);
+
 router.post("/viewmails", Mails);
 router.get("/employee", getMailItems);
 router.get("/employee2", getMailItems2);

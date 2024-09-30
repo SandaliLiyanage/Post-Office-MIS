@@ -9,7 +9,8 @@ import {columnsforDelivery} from './columnsdelivery';
 
 export default function Bundle() {
   const {user, removeUser} = useUser();
-  const [bundle, setBundle] = useState<IBundle[]>([]);
+  const [transferBundle, setTransferBundle] = useState<IBundle[]>([]);
+  const [deliveryBundle, setDeliveryBundle] = useState<IBundle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
   axios.defaults.headers.common['Authorization'] = `Bearer ${user?.token}`
@@ -20,10 +21,10 @@ export default function Bundle() {
         if(user != null){
         console.log(user.token)
         console.log(user.postalCode, "user")
-        const response = await axios.post('http://localhost:5000/mail/createdBundles', 
+        const response = await axios.post('http://localhost:5000/bundles/createdBundles', 
           {postalCode: user.postalCode});
         console.log(response.data)
-        setBundle(response.data);}
+        setTransferBundle(response.data);}
       } catch (error) {
         setError('Failed to fetch bundles');
       } finally {
@@ -36,8 +37,10 @@ export default function Bundle() {
         if(user !=null){
           console.log(user.token)
         console.log(user.postalCode, "user")
-        const response = await axios.post('http://localhost:5000/mail/deliveryBundles', 
+        const response = await axios.post('http://localhost:5000/bundles/deliveryBundles', 
           {postalCode: user.postalCode})
+          setDeliveryBundle(response.data)
+
         }
       }catch(error){
         console.log(error)
@@ -68,8 +71,8 @@ export default function Bundle() {
         <TabsTrigger value="account">Mail Bundles for Transfer</TabsTrigger>
         <TabsTrigger value="password">Mail Bundles for Delivery</TabsTrigger>
       </TabsList>
-      <TabsContent value="account" ><div className='bg-white'><DataTable columns={columnstoTransfer} data={bundle} /></div></TabsContent>
-      <TabsContent value="password"><div className='bg-white'><DataTable columns={columnsforDelivery} data={bundle} /></div></TabsContent>
+      <TabsContent value="account" ><div className='bg-white'><DataTable columns={columnstoTransfer} data={transferBundle} /></div></TabsContent>
+      <TabsContent value="password"><div className='bg-white'><DataTable columns={columnsforDelivery} data={deliveryBundle} /></div></TabsContent>
     </Tabs>
     </div>
     <div className="flex flex-col space-y-4 bg-white border-0">

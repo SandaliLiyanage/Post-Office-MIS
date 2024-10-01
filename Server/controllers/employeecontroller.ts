@@ -44,6 +44,8 @@ const getEmployeeDetails = async (req: Request, res: Response) => {
       employeeName: userData.employeeName,
       postOfficeName: userData.postOfficeName,
       role: formattedRole,
+      latitude: userData.latitude,
+      longitude: userData.longitude,
     };
 
     console.log("User details fetched:", result);
@@ -88,12 +90,18 @@ const UpdateEmployee = async (req: Request, res: Response) => {
   console.log("hi hi", response);
   return res.json(response);
 };
-const DeleteEmployee = async (req: Request, res: Response) =>{
+const DeleteEmployee = async (req: Request, res: Response) => {
   const employeeRepo = EmployeeRepository.getInstance();
-  const {employeeID} = req.body
-  console.log(employeeID)
+  const { employeeID } = req.body;
+  console.log(employeeID);
   console.log("in delete employee");
-  const response = await employeeRepo.deleteEmployee(employeeID)
-}
+  const response = await employeeRepo.deleteEmployee(employeeID);
+};
 
-export { EmployeeDetails, Registration, getEmployeeDetails, UpdateEmployee, DeleteEmployee };
+export {
+  EmployeeDetails,
+  Registration,
+  getEmployeeDetails,
+  UpdateEmployee,
+  DeleteEmployee,
+};

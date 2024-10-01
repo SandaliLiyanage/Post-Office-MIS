@@ -24,10 +24,11 @@ const Route = () => {
         `http://${IP}:5000/employee/user?employeeID=${employeeID}`
       );
 
+      // Access the properties directly since postOfficeData is an object
       const postOffice = {
         id: "Post Office",
-        latitude: postOfficeData.latitude,
-        longitude: postOfficeData.longitude,
+        latitude: postOfficeData.latitude, // Access latitude directly
+        longitude: postOfficeData.longitude, // Access longitude directly
       };
 
       const { data: mailLocations } = await axios.get(
@@ -42,6 +43,7 @@ const Route = () => {
 
       // Add the post office as the start and end point
       setLocations([postOffice, ...addresses]);
+      console.log("Locations fetched:", [postOffice, ...addresses]);
     } catch (error) {
       console.error("Error fetching locations:", error);
       setError("Failed to fetch locations.");
@@ -127,42 +129,44 @@ const Route = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <MapView
-        style={styles.map}
-        initialRegion={{
-          latitude: locations[0]?.latitude || 0,
-          longitude: locations[0]?.longitude || 0,
-          latitudeDelta: 0.02,
-          longitudeDelta: 0.02,
-        }}
-      >
-        {locations.map((location) => (
-          <Marker
-            key={location.id}
-            coordinate={{
-              latitude: location.latitude,
-              longitude: location.longitude,
-            }}
-          >
-            <View style={styles.markerContainer}>
-              <View style={styles.marker}>
-                <Text style={styles.markerText}>
-                  {location.id === "Post Office" ? "PO" : location.id}
-                </Text>
+      {locations.length > 0 && (
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: locations[0]?.latitude || 0,
+            longitude: locations[0]?.longitude || 0,
+            latitudeDelta: 0.02,
+            longitudeDelta: 0.02,
+          }}
+        >
+          {locations.map((location) => (
+            <Marker
+              key={location.id}
+              coordinate={{
+                latitude: location.latitude,
+                longitude: location.longitude,
+              }}
+            >
+              <View style={styles.markerContainer}>
+                <View style={styles.marker}>
+                  <Text style={styles.markerText}>
+                    {location.id === "Post Office" ? "PO" : location.id}
+                  </Text>
+                </View>
+                <View style={styles.anchorPointer} />
               </View>
-              <View style={styles.anchorPointer} />
-            </View>
-          </Marker>
-        ))}
+            </Marker>
+          ))}
 
-        {routeCoordinates.length > 0 && (
-          <Polyline
-            coordinates={routeCoordinates}
-            strokeColor="#4285F4"
-            strokeWidth={5}
-          />
-        )}
-      </MapView>
+          {routeCoordinates.length > 0 && (
+            <Polyline
+              coordinates={routeCoordinates}
+              strokeColor="#4285F4"
+              strokeWidth={5}
+            />
+          )}
+        </MapView>
+      )}
 
       {error && (
         <View style={styles.errorContainer}>

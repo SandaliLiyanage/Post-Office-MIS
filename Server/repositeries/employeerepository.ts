@@ -10,6 +10,8 @@ interface User {
   postalCode: string;
   role: string;
   email: string;
+  latitude: number;
+  longitude: number;
 }
 class EmployeeRepository {
   private static instance: EmployeeRepository;

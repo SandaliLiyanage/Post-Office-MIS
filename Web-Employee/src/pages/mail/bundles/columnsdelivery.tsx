@@ -44,11 +44,9 @@ const columnsforDelivery: ColumnDef<IBundle>[] = [
           
         }
         return (
-          <Button className="btn rounded-xl bg-sky-600" size={"sm"}  onClick={()=>sendForDistribution(bundle.bundleID)}>Send for Distribution</Button>
+          <Button className="btn rounded-xl bg-blue-300 text-gray-600" size={"sm"}  onClick={()=>sendForDistribution(bundle.bundleID)}>Send for Distribution</Button>
         )
       },
     },
-    // ...
-  
   ]
 export { columnsforDelivery }

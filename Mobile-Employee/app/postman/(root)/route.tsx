@@ -24,11 +24,16 @@ const Route = () => {
         `http://${IP}:5000/employee/user?employeeID=${employeeID}`
       );
 
-      // Access the properties directly since postOfficeData is an object
-      const postOffice = {
-        id: "Post Office",
-        latitude: postOfficeData.latitude, // Access latitude directly
-        longitude: postOfficeData.longitude, // Access longitude directly
+      const postOfficeStart = {
+        id: "Post-Office-Start", // Unique key for the starting post office
+        latitude: postOfficeData.latitude,
+        longitude: postOfficeData.longitude,
+      };
+
+      const postOfficeEnd = {
+        id: "Post-Office-End", // Unique key for the ending post office
+        latitude: postOfficeData.latitude,
+        longitude: postOfficeData.longitude,
       };
 
       const { data: mailLocations } = await axios.get(
@@ -41,9 +46,12 @@ const Route = () => {
         longitude: loc.longitude,
       }));
 
-      // Add the post office as the start and end point
-      setLocations([postOffice, ...addresses]);
-      console.log("Locations fetched:", [postOffice, ...addresses]);
+      setLocations([postOfficeStart, ...addresses, postOfficeEnd]);
+      console.log("Locations fetched:", [
+        postOfficeStart,
+        ...addresses,
+        postOfficeEnd,
+      ]);
     } catch (error) {
       console.error("Error fetching locations:", error);
       setError("Failed to fetch locations.");
@@ -64,11 +72,23 @@ const Route = () => {
         .map((loc) => `${loc.latitude},${loc.longitude}`)
         .join("|");
 
-      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&waypoints=${waypoints}&key=${API_KEY}`;
+      const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&waypoints=optimize:true|${waypoints}&key=${API_KEY}`;
 
       const response = await axios.get(url);
 
       if (response.data.routes && response.data.routes.length > 0) {
+        const optimizedWaypoints = response.data.routes[0].waypoint_order;
+
+        // Reorder the locations array based on optimized waypoints
+        const reorderedLocations = [
+          locations[0], // Post-Office-Start
+          ...optimizedWaypoints.map((index: number) => locations[index + 1]), // Adjust index to account for Post-Office-Start at 0
+          locations[locations.length - 1], // Post-Office-End
+        ];
+
+        setLocations(reorderedLocations);
+
+        // Decode the polyline to draw the optimized route
         const points = decodePolyline(
           response.data.routes[0].overview_polyline.points
         );
@@ -139,7 +159,7 @@ const Route = () => {
             longitudeDelta: 0.02,
           }}
         >
-          {locations.map((location) => (
+          {locations.map((location, index) => (
             <Marker
               key={location.id}
               coordinate={{
@@ -150,7 +170,9 @@ const Route = () => {
               <View style={styles.markerContainer}>
                 <View style={styles.marker}>
                   <Text style={styles.markerText}>
-                    {location.id === "Post Office" ? "PO" : location.id}
+                    {location.id.includes("Post-Office")
+                      ? "PO"
+                      : index.toString()}
                   </Text>
                 </View>
                 <View style={styles.anchorPointer} />

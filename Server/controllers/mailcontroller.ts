@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
-import { BundleRepository } from "../repositeries/bundlerepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
 import MailService from "../services/mailservice";
-import BundleService from "../services/bundleservice";
 
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const mailService = new MailService();
-const bundleservice = new BundleService();
 
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");
@@ -17,13 +14,7 @@ const CalculatePrice = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-const MailBundles = async (req: Request, res: Response) => {
-  console.log("Request received in mail bundle controller", req.body);
-  const { postalCode } = req.body;
-  const result = await bundleservice.getBundles(postalCode);
-  console.log("Bundles received in controller:", result);
-  return res.status(200).json(result);
-};
+
 
 const MailDetails = async (req: Request, res: Response) => {
   console.log("Request received in mail details", req.body);
@@ -43,18 +34,19 @@ const MailDetails = async (req: Request, res: Response) => {
   console.log(transaction);
   const transactionID = transaction.transactionID;
   console.log("dfk", mailArray, transactionID);
-  const result = await mailService.insertMail(
+  let result = await mailService.insertMail(
     mailArray,
     transactionID,
     postalCode
   );
   console.log(result, "mail list");
-  return res.status(200).json(transaction.amount);
+  return res.status(200).json({result, total: transaction.amount} );
 };
 
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
+  console.log(postalCode)
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
 };
@@ -206,4 +198,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, MailBundles, Mails, MailDetails };
+export { CalculatePrice, Mails, MailDetails };

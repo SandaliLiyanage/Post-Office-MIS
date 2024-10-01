@@ -63,8 +63,8 @@ class BundleService {
           return bundleRoute
     }
 
-    async getBundles(postalCode: string){
-        const bundles = await bundleRepository.getBundles(postalCode)
+    async getCreatedBundles(postalCode: string){
+        const bundles = await bundleRepository.getCreatedBundles(postalCode)
         let routeNameArray: string[] = []
         if(bundles){
             for(const bundle of bundles){
@@ -84,6 +84,34 @@ class BundleService {
             return bundles
         }
      
+    }
+
+    async getDeliveryBundles(postalCode: string){
+        const bundles = await bundleRepository.getDeliveryBundles(postalCode)
+        let routeNameArray: string[] = []
+        if(bundles){
+            for(const bundle of bundles){
+                const destPostalName = await postOfficeRepository.getPostOfficeName(bundle.destPostalCode)
+                for(const code of bundle.route){
+                    const postalName = await postOfficeRepository.getPostOfficeName(code)
+                    if(postalName){
+                        routeNameArray.push(`${postalName.postOfficeName}`)
+    
+                    }
+                }
+                bundle.destPostalCode = `${destPostalName?.postOfficeName}`
+                bundle.route = routeNameArray
+                routeNameArray = []
+            }
+            
+            return bundles
+        }
+     
+    }
+
+    async updateStatus(bundleID: number){
+        const res = await bundleRepository.updateBundle(bundleID);
+        return res
     }
 }
 

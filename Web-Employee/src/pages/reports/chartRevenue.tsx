@@ -19,7 +19,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export default function Chart({ data }: { data: IChartData[] } ) {
+export default function ChartRevenue({ data }: { data: IChartData[] } ) {
   const chartData = data 
   return (
     <ChartContainer config={chartConfig} className="min-h-[400px] w-full m-8">

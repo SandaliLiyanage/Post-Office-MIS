@@ -77,9 +77,10 @@ class EmployeeRepository {
       return result;
     } catch (error) {
       console.error("Error registering user:", error);
-      throw error;
+      return null;
     }
   }
+
   async getEmployees(postalCode: string): Promise<Employee[]> {
     try {
       console.log(postalCode);

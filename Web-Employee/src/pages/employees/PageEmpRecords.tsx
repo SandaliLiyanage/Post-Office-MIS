@@ -36,7 +36,7 @@ export default function EmployeeRecords() {
       }
     }
     fetchEmployees();
-  }, []);
+  }, [user]);
     if (loading) {
       return <p>Loading...</p>;
     }

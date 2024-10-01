@@ -19,7 +19,7 @@ import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
 
 const formSchema = z.object({
-  employeeID: z.string().min(3, {
+  employeeID: z.string().min(1, {
     message: "Incorrect EmployeeID",
   }),
 })

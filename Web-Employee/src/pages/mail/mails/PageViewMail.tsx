@@ -14,16 +14,17 @@ export default function Mails() {
   useEffect(() => {
     async function fetchMails() {
       try { 
+        if(user){
         console.log(user?.token)
         const response = await axios.post('http://localhost:5000/mail/viewmails', 
-          user?.postalCode,
+          {postalCode: user.postalCode},
           {
             headers: {
               Authorization: `Bearer ${user?.token}`, 
             },
           });
         console.log(response.data)
-        setMail(response.data);
+        setMail(response.data)};
       } catch (error) {
         setError('Failed to fetch bundles');
       } finally {
@@ -31,7 +32,7 @@ export default function Mails() {
       }
     }
     fetchMails();
-  }, []);
+  }, [user]);
   if (loading) {
     return <p>Loading...</p>;
   }

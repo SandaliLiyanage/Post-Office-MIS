@@ -27,6 +27,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import {Label} from "../../../components/ui/label"
 
+
 const formSchema = z.object({
   customerName: z.string().min(5, {}),
   address: z.string().min(5, {}),
@@ -81,6 +82,18 @@ export default function MailOrder() {
       form.setValue("address", search);
     }
   }, [search]);
+
+  useEffect(()=>{
+    const checkforOngoingTransaction = ()=>{
+      const customer = localStorage.getItem("customerDetails");
+      if(customer != null){
+        console.log(customer)
+        navigate("/dashboard/maildetails" );
+
+      }
+    }
+    checkforOngoingTransaction()
+  })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(addressID, " address id in onSubmit")

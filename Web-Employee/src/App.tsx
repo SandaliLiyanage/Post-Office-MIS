@@ -8,13 +8,14 @@ import EmpRegistration from "./pages/employees/PageEmpRegistrations";
 import LeaveRequest from "./pages/employees/PageLeaveRequests";
 import Emp from "./pages/employees/PageEmpRecords";
 import Bundle from "./pages/mail/bundles/PageBundles";
-import Mails from "./pages/mail/mails/mail";
+import Mails from "./pages/mail/mails/PageViewMail";
 import Employeeupdate from "./pages/employees/PageEmpUpdate";
 import RevenueReports from  "./pages/reports/PageRevenueReports";
 import ForgotPassword from "./pages/authentication/PageForgotPassword";
 import ValidateOTP from "./pages/authentication/PageValidateOTP";
 import SetPassword from "./pages/authentication/PageSetPassword";
-
+import MailDelivery from "./pages/mail/mails/PageMailDelivery";
+import EndTransaction from "./pages/mail/mailorder/PageMailDetails"
 function App() {
   return (
     
@@ -35,11 +36,12 @@ function App() {
           <Route path="viewmailassignments" element={<Mails/>}></Route>
           <Route path="revenuereports" element={<RevenueReports/>}></Route>
           <Route path="employeeregistrations" element={<EmpRegistration/>}></Route>
-          <Route path="postmanassignments" element={<></>}></Route>
           <Route path="mailassignments" element={<></>}></Route>
           <Route path="viewmail" element={<Mails/>}></Route>
           <Route path="view" element={<Employeeupdate/>}></Route>
-          
+          <Route path ="postmanAssignments" element={<MailDelivery/>}></Route>
+          <Route path ="endtransaction" element={<EndTransaction/>}></Route>
+
         </Route>
       </Routes>
     </Router>

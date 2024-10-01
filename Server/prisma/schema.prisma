@@ -83,7 +83,7 @@ model Mail {
   transactionID     Int
   transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
   weight            Decimal?    @db.Decimal(10, 2)
-  price             Decimal?       @db.Decimal(10,2)
+  price             Decimal       @db.Decimal(10,2)
   postalCode        String
   postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
   signature     String?
@@ -98,6 +98,14 @@ model Bundle {
   currentPostOffice     PostOffice @relation("CurrentPostOfficeRelation", fields: [currentPostCode], references: [postalCode])
   date                  DateTime?
   route                 String[]
+  bundleStatus          BundleStatus
+}
+
+enum BundleStatus{
+  ARRIVED
+  DISPATCHED
+  DISTRIBUTED
+  CREATED
 }
 
 enum MailStatus {

@@ -87,6 +87,8 @@ export default function MailDetails() {
   const [transaction, setTransaction] = useState<boolean>(false);
   const navigate = useNavigate();
   const [confirmedMailArray, setConfrimedMailArray] = useState<MailResponse[]>([]);
+  const [customerName, setCustomerName] = useState<String>("");
+  const [customerAddress, setCustomerAddress] = useState<String>("");
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -184,12 +186,28 @@ export default function MailDetails() {
   useEffect(() => {
     if (search.length > 0) {
       form.setValue("address", search);
-    }
+    }   
     const customerDetails = localStorage.getItem("customerDetails")
     if(!customerDetails){
       navigate("/dashboard/mailorder")
-    }
+    } 
   }, [search]);
+
+  useEffect(()=>{
+    const customerDetails = localStorage.getItem("customerDetails")
+    if(customerDetails){
+      const customer = JSON.parse(customerDetails)
+      console.log(customer)
+      setCustomerAddress(customer.values.address)
+      setCustomerName(customer.values.customerName)
+      console.log(customerName, " hi")
+      console.log(customerAddress, " hi address")
+
+    }
+    if(!customerDetails){
+      navigate("/dashboard/mailorder")
+    }
+  }, [])
 
   const onConfirmTransaction = async function (mailArray: MailDetailsType[]) {
     if(mailArray.length > 0){
@@ -214,7 +232,8 @@ export default function MailDetails() {
           },
         }
       );
-      const total = response.data
+      const total = response.data.total
+      console.log(total)
       console.log(total)
       generateInvoice(
         customerDetails.name,
@@ -225,9 +244,11 @@ export default function MailDetails() {
       
       localStorage.removeItem("customerDetails");
       setTransaction(true)
-      setConfrimedMailArray(response.data)
+      console.log("adata", response)
+      setConfrimedMailArray(response.data.result)
       console.log(confirmedMailArray)
       console.log("Data submitted successfully", response.data);
+      // navigate("/dashboard/endtransaction")
     }else{
       toast({
         description: "Zero mails added",
@@ -243,12 +264,20 @@ export default function MailDetails() {
       <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
         <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
           <p className="text-xl font-bold">Mail Order</p>
+          
+          {/* <div className="mt-4 flex justify-between p-3">
+          <div className="flex justify-start">
+            <Label className="text-base">Customer Name: <p className="text-slate-500 font-light text-sm"> {customerName}</p></Label>
+          </div>
+          <div className="flex justify-end">
+            <Label className="text-base">Customer Address: <p className="text-slate-500 font-light text-sm"> {customerAddress}</p></Label>
+          </div>
 
+          </div> */}
           <div className="flex justify-end gap-2 ">
-         
-            
           </div>
         </div>
+        <div className="p-8 bg-">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onConfirm)}>
             <div className="grid grid-cols-2 gap-4 mb-4">
@@ -313,8 +342,7 @@ export default function MailDetails() {
                                   setAddressID(addressMap[value]);
                                   console.log(addressMap);
                                 }
-                              }}
-                            >
+                              }}>
                               {result}
                             </CommandItem>
                           ))}
@@ -340,10 +368,8 @@ export default function MailDetails() {
                   <SelectItem value="normal mail">normal mail</SelectItem>
                   <SelectItem value="registered mail">register mail</SelectItem>
                   <SelectItem value="courier">courier</SelectItem>
-                  <SelectItem value="bulk mail">bulk mail</SelectItem>
                 </SelectContent>
               </Select>
-    
               <FormMessage />
             </FormItem>
           )}
@@ -409,9 +435,27 @@ export default function MailDetails() {
             </div>
           </form>
         </Form>
-        <div className="mt-5 flex justify-end">
-      <div >
+    
+   
+
+        <div className=" flex mt-32 justify-between">
+        <div className="flex justify-start  mr-10">
+        <Button
+        type="button"
+        className="bg-slate-300 text-black flex justify-start"
+        onClick={() => {
+          navigate("/dashboard/mailorder")
+          localStorage.removeItem("mail details");
+          localStorage.removeItem("customerDetails");
+
+          
+        }}
+      >
+        Cancel Transacion
+      </Button>
+        </div>
       
+      <div className="flex justify-end">
       <Button 
         type="button"
         className="bg-slate-600 "
@@ -421,27 +465,27 @@ export default function MailDetails() {
           if (localMailStorage) {
             onConfirmTransaction(JSON.parse(localMailStorage));
             console.log("in if", JSON.parse(localMailStorage));
-
+            form.reset()
             localStorage.removeItem("mail details");
             localStorage.removeItem("customerDetails");
             console.log(confirmedMailArray, "hi hi");
           }
-        }}
-      >
+        }}>
         End Transaction and Print Receipt
       </Button>
       <Toaster />
       </div>
-      
       </div>
       </div>
+      </div>
+
       <div>
 
       </div>
-      
       <div className="flex-1 overflow-auto">
           <CardMail mailArray={mailArray} confirm ={ confirm}  price={price} transaction={transaction} confirmedMailArray={confirmedMailArray}/>
       </div>
     </div>
+    
   );
 }

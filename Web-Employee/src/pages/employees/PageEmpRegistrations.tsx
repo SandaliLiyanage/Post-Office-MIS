@@ -22,13 +22,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../components/ui/select"
-
+import { Toaster } from "../../components/ui/toaster";
+import { useToast } from "../../hooks/use-toast";
 const ROLES = [
-  "Supervisor",
-  "Postmaster",
-  "Receptionist",
-  "postman",
-  "dispatcher",
+  "SUPERVISOR",
+  "POSTMASTER",
+  "RECEPTIONIST",
+  "POSTMAN",
+  "DISPATCHER",
 ] as const;
 
 const formSchema = z.object({
@@ -41,12 +42,15 @@ const formSchema = z.object({
 });
 
 export default function EmpRegistration() {
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       employeeName: "",
       employeeID: "",
       telephone: "",
+      email: "",
+      postalCode: ""
     },
   });
 
@@ -60,6 +64,18 @@ export default function EmpRegistration() {
         values
       );
       console.log("Data submitted successfully", response.data);
+      if(response.data == null){
+        toast({
+          description: "Registration Unsuccessful"
+        });
+        form.reset()
+      }
+      else{
+        toast({
+          description: "Successfully registered"
+        })
+        form.reset()
+      }
     } catch (error) {
       console.error("Error submitting data", error);
     }
@@ -166,6 +182,7 @@ export default function EmpRegistration() {
         />    
           </div>
           <Button className="bg-teal-800" type="submit">Submit</Button>
+          <Toaster/>
         </form>
       </Form>
     </div>

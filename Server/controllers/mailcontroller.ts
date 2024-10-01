@@ -24,7 +24,7 @@ const MailDetails = async (req: Request, res: Response) => {
   const currentPostCode = postalCode;
   const { customerName, telephone } = cutomerDetails;
   console.log("hyikjk;", customerName, telephone, addressID);
-  const amount = mailService.calculateTotal(mailArray)
+  const amount = mailService.calculateTotal(mailArray);
   const transaction = await transactionRepository.createTransactoin(
     telephone,
     customerName,
@@ -149,6 +149,27 @@ export const getMailItems = async (req: Request, res: Response) => {
     return res.status(200).json(categoryCounts); // 200 status code for OK
   } catch (error) {
     console.error("Error fetching mail counts:", error);
+    return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
+  }
+};
+
+export const getAddresses = async (req: Request, res: Response) => {
+  const employeeID = req.query.employeeID as string; // Extract the employeeID
+
+  try {
+    // Check if the employeeID is provided
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
+    }
+
+    // Fetch mail details from the repository
+    const mailItems = await mailRepository.getDeliveryAddressesByEmployeeID(
+      employeeID
+    );
+
+    return res.status(200).json(mailItems); // 200 status code for OK
+  } catch (error) {
+    console.error("Error fetching delivery addresses:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
   }
 };

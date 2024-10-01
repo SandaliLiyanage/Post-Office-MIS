@@ -39,6 +39,8 @@ model PostOffice {
   postOfficeCategory PostOfficeCategory
   postOfficeName    String
   headOfficeID      String
+  latitude          Float?
+  longitude         Float?
   address           Address[]
   mail              Mail[]
   employee          Employee[]

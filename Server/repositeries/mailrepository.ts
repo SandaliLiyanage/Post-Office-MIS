@@ -87,6 +87,33 @@ class MailRepository {
     }
   }
 
+  // Fetch all unique delivery addresses for the given employee
+  async getDeliveryAddressesByEmployeeID(employeeID: string): Promise<any[]> {
+    try {
+      const uniqueAddresses = await prisma.$queryRaw<any[]>`
+      SELECT DISTINCT 
+          a."addressNo",
+          a."streetName",
+          a."Locality",
+          a."latitude",
+          a."longitude",
+          ar."areaName"
+      FROM "Mail" AS m
+      JOIN "Address" AS a ON m."recepientAddressID" = a."addressID"
+      JOIN "Area" AS ar ON a."areaID" = ar."areaID"
+      JOIN "Employee" AS e ON ar."employeeID" = e."employeeID"
+      WHERE e."employeeID" = ${employeeID}
+      ORDER BY a."addressNo"
+    `;
+
+      console.log("Unique addresses fetched:", uniqueAddresses);
+      return uniqueAddresses;
+    } catch (error) {
+      console.error("Error fetching unique addresses:", error);
+      throw error;
+    }
+  }
+
   // Update the mail status
   updateMailStatus = async (mailID: number, newStatus: MailStatus) => {
     return await prisma.mail.update({

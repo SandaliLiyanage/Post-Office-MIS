@@ -31,7 +31,7 @@ const Route = () => {
       };
 
       const { data: mailLocations } = await axios.get(
-        `http://${IP}:5000/mail/employee2?employeeID=${employeeID}`
+        `http://${IP}:5000/mail/addresses?employeeID=${employeeID}`
       );
 
       const addresses = mailLocations.map((loc: any, index: number) => ({

@@ -6,6 +6,7 @@ import {
   RequestStatus,
   MailStatus,
   MailType,
+  BundleStatus,
 } from "@prisma/client";
 
 const prisma = new PrismaClient();
@@ -347,6 +348,7 @@ async function main() {
         bundleID: 1,
         destPostalCode: "10640",
         currentPostCode: "00100",
+        bundleStatus: BundleStatus.DISTRIBUTED,
       },
     ],
   });

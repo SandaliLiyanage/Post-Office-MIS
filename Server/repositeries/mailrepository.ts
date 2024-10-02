@@ -108,6 +108,26 @@ class MailRepository {
       },
     });
   };
+
+  trackMail = async(
+    transactionID: string
+  ):Promise<any[]>=>{
+    try {
+      const res = await prisma.$queryRaw<any[]>`
+      SELECT m."recepientName", m."mailstatus", p."postOfficeName"
+      FROM "Mail" AS m
+      JOIN "PostOffice" AS p 
+      ON m."postalCode" = p."postalCode"
+      WHERE m."transactionID" = ${transactionID}
+      LIMIT 100`;
+
+      console.log("Mail details queried", res);
+      return res;
+  } catch (error) {
+      console.error("Error fetching mail details:", error);
+      throw error;
+  }
+  }
 }
 
 export { MailRepository };

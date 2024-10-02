@@ -157,3 +157,11 @@ model OTP{
   unused       Boolean @default(true)
   @@unique([employeeID, unused, expiresAt, createdAt])
 }
+
+model MoneyOrder {
+  id                Int      @id @default(autoincrement())
+  recipientName     String
+  recipientAddress  String
+  amount            Float
+  createdAt         DateTime @default(now())
+}

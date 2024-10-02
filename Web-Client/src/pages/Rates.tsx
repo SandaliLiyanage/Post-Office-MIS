@@ -1,46 +1,36 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import NavBar from '../components/ui/NavBar';
+import axios from 'axios'; // Import axios for HTTP requests
 
 const CalculatePostalRates: React.FC = () => {
   const [weight, setWeight] = useState<string>(''); // Stores the weight input by the user
   const [rate, setRate] = useState<string | null>(null); // Stores the calculated rate
 
-  // Function to determine the postal rate based on the weight table provided
-  const calculateRate = (weight: number): string => {
-    if (weight > 0 && weight <= 250) return '200.00';
-    if (weight > 250 && weight <= 500) return '250.00';
-    if (weight > 500 && weight <= 1000) return '350.00';
-    if (weight > 1000 && weight <= 2000) return '400.00';
-    if (weight > 2000 && weight <= 3000) return '450.00';
-    if (weight > 3000 && weight <= 4000) return '500.00';
-    if (weight > 4000 && weight <= 5000) return '550.00';
-    if (weight > 5000 && weight <= 6000) return '600.00';
-    if (weight > 6000 && weight <= 7000) return '650.00';
-    if (weight > 7000 && weight <= 8000) return '700.00';
-    if (weight > 8000 && weight <= 9000) return '750.00';
-    if (weight > 9000 && weight <= 10000) return '800.00';
-    if (weight > 10000 && weight <= 15000) return '850.00';
-    if (weight > 15000 && weight <= 20000) return '1100.00';
-    if (weight > 20000 && weight <= 25000) return '1600.00';
-    if (weight > 25000 && weight <= 30000) return '2100.00';
-    if (weight > 30000 && weight <= 35000) return '2600.00';
-    if (weight > 35000 && weight <= 40000) return '3100.00';
-
-    return 'Rate not available for the entered weight';
-  };
-
   // Event handler when the user clicks 'Calculate'
-  const handleCalculate = () => {
+  const handleCalculate = async () => {
     const weightNumber = Number(weight);
-    if (weight && !isNaN(weightNumber) && weightNumber > 0) {
-      const postalRate = calculateRate(weightNumber);
-      setRate(postalRate); // Set the calculated rate
-    } else {
-      alert('Please enter a valid weight!'); // Display error if input is invalid
+  
+    if (!weight || isNaN(weightNumber) || weightNumber <= 0) {
+      alert('Please enter a valid weight!');
+      return;
+    }
+  
+    try {
+      // Make a POST request to the backend to calculate the postal rate
+      const response = await axios.post('http://localhost:5000/calculatePrice', {
+        mailType: 'default', // You can customize this based on your needs
+        weight: weightNumber
+      });
+  
+      // Set the rate based on the backend response
+      setRate(response.data.price);
+    } catch (error) {
+      console.error("Error calculating postal rate:", error);
+      alert('Failed to calculate postal rate');
     }
   };
-
+  
   return (
     <div>
       <NavBar /> {/* Add NavBar here */}

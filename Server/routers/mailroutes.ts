@@ -5,6 +5,7 @@ import {
   getMailItems2,
   getMailItems3,
   updateMailStatus,
+  getTrackingDetails
 } from "../controllers/mailcontroller";
 import AuthService from "../services/authservice";
 import { MailBundles } from "../controllers/mailcontroller";
@@ -28,4 +29,5 @@ router.patch("/update-status", updateMailStatus);
 // router.post('/addresssearch', Address)
 router.post("/addresssearch", Address);
 router.post("/mailDetails", MailDetails);
+router.get("/trackMail/:transactionID",getTrackingDetails);
 export default router;

@@ -1,44 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { Container, Typography, TextField, Button, Grid } from '@mui/material';
 import NavBar from '../components/ui/NavBar'; 
+import axios from 'axios';
+
+enum MailStatus {
+  IN_TRANSIT = "In Transit",
+  DELIVERED = "Delivered",
+  RETURNED = "Returned",
+}
 
 interface TrackingInfo {
-  status: string;
-  location: string;
+  recepientName: string;
+  mailstatus: MailStatus; 
+  postOfficeName: string;
 }
+
 
 const TrackYourMail: React.FC = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>(''); // Stores user input for tracking number
-  const [status, setStatus] = useState<string | null>(null); // Stores the status of the mail
-  const [location, setLocation] = useState<string | null>(null); // Stores the location of the mail
+  const [trackingInfo, setTrackingInfo] = useState<TrackingInfo | null>(null); // Stores the tracking info
+  const [error, setError] = useState<string | null>(null); // State for error message
 
-  // Simulate fetching tracking information
-  const fetchTrackingInfo = async (trackingNumber: string): Promise<TrackingInfo> => {
-    // Simulate an API call
-    // Replace this with an actual API call to fetch tracking info
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve({
-          status: 'In Transit',
-          location: 'Post Office 123, Colombo'
-        });
-      }, 1000); // Simulate network delay
-    });
+  // Function to fetch tracking information from the backend API
+  const fetchTrackingInfo = async (transactionID: number): Promise<TrackingInfo | null> => {
+    try {
+      // Send the transactionID in the request body via POST
+      const response = await axios.post('/mail/track', { transactionID });
+      return response.data.data; // Access the data returned from the backend
+    } catch (error) {
+      console.error('Error fetching tracking info:', error);
+      throw new Error('Failed to fetch tracking information.');
+    }
   };
 
-  // Event handler when the user clicks 'Track'
+  // Event handler for when the user clicks 'Track'
   const handleTrack = async () => {
-    if (trackingNumber.trim()) {
-      try {
-        const trackingInfo = await fetchTrackingInfo(trackingNumber);
-        setStatus(trackingInfo.status);
-        setLocation(trackingInfo.location);
-      } catch (error) {
-        console.error('Error fetching tracking info:', error);
-        alert('Failed to fetch tracking information.');
+    const num = parseInt(trackingNumber, 10); // Parse input as an integer
+    if (isNaN(num)) {
+      setError('Please enter a valid tracking number (integer)!'); // Validate input
+      return;
+    }
+
+    setError(null); // Clear any previous errors
+    try {
+      const info = await fetchTrackingInfo(num);
+      if (info) {
+        setTrackingInfo(info); // Set the tracking information
+      } else {
+        setTrackingInfo(null); // No info found
+        setError('No tracking information found for this number.');
       }
-    } else {
-      alert('Please enter a valid tracking number!');
+    } catch (error) {
+      const errorMessage = (error as Error).message || 'Failed to fetch tracking information.';
+      setError(errorMessage); // Set the error message
+      setTrackingInfo(null); // Clear previous tracking info
     }
   };
 
@@ -55,35 +70,47 @@ const TrackYourMail: React.FC = () => {
           label="Tracking Number"
           variant="outlined"
           value={trackingNumber}
-          onChange={(e) => setTrackingNumber(e.target.value)}
+          onChange={(e) => setTrackingNumber(e.target.value)} // Only updates state on user input
           sx={{ marginBottom: '20px', width: '100%' }}
         />
 
         {/* Track Button */}
         <Button
           variant="contained"
-          onClick={handleTrack}
+          onClick={handleTrack} // Function is only called when 'Track' button is clicked
           sx={{ backgroundColor: '#884343' }}
         >
           Track
         </Button>
 
+        {/* Display error message */}
+        {error && (
+          <Typography variant="h6" color="error" sx={{ marginTop: '20px' }}>
+            {error}
+          </Typography>
+        )}
+
         {/* Display tracking information */}
         <Grid container spacing={2} sx={{ marginTop: '20px' }}>
-          <Grid item xs={12}>
-            {status && (
-              <Typography variant="h6">
-                <strong>Status:</strong> {status}
-              </Typography>
-            )}
-          </Grid>
-          <Grid item xs={12}>
-            {location && (
-              <Typography variant="h6">
-                <strong>Location:</strong> {location}
-              </Typography>
-            )}
-          </Grid>
+          {trackingInfo && (
+            <>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  <strong>Recipient Name:</strong> {trackingInfo.recepientName}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  <strong>Status:</strong> {trackingInfo.mailstatus}
+                </Typography>
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="h6">
+                  <strong>Location:</strong> {trackingInfo.postOfficeName}
+                </Typography>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Container>
     </div>

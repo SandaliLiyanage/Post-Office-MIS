@@ -13,6 +13,7 @@ import Address from "../controllers/addresscontroller";
 import { MailDetails } from "../controllers/mailcontroller";
 import { ReportData } from "../controllers/reportcontroller";
 import { getAddresses } from "../controllers/mailcontroller";
+import { getTrackingDetails } from "../controllers/mailcontroller";
 const authService = new AuthService();
 
 const router = Router();
@@ -30,4 +31,5 @@ router.patch("/update-status", updateMailStatus);
 router.post("/reportData", ReportData);
 router.post("/addresssearch", Address);
 router.post("/mailDetails", MailDetails);
+router.post("/track", getTrackingDetails);
 export default router;

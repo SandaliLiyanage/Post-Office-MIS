@@ -155,24 +155,25 @@ class MailRepository {
     return res
   }
 
-  async trackMail(transactionID: string): Promise<any[]> {
+  async trackMail(transactionID: number): Promise<any[]> { // Change the parameter type to number
     try {
-      const res = await prisma.$queryRaw<any[]>`
-        SELECT m."recepientName", m."mailstatus", p."postOfficeName"
-        FROM "Mail" AS m
-        JOIN "PostOffice" AS p 
-        ON m."postalCode" = p."postalCode"
-        WHERE m."transactionID" = ${transactionID}
-        LIMIT 100
-      `;
+        const res = await prisma.$queryRaw<any[]>`
+            SELECT m."recepientName", m."mailstatus", p."postOfficeName"
+            FROM "Mail" AS m
+            JOIN "PostOffice" AS p 
+            ON m."postalCode" = p."postalCode"
+            WHERE m."transactionID" = ${transactionID}
+            LIMIT 100
+        `;
 
-      console.log("Mail details queried", res);
-      return res;
+        console.log("Mail details queried", res);
+        return res;
     } catch (error) {
-      console.error("Error fetching mail details:", error);
-      throw error;
+        console.error("Error fetching mail details:", error);
+        throw error;
     }
-  }
+}
+
 }
   
 export {MailRepository};

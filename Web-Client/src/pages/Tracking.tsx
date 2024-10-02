@@ -24,20 +24,35 @@ const TrackYourMail: React.FC = () => {
   // Function to fetch tracking information from the backend API
   const fetchTrackingInfo = async (transactionID: number): Promise<TrackingInfo | null> => {
     try {
-      // Send the transactionID in the request body via POST
-      const response = await axios.post('/mail/track', { transactionID });
-      return response.data.data; // Access the data returned from the backend
+      const response = await axios.post('http://localhost:5001/mail/track', { transactionID });
+      console.log('Response from server:', response.data);
+  
+      if (response.data.success) {
+        const data = response.data.data;
+  
+        // Optional: map enum to user-friendly status
+        const userFriendlyMailStatus = MailStatus[data.mailstatus as keyof typeof MailStatus];
+  
+        return {
+          recepientName: data.recepientName,
+          mailstatus: userFriendlyMailStatus,
+          postOfficeName: data.postOfficeName,
+        };
+      } else {
+        throw new Error(response.data.message);
+      }
     } catch (error) {
       console.error('Error fetching tracking info:', error);
       throw new Error('Failed to fetch tracking information.');
     }
   };
+  
 
   // Event handler for when the user clicks 'Track'
   const handleTrack = async () => {
     const num = parseInt(trackingNumber, 10); // Parse input as an integer
     if (isNaN(num)) {
-      setError('Please enter a valid tracking number (integer)!'); // Validate input
+      setError('Please enter a valid tracking number!'); // Validate input
       return;
     }
 

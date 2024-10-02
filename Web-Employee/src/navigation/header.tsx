@@ -9,7 +9,18 @@ import { useNavigate } from "react-router-dom"
 import { User, Bell } from 'lucide-react';
 import SheetNotifications from './notifications'
 import {useEffect, useState} from 'react';
-
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
 // import logo from '../assets/logo.png';
 
 export default function Nav() {
@@ -47,12 +58,39 @@ export default function Nav() {
           <div className="grid gap-2">
           
               <Button className=" bg-blue-200 text-black hover:text-white" onClick={()=> {{removeUser}; navigate('/')}}  >Logout</Button>
-              <Button className=" text-white " >Change Password</Button>
+              <Button className=" text-white "  onClick={() => navigate('/forgotpassword')}>Reset Password</Button>
             </div>      
           </div>
       </PopoverContent>
     </Popover>
-    <Button className="mt-3 bg-slate-800"><Bell className="bg-slate-800" onClick={()=>{console.log("in return"); setOpen(true); return(<div><SheetNotifications open={open} onOpenChange={setOpen}/></div>)}}></Bell></Button>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button  className="mt-3 bg-slate-800"><Bell className="bg-slate-800"></Bell></Button>
+      </SheetTrigger>
+      <SheetContent>
+        <SheetHeader>
+          <SheetTitle>Notifications</SheetTitle>
+          {/* <SheetDescription>
+            Make changes to your profile here. Click save when you're done.
+          </SheetDescription> */}
+        </SheetHeader>
+        <div className="grid gap-4 py-4">
+          <div className="grid grid-cols-4 bg-white w-full h-40 gap-4 rounded-md">
+            
+          </div>
+          <div className="grid grid-cols-4 gap-4">
+            <Label htmlFor="username" >
+              Username
+            </Label>
+          </div>
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button type="submit">Save changes</Button>
+          </SheetClose>
+        </SheetFooter>
+      </SheetContent>
+    </Sheet>
     <Button  className="mt-3 pt-1 pb-1 mr-5 bg-slate-800 rounded-full text-white border border-white hover:bg-slate-600 hover:text-white"  variant="outline">{user?.role}</Button>
 
     </div>

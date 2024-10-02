@@ -10,23 +10,37 @@ import { useState } from "react";
 import axios from "axios";
 import { Button } from "../../../components/ui/button";
 import { useLocation } from 'react-router-dom';
-
+import { useUser } from '../../authentication/usercontext';
+import { Toaster } from "../../../components/ui/toaster";
+import { useToast } from "../../../hooks/use-toast";
 export default function Retaddress() {
     const [search, setSearch] = useState<string>("");
     const [searchSelect, setSearchSelect] = useState<boolean>(false);
     const [searchResults, setSearchResults] = useState<string[]>([]);
     const [addressID, setAddressID] = useState<number|null>(null);
     const [addressMap, setAddressMap] = useState<{[key: string]: number}| null>(null);
+    const location = useLocation();
+    const {user} = useUser();
+    const { toast } = useToast();
     const changeAddress = async ()=>{
         try{
-            const location = useLocation();
-        const queryParams = new URLSearchParams(location.search);
-        const mailID = queryParams.get('mailID'); 
-        console.log(mailID)
-            const  res = await axios.post(
-                "http://localhost:5000/mail/addresssearch",
-              {addressID, mailID}
-            )
+        if(user){
+          const postalCode = user.postalCode
+          const queryParams = new URLSearchParams(location.search);
+          const mailID = queryParams.get('mailID'); 
+          console.log(mailID, addressID, postalCode)
+          const  res = await axios.post(
+              "http://localhost:5000/mail/changeaddress",
+            {addressID, mailID, postalCode}
+          )
+          setSearch("")
+          if(res){
+            toast({
+              description: "Address Updated",
+            });
+          }
+        }
+        
         }catch(error){
           console.log(error)
         }
@@ -58,10 +72,11 @@ export default function Retaddress() {
     
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
+      <div>
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <p className="text-xl font-bold">Change Return Address</p>
       </div>
-              <div >
+              <div className="relative">
                 <Command className="mt-2">
                   <CommandInput
                     placeholder="Address"
@@ -111,7 +126,9 @@ export default function Retaddress() {
                 </div>
             <div className="flex justify-end mt-5">
                 <Button onClick={() => changeAddress()}>Change the Return Address</Button>
+                <Toaster/>
             </div>
-      </div>    
+      </div>   
+      </div>
   )
 }

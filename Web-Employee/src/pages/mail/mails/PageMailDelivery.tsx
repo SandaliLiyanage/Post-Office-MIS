@@ -48,12 +48,16 @@ export default function MailDelivery() {
         }
     }
     fetchPostmanAssignments()
-  },[]);
+  },[user]);
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl font-bold">Mail and Area Assignments</p>
-        <p></p>
+        <div className="flex justify-start">
+          <p className="text-xl font-bold">Mail and Area Assignments</p>
+        </div>
+      <div className="flex justify-end">
+        <Button className="btn bg-white " variant="outline"  size="icon"><Edit color="black" size={18} className="hover:none"></Edit></Button>
+      </div>
     </div>
     <div className="grid: grid-cols-2">
     {
@@ -67,7 +71,6 @@ export default function MailDelivery() {
             <div className="flex justify-end">
                     <Dialog>
               <DialogTrigger asChild>
-                <Button className="btn bg-white " variant="outline"  size="icon"><Edit color="black" size={18} className="hover:none"></Edit></Button>
 
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">

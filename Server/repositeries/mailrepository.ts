@@ -176,6 +176,29 @@ class MailRepository {
   console.log(res, "res res")
   return res
   }
+
+  async updateRecepientAddress(addressID: number, mailID: number, postalCode: string){
+    try{
+      const res = await prisma.mail.update({
+        where: {
+          mailID: mailID
+        },
+        data:{
+          recepientAddressID: addressID,
+          postalCode: postalCode,
+          deliveryAttempts: 0
+        }
+      });
+      return res
+    
+    }catch(error){
+      console.log(error)
+    }
+    
+  
+ 
+    
+  }
 }
   
 export {MailRepository};

@@ -39,24 +39,24 @@ const columns: ColumnDef<IReturnMail>[] = [
         
         return(
           <div>
-            <Button className="rounded-full bg-sky-600" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Change Address</Button>
+            <Button className="rounded-sm bg-sky-600" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Add Return Address</Button>
           </div>
         )
       }
     },
-    { 
+    // { 
       
-      header: "Return",
-      id: "actions",
-      cell: ({ row }) => {
-  	    const returnMail = row.original
-        return(
-          <div>
-            <Button className="rounded-full bg-sky-600" size={"sm"} >Return</Button>
-          </div>
-        )
-      }
-    },
+    //   header: "Return",
+    //   id: "actions",
+    //   cell: ({ row }) => {
+  	//     const returnMail = row.original
+    //     return(
+    //       <div>
+    //         <Button className="rounded-full bg-sky-600" size={"sm"} >Return</Button>
+    //       </div>
+    //     )
+    //   }
+    // },
   ]
 
 

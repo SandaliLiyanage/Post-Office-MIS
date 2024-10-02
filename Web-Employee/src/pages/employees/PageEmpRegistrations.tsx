@@ -182,36 +182,7 @@ export default function EmpRegistration() {
               )}
             />
           </div>
-
-            <Dialog>
-              <DialogTrigger asChild>
                 <Button className="bg-teal-800" type="submit">Submit</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Confirm</DialogTitle>
-                  <DialogDescription>Verify you are the postmaster.</DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="password" className="text-right">
-                      Password
-                    </Label>
-                    {/* Capture the password */}
-                    <Input
-                      id="password"
-                      type="password"
-                      className="col-span-3"
-                      value={password}
-                      onChange={(e) =>{console.log("hi"); setPassword(e.target.value)} }
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button >Confirm Employee Account creation</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
             <Toaster />
         </form>
       </Form>

@@ -1,5 +1,5 @@
 import NavButton from "../components/custom/sidebutton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
@@ -15,68 +15,76 @@ export default function SideBar() {
   const handleClick = (button: string) => {
     setActiveButton(button);
   };
-  const EmployeeRecords = <NavButton className={`${activeButton === 'Employee Records' ? clickedColour : normalColour}`}
+
+  useEffect(()=>{
+    const path = window.location.pathname
+    console.log(path)
+    const lastPart = path.substring(path.lastIndexOf('/') + 1);
+    setActiveButton(lastPart)
+    
+  })
+  const EmployeeRecords = <NavButton className={`${activeButton === 'employeeRecords' ? clickedColour : normalColour}`}
                           onClick={() =>{
-                            handleClick('Employee Records');
+                            handleClick('employeeRecords');
                             navigate("/dashboard/employeeRecords")
                           }}> Employee Accounts</NavButton>
 
-  const MailAssignments = <NavButton className={`${activeButton === 'Mail Assignments'? clickedColour : normalColour}`}
+  const MailAssignments = <NavButton className={`${activeButton === 'mailAssignments'? clickedColour : normalColour}`}
                           onClick={() => {
-                            handleClick('Mail Assignments');
+                            handleClick('mailAssignments');
                             navigate("/dashboard/mailAssignments");
                             }}>Mail Assignments</NavButton>
 
-  const RevenueReports = <NavButton className={`${activeButton === 'Revenue Reports'? clickedColour : normalColour}`}
+  const RevenueReports = <NavButton className={`${activeButton === 'revenueReports'? clickedColour : normalColour}`}
                         onClick={() => {
-                          handleClick('Revenue Reports')
+                          handleClick('revenueReports')
                           navigate("/dashboard/revenueReports")
                         }}>Revenue Reports</NavButton>
 
-  const MailOrder = <NavButton className={`${activeButton === 'Mail Order' ? clickedColour : normalColour}`} 
+  const MailOrder = <NavButton className={`${activeButton === 'mailorder' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Mail Order');
+                          handleClick('mailorder');
                           navigate("/dashboard/mailorder");
                         }
                          }>Mail Order</NavButton>
 
-  const ViewMail = <NavButton className={`${activeButton === 'View Mail' ? clickedColour : normalColour}`} 
+  const ViewMail = <NavButton className={`${activeButton === 'viewMail' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('View Mail')
                           navigate("/dashboard/viewMail")
                         } }>View Mail</NavButton>
 
-  const LeaveRequest = <NavButton className={`${activeButton === 'Leave Requests' ? clickedColour : normalColour}`} 
+  const LeaveRequest = <NavButton className={`${activeButton === 'leaveRequest' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Leave Requests')
+                          handleClick('leaveRequest')
                           navigate("/dashboard/leaveRequest")
                         } }>Request Leaves</NavButton>
 
-  const ViewLeaveRequests = <NavButton className={`${activeButton === 'ViewLeaveRequests' ? clickedColour : normalColour}`} 
+  const ViewLeaveRequests = <NavButton className={`${activeButton === 'viewLeaveRequests' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('ViewLeaveRequests')
                           navigate("/dashboard/viewLeaveRequests")
                         } }>View Leave Requests</NavButton>
-const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? clickedColour : normalColour}`} 
+const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('MailBundles')
+                          handleClick('mailBundles')
                           navigate("/dashboard/mailBundles")
                         } }>Mail Bundles</NavButton>
 
-  const PostmanAssignments = <NavButton className={`${activeButton === 'Assigned Postmen' ? clickedColour : normalColour}`} 
+  const PostmanAssignments = <NavButton className={`${activeButton === 'postmanAssignments' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Assigned Postmen')
+                          handleClick('postmanAssignments')
                           navigate("/dashboard/postmanAssignments")
                         }}>Assigned Postmen</NavButton>
 
-  const EmployeeRegistrations = <NavButton className={`${activeButton === 'Employee Registrations' ? clickedColour : normalColour}`} 
+  const EmployeeRegistrations = <NavButton className={`${activeButton === 'employeeRegistrations' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Employee Registrations')
+                          handleClick('employeeRegistrations')
                           navigate("/dashboard/employeeRegistrations")
                         } }>Employee Registrations</NavButton>
-  const FailedToDeliver = <NavButton className={`${activeButton === 'Delivery Failiures' ? clickedColour : normalColour}`} 
+  const FailedToDeliver = <NavButton className={`${activeButton === 'failedtoDeliver' ? clickedColour : normalColour}`} 
                         onClick={() => {
-                          handleClick('Delivery Failiures')
+                          handleClick('failedtoDeliver')
                           navigate("/dashboard/failedtoDeliver")
                         } }>Return Mail</NavButton>
 

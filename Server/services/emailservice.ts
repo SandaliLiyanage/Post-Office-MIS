@@ -3,6 +3,9 @@ import nodemailer from 'nodemailer';
 const employeeRepository = new EmployeeRepository();
 class EmailService{
     async sendEmail(otp: string, employeeID:string){
+
+        console.log(process.env.USER, process.env.APP_PASSWORD)
+
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
@@ -17,10 +20,7 @@ class EmailService{
         if(emailAddress && process.env.USER){
             console.log("in email address verified")
             const mailOptions = {
-                from: {
-                    name: "Postal Services",
-                    address: process.env.USER
-                },
+                from: '"Maddison Foo Koch " <sanallliyanagecse@gmail.com>',
                 to: "pldsandali@gmail.com",
                 subject:"One Time Password for login",
                 text: "your otp is 567890"
@@ -30,6 +30,7 @@ class EmailService{
                 await transporter.sendMail(mailOptions)
             }catch(error){
                 // throw error
+                console.error(error)
                 return "error"
             }
         }

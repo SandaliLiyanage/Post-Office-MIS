@@ -46,6 +46,11 @@ class MailService {
     return total
   }
 
+  async changeAddress(addressID: number, mailID: number, postalCode: string){
+    const res = await mailRepository.updateRecepientAddress(addressID, mailID, postalCode);
+    return res
+  }
+
 
   calculatePrice(mailType: string, weight: number){
     if(mailType == "normal mail"){

@@ -87,8 +87,7 @@ model Mail {
   postalCode        String
   postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
   signature      String?
-  deliveryAttempts  Int?
-  deliveryStatus     
+  deliveryAttempts  Int?     
 }
 model Bundle {
   bundleID              Int          @id @default(autoincrement())

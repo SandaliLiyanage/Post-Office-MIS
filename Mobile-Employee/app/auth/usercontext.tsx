@@ -9,6 +9,7 @@ interface User {
   token: string;
   postOfficeName: string;
   email: string;
+  employeeID: string;
 }
 
 // Define the UserContextType interface

@@ -9,7 +9,7 @@ const Route = () => {
   const [routeCoordinates, setRouteCoordinates] = useState<
     { latitude: number; longitude: number }[]
   >([]);
-  const [employeeID] = useState("0002"); // Replace with actual postman ID
+  const [employeeID] = useState("0002");
   const [locations, setLocations] = useState<
     { id: string; latitude: number; longitude: number }[]
   >([]);

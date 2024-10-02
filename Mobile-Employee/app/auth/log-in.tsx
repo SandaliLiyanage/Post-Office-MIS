@@ -8,6 +8,7 @@ import axios from "axios";
 import { View, Text, TextInput, StyleSheet, Button } from "react-native";
 import { useToast } from "react-native-toast-notifications";
 import { useUser } from "./usercontext";
+import { IP } from "../../config";
 
 const formSchema = z.object({
   employeeID: z.string(),
@@ -29,14 +30,11 @@ export default function Login() {
     try {
       console.log("Submitting login data", values);
       const validateID = await axios.post(
-        "http://localhost:5000/auth/validateID",
+        `http://${IP}:5000/auth/validateID`,
         values
       );
       if (validateID.data === true) {
-        const user = await axios.post(
-          "http://localhost:5000/auth/login",
-          values
-        );
+        const user = await axios.post(`http://${IP}:5000/auth/login`, values);
         if (user.data.login === true) {
           saveUser({
             name: user.data.name,
@@ -51,12 +49,12 @@ export default function Login() {
           // Role-based navigation
           if (user.data.role === "POSTMAN") {
             router.push({
-              pathname: "./postman/home",
+              pathname: "../postman/home",
               params: { employeeID: values.employeeID },
             });
           } else if (user.data.role === "DISPATCHER") {
             router.push({
-              pathname: "./dispatch-manager/home",
+              pathname: "../dispatch-manager/home",
               params: { employeeID: values.employeeID },
             });
           } else {

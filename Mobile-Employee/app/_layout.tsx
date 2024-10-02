@@ -1,5 +1,3 @@
-// Layout and navigation structure of the app
-
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -7,6 +5,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/useColorScheme";
+import { UserProvider } from "./auth/usercontext"; // Adjust the path to usercontext
 
 // Prevent the splash screen from auto hiding before asset loading is complete
 SplashScreen.preventAutoHideAsync();
@@ -32,13 +31,19 @@ export default function RootLayout() {
 
   // Structure of the app
   return (
-    // Stack of screens
-    <Stack>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="auth" options={{ headerShown: false }} />
-      <Stack.Screen name="postman" options={{ headerShown: false }} />
-      <Stack.Screen name="dispatch-manager" options={{ headerShown: false }} />
-      <Stack.Screen name="+not-found" />
-    </Stack>
+    // Wrap the app in UserProvider to provide user context to all screens
+    <UserProvider>
+      {/* Stack of screens */}
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="auth" options={{ headerShown: false }} />
+        <Stack.Screen name="postman" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="dispatch-manager"
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+    </UserProvider>
   );
 }

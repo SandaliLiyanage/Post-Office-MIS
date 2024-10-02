@@ -15,7 +15,8 @@ import ForgotPassword from "./pages/authentication/PageForgotPassword";
 import ValidateOTP from "./pages/authentication/PageValidateOTP";
 import SetPassword from "./pages/authentication/PageSetPassword";
 import MailDelivery from "./pages/mail/mails/PageMailDelivery";
-import EndTransaction from "./pages/mail/mailorder/PageMailDetails"
+import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
+import ReturnMail from "./pages/mail/mails/PageReturnMail";
 function App() {
   return (
     
@@ -41,6 +42,7 @@ function App() {
           <Route path="view" element={<Employeeupdate/>}></Route>
           <Route path ="postmanAssignments" element={<MailDelivery/>}></Route>
           <Route path ="endtransaction" element={<EndTransaction/>}></Route>
+          <Route path="failedtoDeliver" element={<ReturnMail/>}></Route>
 
         </Route>
       </Routes>

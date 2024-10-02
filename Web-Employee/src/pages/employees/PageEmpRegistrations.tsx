@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
-
+import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Form,
@@ -24,6 +24,18 @@ import {
 } from "../../components/ui/select"
 import { Toaster } from "../../components/ui/toaster";
 import { useToast } from "../../hooks/use-toast";
+import { useUser } from "../authentication/usercontext";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTrigger,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {Label} from "../../components/ui/label";
+
 const ROLES = [
   "SUPERVISOR",
   "POSTMASTER",
@@ -38,11 +50,13 @@ const formSchema = z.object({
   role: z.enum(ROLES),
   telephone: z.string().min(10, {}),
   email: z.string().email(),
-  postalCode: z.string().min(5, {}),
 });
 
 export default function EmpRegistration() {
+  const { user } = useUser();
   const { toast } = useToast();
+  const [password, setPassword] = useState<string>(""); // Use state to store the password
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,36 +64,38 @@ export default function EmpRegistration() {
       employeeID: "",
       telephone: "",
       email: "",
-      postalCode: ""
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(user, "user", user?.role, user?.postalCode);
     try {
-      console.log(values);
-      const response = await axios.post(
-
-        "http://localhost:5000/employee/registration",
-
-        values
-      );
-      console.log("Data submitted successfully", response.data);
-      if(response.data == null){
-        toast({
-          description: "Registration Unsuccessful"
-        });
-        form.reset()
-      }
-      else{
-        toast({
-          description: "Successfully registered"
-        })
-        form.reset()
+      if (user && user.role == "POSTMASTER" && user.postalCode) {
+        const postalCode = user.postalCode;
+        console.log("in if", postalCode, user);
+        const newValue = { ...values, postalCode, password }; 
+        console.log(newValue)
+        const response = await axios.post(
+          "http://localhost:5000/employee/registration",
+          newValue
+        );
+        console.log("Data submitted successfully", response.data);
+        form.reset();
+        if (response.data == null) {
+          toast({
+            description: "Registration Unsuccessful",
+          });
+          form.reset();
+        } else {
+          toast({
+            description: "Successfully registered",
+          });
+          form.reset();
+        }
       }
     } catch (error) {
       console.error("Error submitting data", error);
     }
-    console.log(values);
   }
 
   return (
@@ -144,45 +160,59 @@ export default function EmpRegistration() {
             />
             <FormField
               control={form.control}
-              name="postalCode"
+              name="role"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Postal Code</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Postal Code" {...field} />
-                  </FormControl>
+                  <FormLabel>Employee Role</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Employee Role" className="text-slate-500" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="POSTMASTER">Postmaster</SelectItem>
+                      <SelectItem value="RECEPTIONIST">Receptionist</SelectItem>
+                      <SelectItem value="DISPATCHER">Dispatch Record Manager</SelectItem>
+                      <SelectItem value="POSTMAN">Postman</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
-
-                 )}
-                />
-                <FormField
-          control={form.control}
-          name="role"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Mail Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Employee Role" className="text-slate-500" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="POSTMASTER">postmaster</SelectItem>
-                  <SelectItem value="RECEPTIONIST">receptionist</SelectItem>
-                  <SelectItem value="DISPATCHER">dispatch record manager</SelectItem>
-                  <SelectItem value="POSTMAN">postman</SelectItem>
-                </SelectContent>
-              </Select>
-    
-              <FormMessage />
-            </FormItem>
-          )}
-        />    
+              )}
+            />
           </div>
-          <Button className="bg-teal-800" type="submit">Submit</Button>
-          <Toaster/>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-teal-800" type="submit">Submit</Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[425px]">
+                <DialogHeader>
+                  <DialogTitle>Confirm</DialogTitle>
+                  <DialogDescription>Verify you are the postmaster.</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="password" className="text-right">
+                      Password
+                    </Label>
+                    {/* Capture the password */}
+                    <Input
+                      id="password"
+                      type="password"
+                      className="col-span-3"
+                      value={password}
+                      onChange={(e) =>{console.log("hi"); setPassword(e.target.value)} }
+                    />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button >Confirm Employee Account creation</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+            <Toaster />
         </form>
       </Form>
     </div>

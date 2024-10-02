@@ -74,6 +74,11 @@ const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? cl
                           handleClick('Employee Registrations')
                           navigate("/dashboard/employeeRegistrations")
                         } }>Employee Registrations</NavButton>
+  const FailedToDeliver = <NavButton className={`${activeButton === 'Delivery Failiures' ? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('Delivery Failiures')
+                          navigate("/dashboard/failedtoDeliver")
+                        } }>Return Mail</NavButton>
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full">
@@ -90,6 +95,7 @@ const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? cl
             {RevenueReports}
             {PostmanAssignments}
             {MailBundles}
+            {FailedToDeliver}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (

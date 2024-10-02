@@ -23,7 +23,7 @@ class AreaRepository{
             JOIN "Address"  AS ad ON ad."areaID" = a."areaID" 
             JOIN "Mail" AS m ON m."recepientAddressID" = ad."addressID"
             JOIN "Bundle" AS b ON b."bundleID" = m."bundleID"
-            WHERE a."postalCode" = ${postalCode} AND   b."bundleStatus" = 'ARRIVED'::"BundleStatus";`
+            WHERE a."postalCode" = ${postalCode} AND   b."bundleStatus" = 'DISTRIBUTED'::"BundleStatus";`
 
         // const response = prisma.area.findMany({
         //     where:{

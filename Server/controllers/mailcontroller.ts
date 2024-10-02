@@ -50,6 +50,13 @@ const Mails = async (req: Request, res: Response) => {
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
 };
+const ReturnMail = async (req: Request, res: Response) => {
+  console.log("Request received in mail", req.body);
+  const { postalCode } = req.body;
+  console.log(postalCode)
+  const result = await mailRepository.getReturnMail(postalCode);
+  return res.status(200).json(result);
+};
 
 // Function to get mail items for a specific employee
 export const getMailItems3 = async (req: Request, res: Response) => {
@@ -177,4 +184,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, Mails, MailDetails };
+export { CalculatePrice, Mails, MailDetails,ReturnMail };

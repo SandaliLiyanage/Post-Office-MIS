@@ -1,5 +1,6 @@
 import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
 import { start } from "repl";
+import Address from "../controllers/addresscontroller";
 const prisma = new PrismaClient();
 
 class MailRepository {
@@ -126,6 +127,26 @@ class MailRepository {
   });
     console.log(res)
     return res
+  }
+
+  getReturnMail = async(postalCode: string)=>{
+    const res = await prisma.mail.findMany({
+      where: {
+        deliveryAttempts: {
+          gte: 2, 
+        },
+        address: {
+          postalCode: postalCode // compare postal code in address
+        }
+       
+    },
+    include: {
+      address: true
+    }
+  }
+  )
+  console.log(res, "res res")
+  return res
   }
 }
   

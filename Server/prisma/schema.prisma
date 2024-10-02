@@ -84,9 +84,10 @@ model Mail {
   price             Decimal       @db.Decimal(10,2)
   postalCode        String
   postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
-  signature     String?
+  signature      String?
+  deliveryAttempts  Int?
+  deliveryStatus     
 }
-
 model Bundle {
   bundleID              Int          @id @default(autoincrement())
   destPostalCode        String

@@ -11,7 +11,7 @@ export default function Mails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
 
-  useEffect(() => {
+useEffect(() => {
     async function fetchMails() {
       try { 
         if(user){

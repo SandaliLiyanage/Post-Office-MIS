@@ -59,7 +59,7 @@ const SignUp = () => {
         <View style={styles.button}>
           <Button
             title="Log In"
-            onPress={() => router.replace("/(auth)/log-in")}
+            onPress={() => router.replace("/auth/log-in")}
           />
         </View>
       </View>

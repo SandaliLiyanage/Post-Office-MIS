@@ -7,6 +7,7 @@ import { Trash } from 'lucide-react';
 import {MailResponse} from './PageMailDetails';
 import {Barcode} from 'lucide-react';
 import JsBarcode from 'jsbarcode';
+import { useRef } from "react";
 type CardMailProps = {
   mailArray: MailDetailsType[],
   confirm: boolean,
@@ -18,7 +19,7 @@ type CardMailProps = {
 
 export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMailProps) {
   const [mailDetailsArray, setMailDetailsArray] = useState<MailDetailsType[]>(mailArray);
-  
+  const contentRef = useRef<HTMLDivElement>(null);
   // Fetch mail details from localStorage on component mount
   useEffect(() => {
     const fetchMailDetails = () => {

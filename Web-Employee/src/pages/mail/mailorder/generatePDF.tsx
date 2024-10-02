@@ -80,4 +80,6 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
   console.log(pdfObject); // This will log the PDF object if needed
 };
 
+
+
 export { generateInvoice };

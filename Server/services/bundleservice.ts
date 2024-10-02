@@ -49,7 +49,7 @@ class BundleService {
                   bundleRoute.push(sourceHeadOffice);
                 }
               
-                if (destHeadOffice !== destPostalCode) {
+                if (destHeadOffice !== sourceHeadOffice) {
                   bundleRoute.push(destHeadOffice); 
                 }
               

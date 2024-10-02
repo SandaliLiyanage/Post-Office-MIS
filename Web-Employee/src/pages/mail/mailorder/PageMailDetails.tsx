@@ -240,6 +240,12 @@ export default function MailDetails() {
           mailArray,
           total
         );
+        displayInvoice(
+          customerDetails.name,
+          customerDetails.telephone,
+          mailArray,
+          total
+        )
 
         localStorage.removeItem("customerDetails");
         setTransaction(true);
@@ -488,6 +494,9 @@ export default function MailDetails() {
             </div>
           </>
         )}
+
+        {transaction && 
+        <iframe id="pdf-frame"></iframe>}
       </div>
 
       <div></div>

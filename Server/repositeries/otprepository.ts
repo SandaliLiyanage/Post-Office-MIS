@@ -18,7 +18,6 @@ class OTPRepository{
             throw error
         }
     }
-
     async getOTP(employeeID:string, time: Date){
     console.log("heeh in getOTP")
     console.log(employeeID, time)

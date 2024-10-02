@@ -1,13 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller } from "react-hook-form";
+import InputField from "../../components/input-field";
 import { router } from "expo-router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
-import { useToast } from "react-native-toast-notifications";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  Button,
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import { useUser } from "./usercontext";
+import { useToast } from "react-native-toast-notifications";
 
 const formSchema = z.object({
   employeeID: z.string(),
@@ -16,7 +26,9 @@ const formSchema = z.object({
 
 export default function Login() {
   const { show } = useToast();
+  const navigation = useNavigation();
   const { saveUser } = useUser();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,45 +93,39 @@ export default function Login() {
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Employee ID</Text>
-        <Controller
-          control={form.control}
-          name="employeeID"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Enter Employee ID"
-              style={styles.input}
-              onBlur={onBlur}
-              onChangeText={onChange} // Directly set the value
-              value={value} // Directly use the value from the form
-            />
-          )}
+        <TextInput
+          placeholder="Enter Employee ID"
+          style={styles.input}
+          {...form.register("employeeID")}
         />
       </View>
 
       <View style={styles.inputContainer}>
         <Text style={styles.label}>Password</Text>
-        <Controller
-          control={form.control}
-          name="password"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextInput
-              placeholder="Enter Password"
-              style={styles.input}
-              secureTextEntry
-              onBlur={onBlur}
-              onChangeText={onChange} // Directly set the value
-              value={value} // Directly use the value from the form
-            />
-          )}
+        <TextInput
+          placeholder="Enter Password"
+          style={styles.input}
+          secureTextEntry
+          {...form.register("password")}
         />
       </View>
 
       <View style={styles.buttonContainer}>
         <Button
           title="Log in"
-          onPress={form.handleSubmit(handleLoginData)}
+          onPress={() => {
+            console.log("Login button pressed");
+            const values = form.getValues();
+            console.log("Form values:", values);
+            form.handleSubmit(handleLoginData)();
+          }}
           color="#4B5563"
         />
+        {/* <Button
+          title="Forgot Password"
+          onPress={() => navigation.navigate("ForgotPassword")}
+          color="#6B7280"
+        /> */}
       </View>
     </SafeAreaView>
   );
@@ -132,6 +138,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#F3F4F6",
     padding: 20,
+  },
+  logo: {
+    width: 150,
+    height: 150,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,

@@ -13,12 +13,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { ROUTES } from "./routes";
 import { useFocusEffect } from "@react-navigation/native";
+import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
 
 // Home screen component
 const Home = () => {
   const router = useRouter(); // Call useRouter at the top level of the component
-
+  const { user } = useUser();
+  //const employeeID = user?.employeeID;
+  const employeeID = "0002";
   // Define a type for the available routes
   type RouteKeys = keyof typeof ROUTES;
 
@@ -50,7 +53,7 @@ const Home = () => {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/employee/user?employeeID=0002`
+            `http://${IP}:5000/employee/user?employeeID=${employeeID}`
           );
           const data = await response.json();
           setUserData(data);
@@ -62,7 +65,7 @@ const Home = () => {
       const fetchDeliveryCounts = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/mail/employee?employeeID=0002`
+            `http://${IP}:5000/mail/employee?employeeID=${employeeID}`
           );
           const data = await response.json();
           setDeliveryCounts(data);

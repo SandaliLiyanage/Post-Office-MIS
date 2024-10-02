@@ -19,6 +19,7 @@ class OTPService{
       }
 
     async sendOTP(otp: string, employeeID: string){
+        console.log("in sending otp")
         await emailservice.sendEmail(otp, employeeID)
     }
 

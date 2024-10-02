@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
   const clickedColour: string = 'bg-blue-200 bg-opacity-90 text-black';
-  const normalColour: string = 'hover:bg-blue-200 text-black hover:bg-opacity-90';
+  const normalColour: string = 'hover:bg-blue-200 text-white hover:bg-opacity-90';
 
   // const clickedColour: string = 'bg-slate-800   rounded text-white';
   // const normalColour: string = 'hover:bg-slate-500 text-white hover:bg-opacity-90 hover:text-black';
@@ -77,7 +77,7 @@ const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? cl
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full">
-      <nav className="w-60 h-full bg-slate-300 bg-opacity-25">
+      <nav className="w-60 h-full bg-slate-800 ">
 
       {user?.role === 'POSTMASTER' && (
           <>
@@ -98,6 +98,8 @@ const MailBundles = <NavButton className={`${activeButton === 'MailBundles' ? cl
             {RevenueReports}
             {ViewMail}
             {LeaveRequest}
+            {MailBundles}
+
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (

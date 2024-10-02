@@ -1,8 +1,25 @@
 import React, { useState } from "react";
-import { Text, View, Button, StyleSheet } from "react-native";
+//import { Text, View, Button, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "../../components/input-field";
 import { router } from "expo-router";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import axios from "axios";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  Button,
+  Alert,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useUser } from "./usercontext";
+import { useToast } from "react-native-toast-notifications";
 
 const LogIn = () => {
   const [form, setForm] = useState({

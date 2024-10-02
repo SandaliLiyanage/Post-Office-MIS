@@ -3,9 +3,11 @@ import axios from 'axios';
 import { useUser } from '../../authentication/usercontext';
 import { Label } from "../../../components/ui/label";
 interface AreaAssignments{
-  areaID: number,
+  area: string,
   employeeName: string,
-  mailID: number
+  mailID: number[]
+
+
 }
 export default function MailDelivery() {
     const {user} = useUser();
@@ -41,25 +43,33 @@ export default function MailDelivery() {
         <p className="text-xl font-bold">Mail and Area Assignments</p>
         <p></p>
     </div>
+    <div className="grid: grid-cols-2">
     {
-        areaDet !=null && areaDet.map((area, index)=>(
+        areaDet !=null && areaDet.map((area)=>(
             <div> 
-            <div className="bg-slate-300  w-1/2 m-5 p-5 rounded-sm">
+            <div className="bg-blue-200  w-1/2 m-5 p-5 rounded-sm">
             <div >
-            <Label className="text-base text-black">Area Name: <p className="text-slate-500  text-sm"> {area.areaID} </p></Label>
+            <Label className="font-bold text-black">{area.area} <p className="text-slate-500 font-light text-sm">  </p></Label>
           </div>
           <div>
-            <Label className="text-base">Mail Type: <p className="text-slate-500 font-light text-sm"> {area.employeeName}</p></Label>
+            <Label className="text-base">Assigned Postman: <p className="text-slate-500 font-light text-sm"> {area.employeeName}</p></Label>
           </div>
           <div>
-            <Label className="text-base">Weight:<p className="text-slate-500 font-light text-sm">  {area.mailID}</p></Label>
+          <Label className="text-base">Mail To be delivered:</Label>
+          <div className="grid grid-cols-2">
+            {
+              area.mailID.map((ID, index)=>(
+                <p className="text-slate-500 font-light text-sm 2" key={index}>  {ID}</p>
+              ))
+            }
           </div>
-          
+          </div>
           </div>
           
             </div>
         ))
     }
+    </div>
  </div>
   )
 }

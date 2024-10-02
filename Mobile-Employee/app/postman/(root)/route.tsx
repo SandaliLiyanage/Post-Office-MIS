@@ -15,7 +15,7 @@ const Route = () => {
   >([]);
   const [error, setError] = useState<string | null>(null);
 
-  const API_KEY = "AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk"; // Replace with your API key
+  const API_KEY = "key"; // AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk
 
   // Fetch post office and mail item locations from the backend
   const fetchLocations = async () => {

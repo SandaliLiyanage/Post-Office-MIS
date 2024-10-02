@@ -45,6 +45,7 @@ export default function Login() {
             email: user.data.email,
             employeeID: user.data.employeeID,
           });
+          console.log("User data", user.data);
 
           // Role-based navigation
           if (user.data.role === "POSTMAN") {

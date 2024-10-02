@@ -26,7 +26,7 @@ class EmployeeRepository {
       console.log(userName, "hee");
       const res = await prisma.$queryRaw<
         User[]
-      >`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude"
+      >`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude", e."employeeID"
             FROM "Employee" AS e 
             JOIN 
             "PostOffice" AS p 

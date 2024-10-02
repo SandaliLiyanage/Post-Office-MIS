@@ -17,6 +17,7 @@ import SetPassword from "./pages/authentication/PageSetPassword";
 import MailDelivery from "./pages/mail/mails/PageMailDelivery";
 import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
+import RetAddress from "./pages/mail/mails/retaddress"
 function App() {
   return (
     
@@ -43,7 +44,7 @@ function App() {
           <Route path ="postmanAssignments" element={<MailDelivery/>}></Route>
           <Route path ="endtransaction" element={<EndTransaction/>}></Route>
           <Route path="failedtoDeliver" element={<ReturnMail/>}></Route>
-
+          <Route path = "retaddress" element={<RetAddress/>}></Route>
         </Route>
       </Routes>
     </Router>

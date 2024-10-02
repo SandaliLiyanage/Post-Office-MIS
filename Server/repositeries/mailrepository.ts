@@ -168,7 +168,8 @@ class MailRepository {
        
     },
     include: {
-      address: true
+      address: true,
+      transaction: true
     }
   }
   )

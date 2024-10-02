@@ -1,62 +1,60 @@
 import { ColumnDef } from "@tanstack/react-table"
-import {Badge} from  "../../../components/ui/badge"
-export interface IMail{
-    category: string;
-    barcodeID: string;
-    mailstatus: string;
-    weight: number;
-    bundleID: number;
-    price: number;	
+import {Button} from  "../../../components/ui/button"
+import { useNavigate } from "react-router-dom"
+
+export interface IReturnMail{
+    mailID: string;
+    customerName: string;
+    customerTelephone: string;
+    customerAddressID: string
   }
-const columns: ColumnDef<IMail>[] = [
+const columns: ColumnDef<IReturnMail>[] = [
     {
-      accessorKey: "mailType",
-      header: "Category",
-      },
-    {
-      accessorKey: "bundleID",
-      header: "BundleID",
-    },
-    
-    
-    {
-      accessorKey: "weight",
-      header: "Weight",
+      accessorKey: "mailID",
+      header: "Mail ID",
     },
     {
-      accessorKey: "price",
-      header: "Price",
+      accessorKey: "customerName",
+      header: "Customer Name",
     },
     {
-      accessorKey: "recepientAddressID",
+      accessorKey: "customerAddressID",
       header: "Address ID",
+    },
+    {
+      accessorKey: "customerTelephone",
+      header: "Telephone Number",
     },
     { 
       
-      header: "Delivery Status",
+      header: "Change Address",
       id: "actions",
       cell: ({ row }) => {
-        const mailStatus = row.original.mailstatus; // Access mail status from the row data
-    
-        // Define the badge style or label based on the mail status
-        const getStatusBadge = (status: string) => {
-          switch (status) {
-            case "DELIVERED":
-              return <Badge className="bg-green-500 text-white">Delivered</Badge>;
-            case "IN_TRANSIT":
-              return <Badge className="bg-sky-600 text-white">In Transit</Badge>;
-            case "RETURNED":
-              return <Badge className="bg-yellow-500 text-white">Pending</Badge>;
-            case "Failed":
-              return <Badge className="bg-red-500 text-white">Failed</Badge>;
-            default:
-              console.log(status)
-              return <Badge className="bg-gray-500 text-white">Unknown</Badge>;
-          }
-          
+        const navigate = useNavigate()
+
+        const returnMail = row.original
+        function changeAddress(){
+
         }
         
-        return getStatusBadge(mailStatus); 
+        return(
+          <div>
+            <Button className="rounded-full bg-sky-600" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Change Address</Button>
+          </div>
+        )
+      }
+    },
+    { 
+      
+      header: "Return",
+      id: "actions",
+      cell: ({ row }) => {
+  	    const returnMail = row.original
+        return(
+          <div>
+            <Button className="rounded-full bg-sky-600" size={"sm"} >Return</Button>
+          </div>
+        )
       }
     },
   ]

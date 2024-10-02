@@ -23,27 +23,7 @@ class AreaRepository{
             JOIN "Address"  AS ad ON ad."areaID" = a."areaID" 
             JOIN "Mail" AS m ON m."recepientAddressID" = ad."addressID"
             JOIN "Bundle" AS b ON b."bundleID" = m."bundleID"
-            WHERE a."postalCode" = ${postalCode} AND   b."bundleStatus" = 'DISTRIBUTED'::"BundleStatus";`
-
-        // const response = prisma.area.findMany({
-        //     where:{
-        //         postalCode: postalCode
-        //     },
-        //     select:{
-        //         postman: true,
-        //         areaName: true,
-        //     }
-        // })
-
-    //     SELECT 
-    //     a."areaName",
-    //     e."employeeName",
-    //     m."mailID"
-    // FROM "Area" AS a
-    // LEFT JOIN "Employee" AS e ON a."employeeID" = e."employeeID"
-    // JOIN "Address"  AS ad ON ad."areaID" = a."areaID" 
-    // JOIN "Mail" AS m ON m."recepientAddressID" = ad."addressID"
-    // WHERE a."postalCode" = ${postalCode};`
+            WHERE a."postalCode" = ${postalCode} AND m."mailstatus" = 'IN_TRANSIT'::"MailStatus";`
    
     const res : {[key: string]: {employeeName: string, mailID: number[]}}={};
     response.forEach(response=>{

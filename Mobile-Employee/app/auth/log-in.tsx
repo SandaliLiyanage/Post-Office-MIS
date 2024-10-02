@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-//import { Text, View, Button, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import InputField from "../../components/input-field";
 import { router } from "expo-router";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,20 +19,68 @@ import { useNavigation } from "@react-navigation/native";
 import { useUser } from "./usercontext";
 import { useToast } from "react-native-toast-notifications";
 
-const LogIn = () => {
-  const [form, setForm] = useState({
-    employeeId: "",
-    password: "",
+const formSchema = z.object({
+  employeeID: z.string(),
+  password: z.string().min(5, "Password must be at least 5 characters long"),
+});
+
+export default function Login() {
+  const { toast } = useToast();
+  const navigation = useNavigation();
+  const { saveUser } = useUser();
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      employeeID: "",
+      password: "",
+    },
   });
 
-  const handleInputChange = (name: string, value: string) => {
-    setForm({ ...form, [name]: value });
-  };
+  async function handleLoginData(values: z.infer<typeof formSchema>) {
+    try {
+      console.log("Submitting login data", values);
+      const validateID = await axios.post(
+        "http://localhost:5000/auth/validateID",
+        values
+      );
+      if (validateID.data === true) {
+        const user = await axios.post(
+          "http://localhost:5000/auth/login",
+          values
+        );
+        if (user.data.login === true) {
+          saveUser({
+            name: user.data.name,
+            role: user.data.role,
+            token: user.data.token,
+            postalCode: user.data.postalCode,
+            postOfficeName: user.data.postOfficeName,
+            email: user.data.email,
+          });
 
-  const handleLogIn = () => {
-    console.log("Employee ID:", form.employeeId);
-    console.log("Password:", form.password);
-  };
+          // Role-based navigation
+          if (user.data.role === "POSTMAN") {
+            navigation.navigate("AdminDashboard");
+          } else if (user.data.role === "employee") {
+            navigation.navigate("EmployeeDashboard");
+          } else if (user.data.role === "postman") {
+            navigation.navigate("PostmanDashboard");
+          } else {
+            navigation.navigate("Dashboard");
+          }
+        } else {
+          form.reset();
+          toast.show("Invalid Password", { type: "danger" });
+        }
+      } else {
+        form.reset();
+        toast.show("Employee ID does not exist", { type: "danger" });
+      }
+    } catch (error) {
+      console.error("Error submitting login data", error);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,7 +118,7 @@ const LogIn = () => {
       </View>
     </SafeAreaView>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -95,5 +141,3 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
-
-export default LogIn;

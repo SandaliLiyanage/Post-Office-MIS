@@ -1,7 +1,9 @@
 import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
+import { start } from "repl";
 const prisma = new PrismaClient();
 
 class MailRepository {
+
   async calculatePrice(mailType: string, weight: number) {
     console.log("Mail type:", mailType);
     console.log("Weight:", weight);
@@ -78,11 +80,37 @@ class MailRepository {
             WHERE e."employeeID" = ${employeeID}
             ORDER BY m."mailID"
         `;
-
       console.log("Mail items fetched:", mailItems);
       return mailItems;
     } catch (error) {
       console.error("Error fetching mail items:", error);
+      throw error;
+    }
+  }
+
+  // Fetch all unique delivery addresses for the given employee
+  async getDeliveryAddressesByEmployeeID(employeeID: string): Promise<any[]> {
+    try {
+      const uniqueAddresses = await prisma.$queryRaw<any[]>`
+      SELECT DISTINCT 
+          a."addressNo",
+          a."streetName",
+          a."Locality",
+          a."latitude",
+          a."longitude",
+          ar."areaName"
+      FROM "Mail" AS m
+      JOIN "Address" AS a ON m."recepientAddressID" = a."addressID"
+      JOIN "Area" AS ar ON a."areaID" = ar."areaID"
+      JOIN "Employee" AS e ON ar."employeeID" = e."employeeID"
+      WHERE e."employeeID" = ${employeeID}
+      ORDER BY a."addressNo"
+    `;
+
+      console.log("Unique addresses fetched:", uniqueAddresses);
+      return uniqueAddresses;
+    } catch (error) {
+      console.error("Error fetching unique addresses:", error);
       throw error;
     }
   }
@@ -104,30 +132,47 @@ class MailRepository {
       where: { mailID },
       data: {
         mailstatus: newStatus,
-        signature: signature, // Assuming the `mail` table has a `signature` column
+        signature: signature, 
       },
     });
   };
 
-  trackMail = async(
-    transactionID: string
-  ):Promise<any[]>=>{
+  getMailCountByType = async(startDate: Date, endDate:Date)=>{
+    console.log("in mail count")
+    const res = await prisma.transaction.findMany({
+      where: {
+          date: {
+              gte: startDate,
+              lt: endDate,
+          },
+      },
+      select: {
+          date: true,  
+          mail: true,   
+      },
+  });
+    console.log(res)
+    return res
+  }
+
+  async trackMail(transactionID: string): Promise<any[]> {
     try {
       const res = await prisma.$queryRaw<any[]>`
-      SELECT m."recepientName", m."mailstatus", p."postOfficeName"
-      FROM "Mail" AS m
-      JOIN "PostOffice" AS p 
-      ON m."postalCode" = p."postalCode"
-      WHERE m."transactionID" = ${transactionID}
-      LIMIT 100`;
+        SELECT m."recepientName", m."mailstatus", p."postOfficeName"
+        FROM "Mail" AS m
+        JOIN "PostOffice" AS p 
+        ON m."postalCode" = p."postalCode"
+        WHERE m."transactionID" = ${transactionID}
+        LIMIT 100
+      `;
 
       console.log("Mail details queried", res);
       return res;
-  } catch (error) {
+    } catch (error) {
       console.error("Error fetching mail details:", error);
       throw error;
-  }
+    }
   }
 }
-
+  
 export { MailRepository };

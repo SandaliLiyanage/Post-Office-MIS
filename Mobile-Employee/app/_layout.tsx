@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
-
+import { ToastProvider } from "react-native-toast-notifications";
 import { useColorScheme } from "@/hooks/useColorScheme";
 import { UserProvider } from "./auth/usercontext"; // Adjust the path to usercontext
 
@@ -33,17 +33,19 @@ export default function RootLayout() {
   return (
     // Wrap the app in UserProvider to provide user context to all screens
     <UserProvider>
-      {/* Stack of screens */}
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="auth" options={{ headerShown: false }} />
-        <Stack.Screen name="postman" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="dispatch-manager"
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="+not-found" />
-      </Stack>
+      <ToastProvider>
+        {/* Stack of screens */}
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="auth" options={{ headerShown: false }} />
+          <Stack.Screen name="postman" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="dispatch-manager"
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="+not-found" />
+        </Stack>
+      </ToastProvider>
     </UserProvider>
   );
 }

@@ -22,7 +22,7 @@ export default function Feedback() {
     }
 
     try {
-      const response = await axios.post(`http://${IP}:5000/feedback`, {
+      const response = await axios.post(`http://${IP}:5000/employee/feedback`, {
         employeeID: user?.employeeID,
         feedback,
       });

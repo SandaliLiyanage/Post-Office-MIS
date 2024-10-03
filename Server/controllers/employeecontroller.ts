@@ -97,10 +97,30 @@ const DeleteEmployee = async (req: Request, res: Response) => {
   const response = await employeeRepo.deleteEmployee(employeeID);
 };
 
+const SubmitFeedback = async (req: Request, res: Response) => {
+  const employeeRepo = EmployeeRepository.getInstance();
+  const { employeeID, feedback } = req.body;
+
+  if (!employeeID || !feedback) {
+    return res
+      .status(400)
+      .json({ error: "Employee ID and feedback are required" });
+  }
+
+  try {
+    await employeeRepo.saveFeedback(employeeID, feedback);
+    return res.status(200).json({ message: "Feedback submitted successfully" });
+  } catch (error) {
+    console.error("Error saving feedback:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 export {
   EmployeeDetails,
   Registration,
   getEmployeeDetails,
   UpdateEmployee,
   DeleteEmployee,
+  SubmitFeedback,
 };

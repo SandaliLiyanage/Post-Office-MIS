@@ -1,4 +1,10 @@
-import { PrismaClient, Employee, Role, PostOffice } from "@prisma/client";
+import {
+  PrismaClient,
+  Employee,
+  Role,
+  PostOffice,
+  Feedback,
+} from "@prisma/client";
 import { response } from "express";
 import { FileWatcherEventKind } from "typescript";
 import { DeleteEmployee } from "../controllers/employeecontroller";
@@ -137,6 +143,25 @@ class EmployeeRepository {
     //         employeeID: employeeID
     //     }
     // })
+  }
+
+  async saveFeedback(
+    employeeID: string,
+    feedbackText: string
+  ): Promise<Feedback> {
+    try {
+      const feedback = await prisma.feedback.create({
+        data: {
+          employeeID: employeeID,
+          feedbackText: feedbackText,
+        },
+      });
+      console.log("Feedback saved:", feedback);
+      return feedback;
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      throw error;
+    }
   }
 }
 export { EmployeeRepository };

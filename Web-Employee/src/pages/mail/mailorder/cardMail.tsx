@@ -36,7 +36,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
 
     // Listen for changes to localStorage
     window.addEventListener("storage", fetchMailDetails);
-    console.log(confirmedMailArray, "hi")
+    console.log(confirmedMailArray)
     return () => {
       window.removeEventListener("storage", fetchMailDetails);
     };

@@ -263,22 +263,13 @@ export default function MailDetails() {
     }
   };
   return (
-    <div className="flex overflow-hidden ">
-      <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
+    <div>
+     
         {!transaction && (
-          <>
+          <div className="flex overflow-hidden ">
+           <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
             <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
               <p className="text-xl font-bold">Mail Order</p>
-
-              {/* <div className="mt-4 flex justify-between p-3">
-          <div className="flex justify-start">
-            <Label className="text-base">Customer Name: <p className="text-slate-500 font-light text-sm"> {customerName}</p></Label>
-          </div>
-          <div className="flex justify-end">
-            <Label className="text-base">Customer Address: <p className="text-slate-500 font-light text-sm"> {customerAddress}</p></Label>
-          </div>
-
-          </div> */}
             </div>
 
             <div className="p-8 bg-">
@@ -492,15 +483,9 @@ export default function MailDetails() {
                 </div>
               </div>
             </div>
-          </>
-        )}
-
-        {transaction && 
-        <iframe id="pdf-frame"></iframe>}
-      </div>
-
-      <div></div>
-      <div className="flex-1 overflow-auto">
+            
+          </div>
+          <div className="flex-1 overflow-auto">
         <CardMail
           mailArray={mailArray}
           confirm={confirm}
@@ -509,6 +494,23 @@ export default function MailDetails() {
           confirmedMailArray={confirmedMailArray}
         />
       </div>
+          </div>
+        )}
+
+        
+      {transaction &&
+      <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
+
+        <CardMail
+          mailArray={mailArray}
+          confirm={confirm}
+          price={price}
+          transaction={transaction}
+          confirmedMailArray={confirmedMailArray}
+        />
+      </div>
+      }
+
     </div>
   );
 }

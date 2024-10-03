@@ -23,7 +23,13 @@ export default function Bundle() {
         console.log(user.token)
         console.log(user.postalCode, "user")
         const response = await axios.post('http://localhost:5000/bundles/createdBundles', 
-          {postalCode: user.postalCode});
+          {postalCode: user.postalCode},
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          }
+        );
         console.log(response.data)
         setTransferBundle(response.data);}
       } catch (error) {
@@ -77,7 +83,7 @@ export default function Bundle() {
     </Tabs>
     </div>
     <div className="flex flex-col space-y-4 bg-white border-0">
-      </div>
+    </div>
     </div>
   )
 }

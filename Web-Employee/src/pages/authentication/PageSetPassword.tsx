@@ -37,7 +37,9 @@ export default function SetPassword() {
   })
   const setPassword = async function(values: z.infer<typeof formSchema>){
     console.log("setting the password");
-    const employeeID = localStorage.getItem("employeeID")
+    const queryParams = new URLSearchParams(location.search);
+    const employeeID = queryParams.get('employeeID'); 
+    console.log(employeeID)
     if(employeeID){
     const response = await axios.post("http://localhost:5000/auth/setpassword", {
       values, employeeID} );

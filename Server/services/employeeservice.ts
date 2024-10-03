@@ -4,13 +4,18 @@ const employeeRepository = new EmployeeRepository();
 
 class EmployeeService{
     async validateEmployeeID(employeeID: string){
-        const employee = await employeeRepository.findUserbyID(employeeID);
-        if (employee!=null) {
-            return true;
-        }else{
-            console.log("false")
-            return false;
+        try{
+            const employee = await employeeRepository.findUserbyID(employeeID);
+            if (employee!=null) {
+                return true;
+            }else{
+                console.log("false")
+                return false;
+            }
+        }catch(error){
+            return false
         }
+        
     }
 }
 

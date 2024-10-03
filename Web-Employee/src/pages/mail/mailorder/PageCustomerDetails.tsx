@@ -58,7 +58,12 @@ export default function MailOrder() {
         console.log("this is search", search)
         const result= await axios.post(
           "http://localhost:5000/mail/addresssearch",
-          {search}
+          {search},
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          }
         );
         console.log(result.data)
         setAddressMap(result.data);

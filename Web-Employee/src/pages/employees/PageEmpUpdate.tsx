@@ -19,6 +19,7 @@ import axios from "axios"
 import {useUser} from "../authentication/usercontext"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -51,6 +52,7 @@ export default function Employeeupdate() {
     },});	
   const location = useLocation();
   const employee = location.state;
+  const {removeUser, user} = useUser()
 
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
@@ -60,8 +62,12 @@ export default function Employeeupdate() {
       const response = await axios.post(
         "http://localhost:5000/employee/update",
         {values,
-        employeeID}
-      )
+        employeeID},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, 
+          },
+        });
       if(response.data){
         toast({
           description:response.data,

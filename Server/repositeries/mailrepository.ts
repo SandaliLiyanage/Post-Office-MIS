@@ -55,7 +55,7 @@ class MailRepository {
 
       return res;
     } catch (error) {
-      throw error;
+      throw error
     }
   }
 
@@ -124,7 +124,6 @@ class MailRepository {
       data: { mailstatus: newStatus },
     });
   };
-
   updateMailStatusWithSignature = async (
     mailID: number,
     newStatus: MailStatus,

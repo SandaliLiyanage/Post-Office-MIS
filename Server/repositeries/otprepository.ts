@@ -15,12 +15,13 @@ class OTPRepository{
                 }
             })
         }catch(error){
-            throw error
+            console.log(error)
         }
     }
     async getOTP(employeeID:string, time: Date){
     console.log("heeh in getOTP")
     console.log(employeeID, time)
+    try{
     const res = await prisma.oTP.findFirst({
         where: {
             employeeID: employeeID,
@@ -39,7 +40,9 @@ class OTPRepository{
     })
     console.log(res)
     console.log(res?.OTP)
-    return (res?.OTP)
+    return (res?.OTP)}catch(error){
+        return "null"
+    }
     }
 
     

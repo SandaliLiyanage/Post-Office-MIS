@@ -44,19 +44,7 @@ const columns: ColumnDef<IReturnMail>[] = [
         )
       }
     },
-    // { 
-      
-    //   header: "Return",
-    //   id: "actions",
-    //   cell: ({ row }) => {
-  	//     const returnMail = row.original
-    //     return(
-    //       <div>
-    //         <Button className="rounded-full bg-sky-600" size={"sm"} >Return</Button>
-    //       </div>
-    //     )
-    //   }
-    // },
+  
   ]
 
 

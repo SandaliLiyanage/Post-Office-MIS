@@ -21,8 +21,9 @@ import {
 import {useEffect, useState} from 'react';
 import Chart from './chart'
 import axios from "axios";
- 
-  import { cn } from "@/lib/utils" 
+import { cn } from "@/lib/utils" 
+import { useUser } from '../authentication/usercontext';
+
 
 export interface IChartData {
   month: string,
@@ -31,6 +32,7 @@ export interface IChartData {
   courier: string,
 }
 export default function RevenueReports() {
+  const {user, removeUser} = useUser();
   const today = new Date();  // Get today's date
   const lastYearTimestamp = today.setFullYear(today.getFullYear() - 1);  // Modify the year
   const lastYearDate = new Date(lastYearTimestamp);
@@ -42,7 +44,14 @@ export default function RevenueReports() {
   useEffect(()=>{
     async function generateReports(){
       console.log("in generate reports", startDate,endDate, type)
-      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type})
+      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, 
+          }
+        }
+          
+      )
       console.log(response.data)
       setChartData(response.data)
     }

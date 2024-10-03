@@ -4,12 +4,10 @@ import BcryptService from "./cryptservice";
 import JwtService from "./jwtservice";
 import SessionStore from "./sessionstore"
 
-
 const employeeRepository = EmployeeRepository.getInstance();
 const cryptService = new BcryptService();
 const session = SessionStore.getInstance();
 const jwtToken = new JwtService()
-
 interface LoginResponse {
     name?: string;
     postalCode?: string;
@@ -70,9 +68,13 @@ class AuthService{
 
   async setPassword(employeeID: string, newPassword: string, passwordCopy: string){
     console.log("in set password");
-    const response = await employeeRepository.changePassword(employeeID, newPassword)
-    console.log("hehe response in auth service", response)
-    return response
+    if (passwordCopy == newPassword){
+        const hashedPassword = await cryptService.hashPassword(newPassword)
+        const response = await employeeRepository.changePassword(employeeID, hashedPassword)
+        console.log("response in auth service", response)
+        return response
+    }
+    
   }
 
 }

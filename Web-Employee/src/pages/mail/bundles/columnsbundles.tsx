@@ -52,8 +52,8 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
           console.log("generating barcode")}
         return (
           <div>
-                <Dialog>
-                      <DialogTrigger asChild>
+          <Dialog>
+            <DialogTrigger asChild>
             <Button className="btn bg-white "  size="icon"  ><Printer color="black" size={18} /></Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">

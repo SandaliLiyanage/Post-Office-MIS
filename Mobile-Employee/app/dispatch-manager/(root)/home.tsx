@@ -114,7 +114,7 @@ const Home = () => {
       {/* Delivery counts */}
       {deliveryCounts && ( // Check if deliveryCounts is not null
         <View style={styles.deliveriesContainer}>
-          <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
+          <Text style={styles.deliveriesTitle}>Bundles Remaining</Text>
 
           <View style={styles.deliveryTypes}>
             {/* Normal mail */}
@@ -124,7 +124,7 @@ const Home = () => {
                   ? deliveryCounts.NORMAL_MAIL
                   : 0}
               </Text>
-              <Text style={styles.deliveryLabel}>Normal</Text>
+              <Text style={styles.deliveryLabel}>To Create</Text>
             </View>
 
             {/* Registered mail */}
@@ -134,7 +134,7 @@ const Home = () => {
                   ? deliveryCounts.REGISTERED_MAIL
                   : 0}
               </Text>
-              <Text style={styles.deliveryLabel}>Registered</Text>
+              <Text style={styles.deliveryLabel}>To Dispatch</Text>
             </View>
 
             {/* Parcel */}
@@ -144,7 +144,7 @@ const Home = () => {
                   ? deliveryCounts.COURIER
                   : 0}
               </Text>
-              <Text style={styles.deliveryLabel}>Parcel</Text>
+              <Text style={styles.deliveryLabel}>To Distribute</Text>
             </View>
           </View>
         </View>
@@ -152,7 +152,7 @@ const Home = () => {
 
       {/* Actions */}
       <View style={styles.actionsContainer}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.actionButton}
           onPress={() => handleNavigation("STATUS")}
         >
@@ -161,9 +161,9 @@ const Home = () => {
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Status</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.actionButton}
           onPress={() => handleNavigation("ADD_ADDRESS")}
         >
@@ -172,7 +172,7 @@ const Home = () => {
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Add Address</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.actionButton}
@@ -254,11 +254,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     marginBottom: 10,
-    marginLeft: 60,
+    marginLeft: 80,
   },
   deliveryTypes: {
     flexDirection: "row",
     justifyContent: "space-around",
+    paddingLeft: 10,
   },
   deliveryItem: {
     alignItems: "center",
@@ -266,7 +267,7 @@ const styles = StyleSheet.create({
   deliveryCount: {
     fontSize: 45,
     color: "white",
-
+    paddingLeft: 15,
     fontWeight: "bold",
   },
   deliveryLabel: {

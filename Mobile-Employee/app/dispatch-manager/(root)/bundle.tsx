@@ -54,7 +54,7 @@ const SectionHeaderWithEmptyMessage = ({
 );
 
 // Mail screen component
-const Mail = () => {
+const Bundle = () => {
   const { user } = useUser();
   const employeeID = user?.employeeID;
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
@@ -395,4 +395,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Mail;
+export default Bundle;

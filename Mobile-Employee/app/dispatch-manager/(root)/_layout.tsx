@@ -96,6 +96,16 @@ const Layout = () => (
       }}
     />
     <Tabs.Screen
+      name="bundle"
+      options={{
+        title: "Bundle",
+        headerShown: true,
+        tabBarIcon: ({ focused }) => (
+          <TabIcon focused={focused} source={icons.bundle} />
+        ),
+      }}
+    />
+    {/* <Tabs.Screen
       name="route"
       options={{
         title: "Route",
@@ -104,7 +114,7 @@ const Layout = () => (
           <TabIcon focused={focused} source={icons.route} />
         ),
       }}
-    />
+    /> */}
     <Tabs.Screen
       name="scan"
       options={{
@@ -112,16 +122,6 @@ const Layout = () => (
         headerShown: true,
         tabBarIcon: ({ focused }) => (
           <TabIcon focused={focused} source={icons.scan} />
-        ),
-      }}
-    />
-    <Tabs.Screen
-      name="mail"
-      options={{
-        title: "Mail",
-        headerShown: true,
-        tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} source={icons.mail} />
         ),
       }}
     />

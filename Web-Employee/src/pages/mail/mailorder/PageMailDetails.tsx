@@ -485,7 +485,7 @@ export default function MailDetails() {
             </div>
             
           </div>
-          <div className="flex-1 overflow-auto">
+          <div className="flex-1 overflow-auto ">
         <CardMail
           mailArray={mailArray}
           confirm={confirm}
@@ -500,7 +500,7 @@ export default function MailDetails() {
         
       {transaction &&
       <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
-
+        <div className="">
         <CardMail
           mailArray={mailArray}
           confirm={confirm}
@@ -508,6 +508,7 @@ export default function MailDetails() {
           transaction={transaction}
           confirmedMailArray={confirmedMailArray}
         />
+      </div>
       </div>
       }
 

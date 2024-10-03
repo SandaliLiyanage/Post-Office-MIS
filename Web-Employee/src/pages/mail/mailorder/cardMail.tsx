@@ -52,7 +52,9 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
   const generateBarcode = (mailID: number) => {
     const barcodeElement = document.getElementById(`barcode-${mailID}`);
     const ID =  mailID.toString();
-    JsBarcode(barcodeElement, ID,);
+    JsBarcode(barcodeElement, ID,{
+      height: 40,
+    });
     console.log("generating barcode")
   } 
  
@@ -99,7 +101,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
         </div>
       ))}
       { transaction && confirmedMailArray.map((mail, index) => (
-        <div key={index} className="m-5  p-4 bg-white">
+        <div key={index} className="m-5  p-4 bg-white ">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
             <Label className="text-sky-800">Mail {index + 1}</Label>
@@ -110,14 +112,13 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             </div>}
             {transaction && 
             <div>
-            <button >Print</button>
-            <div ref={contentRef}>Content to print</div>
+            <div ref={contentRef}></div>
             <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>
             <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
             </div>
             }
           </div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-6">
           <div >
             <Label className="text-base">Recepient Name: <p className="text-slate-500 font-light text-sm"> {mail.recepientName}</p></Label>
           </div>
@@ -133,10 +134,11 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
           <div>
             <Label className="text-base">MailID: <p className="text-slate-500 font-light text-sm"> {mail.mailID}</p></Label>
           </div>
-          </div>
           <div ref={contentRef}>
-          <svg id={`barcode-${mail.mailID}`}></svg>
+          <svg id={`barcode-${mail.mailID}`  } height="100"></svg>
           </div>
+          </div>
+         
 
         </div>
       ))}

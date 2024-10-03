@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
 
 // Status screen component
@@ -23,6 +24,8 @@ interface Mail {
 }
 
 const Status = () => {
+  const { user } = useUser();
+  const employeeID = user?.employeeID;
   const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
@@ -32,7 +35,7 @@ const Status = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `http://${IP}:5000/mail/in-transit?employeeID=0002`
+        `http://${IP}:5000/mail/in-transit?employeeID=${employeeID}`
       );
       const data = await response.json();
       if (!data || !data.mailID) {

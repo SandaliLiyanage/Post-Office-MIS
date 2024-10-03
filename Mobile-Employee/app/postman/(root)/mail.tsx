@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import Modal from "react-native-modal";
+import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
 
 // Mail item interface
@@ -54,6 +55,8 @@ const SectionHeaderWithEmptyMessage = ({
 
 // Mail screen component
 const Mail = () => {
+  const { user } = useUser();
+  const employeeID = user?.employeeID;
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);
@@ -63,7 +66,7 @@ const Mail = () => {
   const fetchMails = async () => {
     try {
       const response = await fetch(
-        `http://${IP}:5000/mail/employee2?employeeID=0002`
+        `http://${IP}:5000/mail/employee2?employeeID=${employeeID}`
       );
       const data = await response.json(); // Parse JSON data into a JavaScript object
 

@@ -19,6 +19,7 @@ async function main() {
   await prisma.address.deleteMany({});
   await prisma.area.deleteMany({});
   await prisma.leave.deleteMany({});
+  await prisma.feedback.deleteMany({});
   await prisma.employee.deleteMany({});
   await prisma.postOffice.deleteMany({});
 
@@ -347,8 +348,62 @@ async function main() {
       {
         bundleID: 1,
         destPostalCode: "10640",
-        currentPostCode: "00100",
+        currentPostCode: "10640",
         bundleStatus: BundleStatus.DISTRIBUTED,
+      },
+      {
+        bundleID: 2,
+        destPostalCode: "10640",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.DISTRIBUTED,
+      },
+      {
+        bundleID: 3,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+      },
+      {
+        bundleID: 4,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+      },
+      {
+        bundleID: 5,
+        destPostalCode: "10250",
+        currentPostCode: "11500",
+        bundleStatus: BundleStatus.DISPATCHED,
+      },
+      {
+        bundleID: 6,
+        destPostalCode: "10250",
+        currentPostCode: "11500",
+        bundleStatus: BundleStatus.DISPATCHED,
+      },
+      {
+        bundleID: 7,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+      },
+      {
+        bundleID: 8,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+      },
+      {
+        bundleID: 9,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+      },
+      {
+        bundleID: 10,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
       },
     ],
   });

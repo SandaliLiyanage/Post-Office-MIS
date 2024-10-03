@@ -40,7 +40,7 @@ const SectionHeaderWithEmptyMessage = ({
 );
 
 // Mail screen component
-const Mail = () => {
+const Bundles = () => {
   const { user } = useUser();
   const employeeID = user?.employeeID;
   const [bundleSections, setBundleSections] = useState<BundleSection[]>([]);
@@ -51,12 +51,13 @@ const Mail = () => {
   // Fetch bundles by separate routes based on status
   const fetchBundlesByRoute = async (route: string) => {
     try {
-      const response = await fetch(
-        `http://${IP}:5000/bundles/${route}?employeeID=${employeeID}`
-      );
+      const response = await fetch(`http://${IP}:5000/bundles/${route}`, {
+        method: "GET",
+      });
       return await response.json(); // Return the bundle data for the specific route
+      console.log("Bundles fetched:", response);
     } catch (error) {
-      console.error(`Error fetching ${route} bundles:`, error);
+      //console.error(`Error fetching ${route} bundles:`, error);
       return []; // Return an empty array if there's an error
     }
   };
@@ -66,14 +67,14 @@ const Mail = () => {
     try {
       // Fetch each status separately via different routes
       const arrived = await fetchBundlesByRoute("arrived");
-      const dispatched = await fetchBundlesByRoute("dispatched");
+      // const dispatched = await fetchBundlesByRoute("dispatched");
       const distributed = await fetchBundlesByRoute("distributed");
       const created = await fetchBundlesByRoute("created");
 
       // Update the sections state with categorized bundle data
       setBundleSections([
         { title: "Arrived", data: arrived },
-        { title: "Dispatched", data: dispatched },
+        // { title: "Dispatched", data: dispatched },
         { title: "Distributed", data: distributed },
         { title: "Created", data: created },
       ]);
@@ -352,4 +353,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Mail;
+export default Bundles;

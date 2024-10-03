@@ -95,11 +95,9 @@ const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? cl
       {user?.role === 'POSTMASTER' && (
           <>
             {EmployeeRecords}
-            {ViewLeaveRequests}
             {EmployeeRegistrations}
             {MailOrder}
             {ViewMail}
-            {LeaveRequest}
             {RevenueReports}
             {PostmanAssignments}
             {MailBundles}
@@ -108,11 +106,11 @@ const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? cl
         )}
         {user?.role === 'SUPERVISOR' && (
           <>
-            {MailAssignments}
-            {RevenueReports}
             {ViewMail}
-            {LeaveRequest}
             {MailBundles}
+            {PostmanAssignments}
+            {LeaveRequest}
+            {RevenueReports}
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (

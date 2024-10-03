@@ -121,14 +121,14 @@ export default function Login() {
               )}
             />
           </div >
-          <div className="gap-5 flex pb-5">
+          <div className="gap-5 flex ">
             <Button type="submit" className="bg-slate-800" >Log in</Button>
             <Toaster/>
-            <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
+            <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>SignUp</Button>
           </div>
-          {/* <div className="pb-5">
-          <Link className ="mt-5" to='/forgotpassword'>Forgot Password?Reset!</Link>
-          </div> */}
+          <div className="pb-5 text-red-600">
+          <Link className ="mt-2" to='/forgotpassword'>Forgot Password?Reset!</Link>
+          </div>
         </form>
       </Form>
         </div>

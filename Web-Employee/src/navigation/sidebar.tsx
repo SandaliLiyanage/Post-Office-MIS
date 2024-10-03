@@ -113,7 +113,6 @@ const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? cl
             {ViewMail}
             {LeaveRequest}
             {MailBundles}
-
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (
@@ -121,6 +120,7 @@ const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? cl
             {MailOrder}
             {ViewMail}
             {LeaveRequest}
+            {FailedToDeliver}
           </>
         )}
       </nav>

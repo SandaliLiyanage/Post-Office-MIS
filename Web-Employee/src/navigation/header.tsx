@@ -7,7 +7,6 @@ import {
 import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom"
 import { User, Bell } from 'lucide-react';
-import SheetNotifications from './notifications'
 import {useEffect, useState} from 'react';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -76,17 +75,17 @@ export default function Nav() {
         </SheetHeader>
         <div className="grid gap-4 py-4">
           <div className="grid grid-cols-4 bg-white w-full h-40 gap-4 rounded-md">
-            
+            <p>Notifications will appear here</p>
           </div>
-          <div className="grid grid-cols-4 gap-4">
+          {/* <div className="grid grid-cols-4 gap-4">
             <Label htmlFor="username" >
               Username
             </Label>
-          </div>
+          </div> */}
         </div>
         <SheetFooter>
           <SheetClose asChild>
-            <Button type="submit">Save changes</Button>
+            {/* <Button type="submit">Save changes</Button> */}
           </SheetClose>
         </SheetFooter>
       </SheetContent>

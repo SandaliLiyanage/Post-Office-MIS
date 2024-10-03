@@ -172,7 +172,48 @@ class MailRepository {
         console.error("Error fetching mail details:", error);
         throw error;
     }
-}
+  }
+
+  // Function to get current and destination post offices by mail ID
+  async getCurrentAndDestinationPostOffices(transactionID: number) {
+    try {
+      const result = await prisma.mail.findFirst({
+        where: { transactionID },
+        select: {
+          bundle: {
+            select: {
+              currentPostOffice: {
+                select: {
+                  postOfficeName: true,
+                  latitude: true,
+                  longitude: true,
+                },
+              },
+              destPostOffice: {
+                select: {
+                  postOfficeName: true,
+                  latitude: true,
+                  longitude: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      if (result && result.bundle) {
+        return {
+          currentPostOffice: result.bundle.currentPostOffice,
+          destinationPostOffice: result.bundle.destPostOffice,
+        };
+      } else {
+        throw new Error("Post offices not found.");
+      }
+    } catch (error) {
+      console.error("Error fetching post offices:", error);
+      throw error;
+    }
+  }
 
 }
   

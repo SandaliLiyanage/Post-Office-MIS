@@ -14,9 +14,11 @@ import { MailDetails } from "../controllers/mailcontroller";
 import { ReportData } from "../controllers/reportcontroller";
 import { getAddresses } from "../controllers/mailcontroller";
 import { getTrackingDetails } from "../controllers/mailcontroller";
+import { MailController } from '../controllers/mailcontroller';
 const authService = new AuthService();
 
 const router = Router();
+const mailController = new MailController();
 
 // router.use(authService.authorize);
 
@@ -32,4 +34,5 @@ router.post("/reportData", ReportData);
 router.post("/addresssearch", Address);
 router.post("/mailDetails", MailDetails);
 router.post("/track", getTrackingDetails);
+router.post('/estimate-delivery-time', mailController.estimateDeliveryTime);
 export default router;

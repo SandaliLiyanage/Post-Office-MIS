@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
-import NavBar from '../components/ui/NavBar';  
+import NavBar from '../components/ui/NavBar';
+import axios from 'axios';
 
 const EstimateDeliveryTime: React.FC = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>('');  // Stores the tracking number
   const [estimatedTime, setEstimatedTime] = useState<string | null>(null);  // Stores the estimated delivery time
+  const [error, setError] = useState<string | null>(null);  // Stores error messages
 
   // Function to estimate delivery time based on tracking number
-  const calculateEstimatedTime = (trackingNumber: string) => {
-    // Mock logic for estimating delivery time based on tracking number
-    // For simplicity, we're returning static values here
+  const handleEstimate = async () => {
     if (trackingNumber) {
-      return 'Estimated Delivery Time: 3-5 Business Days'; // Mocked delivery time
-    }
-    return 'Unknown';
-  };
+      try {
+        // Send a POST request to the backend endpoint to estimate delivery time using Axios
+        const response = await axios.post('http://localhost:5001/mail/estimate-delivery-time', {
+          transactionID: trackingNumber, // Send tracking number as transactionID
+        });
 
-  // Event handler for when the user clicks 'Estimate'
-  const handleEstimate = () => {
-    if (trackingNumber) {
-      const estimatedTime = calculateEstimatedTime(trackingNumber);
-      setEstimatedTime(estimatedTime);  // Set the estimated time
+        // Set the estimated delivery time from the response
+        setEstimatedTime(response.data.deliveryTime);
+        setError(null); // Clear any previous error messages
+      } catch (err) {
+        console.error(err);
+        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
+        setEstimatedTime(null); // Clear the estimated time on error
+      }
     } else {
       alert('Please enter a tracking number.');
     }
@@ -28,7 +32,7 @@ const EstimateDeliveryTime: React.FC = () => {
 
   return (
     <div>
-      <NavBar />  
+      <NavBar />
       <Box
         display="flex"
         flexDirection="column"
@@ -59,10 +63,15 @@ const EstimateDeliveryTime: React.FC = () => {
           Estimate
         </Button>
 
-        {/* Display the estimated delivery time */}
+        {/* Display the estimated delivery time or error message */}
         {estimatedTime && (
           <Typography variant="h6" sx={{ marginTop: '20px' }}>
             {estimatedTime}
+          </Typography>
+        )}
+        {error && (
+          <Typography variant="h6" sx={{ marginTop: '20px', color: 'red' }}>
+            {error}
           </Typography>
         )}
       </Box>

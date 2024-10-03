@@ -227,5 +227,28 @@ export const getTrackingDetails = async (req: Request, res: Response) => {
   }
 };
 
+// Class-based controller to estimate delivery time
+export class MailController {
+  // Endpoint to estimate delivery time
+  async estimateDeliveryTime(req: Request, res: Response) {
+    const { transactionID } = req.body;
+
+    try {
+      const deliveryTime = await trackMail.estimateDeliveryTime(transactionID);
+      return res.status(200).json({ success: true, deliveryTime });
+    } catch (error: unknown) {  // error is of type unknown
+      console.error("Error estimating delivery time:", error);
+
+      // Check if error is an instance of Error
+      if (error instanceof Error) {
+        return res.status(500).json({ success: false, message: error.message });
+      }
+
+      // If it's not an Error instance, respond with a generic error message
+      return res.status(500).json({ success: false, message: "An unknown error occurred" });
+    }
+  }
+}
+
 
 export { CalculatePrice, Mails, MailDetails };

@@ -8,6 +8,8 @@ const EstimateDeliveryTime: React.FC = () => {
   const [estimatedTime, setEstimatedTime] = useState<string | null>(null);  // Stores the estimated delivery time
   const [error, setError] = useState<string | null>(null);  // Stores error messages
 
+  const GOOGLE_MAPS_API_KEY = 'your_actual_api_key_here'; //AIzaSyCLI12v3YiFsivav4C2p1FqWEBU1acjFeQ
+
   // Function to estimate delivery time based on tracking number
   const handleEstimate = async () => {
     if (trackingNumber) {
@@ -15,6 +17,7 @@ const EstimateDeliveryTime: React.FC = () => {
         // Send a POST request to the backend endpoint to estimate delivery time using Axios
         const response = await axios.post('http://localhost:5001/mail/estimate-delivery-time', {
           transactionID: trackingNumber, // Send tracking number as transactionID
+          apiKey: GOOGLE_MAPS_API_KEY,  // Include API key in the request
         });
 
         // Set the estimated delivery time from the response

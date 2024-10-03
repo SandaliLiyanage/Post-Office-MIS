@@ -20,6 +20,7 @@ const TrackYourMail: React.FC = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>(''); // Stores user input for tracking number
   const [trackingInfo, setTrackingInfo] = useState<TrackingInfo | null>(null); // Stores the tracking info
   const [error, setError] = useState<string | null>(null); // State for error message
+  
 
   // Function to fetch tracking information from the backend API
   const fetchTrackingInfo = async (transactionID: number): Promise<TrackingInfo | null> => {
@@ -28,15 +29,15 @@ const TrackYourMail: React.FC = () => {
       console.log('Response from server:', response.data);
   
       if (response.data.success) {
-        const data = response.data.data;
+        const resData = response.data.data[0]; // Use the first item in the array
   
         // Optional: map enum to user-friendly status
-        const userFriendlyMailStatus = MailStatus[data.mailstatus as keyof typeof MailStatus];
+        const userFriendlyMailStatus = MailStatus[resData.mailstatus as keyof typeof MailStatus];
   
         return {
-          recepientName: data.recepientName,
+          recepientName: resData.recepientName,
           mailstatus: userFriendlyMailStatus,
-          postOfficeName: data.postOfficeName,
+          postOfficeName: resData.postOfficeName,
         };
       } else {
         throw new Error(response.data.message);
@@ -46,6 +47,7 @@ const TrackYourMail: React.FC = () => {
       throw new Error('Failed to fetch tracking information.');
     }
   };
+
   
 
   // Event handler for when the user clicks 'Track'
@@ -59,8 +61,11 @@ const TrackYourMail: React.FC = () => {
     setError(null); // Clear any previous errors
     try {
       const info = await fetchTrackingInfo(num);
+      //console.log("Fetched dataaaaaa");
+      //console.log(info);
       if (info) {
         setTrackingInfo(info); // Set the tracking information
+        //console.log(trackingInfo);
       } else {
         setTrackingInfo(null); // No info found
         setError('No tracking information found for this number.');
@@ -111,6 +116,7 @@ const TrackYourMail: React.FC = () => {
             <>
               <Grid item xs={12}>
                 <Typography variant="h6">
+                  
                   <strong>Recipient Name:</strong> {trackingInfo.recepientName}
                 </Typography>
               </Grid>

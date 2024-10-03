@@ -1,6 +1,6 @@
 export const ROUTES = {
   STATUS: "../status",
-  ADD_ADDRESS: "../add-address",
+  TO_BE_CREATED: "../to-be-created",
   LEAVES: "../leaves",
   FEEDBACK: "../feedback",
 } as const;

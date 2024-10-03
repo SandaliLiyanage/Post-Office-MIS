@@ -152,7 +152,7 @@ const Home = () => {
 
       {/* Actions */}
       <View style={styles.actionsContainer}>
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.actionButton}
           onPress={() => handleNavigation("STATUS")}
         >
@@ -161,18 +161,18 @@ const Home = () => {
             style={styles.actionIcon}
           />
           <Text style={styles.actionText}>Status</Text>
-        </TouchableOpacity> */}
+        </TouchableOpacity>
 
-        {/* <TouchableOpacity
+        <TouchableOpacity
           style={styles.actionButton}
-          onPress={() => handleNavigation("ADD_ADDRESS")}
+          onPress={() => handleNavigation("TO_BE_CREATED")}
         >
           <Image
             source={require("../../../assets/icons/address.png")}
             style={styles.actionIcon}
           />
-          <Text style={styles.actionText}>Add Address</Text>
-        </TouchableOpacity> */}
+          <Text style={styles.actionText}>To be Created</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.actionButton}
@@ -290,6 +290,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
+    paddingHorizontal: 10,
     alignItems: "center",
     marginBottom: 25,
   },

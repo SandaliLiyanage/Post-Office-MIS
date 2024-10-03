@@ -96,9 +96,9 @@ const Layout = () => (
       }}
     />
     <Tabs.Screen
-      name="bundle"
+      name="bundles"
       options={{
-        title: "Bundle",
+        title: "Bundles",
         headerShown: true,
         tabBarIcon: ({ focused }) => (
           <TabIcon focused={focused} source={icons.bundle} />

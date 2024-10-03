@@ -100,20 +100,6 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
-    {/* <Select 
-            onValueChange={(newValue) => setType(newValue)}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select Mail Type" onSelect={()=>setType(Select.name)} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-        <SelectItem value="all">all</SelectItem>
-        <SelectItem value="NORMAL_MAIL" onClick={() => setType("normal mail")}>normal mail</SelectItem>
-      <SelectItem value="REGISTERED_MAIL" onClick={() => setType("registered mail")}>registered mail</SelectItem>
-      <SelectItem value="COURIER" onClick={() => setType("courier")}>courier</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select> */}
     <Select 
             onValueChange={(newValue) => setType(newValue)}>
       <SelectTrigger className="w-[180px]">
@@ -126,6 +112,7 @@ export default function RevenueReports() {
         </SelectGroup>
       </SelectContent>
     </Select>
+  
     {chartData && type=="Revenue" &&
     <ChartRevenue data={chartData}/>
     }
@@ -133,6 +120,9 @@ export default function RevenueReports() {
     <Chart data={chartData}/>
     }
         </div>
+        <div className="flex justify-center">
+    <p>Select start date end date and Report type to generate reports</p>
+    </div>
     </div>
   )
 }

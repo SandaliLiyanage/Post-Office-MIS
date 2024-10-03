@@ -2,7 +2,8 @@
 
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { IChartData } from "./PageRevenueReports"
-import { ChartConfig, ChartContainer } from "@/components/ui/chart"
+import { ChartConfig, ChartContainer, ChartTooltip,ChartTooltipContent,ChartLegend,
+  ChartLegendContent, } from "@/components/ui/chart"
 
 const chartConfig = {
   normal_mail: {
@@ -33,6 +34,8 @@ export default function ChartRevenue({ data }: { data: IChartData[] } ) {
       tickFormatter={(value) => value.slice(0, 3)}
     />
     <YAxis/>
+    <ChartTooltip content={<ChartTooltipContent />} />
+    <ChartLegend content={<ChartLegendContent />} />
     <Bar dataKey="normal_mail" fill={chartConfig.normal_mail.color} radius={4} />
         <Bar dataKey="registered_mail" fill={chartConfig.registered_mail.color} radius={4} />
         <Bar dataKey="courier" fill={chartConfig.courier.color} radius={4} />

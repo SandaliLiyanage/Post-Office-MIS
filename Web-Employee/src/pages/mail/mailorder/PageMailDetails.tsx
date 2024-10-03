@@ -240,12 +240,12 @@ export default function MailDetails() {
           mailArray,
           total
         );
-        displayInvoice(
-          customerDetails.name,
-          customerDetails.telephone,
-          mailArray,
-          total
-        )
+        // displayInvoice(
+        //   customerDetails.name,
+        //   customerDetails.telephone,
+        //   mailArray,
+        //   total
+        // )
 
         localStorage.removeItem("customerDetails");
         setTransaction(true);
@@ -377,12 +377,12 @@ export default function MailDetails() {
                             </FormControl>
                             <SelectContent>
                               <SelectItem value="normal mail">
-                                normal mail
+                                Normal mail
                               </SelectItem>
                               <SelectItem value="registered mail">
-                                register mail
+                                Register Mail
                               </SelectItem>
-                              <SelectItem value="courier">courier</SelectItem>
+                              <SelectItem value="courier">Courier</SelectItem>
                             </SelectContent>
                           </Select>
                           <FormMessage />

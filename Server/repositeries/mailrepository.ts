@@ -20,6 +20,7 @@ class MailRepository {
         },
       });
       console.log("Mails queried", res);
+      
       return res;
     } catch (error) {
       console.error("Error getting mails:", error);

@@ -55,7 +55,7 @@ class BundleRepository{
         }
     }
 
-    async createBundle(destPostalCode: string, sourcePostalCode: string, bundleRoute: string[]): Promise<number>{
+    async createBundle(destPostalCode: string, sourcePostalCode: string, bundleRoute: string[]): Promise<number|null>{
         console.log("in create bundle")
         try{
             const res = await prisma.bundle.create({
@@ -71,7 +71,8 @@ class BundleRepository{
             console.log("bundle created", res)
             return res.bundleID
         }catch(error){
-            throw error
+            console.error(error)
+            return null
         }
     }
     
@@ -85,7 +86,7 @@ class BundleRepository{
             console.log("bundle created", res)
             return res.bundleID
         }catch(error){
-            throw error
+            return null
         }
     }
 }

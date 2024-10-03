@@ -2,6 +2,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Printer } from 'lucide-react';
+import { Barcode } from 'lucide-react';
+
 import JsBarcode from 'jsbarcode';
 import {
   Dialog,
@@ -12,13 +14,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Label } from "@/components/ui/label"
-
+import { useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 export interface IBundle {
     destPostCode: string;
     bundleID: number;
     barcodeId: string;	
   }
+  
 const columnstoTransfer: ColumnDef<IBundle>[] = [
     {
       accessorKey: "destPostalCode",
@@ -38,6 +41,8 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
       id: "actions",
       cell: ({ row }) => {
         const bundle = row.original
+        const contentRef = useRef<HTMLDivElement>(null);
+        const reactToPrintFn = useReactToPrint({ contentRef });
         const generateBarcode =(bundleID: number)=>{
           console.log("generating ")
           const barcodeElement = document.getElementById(`barcode-${bundleID}`);
@@ -58,11 +63,12 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
                   The barcode to be pasted on the bundle will be generated.
                 </DialogDescription>
                   </DialogHeader>
-                  <div>
+                  <div ref={contentRef}>
                   <svg id={`barcode-${bundle.bundleID}`}></svg>
                   </div>
                   <DialogFooter>
-                    <Button type="submit" onClick={()=> generateBarcode(bundle.bundleID)}>Generate and Print Barcode</Button>
+                    <Button type="submit"className="btn bg-white "  size="icon"  onClick={()=> generateBarcode(bundle.bundleID)}><Barcode color="black" size={18}></Barcode></Button>
+                    <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
                   </DialogFooter>
                 </DialogContent>
           </Dialog>

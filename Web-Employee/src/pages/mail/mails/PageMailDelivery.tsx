@@ -68,38 +68,13 @@ export default function MailDelivery() {
               <div className="flex justify-start">
             <Label className="font-bold text-black">{area.area} <p className="text-slate-500 font-light text-sm">  </p></Label>
             </div>
-            <div className="flex justify-end">
-                    <Dialog>
-              <DialogTrigger asChild>
-
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogDescription>
-                    Change the assigned postman for the area.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Postman ID
-                    </Label>
-                    <Input id="name" className="col-span-3" />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <Button type="submit">Update Assignment</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
-            </div>
           </div>
           <div>
             <Label className="text-base">Assigned Postman: <p className="text-slate-500 font-light text-sm"> {area.employeeName}</p></Label>
           </div>
           <div>
           <Label className="text-base">Mail To be delivered:</Label>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-4">
             {
               area.mailID.map((ID, index)=>(
                 <p className="text-slate-500 font-light text-sm 2" key={index}>  {ID}</p>

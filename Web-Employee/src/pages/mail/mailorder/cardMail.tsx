@@ -8,6 +8,7 @@ import {MailResponse} from './PageMailDetails';
 import {Barcode} from 'lucide-react';
 import JsBarcode from 'jsbarcode';
 import { useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 type CardMailProps = {
   mailArray: MailDetailsType[],
   confirm: boolean,
@@ -18,8 +19,9 @@ type CardMailProps = {
 
 
 export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMailProps) {
-  const [mailDetailsArray, setMailDetailsArray] = useState<MailDetailsType[]>(mailArray);
   const contentRef = useRef<HTMLDivElement>(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
+  const [mailDetailsArray, setMailDetailsArray] = useState<MailDetailsType[]>(mailArray);
   // Fetch mail details from localStorage on component mount
   useEffect(() => {
     const fetchMailDetails = () => {
@@ -53,7 +55,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
     JsBarcode(barcodeElement, ID,);
     console.log("generating barcode")
   } 
-
+ 
 
 
   return (
@@ -108,8 +110,10 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             </div>}
             {transaction && 
             <div>
+            <button >Print</button>
+            <div ref={contentRef}>Content to print</div>
             <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>
-            <Button className="btn bg-white "  size="icon" ><Printer color="black" size={18} /></Button>
+            <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
             </div>
             }
           </div>
@@ -130,7 +134,10 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             <Label className="text-base">MailID: <p className="text-slate-500 font-light text-sm"> {mail.mailID}</p></Label>
           </div>
           </div>
+          <div ref={contentRef}>
           <svg id={`barcode-${mail.mailID}`}></svg>
+          </div>
+
         </div>
       ))}
       

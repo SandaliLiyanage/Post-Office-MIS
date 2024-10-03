@@ -43,7 +43,7 @@ class AddressRepository{
           return destPostalCode?.postalCode || null;
 
         } catch (error) {
-          throw error;
+          return null;
         }
       }
  

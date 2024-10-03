@@ -27,6 +27,7 @@ model Employee {
   leave       Leave[]
   area        Area[]
   otp         OTP[]
+  feedback    Feedback[]
 }
 
 enum PostOfficeCategory {
@@ -166,4 +167,16 @@ model OTP{
   expiresAt  DateTime
   unused       Boolean @default(true)
   @@unique([employeeID, unused, expiresAt, createdAt])
+}
+
+model Feedback {
+  id           Int      @id @default(autoincrement())
+  employeeID   String
+  feedbackText String
+  createdAt    DateTime @default(now())
+
+  // Relation to the Employee model
+  employee     Employee @relation(fields: [employeeID], references: [employeeID])
+
+  @@map("feedback") // This ensures the table is named "feedback"
 }

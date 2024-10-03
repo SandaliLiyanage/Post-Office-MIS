@@ -398,7 +398,7 @@ export default function MailDetails() {
                   <div className="flex justify-between mt-7">
                     <div className="flex justify-start gap-4">
                       <Button
-                        className="bg-white border border-slate-300 text-slate-800"
+                        className="bg-white border border-slate-300 text-slate-800 hover:bg-slate-300"
                         onClick={onClickCalculate}
                         type="button"
                       >
@@ -420,14 +420,14 @@ export default function MailDetails() {
                     <div className="flex justify-end gap-2 ">
                       <Button
                         type="submit"
-                        className="bg-white border border-slate-300  text-slate-800"
+                        className="bg-white border border-slate-300  text-slate-800 hover:bg-slate-300"
                       >
                         Save Mail Details
                       </Button>
 
                       <Button
                         type="button"
-                        className="bg-white border-b-2 border border-slate-300 text-slate-800"
+                        className="bg-white border-b-2 border border-slate-300 text-slate-800 hover:bg-slate-300"
                         onClick={() => {
                           if (confirm) {
                             // form.reset()
@@ -449,7 +449,7 @@ export default function MailDetails() {
                 <div className="flex justify-start  mr-10">
                   <Button
                     type="button"
-                    className="bg-slate-300 text-black flex justify-start"
+                    className="bg-red-400 text-black flex justify-start"
                     onClick={() => {
                       navigate("/dashboard/mailorder");
                       localStorage.removeItem("mail details");
@@ -499,7 +499,7 @@ export default function MailDetails() {
 
         
       {transaction &&
-      <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
+      <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-full flex-col static">
         <div className="">
         <CardMail
           mailArray={mailArray}

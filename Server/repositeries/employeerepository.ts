@@ -128,15 +128,10 @@ class EmployeeRepository {
       throw error;
     }
   }
-
+  
   async deleteEmployee(employeeID: string) {
     console.log(employeeID);
     console.log("in delete repository");
-    // const response = await prisma.employee.delete({
-    //     where: {
-    //         employeeID: employeeID
-    //     }
-    // })
   }
 }
 export { EmployeeRepository };

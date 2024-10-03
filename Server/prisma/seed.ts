@@ -255,7 +255,7 @@ async function main() {
       },
       {
         employeeID: "0005",
-        employeeName: "Jane Smith",
+        employeeName: "sahan Smith",
         email: "sahan@gmail.com",
         telephone: "987654321",
         role: Role.DISPATCHER,
@@ -334,6 +334,33 @@ async function main() {
         postalCode: "10640",
         password: "password13",
       },
+      {
+        employeeID: "0014",
+        employeeName: "Nuwan",
+        email: "Nuwan@gmail.com",
+        telephone: "0712345655",
+        role: Role.POSTMASTER,
+        postalCode: "20850",
+        password: "password14",
+      },
+      {
+        employeeID: "0015",
+        employeeName: "Sunil",
+        email: "Sunil@gmail.com",
+        telephone: "0712345655",
+        role: Role.SUPERVISOR,
+        postalCode: "20850",
+        password: "password14",
+      },
+      {
+        employeeID: "0016",
+        employeeName: "Saman",
+        email: "Saman@gmail.com",
+        telephone: "0712345655",
+        role: Role.RECEPTIONIST,
+        postalCode: "20850",
+        password: "password14",
+      },
     ]
     
   });
@@ -371,6 +398,7 @@ async function main() {
         postalCode: "00100",
         employeeID: "0013",
       },
+      
     ]
     
   });
@@ -500,7 +528,7 @@ async function main() {
       },
       {
         addressID: 38,
-        postalCode: "80520",
+        postalCode: "00100",
         addressNo: "123",
         streetName: "Opatha Mawatha",
         Locality: "Colombo6",
@@ -511,7 +539,7 @@ async function main() {
         addressID: 39,
         postalCode: "00100",
         addressNo: "123",
-        streetName: "Imaduwa Rd",
+        streetName: "Bauddhaloka Rd",
         Locality: "Colombo5",
         latitude: 5.997070,
         longitude: 80.377324,
@@ -626,8 +654,37 @@ async function main() {
         latitude: 6.0329,
         longitude: 80.3753,
       },
+      {
+        addressID: 52,
+        postalCode: "10640",
+        addressNo: "10",
+        streetName: "Temple Rd",
+        Locality: "Kaduwela",
+        latitude: 6.945,
+        longitude: 78.98390472475725,
+        areaID: 2,
+      },
+      {
+        addressID: 53,
+        postalCode: "10640",
+        addressNo: "68/5",
+        streetName: "Temple Rd",
+        Locality: "Kaduwela",
+        latitude: 6.8646,
+        longitude: 34.98390472475725,
+        areaID: 3,
+      },
+      {
+        addressID: 54,
+        postalCode: "10640",
+        addressNo: "81/7",
+        streetName: "Flower Rd",
+        Locality: "Kaduwela",
+        latitude: 6.9359585237643095,
+        longitude: 56.98390472475725,
+        areaID: 3,
+      },
     ]
-    
   });
 
   // Seed Transactions

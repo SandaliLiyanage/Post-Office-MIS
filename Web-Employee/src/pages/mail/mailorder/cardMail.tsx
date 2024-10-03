@@ -61,7 +61,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
 
 
   return (
-    <div className="mt-16  h-full top-16 bg-slate-300 bg-opacity-25 ">
+    <div className="mt-16  min-h-full top-16 bg-slate-300 bg-opacity-25 ">
       <div>
         <div className="font-bold pt-10 pl-2 pb-4 mt-16 ml-4 justify-start">
           <p>Current Mail List</p></div>

@@ -369,6 +369,7 @@ import {
 import Modal from "react-native-modal";
 import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
+import { arrayOutputType } from "zod";
 
 // Mail item interface
 interface MailItem {
@@ -380,6 +381,13 @@ interface MailItem {
   streetName: string;
   Locality: string;
   areaName: string;
+}
+
+interface Bundle {
+  bundleID: string;
+  destPostalCode: string;
+  currentPostCode: string;
+  bundleStatus: string;
 }
 
 // Define the type for mail sections

@@ -178,7 +178,7 @@ async function main() {
         email: "cde@gmail.com",
         telephone: "987654321",
         role: Role.DISPATCHER,
-        postalCode: "00100",
+        postalCode: "10640",
         password: "password123",
       },
     ],

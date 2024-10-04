@@ -42,14 +42,30 @@ class BundleRepository {
     return null;
   }
 
-  async getArrivedBundles(postalCode: string): Promise<Bundle[] | null> {
-    console.log("get bundles", postalCode);
-    if (postalCode) {
+  async getArrivedBundles(employeeID: string): Promise<Bundle[] | null> {
+    console.log("get bundles", employeeID);
+    if (employeeID) {
       try {
+        // First, fetch the employee's postal code using the employeeID
+        const employee = await prisma.employee.findUnique({
+          where: {
+            employeeID: employeeID,
+          },
+          select: {
+            postalCode: true, // Select only the postal code
+          },
+        });
+
+        if (!employee || !employee.postalCode) {
+          console.log("No postal code found for employee");
+          return null;
+        }
+
+        // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
         const res = await prisma.bundle.findMany({
           where: {
-            currentPostCode: postalCode,
-            bundleStatus: BundleStatus.ARRIVED,
+            currentPostCode: employee.postalCode, // Match the postal code of the employee
+            bundleStatus: BundleStatus.ARRIVED, // Bundle status is ARRIVED
           },
         });
         console.log("Bundles queried", res);

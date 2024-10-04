@@ -414,7 +414,7 @@ const SectionHeaderWithEmptyMessage = ({
 const Mail = () => {
   const { user } = useUser();
   //const employeeID = user?.employeeID;
-  const employeeID = "0002";
+  const employeeID = "0005";
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);
@@ -428,7 +428,34 @@ const Mail = () => {
       );
       const data = await response.json(); // Parse JSON data into a JavaScript object
 
-      console.log("Mails fetched:", data);
+      // Fetch the arrived bundles
+      const response1 = await fetch(
+        `http://${IP}:5000/bundles/arrived?employeeID=${employeeID}`
+      );
+      const arrived = await response1.json();
+      console.log("Arrived:", arrived);
+
+      // Fetch the created bundles
+      const response2 = await fetch(
+        `http://${IP}:5000/bundles/created?employeeID=${employeeID}`
+      );
+      const created = await response2.json();
+      console.log("Created:", created);
+
+      // Fetch the dispatched bundles
+      const response3 = await fetch(
+        `http://${IP}:5000/bundles/dispatched?employeeID=${employeeID}`
+      );
+      const dispatched = await response3.json();
+      console.log("Dispatched:", dispatched);
+
+      // Fetch the distributed bundles
+      const response4 = await fetch(
+        `http://${IP}:5000/bundles/distributed?employeeID=${employeeID}`
+      );
+      const distributed = await response4.json();
+      console.log("Distributed:", distributed);
+
       // Categorize mails by status
       const delivered = data.filter(
         (mail: any) => mail.mailstatus === "DELIVERED"

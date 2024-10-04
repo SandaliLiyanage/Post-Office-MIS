@@ -30,12 +30,12 @@ const UpdateBundleStatus = async (req: Request, res: Response) => {
 
 export const getArrivedBundles = async (req: Request, res: Response) => {
   try {
-    const postalCode = req.query.postalCode as string; // Extract postalCode from query params
-    if (!postalCode) {
-      return res.status(400).json({ error: "Postal code is required" });
+    const employeeID = req.query.employeeID as string; // Extract employeeID from query params
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" });
     }
     console.log("aaaaaaaaaaaa");
-    const bundles = await bundleRepository.getArrivedBundles(postalCode);
+    const bundles = await bundleRepository.getArrivedBundles(employeeID);
 
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });

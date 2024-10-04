@@ -34,7 +34,7 @@ export const getArrivedBundles = async (req: Request, res: Response) => {
     if (!postalCode) {
       return res.status(400).json({ error: "Postal code is required" });
     }
-
+    console.log("aaaaaaaaaaaa");
     const bundles = await bundleRepository.getArrivedBundles(postalCode);
 
     if (!bundles) {

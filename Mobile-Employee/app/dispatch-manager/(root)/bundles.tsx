@@ -57,7 +57,7 @@ const Bundles = () => {
       return await response.json(); // Return the bundle data for the specific route
       console.log("Bundles fetched:", response);
     } catch (error) {
-      //console.error(`Error fetching ${route} bundles:`, error);
+      console.error(`Error fetching ${route} bundles:`, error);
       return []; // Return an empty array if there's an error
     }
   };

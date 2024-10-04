@@ -14,8 +14,8 @@ const router = Router();
 router.post("/createdBundles", CreatedBundles);
 router.post("/deliveryBundles", DeliveryBundles);
 router.post("/UpdateBundleStatus", UpdateBundleStatus);
-router.post("/arrived", getArrivedBundles);
-router.post("/distributed", getDistributedBundles);
-router.post("/created", getCreatedBundles);
+router.get("/arrived", getArrivedBundles);
+router.get("/distributed", getDistributedBundles);
+router.get("/created", getCreatedBundles);
 
 export default router;

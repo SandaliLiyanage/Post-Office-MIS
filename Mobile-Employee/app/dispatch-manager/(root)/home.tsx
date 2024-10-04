@@ -233,12 +233,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     marginBottom: 10,
-    marginLeft: 80,
+    marginLeft: 69,
   },
   deliveryTypes: {
     flexDirection: "row",
     justifyContent: "space-around",
-    paddingLeft: 10,
+    //paddingLeft: 0,
   },
   deliveryItem: {
     alignItems: "center",
@@ -246,26 +246,27 @@ const styles = StyleSheet.create({
   deliveryCount: {
     fontSize: 45,
     color: "white",
-    paddingLeft: 15,
+    paddingLeft: 12,
     fontWeight: "bold",
   },
   deliveryLabel: {
     fontSize: 14,
-
     color: "white",
+    alignItems: "center",
+    paddingLeft: 2,
   },
   actionsContainer: {
     marginTop: 19,
-    marginLeft: 8,
-    marginRight: 8,
+    marginLeft: 65,
+    marginRight: 65,
     paddingLeft: 10,
     paddingRight: 10,
-    flexDirection: "row",
+    flexDirection: "column",
     flexWrap: "wrap",
     justifyContent: "space-around",
   },
   actionButton: {
-    width: "42%",
+    width: "100%",
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,

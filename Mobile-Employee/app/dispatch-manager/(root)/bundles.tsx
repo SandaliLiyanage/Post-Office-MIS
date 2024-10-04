@@ -92,9 +92,10 @@ const Mail = () => {
 
       // Update the sections state with categorized mail data
       setMailSections([
-        { title: "To be Delivered", data: arrived },
-        { title: "Delivered", data: created },
-        { title: "Returned", data: dispatched },
+        { title: "Created", data: created },
+        { title: "Arrived", data: arrived },
+        { title: "Dispatched", data: dispatched },
+        { title: "Distributed", data: distributed },
       ]);
     } catch (error) {
       console.error("Error fetching mail items:", error);
@@ -128,26 +129,16 @@ const Mail = () => {
     );
   }
 
-  // Mail type names
-  const mailTypeNames: { [key: string]: string } = {
-    NORMAL_MAIL: "Normal Mail",
-    REGISTERED_MAIL: "Registered Mail",
-    COURIER: "Parcel",
-  };
-
-  const getMailTypeName = (mailType: string): string => {
-    return mailTypeNames[mailType];
-  };
-
   // Mail status names
-  const mailStatusNames: { [key: string]: string } = {
-    DELIVERED: "Delivered",
-    IN_TRANSIT: "To be Delivered",
-    RETURNED: "Returned",
+  const bundleStatusNames: { [key: string]: string } = {
+    CREATED: "Created",
+    ARRIVED: "Arrived",
+    DISPATCHED: "Dispatched",
+    DISTRIBUTED: "Distributed",
   };
 
-  const getMailStatusName = (mailStatus: string): string => {
-    return mailStatusNames[mailStatus];
+  const getBundleStatusName = (mailStatus: string): string => {
+    return bundleStatusNames[mailStatus];
   };
 
   // Render each mail item
@@ -155,10 +146,10 @@ const Mail = () => {
     <TouchableOpacity style={styles.mailItem} onPress={() => handlePress(item)}>
       <Text style={styles.mailId}>Bundle ID: {item.bundleID}</Text>
       <Text style={styles.mailCategory}>
-        {getMailTypeName(item.destPostalCode)}
+        Destination: {item.destPostalCode}
       </Text>
       <Text style={styles.mailStatus}>
-        {getMailStatusName(item.bundleStatus)}
+        {getBundleStatusName(item.bundleStatus)}
       </Text>
     </TouchableOpacity>
   );
@@ -211,9 +202,7 @@ const Mail = () => {
                 <Text style={styles.value}>{selectedMail.bundleID}</Text>
 
                 <Text style={styles.label}>Destination:</Text>
-                <Text style={styles.value}>
-                  {getMailTypeName(selectedMail.destPostalCode)}
-                </Text>
+                <Text style={styles.value}>{selectedMail.destPostalCode}</Text>
 
                 {/* <Text style={styles.label}>Current Status:</Text>
                 <Text style={styles.value}>

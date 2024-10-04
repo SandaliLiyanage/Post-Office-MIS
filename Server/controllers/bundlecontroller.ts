@@ -50,12 +50,12 @@ export const getArrivedBundles = async (req: Request, res: Response) => {
 
 export const getCreatedBundles = async (req: Request, res: Response) => {
   try {
-    const postalCode = req.query.postalCode as string; // Extract postalCode from query params
-    if (!postalCode) {
-      return res.status(400).json({ error: "Postal code is required" });
+    const employeeID = req.query.employeeID as string; // Extract employeeID from query params
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" });
     }
-
-    const bundles = await bundleRepository.getCreatedBundles(postalCode);
+    console.log("aaaaaaaaaaaa");
+    const bundles = await bundleRepository.getCreatedBundles2(employeeID);
 
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });
@@ -63,7 +63,7 @@ export const getCreatedBundles = async (req: Request, res: Response) => {
 
     return res.status(200).json(bundles); // Send bundles as JSON response
   } catch (error) {
-    console.error("Error in getCreatedBundles controller:", error);
+    console.error("Error in getArrivedBundles controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };

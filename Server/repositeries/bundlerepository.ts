@@ -78,14 +78,102 @@ class BundleRepository {
     return null;
   }
 
-  async getDistributedBundles(postalCode: string): Promise<Bundle[] | null> {
-    console.log("get bundles", postalCode);
-    if (postalCode) {
+  async getCreatedBundles2(employeeID: string): Promise<Bundle[] | null> {
+    console.log("get bundles", employeeID);
+    if (employeeID) {
       try {
+        // First, fetch the employee's postal code using the employeeID
+        const employee = await prisma.employee.findUnique({
+          where: {
+            employeeID: employeeID,
+          },
+          select: {
+            postalCode: true, // Select only the postal code
+          },
+        });
+
+        if (!employee || !employee.postalCode) {
+          console.log("No postal code found for employee");
+          return null;
+        }
+
+        // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
         const res = await prisma.bundle.findMany({
           where: {
-            currentPostCode: postalCode,
-            bundleStatus: BundleStatus.DISTRIBUTED,
+            currentPostCode: employee.postalCode, // Match the postal code of the employee
+            bundleStatus: BundleStatus.CREATED, // Bundle status is ARRIVED
+          },
+        });
+        console.log("Bundles queried", res);
+        return res;
+      } catch (error) {
+        console.error("Error getting bundles:", error);
+        throw error;
+      }
+    }
+    return null;
+  }
+
+  async getDispatchedBundles(employeeID: string): Promise<Bundle[] | null> {
+    console.log("get bundles", employeeID);
+    if (employeeID) {
+      try {
+        // First, fetch the employee's postal code using the employeeID
+        const employee = await prisma.employee.findUnique({
+          where: {
+            employeeID: employeeID,
+          },
+          select: {
+            postalCode: true, // Select only the postal code
+          },
+        });
+
+        if (!employee || !employee.postalCode) {
+          console.log("No postal code found for employee");
+          return null;
+        }
+
+        // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
+        const res = await prisma.bundle.findMany({
+          where: {
+            currentPostCode: "11500", // Match the postal code of the employee
+            bundleStatus: BundleStatus.DISPATCHED, // Bundle status is ARRIVED
+          },
+        });
+        console.log("Bundles queried", res);
+        return res;
+      } catch (error) {
+        console.error("Error getting bundles:", error);
+        throw error;
+      }
+    }
+    return null;
+  }
+
+  async getDistributedBundles(employeeID: string): Promise<Bundle[] | null> {
+    console.log("get bundles", employeeID);
+    if (employeeID) {
+      try {
+        // First, fetch the employee's postal code using the employeeID
+        const employee = await prisma.employee.findUnique({
+          where: {
+            employeeID: employeeID,
+          },
+          select: {
+            postalCode: true, // Select only the postal code
+          },
+        });
+
+        if (!employee || !employee.postalCode) {
+          console.log("No postal code found for employee");
+          return null;
+        }
+
+        // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
+        const res = await prisma.bundle.findMany({
+          where: {
+            currentPostCode: employee.postalCode, // Match the postal code of the employee
+            bundleStatus: BundleStatus.DISTRIBUTED, // Bundle status is ARRIVED
           },
         });
         console.log("Bundles queried", res);

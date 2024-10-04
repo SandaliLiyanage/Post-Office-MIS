@@ -414,7 +414,7 @@ const SectionHeaderWithEmptyMessage = ({
 const Mail = () => {
   const { user } = useUser();
   //const employeeID = user?.employeeID;
-  const employeeID = "0005";
+  const employeeID = "0002";
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);
@@ -460,18 +460,21 @@ const Mail = () => {
       const delivered = data.filter(
         (mail: any) => mail.mailstatus === "DELIVERED"
       );
+      console.log("Delivered:", delivered);
       const inTransit = data.filter(
         (mail: any) => mail.mailstatus === "IN_TRANSIT"
       );
+      console.log("In Transit:", inTransit);
       const returned = data.filter(
         (mail: any) => mail.mailstatus === "RETURNED"
       );
+      console.log("Returned:", returned);
 
       // Update the sections state with categorized mail data
       setMailSections([
-        { title: "To be Delivered", data: inTransit },
-        { title: "Delivered", data: delivered },
-        { title: "Returned", data: returned },
+        { title: "To be Delivered", data: arrived },
+        { title: "Delivered", data: created },
+        { title: "Returned", data: dispatched },
       ]);
     } catch (error) {
       console.error("Error fetching mail items:", error);

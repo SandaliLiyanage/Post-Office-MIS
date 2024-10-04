@@ -155,28 +155,6 @@ const Home = () => {
       <View style={styles.actionsContainer}>
         <TouchableOpacity
           style={styles.actionButton}
-          onPress={() => handleNavigation("STATUS")}
-        >
-          <Image
-            source={require("../../../assets/icons/status.png")}
-            style={styles.actionIcon}
-          />
-          <Text style={styles.actionText}>Status</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => handleNavigation("TO_BE_CREATED")}
-        >
-          <Image
-            source={require("../../../assets/icons/address.png")}
-            style={styles.actionIcon}
-          />
-          <Text style={styles.actionText}>To be Created</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.actionButton}
           onPress={() => handleNavigation("LEAVES")}
         >
           <Image

@@ -105,16 +105,6 @@ const Layout = () => (
         ),
       }}
     />
-    {/* <Tabs.Screen
-      name="route"
-      options={{
-        title: "Route",
-        headerShown: true,
-        tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} source={icons.route} />
-        ),
-      }}
-    /> */}
     <Tabs.Screen
       name="scan"
       options={{

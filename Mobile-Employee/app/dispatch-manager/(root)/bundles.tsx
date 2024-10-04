@@ -413,7 +413,8 @@ const SectionHeaderWithEmptyMessage = ({
 // Mail screen component
 const Mail = () => {
   const { user } = useUser();
-  const employeeID = user?.employeeID;
+  //const employeeID = user?.employeeID;
+  const employeeID = "0002";
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);
@@ -427,6 +428,7 @@ const Mail = () => {
       );
       const data = await response.json(); // Parse JSON data into a JavaScript object
 
+      console.log("Mails fetched:", data);
       // Categorize mails by status
       const delivered = data.filter(
         (mail: any) => mail.mailstatus === "DELIVERED"

@@ -19,14 +19,8 @@ const Layout = () => {
           headerTintColor: "#fff", // Change the Go Back icon color
         }}
       >
-        <Stack.Screen name="status" options={{ title: "Status" }} />
-        <Stack.Screen
-          name="to-be-created"
-          options={{ title: "To be Created" }}
-        />
         <Stack.Screen name="leaves" options={{ title: "Leaves" }} />
         <Stack.Screen name="feedback" options={{ title: "Feedback" }} />
-        <Stack.Screen name="signaturescreen" options={{ title: "Signature" }} />
       </Stack>
 
       {/* Footer component */}

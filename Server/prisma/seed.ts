@@ -349,14 +349,14 @@ async function main() {
         bundleID: 1,
         destPostalCode: "10640",
         currentPostCode: "10640",
-        bundleStatus: BundleStatus.DISTRIBUTED,
+        bundleStatus: BundleStatus.ARRIVED,
         route: ["00100", "11000", "30600", "10640"],
       },
       {
         bundleID: 2,
         destPostalCode: "10640",
         currentPostCode: "10640",
-        bundleStatus: BundleStatus.DISTRIBUTED,
+        bundleStatus: BundleStatus.ARRIVED,
         route: ["00100", "30600", "10640"],
       },
       {
@@ -376,15 +376,15 @@ async function main() {
       {
         bundleID: 5,
         destPostalCode: "10250",
-        currentPostCode: "11500",
-        bundleStatus: BundleStatus.DISPATCHED,
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
         route: ["00100", "10640", "11500", "10250"],
       },
       {
         bundleID: 6,
         destPostalCode: "10250",
-        currentPostCode: "11500",
-        bundleStatus: BundleStatus.DISPATCHED,
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
         route: ["10640", "11500", "10250"],
       },
       {

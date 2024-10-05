@@ -22,7 +22,7 @@ interface Bundle {
   route: string[];
 }
 
-// Define the type for mail sections
+// Define the type for bundle sections
 interface BundleSection {
   title: string;
   data: Bundle[];
@@ -50,7 +50,7 @@ const SectionHeaderWithEmptyMessage = ({
   </View>
 );
 
-// Mail screen component
+// Bundles screen component
 const Bundles = () => {
   const { user } = useUser();
   //const employeeID = user?.employeeID;
@@ -60,7 +60,7 @@ const Bundles = () => {
   const [selectedBundle, setselectedBundle] = useState<Bundle | null>(null);
   const [updating, setUpdating] = useState(false);
 
-  // Fetch mail items from the backend
+  // Fetch bundle items from the backend
   const fetchBundles = async () => {
     try {
       // Fetch the arrived bundles
@@ -91,7 +91,7 @@ const Bundles = () => {
       const distributed = await response4.json();
       console.log("Distributed:", distributed);
 
-      // Update the sections state with categorized mail data
+      // Update the sections state with categorized bundle data
       setBundleSections([
         { title: "Created", data: created },
         { title: "Arrived", data: arrived },
@@ -99,7 +99,7 @@ const Bundles = () => {
         { title: "Distributed", data: distributed },
       ]);
     } catch (error) {
-      console.error("Error fetching mail items:", error);
+      console.error("Error fetching bundle items:", error);
     }
   };
 
@@ -116,9 +116,9 @@ const Bundles = () => {
     }, [])
   );
 
-  // Handle mail item press
-  const handlePress = (mail: Bundle) => {
-    setselectedBundle(mail); // Store the selected mail item
+  // Handle bundle item press
+  const handlePress = (bundle: Bundle) => {
+    setselectedBundle(bundle); // Store the selected bundle item
   };
 
   // Handle loading state
@@ -130,7 +130,7 @@ const Bundles = () => {
     );
   }
 
-  // Mail status names
+  // Bundle status names
   const bundleStatusNames: { [key: string]: string } = {
     CREATED: "Created",
     ARRIVED: "Arrived",
@@ -138,18 +138,21 @@ const Bundles = () => {
     DISTRIBUTED: "Distributed",
   };
 
-  const getBundleStatusName = (mailStatus: string): string => {
-    return bundleStatusNames[mailStatus];
+  const getBundleStatusName = (bundleStatus: string): string => {
+    return bundleStatusNames[bundleStatus];
   };
 
-  // Render each mail item
+  // Render each bundle item
   const renderItem = ({ item }: { item: Bundle }) => (
-    <TouchableOpacity style={styles.mailItem} onPress={() => handlePress(item)}>
-      <Text style={styles.mailId}>Bundle ID: {item.bundleID}</Text>
-      <Text style={styles.mailCategory}>
+    <TouchableOpacity
+      style={styles.bundleItem}
+      onPress={() => handlePress(item)}
+    >
+      <Text style={styles.bundleId}>Bundle ID: {item.bundleID}</Text>
+      <Text style={styles.bundleCategory}>
         Destination: {item.destPostalCode}
       </Text>
-      <Text style={styles.mailStatus}>
+      <Text style={styles.bundleStatus}>
         {getBundleStatusName(item.bundleStatus)}
       </Text>
     </TouchableOpacity>
@@ -158,30 +161,30 @@ const Bundles = () => {
   const updateBundleStatus = async (newStatus: string) => {
     try {
       setUpdating(true);
-      await fetch(`http://${IP}:5000/mail/update-status`, {
+      await fetch(`http://${IP}:5000/bundle/update-status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ mailID: selectedBundle?.bundleID, newStatus }),
+        body: JSON.stringify({ bundleID: selectedBundle?.bundleID, newStatus }),
       });
 
       setUpdating(false);
       setselectedBundle(null);
       fetchBundles();
     } catch (error) {
-      console.error("Error updating mail status:", error);
+      console.error("Error updating bundle status:", error);
       setUpdating(false);
     }
   };
 
-  // Render the mail sectioned list
+  // Render the bundle sectioned list
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
-        sections={bundleSections} // Sections of categorized mail items
-        renderItem={renderItem} // Render each mail item using the renderItem function
-        keyExtractor={(item) => item.bundleID} // Use the mailID as the key for each item
+        sections={bundleSections} // Sections of categorized bundle items
+        renderItem={renderItem} // Render each bundle item using the renderItem function
+        keyExtractor={(item) => item.bundleID} // Use the bundleID as the key for each item
         renderSectionHeader={({ section }) => (
           <SectionHeaderWithEmptyMessage section={section} />
         )} // Render section headers
@@ -197,7 +200,7 @@ const Bundles = () => {
           <Text style={styles.title}>Bundle Details</Text>
           {selectedBundle && (
             <View>
-              {/* Mail data section */}
+              {/* Bundle data section */}
               <View>
                 <Text style={styles.label}>Bundle ID:</Text>
                 <Text style={styles.value}>{selectedBundle.bundleID}</Text>
@@ -226,8 +229,7 @@ const Bundles = () => {
               {/* Buttons section */}
               <View style={styles.buttonsContainer}>
                 {/* Check if the bundle is either "CREATED" or "ARRIVED" */}
-                {(selectedBundle.bundleStatus === "CREATED" ||
-                  selectedBundle.bundleStatus === "ARRIVED") && (
+                {selectedBundle.bundleStatus === "CREATED" && (
                   <TouchableOpacity
                     style={styles.markAsButton}
                     onPress={() => updateBundleStatus("DISPATCHED")}
@@ -239,18 +241,33 @@ const Bundles = () => {
                   </TouchableOpacity>
                 )}
 
-                {/* Additional button for "ARRIVED" status to mark as "DISTRIBUTED" */}
-                {selectedBundle.bundleStatus === "ARRIVED" && (
-                  <TouchableOpacity
-                    style={styles.markAsButton}
-                    onPress={() => updateBundleStatus("DISTRIBUTED")}
-                  >
-                    <Text style={styles.buttonText}>
-                      {"  "}
-                      Mark as {"\n"} "Distributed"
-                    </Text>
-                  </TouchableOpacity>
-                )}
+                {selectedBundle.bundleStatus === "ARRIVED" &&
+                  selectedBundle.destPostalCode ===
+                    selectedBundle.currentPostCode && (
+                    <TouchableOpacity
+                      style={styles.markAsButton}
+                      onPress={() => updateBundleStatus("DISTRIBUTED")}
+                    >
+                      <Text style={styles.buttonText}>
+                        {"  "}
+                        Mark as {"\n"} "Distributed"
+                      </Text>
+                    </TouchableOpacity>
+                  )}
+
+                {selectedBundle.bundleStatus === "ARRIVED" &&
+                  selectedBundle.destPostalCode !=
+                    selectedBundle.currentPostCode && (
+                    <TouchableOpacity
+                      style={styles.markAsButton}
+                      onPress={() => updateBundleStatus("DISPATCHED")}
+                    >
+                      <Text style={styles.buttonText}>
+                        {"  "}
+                        Mark as {"\n"} "Dispatched"
+                      </Text>
+                    </TouchableOpacity>
+                  )}
 
                 <TouchableOpacity
                   style={styles.closeButton}
@@ -301,7 +318,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
     paddingBottom: 12,
   },
-  mailItem: {
+  bundleItem: {
     padding: 12,
     marginBottom: 10,
     backgroundColor: "#F2F2F2",
@@ -313,16 +330,16 @@ const styles = StyleSheet.create({
     elevation: 2,
     position: "relative",
   },
-  mailId: {
+  bundleId: {
     fontSize: 18,
     fontWeight: "bold",
   },
-  mailCategory: {
+  bundleCategory: {
     fontSize: 16,
     color: "gray",
     marginTop: 4,
   },
-  mailStatus: {
+  bundleStatus: {
     position: "absolute",
     top: 12,
     right: 12,
@@ -373,7 +390,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: "row", // Aligns buttons in a row
     justifyContent: "space-between", // Space between the buttons
-    marginTop: 15, // Adds space between the buttons and mail details
+    marginTop: 15, // Adds space between the buttons and bundle details
     marginBottom: 12, // Adds space between the buttons and the bottom of the modal
   },
   markAsButton: {
@@ -389,10 +406,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
-    paddingRight: 3,
+    paddingRight: 7,
   },
   closeButton: {
     backgroundColor: "#747474",
@@ -405,7 +422,7 @@ const styles = StyleSheet.create({
   },
   closeButtonText: {
     color: "#fff",
-    fontSize: 15,
+    fontSize: 16,
     fontWeight: "bold",
     textAlign: "center",
   },

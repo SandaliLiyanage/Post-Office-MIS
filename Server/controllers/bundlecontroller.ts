@@ -38,7 +38,27 @@ export const getArrivedBundles = async (req: Request, res: Response) => {
     }
     console.log("arrived bundles");
     const bundles = await bundleRepository.getArrivedBundles(employeeID);
-
+    let routeNameArray: string[] = [];
+    if (bundles) {
+      for (const bundle of bundles) {
+        const destPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.destPostalCode
+        );
+        const currentPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.currentPostCode
+        );
+        for (const code of bundle.route) {
+          const postalName = await postOfficeRepository.getPostOfficeName(code);
+          if (postalName) {
+            routeNameArray.push(`${postalName.postOfficeName}`);
+          }
+        }
+        bundle.destPostalCode = `${destPostalName?.postOfficeName}`;
+        bundle.currentPostCode = `${currentPostalName?.postOfficeName}`;
+        bundle.route = routeNameArray;
+        routeNameArray = [];
+      }
+    }
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });
     }
@@ -58,7 +78,27 @@ export const getCreatedBundles = async (req: Request, res: Response) => {
     }
     console.log("created bundles");
     const bundles = await bundleRepository.getCreatedBundles2(employeeID);
-
+    let routeNameArray: string[] = [];
+    if (bundles) {
+      for (const bundle of bundles) {
+        const destPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.destPostalCode
+        );
+        const currentPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.currentPostCode
+        );
+        for (const code of bundle.route) {
+          const postalName = await postOfficeRepository.getPostOfficeName(code);
+          if (postalName) {
+            routeNameArray.push(`${postalName.postOfficeName}`);
+          }
+        }
+        bundle.destPostalCode = `${destPostalName?.postOfficeName}`;
+        bundle.currentPostCode = `${currentPostalName?.postOfficeName}`;
+        bundle.route = routeNameArray;
+        routeNameArray = [];
+      }
+    }
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });
     }
@@ -78,7 +118,27 @@ export const getDispatchedBundles = async (req: Request, res: Response) => {
     }
     console.log("dispatched bundles");
     const bundles = await bundleRepository.getDispatchedBundles(employeeID);
-
+    let routeNameArray: string[] = [];
+    if (bundles) {
+      for (const bundle of bundles) {
+        const destPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.destPostalCode
+        );
+        const currentPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.currentPostCode
+        );
+        for (const code of bundle.route) {
+          const postalName = await postOfficeRepository.getPostOfficeName(code);
+          if (postalName) {
+            routeNameArray.push(`${postalName.postOfficeName}`);
+          }
+        }
+        bundle.destPostalCode = `${destPostalName?.postOfficeName}`;
+        bundle.currentPostCode = `${currentPostalName?.postOfficeName}`;
+        bundle.route = routeNameArray;
+        routeNameArray = [];
+      }
+    }
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });
     }
@@ -99,6 +159,27 @@ export const getDistributedBundles = async (req: Request, res: Response) => {
     }
     console.log("distributed bundles");
     const bundles = await bundleRepository.getDistributedBundles(employeeID);
+    let routeNameArray: string[] = [];
+    if (bundles) {
+      for (const bundle of bundles) {
+        const destPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.destPostalCode
+        );
+        const currentPostalName = await postOfficeRepository.getPostOfficeName(
+          bundle.currentPostCode
+        );
+        for (const code of bundle.route) {
+          const postalName = await postOfficeRepository.getPostOfficeName(code);
+          if (postalName) {
+            routeNameArray.push(`${postalName.postOfficeName}`);
+          }
+        }
+        bundle.destPostalCode = `${destPostalName?.postOfficeName}`;
+        bundle.currentPostCode = `${currentPostalName?.postOfficeName}`;
+        bundle.route = routeNameArray;
+        routeNameArray = [];
+      }
+    }
 
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });
@@ -129,7 +210,7 @@ export const updateBundleStatus2 = async (req: Request, res: Response) => {
 };
 
 export const getPostOfficeName = async (req: Request, res: Response) => {
-  const { postalCode } = req.params;
+  const postalCode = req.query.postalCode as string;
 
   try {
     // Call the repository function to get the post office name

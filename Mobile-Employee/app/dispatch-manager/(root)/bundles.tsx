@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
@@ -12,7 +12,7 @@ import {
 import Modal from "react-native-modal";
 import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
-import { arrayOutputType } from "zod";
+import axios from "axios";
 
 interface Bundle {
   bundleID: string;
@@ -59,6 +59,7 @@ const Bundles = () => {
   const [loading, setLoading] = useState(true);
   const [selectedBundle, setselectedBundle] = useState<Bundle | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [postOfficeName, setPostOfficeName] = useState("Loading...");
 
   // Fetch bundle items from the backend
   const fetchBundles = async () => {
@@ -102,6 +103,17 @@ const Bundles = () => {
       console.error("Error fetching bundle items:", error);
     }
   };
+
+  useEffect(() => {
+    const fetchPostOfficeName = async () => {
+      if (selectedBundle) {
+        const name = await getPostOfficeName(selectedBundle.currentPostCode);
+        setPostOfficeName(name);
+      }
+    };
+
+    fetchPostOfficeName();
+  }, [selectedBundle?.currentPostCode]);
 
   // Use useFocusEffect to refresh the list when the screen is focused
   useFocusEffect(
@@ -191,6 +203,21 @@ const Bundles = () => {
         : "End of Route"; // If no next post code, show "End of Route"
 
     return nextPostCode;
+  }
+
+  async function getPostOfficeName(postalCode: string): Promise<string> {
+    try {
+      const response = await fetch(
+        `http://${IP}:5000/bundles/postoffice?postalCode=${postalCode}`
+      );
+      const data = await response.json();
+      console.log("Post Office Name:", data);
+      // Assuming the backend returns the post office name in the 'postOfficeName' field
+      return data.postOfficeName || "Unknown Post Office";
+    } catch (error) {
+      console.error("Error fetching post office name:", error);
+      return "Error fetching name";
+    }
   }
 
   // Render the bundle sectioned list

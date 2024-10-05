@@ -19,6 +19,7 @@ interface Bundle {
   destPostalCode: string;
   currentPostCode: string;
   bundleStatus: string;
+  route: string[];
 }
 
 // Define the type for mail sections
@@ -38,29 +39,29 @@ const SectionHeaderWithEmptyMessage = ({
     {section.data.length === 0 && (
       <Text
         style={
-          section.title === "Returned"
+          section.title === "Distributed"
             ? styles.emptySectionMessage2 // Style for "Returned" section
             : styles.emptySectionMessage1 // Style for "Delivered" and "To be Delivered" sections
         }
       >
-        {section.title === "Returned" ? "No mail items" : "No mail items"}
+        {section.title === "Distributed" ? "No bundles" : "No bundles"}
       </Text>
     )}
   </View>
 );
 
 // Mail screen component
-const Mail = () => {
+const Bundles = () => {
   const { user } = useUser();
   //const employeeID = user?.employeeID;
   const employeeID = "0002";
-  const [mailSections, setMailSections] = useState<BundleSection[]>([]);
+  const [bundleSections, setBundleSections] = useState<BundleSection[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedMail, setSelectedMail] = useState<Bundle | null>(null);
+  const [selectedBundle, setselectedBundle] = useState<Bundle | null>(null);
   const [updating, setUpdating] = useState(false);
 
   // Fetch mail items from the backend
-  const fetchMails = async () => {
+  const fetchBundles = async () => {
     try {
       // Fetch the arrived bundles
       const response1 = await fetch(
@@ -91,7 +92,7 @@ const Mail = () => {
       console.log("Distributed:", distributed);
 
       // Update the sections state with categorized mail data
-      setMailSections([
+      setBundleSections([
         { title: "Created", data: created },
         { title: "Arrived", data: arrived },
         { title: "Dispatched", data: dispatched },
@@ -107,7 +108,7 @@ const Mail = () => {
     React.useCallback(() => {
       const fetchData = async () => {
         setLoading(true);
-        await fetchMails(); // Ensure fetchMails completes before setting loading to false
+        await fetchBundles(); // Ensure fetchBundles completes before setting loading to false
         setLoading(false);
       };
 
@@ -117,7 +118,7 @@ const Mail = () => {
 
   // Handle mail item press
   const handlePress = (mail: Bundle) => {
-    setSelectedMail(mail); // Store the selected mail item
+    setselectedBundle(mail); // Store the selected mail item
   };
 
   // Handle loading state
@@ -154,7 +155,7 @@ const Mail = () => {
     </TouchableOpacity>
   );
 
-  const updateMailStatus = async (newStatus: string) => {
+  const updateBundleStatus = async (newStatus: string) => {
     try {
       setUpdating(true);
       await fetch(`http://${IP}:5000/mail/update-status`, {
@@ -162,12 +163,12 @@ const Mail = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ mailID: selectedMail?.bundleID, newStatus }),
+        body: JSON.stringify({ mailID: selectedBundle?.bundleID, newStatus }),
       });
 
       setUpdating(false);
-      setSelectedMail(null);
-      fetchMails();
+      setselectedBundle(null);
+      fetchBundles();
     } catch (error) {
       console.error("Error updating mail status:", error);
       setUpdating(false);
@@ -178,7 +179,7 @@ const Mail = () => {
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
-        sections={mailSections} // Sections of categorized mail items
+        sections={bundleSections} // Sections of categorized mail items
         renderItem={renderItem} // Render each mail item using the renderItem function
         keyExtractor={(item) => item.bundleID} // Use the mailID as the key for each item
         renderSectionHeader={({ section }) => (
@@ -186,46 +187,49 @@ const Mail = () => {
         )} // Render section headers
       />
       <Modal
-        isVisible={!!selectedMail}
-        onBackdropPress={() => setSelectedMail(null)}
+        isVisible={!!selectedBundle}
+        onBackdropPress={() => setselectedBundle(null)}
         animationIn="zoomIn" // Animation for appearing
         animationOut="zoomOut" // Animation for disappearing
         backdropTransitionOutTiming={0} // To avoid flickering when closing
       >
         <View style={styles.card}>
-          <Text style={styles.title}>Mail Details</Text>
-          {selectedMail && (
+          <Text style={styles.title}>Bundle Details</Text>
+          {selectedBundle && (
             <View>
               {/* Mail data section */}
               <View>
                 <Text style={styles.label}>Bundle ID:</Text>
-                <Text style={styles.value}>{selectedMail.bundleID}</Text>
+                <Text style={styles.value}>{selectedBundle.bundleID}</Text>
 
-                <Text style={styles.label}>Destination:</Text>
-                <Text style={styles.value}>{selectedMail.destPostalCode}</Text>
-
-                {/* <Text style={styles.label}>Current Status:</Text>
+                <Text style={styles.label}>Destination Post Office:</Text>
                 <Text style={styles.value}>
-                  {getMailStatusName(selectedMail.mailstatus)}
-                </Text> */}
+                  {selectedBundle.destPostalCode}
+                </Text>
 
-                {/* <Text style={styles.label}>Recipient:</Text>
-                <Text style={styles.value}>{selectedMail.recepientName}</Text> */}
-
-                {/* <Text style={styles.label}>Recipient's Address:</Text>
+                <Text style={styles.label}>Current Post Office:</Text>
                 <Text style={styles.value}>
-                  {selectedMail.addressNo}, {selectedMail.streetName},{" "}
-                  {selectedMail.Locality}, {selectedMail.areaName}
-                </Text> */}
+                  {selectedBundle.currentPostCode}
+                </Text>
+
+                <Text style={styles.label}>Route:</Text>
+                <Text style={styles.value}>
+                  {selectedBundle.route.join(", ")}
+                </Text>
+
+                <Text style={styles.label}>Current Status:</Text>
+                <Text style={styles.value}>
+                  {getBundleStatusName(selectedBundle.bundleStatus)}
+                </Text>
               </View>
 
               {/* Buttons section */}
               {/* <View style={styles.buttonsContainer}>
-                {(selectedMail.mailstatus === "DELIVERED" ||
-                  selectedMail.mailstatus === "RETURNED") && (
+                {(selectedBundle.mailstatus === "DELIVERED" ||
+                  selectedBundle.mailstatus === "RETURNED") && (
                   <TouchableOpacity
                     style={styles.markAsButton}
-                    onPress={() => updateMailStatus("IN_TRANSIT")}
+                    onPress={() => updateBundleStatus("IN_TRANSIT")}
                   >
                     <Text style={styles.buttonText}>
                       {"  "}
@@ -236,7 +240,7 @@ const Mail = () => {
 
                 <TouchableOpacity
                   style={styles.closeButton}
-                  onPress={() => setSelectedMail(null)}
+                  onPress={() => setselectedBundle(null)}
                 >
                   <Text style={styles.closeButtonText}>Close</Text>
                 </TouchableOpacity>
@@ -395,4 +399,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Mail;
+export default Bundles;

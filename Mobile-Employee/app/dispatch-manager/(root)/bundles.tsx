@@ -149,9 +149,7 @@ const Bundles = () => {
       onPress={() => handlePress(item)}
     >
       <Text style={styles.bundleId}>Bundle ID: {item.bundleID}</Text>
-      <Text style={styles.bundleCategory}>
-        Destination: {item.destPostalCode}
-      </Text>
+      <Text style={styles.bundleCategory}>Next: {getNextPostalCode(item)}</Text>
       <Text style={styles.bundleStatus}>
         {getBundleStatusName(item.bundleStatus)}
       </Text>
@@ -161,7 +159,7 @@ const Bundles = () => {
   const updateBundleStatus = async (newStatus: string) => {
     try {
       setUpdating(true);
-      await fetch(`http://${IP}:5000/bundle/update-status`, {
+      await fetch(`http://${IP}:5000/bundles/update-status`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -177,6 +175,23 @@ const Bundles = () => {
       setUpdating(false);
     }
   };
+
+  function getNextPostalCode(selectedBundle: Bundle) {
+    // Get the route array and current postal code from the selectedBundle
+    const route = selectedBundle.route;
+    const currentPostCode = selectedBundle.currentPostCode;
+
+    // Find the index of the current postal code in the route array
+    const currentIndex = route.indexOf(currentPostCode);
+
+    // Find the next postal code (if it exists)
+    const nextPostCode =
+      currentIndex !== -1 && currentIndex < route.length - 1
+        ? route[currentIndex + 1]
+        : "End of Route"; // If no next post code, show "End of Route"
+
+    return nextPostCode;
+  }
 
   // Render the bundle sectioned list
   return (
@@ -205,14 +220,19 @@ const Bundles = () => {
                 <Text style={styles.label}>Bundle ID:</Text>
                 <Text style={styles.value}>{selectedBundle.bundleID}</Text>
 
-                <Text style={styles.label}>Destination Post Office:</Text>
-                <Text style={styles.value}>
-                  {selectedBundle.destPostalCode}
-                </Text>
-
                 <Text style={styles.label}>Current Post Office:</Text>
                 <Text style={styles.value}>
                   {selectedBundle.currentPostCode}
+                </Text>
+
+                <Text style={styles.label}>Next Post Office:</Text>
+                <Text style={styles.value}>
+                  {getNextPostalCode(selectedBundle)}
+                </Text>
+
+                <Text style={styles.label}>Destination Post Office:</Text>
+                <Text style={styles.value}>
+                  {selectedBundle.destPostalCode}
                 </Text>
 
                 <Text style={styles.label}>Route:</Text>

@@ -34,7 +34,7 @@ export const getArrivedBundles = async (req: Request, res: Response) => {
     if (!employeeID) {
       return res.status(400).json({ error: "Employee ID is required" });
     }
-    console.log("aaaaaaaaaaaa");
+    console.log("arrived bundles");
     const bundles = await bundleRepository.getArrivedBundles(employeeID);
 
     if (!bundles) {
@@ -54,7 +54,7 @@ export const getCreatedBundles = async (req: Request, res: Response) => {
     if (!employeeID) {
       return res.status(400).json({ error: "Employee ID is required" });
     }
-    console.log("aaaaaaaaaaaa");
+    console.log("created bundles");
     const bundles = await bundleRepository.getCreatedBundles2(employeeID);
 
     if (!bundles) {
@@ -74,13 +74,14 @@ export const getDispatchedBundles = async (req: Request, res: Response) => {
     if (!employeeID) {
       return res.status(400).json({ error: "Employee ID is required" });
     }
-
+    console.log("dispatched bundles");
     const bundles = await bundleRepository.getDispatchedBundles(employeeID);
 
     if (!bundles) {
       return res.status(404).json({ error: "No bundles found" });
     }
 
+    console.log("Dispatched bundles:", bundles);
     return res.status(200).json(bundles); // Send bundles as JSON response
   } catch (error) {
     console.error("Error in getDispatchedBundles controller:", error);
@@ -94,7 +95,7 @@ export const getDistributedBundles = async (req: Request, res: Response) => {
     if (!employeeID) {
       return res.status(400).json({ error: "Employee ID is required" });
     }
-
+    console.log("distributed bundles");
     const bundles = await bundleRepository.getDistributedBundles(employeeID);
 
     if (!bundles) {
@@ -105,6 +106,23 @@ export const getDistributedBundles = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error in getDistributedBundles controller:", error);
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+// Update mail status
+export const updateBundleStatus2 = async (req: Request, res: Response) => {
+  const { bundleID, newStatus } = req.body;
+
+  try {
+    let updatedBundle;
+    updatedBundle = await bundleRepository.updateBundleStatus(
+      bundleID,
+      newStatus
+    );
+    res.status(200).json(updatedBundle);
+  } catch (error) {
+    console.error("Error updating mail status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

@@ -68,7 +68,7 @@ class BundleRepository {
             bundleStatus: BundleStatus.ARRIVED, // Bundle status is ARRIVED
           },
         });
-        console.log("Bundles queried", res);
+        console.log("Arrived Bundles List:", res);
         return res;
       } catch (error) {
         console.error("Error getting bundles:", error);
@@ -104,7 +104,7 @@ class BundleRepository {
             bundleStatus: BundleStatus.CREATED, // Bundle status is ARRIVED
           },
         });
-        console.log("Bundles queried", res);
+        console.log("Created Bundles List:", res);
         return res;
       } catch (error) {
         console.error("Error getting bundles:", error);
@@ -136,11 +136,11 @@ class BundleRepository {
         // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
         const res = await prisma.bundle.findMany({
           where: {
-            currentPostCode: "11500", // Match the postal code of the employee
+            currentPostCode: employee.postalCode, // Match the postal code of the employee
             bundleStatus: BundleStatus.DISPATCHED, // Bundle status is ARRIVED
           },
         });
-        console.log("Bundles queried", res);
+        console.log("Dispatched Bundles List:", res);
         return res;
       } catch (error) {
         console.error("Error getting bundles:", error);
@@ -176,7 +176,7 @@ class BundleRepository {
             bundleStatus: BundleStatus.DISTRIBUTED, // Bundle status is ARRIVED
           },
         });
-        console.log("Bundles queried", res);
+        console.log("Distributed Bundles List:", res);
         return res;
       } catch (error) {
         console.error("Error getting bundles:", error);
@@ -237,5 +237,12 @@ class BundleRepository {
       throw error;
     }
   }
+
+  updateBundleStatus = async (bundleID: number, newStatus: BundleStatus) => {
+    return await prisma.bundle.update({
+      where: { bundleID },
+      data: { bundleStatus: newStatus },
+    });
+  };
 }
 export { BundleRepository };

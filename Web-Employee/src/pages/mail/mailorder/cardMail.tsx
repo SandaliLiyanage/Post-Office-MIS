@@ -58,17 +58,15 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
     console.log("generating barcode")
   } 
  
-
-
   return (
-    <div className="mt-16  min-h-full top-16 bg-slate-300 bg-opacity-25 ">
+    <div className="mt-16  min-h-screen top-16 bg-slate-300 bg-opacity-25 flex-1">
       <div>
         <div className="font-bold pt-10 pl-2 pb-4 mt-16 ml-4 justify-start">
           <p>Current Mail List</p></div>
           
         </div>
       { !transaction && mailDetailsArray.map((mail, index) => (
-        <div key={index} className="m-5  p-4 bg-white">
+        <div key={index} className="m-5 p-4 bg-white">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
             <Label className="text-sky-800">Mail {index + 1}</Label>
@@ -101,7 +99,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
         </div>
       ))}
       { transaction && confirmedMailArray.map((mail, index) => (
-        <div key={index} className="m-5  p-4 bg-white ">
+        <div key={index} className="m-5 p-4 bg-white ">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
             <Label className="text-sky-800">Mail {index + 1}</Label>

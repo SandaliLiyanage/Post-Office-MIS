@@ -7,10 +7,12 @@ import {
   MailStatus,
   MailType,
   BundleStatus,
+  OTP
 } from "@prisma/client";
+import BCryptService from "../services/cryptservice";
 
 const prisma = new PrismaClient();
-
+const cryptservice = new BCryptService();
 async function main() {
   // Clear existing data
   await prisma.mail.deleteMany({});
@@ -19,9 +21,10 @@ async function main() {
   await prisma.address.deleteMany({});
   await prisma.area.deleteMany({});
   await prisma.leave.deleteMany({});
+  await prisma.oTP.deleteMany({})
   await prisma.employee.deleteMany({});
   await prisma.postOffice.deleteMany({});
-
+  await prisma.oTP.deleteMany({})
   // Seed Post Offices
   await prisma.postOffice.createMany({
     data : [
@@ -213,10 +216,10 @@ async function main() {
     ]
     
   });
-
-  // Seed Employees
-  await prisma.employee.createMany({
-    data : [
+ 
+  // // Seed Employees
+  const employeeCreate = async()=>{
+    const data = [
       {
         employeeID: "0001",
         employeeName: "John Doe",
@@ -350,7 +353,7 @@ async function main() {
         telephone: "0712345655",
         role: Role.SUPERVISOR,
         postalCode: "20850",
-        password: "password14",
+        password: "password13",
       },
       {
         employeeID: "0016",
@@ -359,13 +362,26 @@ async function main() {
         telephone: "0712345655",
         role: Role.RECEPTIONIST,
         postalCode: "20850",
-        password: "password14",
+        password: "password16",
       },
     ]
-    
-  });
-
-  // Seed Areas
+    const hashedData = await Promise.all(
+    data.map(async (employee) => {
+      const hashedPassword = await cryptservice.hashPassword(employee.password); // Call your hashing function
+      return {
+        ...employee,
+        password: hashedPassword, // Replace the plain text password with the hashed one
+      };
+      
+    }))
+    await prisma.employee.createMany({
+      data: hashedData
+    });
+  
+  }
+  await employeeCreate();
+ 
+  // // Seed Areas
   await prisma.area.createMany({
     data: [
       {
@@ -396,14 +412,14 @@ async function main() {
         areaID: 5,
         areaName: "Colombo East",
         postalCode: "00100",
-        employeeID: "0013",
+        employeeID: "0014",
       },
       
     ]
     
   });
 
-  // Seed Addresses
+  // // Seed Addresses
   await prisma.address.createMany({
     data: [
       {
@@ -691,216 +707,366 @@ async function main() {
   await prisma.transaction.createMany({
     data: [
       {
-        transactionID: 1,
+        transactionID: 3,
         customerName: "Alice Johnson",
         customerTelephone: "555123456",
         customerAddressID: 36,
-        date: new Date(),
+        date: "2024-09-03T07:08:57.492Z",
         amount: 10.5,
       },
+
+        {
+          transactionID: 4,
+          customerName: "Alice Johnson",
+          customerTelephone: "555123456",
+          customerAddressID: 36,
+          date: "2024-08-03T07:08:57.492Z",
+          amount: 10.5,
+        },
     ],
+    
   });
 
-  // Seed Bundles
-  await prisma.bundle.createMany({
-    data: [
-      {
-        bundleID: 1,
-        destPostalCode: "10640",
-        currentPostCode: "00100",
-        bundleStatus: BundleStatus.DISTRIBUTED,
-      },
-    ],
-  });
+  // // Seed Bundles
+  // await prisma.bundle.createMany({
+  //   data: [
+  //     {
+  //       bundleID: 1,
+  //       destPostalCode: "10640",
+  //       currentPostCode: "00100",
+  //       bundleStatus: BundleStatus.DISTRIBUTED,
+  //     },
+  //   ],
+  // });
 
-  // Seed Mail
+  // // Seed Mail
   await prisma.mail.createMany({
     data: [
       {
-        mailID: 268,
+        mailID: 1,
+        recepientName: "Alice Johnson",
+        recepientAddressID: 26,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 0.5,
+        price: 65.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 2,
+        recepientName: "Bob Smith",
+        recepientAddressID: 27,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 13,
+        price: 110.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 3,
+        recepientName: "Charlie Brown",
+        recepientAddressID: 28,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 56,
+        price: 120,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 4,
+        recepientName: "David Wilson",
+        recepientAddressID: 26,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 1.5,
+        price: 7.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 5,
+        recepientName: "Emma Davis",
+        recepientAddressID: 27,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 200,
+        price: 120.00,
+        mailstatus: MailStatus.DELIVERED,
+      },
+      {
+        mailID: 6,
+        recepientName: "Frank Miller",
+        recepientAddressID: 28,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 100,
+        price: 45.00,
+        mailstatus: MailStatus.DELIVERED,
+      },
+      {
+        mailID: 7,
+        recepientName: "Grace Lee",
+        recepientAddressID: 53,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 1.1,
+        price: 6.50,
+        mailstatus: MailStatus.DELIVERED,
+      },
+      {
+        mailID: 8,
+        recepientName: "Henry Taylor",
+        recepientAddressID: 54,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 78,
+        price: 65.00,
+        mailstatus: MailStatus.DELIVERED,
+      },
+      {
+        mailID: 9,
+        recepientName: "Irene Thomas",
+        recepientAddressID: 52,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.COURIER,
+        weight: 92.00,
+        price: 5.20,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 10,
+        recepientName: "Jack White",
+        recepientAddressID: 32,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.COURIER,
+        weight: 200,
+        price: 92.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 11,
+        recepientName: "Kathy Harris",
+        recepientAddressID: 33,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 56,
+        price: 65.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 12,
+        recepientName: "Liam Clark",
+        recepientAddressID: 34,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.REGISTERED_MAIL,
+        weight: 40,
+        price: 57.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 13,
+        recepientName: "Mia Robinson",
+        recepientAddressID: 35,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 34,
+        price: 82.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 14,
+        recepientName: "Noah Jackson",
+        recepientAddressID: 52,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.NORMAL_MAIL,
+        weight: 68,
+        price: 45.00,
+        mailstatus: MailStatus.IN_TRANSIT,
+      },
+      {
+        mailID: 15,
         recepientName: "Bob Williams",
         recepientAddressID: 26,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
-        weight: 1.2,
-        price: 6.0,
+        weight: 20,
+        price: 30.00,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
-        mailID: 269,
+        mailID: 16,
         recepientName: "Bob Williams",
         recepientAddressID: 27,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
-        weight: 1.2,
-        price: 6.0,
+        weight: 20,
+        price: 30.00,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
-        mailID: 270,
+        mailID: 17,
         recepientName: "Bob Williams",
         recepientAddressID: 28,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
-        mailType: MailType.NORMAL_MAIL,
-        weight: 1.2,
-        price: 6.0,
+        postalCode: "10640",
+        transactionID: 4,
+        mailType: MailType.COURIER,
+        weight: 2000,
+        price: 400.00,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
-        mailID: 271,
+        mailID: 18,
         recepientName: "Bob Williams",
         recepientAddressID: 29,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
-        weight: 1.2,
-        price: 6.0,
+        weight: 80,
+        price: 100.00,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
-        mailID: 272,
+        mailID: 19,
         recepientName: "Bob Williams",
         recepientAddressID: 30,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
-        mailType: MailType.NORMAL_MAIL,
-        weight: 1.2,
-        price: 6.0,
+        postalCode: "10640",
+        transactionID: 3,
+        mailType: MailType.REGISTERED_MAIL,
+        weight: 82,
+        price: 35.00,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
-        mailID: 273,
+        mailID: 20,
         recepientName: "Bob Williams",
         recepientAddressID: 31,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.REGISTERED_MAIL,
-        weight: 1.2,
-        price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        weight: 50,
+        price: 100.00,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 274,
+        mailID: 21,
         recepientName: "Bob Williams",
         recepientAddressID: 32,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.REGISTERED_MAIL,
-        weight: 1.2,
-        price: 6.0,
+        weight: 300.00,
+        price: 1000.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
-        mailID: 275,
+        mailID: 22,
         recepientName: "Bob Williams",
         recepientAddressID: 33,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.REGISTERED_MAIL,
-        weight: 1.2,
-        price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        weight: 400,
+        price: 300.0,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 276,
+        mailID: 23,
         recepientName: "Bob Williams",
         recepientAddressID: 34,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 3,
         mailType: MailType.COURIER,
-        weight: 1.2,
-        price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        weight: 2000,
+        price: 1000.00,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 277,
+        mailID: 24,
         recepientName: "Bob Williams",
         recepientAddressID: 35,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.COURIER,
-        weight: 1.2,
-        price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        weight: 800,
+        price: 950.00,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 278,
+        mailID: 25,
         recepientName: "Bob Williams",
         recepientAddressID: 29,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
-        weight: 1.2,
-        price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        weight: 45,
+        price: 120.00,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 279,
+        mailID: 26,
         recepientName: "Bob Williams",
         recepientAddressID: 35,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 1.2,
-        price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        price: 6.00,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 280,
+        mailID: 27,
         recepientName: "Bob Williams",
         recepientAddressID: 32,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 3,
         mailType: MailType.REGISTERED_MAIL,
         weight: 1.2,
         price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        mailstatus: MailStatus.DELIVERED,
       },
       {
-        mailID: 281,
+        mailID: 28,
         recepientName: "Bob Williams",
         recepientAddressID: 36,
-        postalCode: "00100",
-        bundleID: 1,
-        transactionID: 1,
+        postalCode: "10640",
+        transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 1.2,
         price: 6.0,
-        mailstatus: MailStatus.IN_TRANSIT,
+        mailstatus: MailStatus.DELIVERED,
       },
     ],
   });
 
-  // Seed Leaves
-  await prisma.leave.createMany({
-    data: [
-      {
-        employeeID: "0003",
-        leaveType: LeaveType.FULL_DAY,
-        startDate: new Date("2024-09-10"),
-        endDate: new Date("2024-09-11"),
-        description: "Annual Leave",
-        status: "Pending",
-        RequestStatus: RequestStatus.PENDING,
-      },
-    ],
-  });
+  // // Seed Leaves
+  // await prisma.leave.createMany({
+  //   data: [
+  //     {
+  //       employeeID: "0003",
+  //       leaveType: LeaveType.FULL_DAY,
+  //       startDate: new Date("2024-09-10"),
+  //       endDate: new Date("2024-09-11"),
+  //       description: "Annual Leave",
+  //       status: "Pending",
+  //       RequestStatus: RequestStatus.PENDING,
+  //     },
+  //   ],
+  // });
 
   console.log("Database has been seeded successfully!");
 }

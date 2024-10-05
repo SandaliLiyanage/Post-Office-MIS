@@ -24,7 +24,10 @@ class BundleService {
                     }
                 };
                 
-            }else{
+            }else if(destPostalCode ==sourcePostalCode){
+                return null
+            }
+            else{
                 console.log("bundle not found. creating a new bundle")
                 const bundleRoute = await this.bundleRouteCreation( destPostalCode, sourcePostalCode)
                 const bundleID = await bundleRepository.createBundle(destPostalCode, sourcePostalCode, bundleRoute );

@@ -51,8 +51,6 @@ export default function EmployeeRecords() {
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <p className="text-xl font-bold">Employee Accounts</p>
         <div className='flex flex-end gap-2 '>
-       
-  
         <Button className="bg-slate-700 " onClick={()=>navigate('/dashboard/employeeRegistrations')}>Add Employee</Button>
         </div>
     </div>

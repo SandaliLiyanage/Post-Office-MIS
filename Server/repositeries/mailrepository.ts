@@ -36,7 +36,7 @@ class MailRepository {
     postalCode: string,
     mailCategoryName: MailType,
     transactionID: number,
-    bundleID: number
+    bundleID: number|null
   ): Promise<Mail> {
     try {
       console.log("adding mail");

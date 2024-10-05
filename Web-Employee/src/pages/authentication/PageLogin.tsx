@@ -121,14 +121,12 @@ export default function Login() {
               )}
             />
           </div >
-          <div className="gap-5 flex ">
+          <div className="gap-2 pb-6 flex ">
             <Button type="submit" className="bg-slate-800" >Log in</Button>
             <Toaster/>
-            <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>SignUp</Button>
+            <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
-          <div className="pb-5 text-red-600">
-          <Link className ="mt-2" to='/forgotpassword'>Forgot Password?Reset!</Link>
-          </div>
+          
         </form>
       </Form>
         </div>

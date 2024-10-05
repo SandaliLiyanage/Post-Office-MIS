@@ -23,7 +23,7 @@ import Chart from './chart'
 import axios from "axios";
 import { cn } from "@/lib/utils" 
 import { useUser } from '../authentication/usercontext';
-
+import { Label } from "@/components/ui/label";
 
 export interface IChartData {
   month: string,
@@ -65,12 +65,14 @@ export default function RevenueReports() {
       </div>
     
         <div className="grid grid-cols-3 gap-4">
+        <div className="flex flex-col">
+        <Label>Start Date</Label>
         <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-[240px] justify-start text-left font-normal mt-2",
             !startDate && "text-muted-foreground"
           )}
         >
@@ -87,12 +89,16 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
+    </div>
+    <div className="flex flex-col">
+    <Label>End Date</Label>
+
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-[240px] justify-start text-left font-normal mt-2",
             !endDate && "text-muted-foreground"
           )}
         >
@@ -109,9 +115,13 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
+    </div>
+    <div className="flex flex-col">
+    <Label>Report Type</Label>
+
     <Select 
             onValueChange={(newValue) => setType(newValue)}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px] mt-2">
         <SelectValue placeholder="Select Report Type" onSelect={()=>setType(Select.name)} />
       </SelectTrigger>
       <SelectContent>
@@ -121,6 +131,7 @@ export default function RevenueReports() {
         </SelectGroup>
       </SelectContent>
     </Select>
+    </div>
   
     {chartData && type=="Revenue" &&
     <ChartRevenue data={chartData}/>

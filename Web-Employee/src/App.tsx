@@ -18,6 +18,7 @@ import MailDelivery from "./pages/mail/mails/PageMailDelivery";
 import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
 import RetAddress from "./pages/mail/mails/retaddress"
+import Addaddress from "./pages/mail/mailorder/addaddress";
 function App() {
   return (
     
@@ -45,7 +46,9 @@ function App() {
           <Route path ="endtransaction" element={<EndTransaction/>}></Route>
           <Route path="failedtoDeliver" element={<ReturnMail/>}></Route>
           <Route path = "retaddress" element={<RetAddress/>}></Route>
+          <Route path = "/addaddress" element={<Addaddress/>}></Route>
         </Route>
+
       </Routes>
     </Router>
   );

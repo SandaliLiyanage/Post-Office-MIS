@@ -26,7 +26,7 @@ class MailService {
               enumMail = MailType.COURIER 
             }
             console.log(enumMail, "enum Mail", bundleID,bundleID)
-            if (typeof (bundleID) === "number" && enumMail != null ){
+            if ((typeof (bundleID) === "number" || bundleID == null) &&  enumMail != null  ){
               console.log(enumMail)
               const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID ); 
               confirmedMail.push(mail)

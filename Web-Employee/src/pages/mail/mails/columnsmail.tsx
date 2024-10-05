@@ -10,15 +10,13 @@ export interface IMail{
   }
 const columns: ColumnDef<IMail>[] = [
     {
+    accessorKey: "mailID",
+    header: "Mail ID",
+    },    
+    {
       accessorKey: "mailType",
       header: "Category",
-      },
-    {
-      accessorKey: "bundleID",
-      header: "BundleID",
-    },
-    
-    
+      },    
     {
       accessorKey: "weight",
       header: "Weight",

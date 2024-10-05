@@ -16,7 +16,7 @@ const chartConfig = {
   },
   courier: {
     label: "courier",
-    color: "#60a5fa",
+    color: "#122c4d",
   },
 } satisfies ChartConfig
 

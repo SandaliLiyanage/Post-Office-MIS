@@ -23,17 +23,11 @@ export default function SideBar() {
     setActiveButton(lastPart)
     
   })
-  const EmployeeRecords = <NavButton className={`${activeButton === 'employeeRecords' ? clickedColour : normalColour}`}
+  const EmployeeRecords = <NavButton className={`${activeButton === 'employeeRecords' || activeButton === 'view' ?  clickedColour : normalColour}`}
                           onClick={() =>{
                             handleClick('employeeRecords');
                             navigate("/dashboard/employeeRecords")
                           }}> Employee Accounts</NavButton>
-
-  const MailAssignments = <NavButton className={`${activeButton === 'mailAssignments'? clickedColour : normalColour}`}
-                          onClick={() => {
-                            handleClick('mailAssignments');
-                            navigate("/dashboard/mailAssignments");
-                            }}>Mail Assignments</NavButton>
 
   const RevenueReports = <NavButton className={`${activeButton === 'revenueReports'? clickedColour : normalColour}`}
                         onClick={() => {
@@ -41,7 +35,7 @@ export default function SideBar() {
                           navigate("/dashboard/revenueReports")
                         }}>Revenue Reports</NavButton>
 
-  const MailOrder = <NavButton className={`${activeButton === 'mailorder' ? clickedColour : normalColour}`} 
+  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('mailorder');
                           navigate("/dashboard/mailorder");
@@ -59,13 +53,7 @@ export default function SideBar() {
                           handleClick('leaveRequest')
                           navigate("/dashboard/leaveRequest")
                         } }>Request Leaves</NavButton>
-
-  const ViewLeaveRequests = <NavButton className={`${activeButton === 'viewLeaveRequests' ? clickedColour : normalColour}`} 
-                        onClick={() => {
-                          handleClick('ViewLeaveRequests')
-                          navigate("/dashboard/viewLeaveRequests")
-                        } }>View Leave Requests</NavButton>
-const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? clickedColour : normalColour}`} 
+  const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('mailBundles')
                           navigate("/dashboard/mailBundles")

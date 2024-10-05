@@ -8,15 +8,15 @@ import { ChartConfig, ChartContainer, ChartTooltip,ChartTooltipContent, ChartLeg
 const chartConfig = {
   normal_mail: {
     label: "normal_mail",
-    color: "#2563eb",
+    color: "#22c55e",
   },
   registered_mail: {
     label: "registered_mail",
-    color: "#60a5fa",
+    color: "#fde047",
   },
   courier: {
     label: "courier",
-    color: "#122c4d",
+    color: "#1e2a05",
   },
 } satisfies ChartConfig
 

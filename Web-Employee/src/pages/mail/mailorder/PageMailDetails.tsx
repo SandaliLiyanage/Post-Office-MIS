@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/command";
 import { useEffect } from "react";
 import { Label } from "../../../components/ui/label";
-
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
 import { CardMail } from "./cardMail";
@@ -264,15 +263,14 @@ export default function MailDetails() {
   };
   return (
     <div>
-     
-        {!transaction && (
-          <div className="flex overflow-hidden ">
-           <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
+      {!transaction && (
+        <div className="flex overflow-hidden ">
+          <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
             <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
               <p className="text-xl font-bold">Mail Order</p>
             </div>
 
-            <div className="p-8 bg-">
+            <div className="p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onConfirm)}>
                   <div className="grid grid-cols-2 gap-4 mb-4">
@@ -385,7 +383,7 @@ export default function MailDetails() {
                       name="weight"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Weight</FormLabel>
+                          <FormLabel>Weight (g)</FormLabel>
                           <FormControl>
                             <Input placeholder="Weight" {...field} />
                           </FormControl>
@@ -402,7 +400,7 @@ export default function MailDetails() {
                         onClick={onClickCalculate}
                         type="button"
                       >
-                        Calculate
+                        Calculate Price
                       </Button>
                       <Toaster />
                       {error !== null && price == null && (
@@ -412,7 +410,7 @@ export default function MailDetails() {
                       )}
                       {price !== null && (
                         <div className="bg-stone-300 bg-opacity-10 p-2 border-opacity-45">
-                          {price}
+                           Rs: {price}
                         </div>
                       )}
                     </div>
@@ -483,35 +481,32 @@ export default function MailDetails() {
                 </div>
               </div>
             </div>
-            
           </div>
           <div className="flex-1 overflow-auto ">
-        <CardMail
-          mailArray={mailArray}
-          confirm={confirm}
-          price={price}
-          transaction={transaction}
-          confirmedMailArray={confirmedMailArray}
-        />
-      </div>
+            <CardMail
+              mailArray={mailArray}
+              confirm={confirm}
+              price={price}
+              transaction={transaction}
+              confirmedMailArray={confirmedMailArray}
+            />
           </div>
-        )}
+        </div>
+      )}
 
-        
-      {transaction &&
-      <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-full flex-col static">
-        <div className="">
-        <CardMail
-          mailArray={mailArray}
-          confirm={confirm}
-          price={price}
-          transaction={transaction}
-          confirmedMailArray={confirmedMailArray}
-        />
-      </div>
-      </div>
-      }
-
+      {transaction && (
+        <div className=" flex-1 pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-full flex-col static">
+          <div className="flex-1">
+            <CardMail
+              mailArray={mailArray}
+              confirm={confirm}
+              price={price}
+              transaction={transaction}
+              confirmedMailArray={confirmedMailArray}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

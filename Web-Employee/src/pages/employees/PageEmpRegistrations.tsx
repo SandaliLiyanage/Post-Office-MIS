@@ -25,16 +25,6 @@ import {
 import { Toaster } from "../../components/ui/toaster";
 import { useToast } from "../../hooks/use-toast";
 import { useUser } from "../authentication/usercontext";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import {Label} from "../../components/ui/label";
 
 const ROLES = [
   "SUPERVISOR",

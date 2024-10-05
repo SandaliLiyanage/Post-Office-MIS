@@ -187,18 +187,28 @@
 import { Camera, CameraView } from "expo-camera";
 import {
   AppState,
-  Linking,
   SafeAreaView,
   StyleSheet,
   Alert,
   Text,
+  View,
 } from "react-native";
 
 import { useEffect, useRef, useState } from "react";
+import { IP } from "../../../config";
 
 // Scan screen
 export default function Scan() {
   const [hasPermission, setHasPermission] = useState(false); // State variable to track if the user has granted camera permissions
+  interface BundleData {
+    bundleID: string;
+    destPostalCode: string;
+    currentPostCode: string;
+    bundleStatus: string;
+    route: string[];
+  }
+
+  const [bundleData, setBundleData] = useState<BundleData | null>(null); // State variable to store fetched bundle data
   const qrLock = useRef(false); // Ref object to manage a lock to prevent multiple scans
   const appState = useRef(AppState.currentState); // Ref object to store the app state
 
@@ -227,31 +237,40 @@ export default function Scan() {
     };
   }, []);
 
-  // Handle barcode data processing
-  const handleBarcodeScanned = ({ data }: { data: string }) => {
-    console.log("Scanned data length:", data.length);
-    if (data && !qrLock.current) {
-      qrLock.current = true; // Lock the scanner to prevent multiple scans
-      console.log("Scanned data:", data);
+  // Fetch bundle data from backend using barcode data
+  const fetchBundleData = async (bundleID: string) => {
+    try {
+      const response = await fetch(
+        `http://${IP}:5000/bundles/find?bundleID=${bundleID}`
+      );
+      console.log("Response:", response);
+      if (!response.ok) {
+        throw new Error("Failed to fetch bundle data");
+      }
+      const data = await response.json();
 
-      // Show an alert with the scanned
+      if (!data || typeof data !== "object") {
+        throw new Error("Invalid bundle data");
+      }
+
+      console.log("Bundle Data:", data);
+      setBundleData(data); // Set the fetched bundle data
+    } catch (error) {
       Alert.alert(
-        "Scan Successful",
-        `Mail Details: ${data}`,
-        [
-          {
-            text: "Scan Again",
-            onPress: () => {
-              qrLock.current = false; // Unlock the scanner
-            },
-          },
-        ],
-        { cancelable: false } // Prevent the user from dismissing the alert
+        "Error",
+        (error as Error).message || "Failed to fetch bundle data"
       );
     }
   };
 
-  // // Handle case where the camera permission is still being requested
+  const handleBarcodeScanned = ({ data }: { data: string }) => {
+    if (data && !qrLock.current) {
+      qrLock.current = true; // Lock the scanner to prevent multiple scans
+      fetchBundleData(data); // Fetch bundle data based on scanned barcode
+    }
+  };
+
+  // Handle case where the camera permission is still being requested
   if (hasPermission === null) {
     return (
       <SafeAreaView style={styles.container}>
@@ -271,12 +290,28 @@ export default function Scan() {
 
   // Render the camera view
   return (
-    <SafeAreaView style={StyleSheet.absoluteFillObject}>
+    <SafeAreaView style={styles.container}>
       <CameraView
         style={StyleSheet.absoluteFillObject}
         facing="back" // Use the back camera
         onBarcodeScanned={handleBarcodeScanned} // Handle barcode scanning
       />
+
+      {/* Display the bundle data if available */}
+      {bundleData && (
+        <View style={styles.bundleInfo}>
+          <Text style={styles.bundleText}>
+            Bundle ID: {bundleData.bundleID}
+          </Text>
+          <Text style={styles.bundleText}>
+            Description: {bundleData.bundleStatus}
+          </Text>
+          <Text style={styles.bundleText}>
+            Status: {bundleData.bundleStatus}
+          </Text>
+          {/* Add other fields as necessary */}
+        </View>
+      )}
     </SafeAreaView>
   );
 }
@@ -287,5 +322,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  bundleInfo: {
+    position: "absolute",
+    bottom: 20,
+    left: 20,
+    right: 20,
+    padding: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    borderRadius: 10,
+    elevation: 5,
+  },
+  bundleText: {
+    fontSize: 16,
+    marginVertical: 5,
   },
 });

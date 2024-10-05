@@ -1,9 +1,11 @@
 import BundleService from "../services/bundleservice";
 import { Request, Response } from "express";
 import { BundleRepository } from "../repositeries/bundlerepository";
+import PostOfficeRepository from "../repositeries/postofficerepository";
 
 const bundleservice = new BundleService();
 const bundleRepository = new BundleRepository();
+const postOfficeRepository = new PostOfficeRepository();
 
 const CreatedBundles = async (req: Request, res: Response) => {
   console.log("Request received in mail bundle controller", req.body);
@@ -123,6 +125,24 @@ export const updateBundleStatus2 = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error updating mail status:", error);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const getPostOfficeName = async (req: Request, res: Response) => {
+  const { postalCode } = req.params;
+
+  try {
+    // Call the repository function to get the post office name
+    const postOffice = await postOfficeRepository.getPostOfficeName(postalCode);
+
+    if (!postOffice) {
+      return res.status(404).json({ message: "Post office not found" });
+    }
+
+    return res.status(200).json({ postOfficeName: postOffice.postOfficeName });
+  } catch (error) {
+    console.error("Error fetching post office:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
 

@@ -2,7 +2,10 @@ import { Router } from "express";
 // import {CustomerDetails} from '../controllers/customerdetails';
 
 import AuthService from "../services/authservice";
-import { CreatedBundles } from "../controllers/bundlecontroller";
+import {
+  CreatedBundles,
+  getPostOfficeName,
+} from "../controllers/bundlecontroller";
 import { DeliveryBundles } from "../controllers/bundlecontroller";
 import { UpdateBundleStatus } from "../controllers/bundlecontroller";
 import { getArrivedBundles } from "../controllers/bundlecontroller";
@@ -21,5 +24,6 @@ router.get("/created", getCreatedBundles);
 router.get("/dispatched", getDispatchedBundles);
 router.get("/distributed", getDistributedBundles);
 router.patch("/update-status", updateBundleStatus2);
+router.get("/postoffice", getPostOfficeName);
 
 export default router;

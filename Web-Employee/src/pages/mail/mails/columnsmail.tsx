@@ -18,8 +18,8 @@ const columns: ColumnDef<IMail>[] = [
       header: "Category",
       },    
     {
-      accessorKey: "weight",
-      header: "Weight",
+      accessorKey: "transaction.date",
+      header: "Date",
     },
     {
       accessorKey: "price",

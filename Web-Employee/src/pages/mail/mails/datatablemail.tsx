@@ -5,6 +5,8 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getFilteredRowModel,
+  ColumnFiltersState,
 } from "@tanstack/react-table"
 import { Input } from "@/components/ui/input"
 import {
@@ -15,6 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import * as React from "react"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -25,31 +28,39 @@ export function DataTable<TData, TValue>({
     columns,
     data,
   }: DataTableProps<TData, TValue>) {
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+      []
+    )
     const table = useReactTable({
       data,
       columns,
       getCoreRowModel: getCoreRowModel(),
+      onColumnFiltersChange: setColumnFilters,
+      getFilteredRowModel: getFilteredRowModel(),
+      state: {
+        columnFilters,
+      },
     })
     return (
       <div>
       <div className="flex items-center py-4 gap-2">
       <Input
-        placeholder="Filter emails..."
+        placeholder="Filter by Mail ID"
         value={(table.getColumn("mailID")?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
-          table.getColumn("mailID")?.setFilterValue(event.target.value)
+          table.getColumn("mailID")?.setFilterValue(event.target.value )
         }
         className="max-w-sm"
       />
 
-      <Input
-        placeholder="Sort by mail ID"
+      {/* <Input
+        placeholder="Sort by mail type"
         value={(table.getColumn("mailType" )?.getFilterValue() as string) ?? ""}
         onChange={(event) =>
           table.getColumn("mailType")?.setFilterValue(event.target.value)
         }
         className="max-w-sm"
-      />
+      /> */}
       </div>
         <div className="rounded-md border">
           <Table>

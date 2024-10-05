@@ -19,9 +19,8 @@ import { useUser } from './usercontext';
 import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
 import logo from '../../assets/logo.png';
-import { Link } from "react-router-dom"
 const formSchema = z.object({
-  employeeID: z.string().min(3, {
+  employeeEmail: z.string().min(3, {
   }),
   password: z.string().min(5, {
   }),
@@ -34,7 +33,7 @@ export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      employeeID: "",
+      employeeEmail: "",
       password: "",
     },
   })
@@ -58,7 +57,7 @@ export default function Login() {
           email: user.data.email
         }
       )
-      navigate('/dashboard')}
+      navigate('/dashboard/mailorder')}
       else{
         form.reset();
         toast({
@@ -95,10 +94,10 @@ export default function Login() {
           <div>
             <FormField
               control={form.control}
-              name="employeeID"
+              name="employeeEmail"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Employee ID</FormLabel>
+                  <FormLabel>Employee Email</FormLabel>
                   <FormControl>
                     <Input placeholder="Employee ID" {...field} />
                   </FormControl>
@@ -121,7 +120,7 @@ export default function Login() {
               )}
             />
           </div >
-          <div className="gap-2 pb-6 flex ">
+          <div className="gap-2 pb-20 flex ">
             <Button type="submit" className="bg-slate-800" >Log in</Button>
             <Toaster/>
             <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>

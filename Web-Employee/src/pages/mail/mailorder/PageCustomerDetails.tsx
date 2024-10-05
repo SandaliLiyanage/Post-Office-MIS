@@ -28,17 +28,7 @@ import axios from "axios";
 import {Label} from "../../../components/ui/label"
 import { useToast } from "../../../hooks/use-toast";
 import { Toaster } from "../../../components/ui/toaster";
-import { ToastAction } from "@/components/ui/toast"
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
+
 import {
   Dialog,
   DialogContent,
@@ -129,6 +119,11 @@ export default function MailOrder() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(addressID, " address id in onSubmit")
     if(addressID){
+      toast(
+        {
+          description:"Address verified"
+        }
+      )
       const postalCode = user?.postalCode
       localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
       const customerDetails = localStorage.getItem("customerDetails");
@@ -156,7 +151,6 @@ export default function MailOrder() {
 
    
       </div>,
-       duration: 50000,
       })
     }
   }

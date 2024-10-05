@@ -76,7 +76,7 @@ export default function Bundle() {
     <Tabs defaultValue="account">
       <TabsList>
         <TabsTrigger value="account">Mail Bundles for Transfer</TabsTrigger>
-        <TabsTrigger value="password">Mail Bundles for Delivery</TabsTrigger>
+        <TabsTrigger value="password">Mail Bundles for Distribution</TabsTrigger>
       </TabsList>
       <TabsContent value="account" ><div className='bg-white'><DataTable columns={columnstoTransfer} data={transferBundle} /></div></TabsContent>
       <TabsContent value="password"><div className='bg-white'><DataTable columns={columnsforDelivery} data={deliveryBundle} /></div></TabsContent>

@@ -37,7 +37,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
@@ -47,7 +55,7 @@ const formSchema = z.object({
     .min(1, { message: "Weight must be at least 1" })
     .max(2000, { message: "Weight cannot exceed 2000" }),
 });
-
+import Addaddress from "./addaddress";
 export type MailDetailsType = {
   price: number | null;
   mailType: string;
@@ -148,9 +156,10 @@ export default function MailDetails() {
 
   //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
   async function onConfirm(values: z.infer<typeof formSchema>) {
-    4;
+
     console.log("in confirm");
     try {
+  
       const mailDetails = { ...values, price, addressID };
       let localMailStorage = localStorage.getItem("mail details");
       console.log("in confirm", localMailStorage);
@@ -215,7 +224,7 @@ export default function MailDetails() {
       const postalCode = user?.postalCode;
       const localCustomerStorage = localStorage.getItem("customerDetails");
 
-      if (confirm && price && localCustomerStorage) {
+      if (localCustomerStorage) {
         const customerDetails = JSON.parse(localCustomerStorage);
         const response = await axios.post(
           "http://localhost:5000/mail/mailDetails",
@@ -239,12 +248,6 @@ export default function MailDetails() {
           mailArray,
           total
         );
-        // displayInvoice(
-        //   customerDetails.name,
-        //   customerDetails.telephone,
-        //   mailArray,
-        //   total
-        // )
 
         localStorage.removeItem("customerDetails");
         setTransaction(true);
@@ -428,9 +431,6 @@ export default function MailDetails() {
                         className="bg-white border-b-2 border border-slate-300 text-slate-800 hover:bg-slate-300"
                         onClick={() => {
                           if (confirm) {
-                            // form.reset()
-                            // setSearch("")
-                            // setPrice(null)
                             location.reload();
                           }
                           setConfirm(false);

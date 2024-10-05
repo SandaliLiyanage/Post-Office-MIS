@@ -17,10 +17,7 @@ const columns: ColumnDef<IReturnMail>[] = [
       accessorKey: "customerName",
       header: "Customer Name",
     },
-    {
-      accessorKey: "customerAddressID",
-      header: "Address ID",
-    },
+  
     {
       accessorKey: "customerTelephone",
       header: "Telephone Number",
@@ -39,7 +36,26 @@ const columns: ColumnDef<IReturnMail>[] = [
         
         return(
           <div>
-            <Button className="rounded-sm bg-sky-600" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Add Return Address</Button>
+            <Button className="rounded-sm bg-sky-600" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Change Address</Button>
+          </div>
+        )
+      }
+    },
+    { 
+      
+      header: "Return to the customer",
+      id: "actions",
+      cell: ({ row }) => {
+        const navigate = useNavigate()
+
+        const returnMail = row.original
+        function changeAddress(){
+
+        }
+        
+        return(
+          <div>
+            <Button className="rounded-sm bg-green-500" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Return </Button>
           </div>
         )
       }

@@ -33,7 +33,7 @@ export default function SideBar() {
                         onClick={() => {
                           handleClick('revenueReports')
                           navigate("/dashboard/revenueReports")
-                        }}>Revenue Reports</NavButton>
+                        }}>Reports</NavButton>
 
   const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' ? clickedColour : normalColour}`} 
                         onClick={() => {
@@ -84,12 +84,10 @@ export default function SideBar() {
           <>
             {EmployeeRecords}
             {EmployeeRegistrations}
-            {MailOrder}
             {ViewMail}
             {RevenueReports}
             {PostmanAssignments}
             {MailBundles}
-            {FailedToDeliver}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (
@@ -97,15 +95,14 @@ export default function SideBar() {
             {ViewMail}
             {MailBundles}
             {PostmanAssignments}
-            {LeaveRequest}
             {RevenueReports}
+            {MailOrder}
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (
           <>
             {MailOrder}
             {ViewMail}
-            {LeaveRequest}
             {FailedToDeliver}
           </>
         )}

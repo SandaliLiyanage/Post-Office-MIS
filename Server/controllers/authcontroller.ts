@@ -8,10 +8,10 @@ const otpService = new OTPService();
 const employeeService = new EmployeeService();
 
 const Login = async (req: Request, res: Response) => {
-    const { employeeID, password } = req.body;
+    const { employeeEmail, password } = req.body;
 
     try {
-        const result = await authService.login(employeeID, password);
+        const result = await authService.login(employeeEmail, password);
         console.log("in controller", result);
         if (result.token) {
             return res.status(200).json(result);
@@ -25,9 +25,9 @@ const Login = async (req: Request, res: Response) => {
 };
 const ValidateID = async(req: Request, res: Response)=>{
     console.log("validating id")
-    const {employeeID} = req.body;
+    const {employeeEmail} = req.body;
     try{
-        const employee = await employeeService.validateEmployeeID(employeeID)
+        const employee = await employeeService.validateEmployeeID(employeeEmail)
         return res.status(200).json(employee);
     }catch(error){
         throw error

@@ -1,6 +1,6 @@
 import { MailRepository } from "../repositeries/mailrepository";
 import BundleService from "../services/bundleservice";
-import { MailType } from "@prisma/client";
+import { MailStatus, MailType } from "@prisma/client";
 
 
 const mailRepository = new MailRepository();
@@ -26,9 +26,14 @@ class MailService {
               enumMail = MailType.COURIER 
             }
             console.log(enumMail, "enum Mail", bundleID,bundleID)
-            if ((typeof (bundleID) === "number" || bundleID == null) &&  enumMail != null  ){
+            if ((typeof (bundleID) === "number") &&  enumMail != null  ){
               console.log(enumMail)
-              const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID ); 
+              const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID, MailStatus.IN_TRANSIT ); 
+              confirmedMail.push(mail)
+            }
+            if ((bundleID == null )&&  enumMail != null  ){
+              console.log(enumMail)
+              const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID, MailStatus.IN_TRANSIT ); 
               confirmedMail.push(mail)
             }
           }

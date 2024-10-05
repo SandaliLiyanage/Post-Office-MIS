@@ -1,4 +1,5 @@
 import {Prisma, PrismaClient, Address} from "@prisma/client"
+import { error } from "console";
 const prisma = new PrismaClient();
 
 class AddressRepository{
@@ -28,6 +29,33 @@ class AddressRepository{
             console.log("unable to query", error)
             throw error
     } 
+    }
+    async getAddress(addressID: number) : Promise<string|null>{
+      try{
+      const res = await prisma.address.findUnique({
+        where:{
+          addressID: addressID
+        },
+        select:{
+          addressNo: true,
+          streetName: true,
+          Locality:true,
+          postalCode:true
+
+        }
+      })
+      if( res){
+      const addressResult =  `${res.addressNo? `${res.addressNo}, `: ""  } ${res.streetName? `${res.streetName}, `: ""  } ${res.Locality? `${res.Locality}, `: ""  } ${res.postalCode}`
+      console.log(addressResult, "hi")
+      return addressResult
+      }else{
+        return ""
+      }
+    }catch{
+        console.error(error)
+        return ""
+      }
+
     }
 
     async getDestPostalCode(addressID: number): Promise<string | null> {

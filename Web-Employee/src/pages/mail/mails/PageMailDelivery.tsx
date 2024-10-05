@@ -7,7 +7,7 @@ import { Button } from "../../../components/ui/button";
 interface AreaAssignments{
   area: string,
   employeeName: string,
-  mailID: number[]
+  mailID: string[]
 
 
 }
@@ -49,11 +49,11 @@ export default function MailDelivery() {
         <Button className="btn bg-white " variant="outline"  size="icon"><Edit color="black" size={18} className="hover:none"></Edit></Button>
       </div>
     </div>
-    <div className="grid: grid-cols-2">
+    <div className=" ">
     {
         areaDet !=null && areaDet.map((area)=>(
             <div> 
-            <div className="bg-blue-200  w-1/2 m-5 p-5 rounded-sm">
+            <div className="bg-blue-200 m-5 p-5 rounded-sm">
             <div className="flex justify-between">
               <div className="flex justify-start">
             <Label className="font-bold text-black">{area.area} <p className="text-slate-500 font-light text-sm">  </p></Label>

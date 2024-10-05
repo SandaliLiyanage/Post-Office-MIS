@@ -18,6 +18,9 @@ class MailRepository {
         where: {
           postalCode: postalCode,
         },
+        include: {
+          transaction: true
+        }
       });
       console.log("Mails queried", res);
       
@@ -36,7 +39,8 @@ class MailRepository {
     postalCode: string,
     mailCategoryName: MailType,
     transactionID: number,
-    bundleID: number|null
+    bundleID: number|null,
+    mailstatus: MailStatus
   ): Promise<Mail> {
     try {
       console.log("adding mail");
@@ -50,6 +54,7 @@ class MailRepository {
           transactionID: transactionID,
           price: price,
           bundleID: bundleID,
+          mailstatus: mailstatus
         },
       });
 

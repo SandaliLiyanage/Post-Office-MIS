@@ -1,4 +1,5 @@
 import {PrismaClient, BundleStatus} from "@prisma/client"
+import { AddressRepository } from "./addressrepository";
 const prisma = new PrismaClient();
 interface  AreaDet{
     areaName: string,
@@ -7,8 +8,9 @@ interface  AreaDet{
     addressID: number
 }
 
-
+const addressRepostiory = new AddressRepository()
 class AreaRepository{
+    
     async getArea (postalCode: string ){
         try{
         console.log("in area repository")
@@ -22,14 +24,16 @@ class AreaRepository{
             LEFT JOIN "Employee" AS e ON a."employeeID" = e."employeeID"
             JOIN "Address"  AS ad ON ad."areaID" = a."areaID" 
             JOIN "Mail" AS m ON m."recepientAddressID" = ad."addressID"
-            JOIN "Bundle" AS b ON b."bundleID" = m."bundleID"
-            WHERE a."postalCode" = ${postalCode} AND m."mailstatus" = 'IN_TRANSIT'::"MailStatus";`
+            LEFT JOIN "Bundle" AS b ON b."bundleID" = m."bundleID"
+            WHERE a."postalCode" = ${postalCode} AND m."mailstatus" = 'IN_TRANSIT'::"MailStatus" 
+            ;`
    
     const res : {[key: string]: {employeeName: string, mailID: number[]}}={};
     response.forEach(response=>{
         const area = response.areaName
+        const address =addressRepostiory.getAddress(response.addressID)
         if(!res[area]){
-            res[area] = {employeeName: response.employeeName, mailID: [response.mailID]}
+            res[area] = {employeeName: response.employeeName, mailID: [response.mailID],  }
         }
         else{
             res[area].mailID.push(response.mailID)

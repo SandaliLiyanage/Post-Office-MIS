@@ -32,7 +32,7 @@ class EmployeeRepository {
             "PostOffice" AS p 
             ON
             e."postalCode" = p."postalCode"
-            WHERE e."employeeID" = ${userName}`;
+            WHERE e."email" = ${userName}`;
       console.log("res res res", res[0]);
       return res[0];
     } catch (error) {
@@ -44,7 +44,7 @@ class EmployeeRepository {
     try {
       const res = await prisma.employee.findUnique({
         where: {
-          employeeID: username,
+          email: username,
         },
       });
 

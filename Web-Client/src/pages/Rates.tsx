@@ -1,30 +1,31 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography } from '@mui/material';
+import { Box, TextField, Button, Typography, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import NavBar from '../components/ui/NavBar';
 import axios from 'axios'; // Import axios for HTTP requests
 
 const CalculatePostalRates: React.FC = () => {
   const [weight, setWeight] = useState<string>(''); // Stores the weight input by the user
   const [rate, setRate] = useState<string | null>(null); // Stores the calculated rate
+  const [mailType, setMailType] = useState<string>('normal mail'); // Stores the selected mail type
 
   // Event handler when the user clicks 'Calculate'
   const handleCalculate = async () => {
     const weightNumber = Number(weight);
-  
+
     if (!weight || isNaN(weightNumber) || weightNumber <= 0) {
       alert('Please enter a valid weight!');
       return;
     }
-  
+
     try {
       // Make a POST request to the backend to calculate the postal rate
       const response = await axios.post('http://localhost:5001/mail/calculatePrice', {
-        mailType: 'normal mail', 
+        mailType,
         weight: weightNumber
       });
 
-      console.log(response.data)
-  
+      console.log(response.data);
+
       // Set the rate based on the backend response
       setRate(response.data);
     } catch (error) {
@@ -32,7 +33,7 @@ const CalculatePostalRates: React.FC = () => {
       alert('Failed to calculate postal rate');
     }
   };
-  
+
   return (
     <div>
       <NavBar /> {/* Add NavBar here */}
@@ -47,6 +48,21 @@ const CalculatePostalRates: React.FC = () => {
         <Typography variant="h4" sx={{ marginBottom: '20px' }}>
           Calculate Postal Rates
         </Typography>
+
+                {/* Dropdown for selecting mail type */}
+                <FormControl variant="outlined" sx={{ marginBottom: '20px', width: '300px' }}>
+          <InputLabel id="mail-type-label">Mail Type</InputLabel>
+          <Select
+            labelId="mail-type-label"
+            value={mailType}
+            onChange={(e) => setMailType(e.target.value as string)}
+            label="Mail Type"
+          >
+            <MenuItem value="normal mail">Normal Mail</MenuItem>
+            <MenuItem value="registered mail">Registered Mail</MenuItem>
+            <MenuItem value="courier">Courier</MenuItem>
+          </Select>
+        </FormControl>
 
         {/* Input field for weight */}
         <TextField

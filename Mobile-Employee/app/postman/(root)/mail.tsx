@@ -352,7 +352,6 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     paddingBottom: 13,
   },
-
   buttonsContainer: {
     flexDirection: "row", // Aligns buttons in a row
     justifyContent: "space-between", // Space between the buttons
@@ -383,7 +382,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
     borderRadius: 5,
     flex: 1, // Takes equal space as markAsButton
-    marginLeft: 5, // Adds space between two buttons
     justifyContent: "center", // Centers text vertically
     alignItems: "center",
   },

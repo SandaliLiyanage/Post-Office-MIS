@@ -224,16 +224,30 @@ const Bundles = () => {
               </View>
 
               {/* Buttons section */}
-              {/* <View style={styles.buttonsContainer}>
-                {(selectedBundle.mailstatus === "DELIVERED" ||
-                  selectedBundle.mailstatus === "RETURNED") && (
+              <View style={styles.buttonsContainer}>
+                {/* Check if the bundle is either "CREATED" or "ARRIVED" */}
+                {(selectedBundle.bundleStatus === "CREATED" ||
+                  selectedBundle.bundleStatus === "ARRIVED") && (
                   <TouchableOpacity
                     style={styles.markAsButton}
-                    onPress={() => updateBundleStatus("IN_TRANSIT")}
+                    onPress={() => updateBundleStatus("DISPATCHED")}
                   >
                     <Text style={styles.buttonText}>
                       {"  "}
-                      Mark as {"\n"} "To be Delivered"
+                      Mark as {"\n"} "Dispatched"
+                    </Text>
+                  </TouchableOpacity>
+                )}
+
+                {/* Additional button for "ARRIVED" status to mark as "DISTRIBUTED" */}
+                {selectedBundle.bundleStatus === "ARRIVED" && (
+                  <TouchableOpacity
+                    style={styles.markAsButton}
+                    onPress={() => updateBundleStatus("DISTRIBUTED")}
+                  >
+                    <Text style={styles.buttonText}>
+                      {"  "}
+                      Mark as {"\n"} "Distributed"
                     </Text>
                   </TouchableOpacity>
                 )}
@@ -244,7 +258,7 @@ const Bundles = () => {
                 >
                   <Text style={styles.closeButtonText}>Close</Text>
                 </TouchableOpacity>
-              </View> */}
+              </View>
             </View>
           )}
         </View>
@@ -356,7 +370,6 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     paddingBottom: 13,
   },
-
   buttonsContainer: {
     flexDirection: "row", // Aligns buttons in a row
     justifyContent: "space-between", // Space between the buttons
@@ -376,10 +389,10 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "bold",
     textAlign: "center",
-    paddingRight: 7,
+    paddingRight: 3,
   },
   closeButton: {
     backgroundColor: "#747474",
@@ -387,13 +400,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
     borderRadius: 5,
     flex: 1, // Takes equal space as markAsButton
-    marginLeft: 5, // Adds space between two buttons
     justifyContent: "center", // Centers text vertically
     alignItems: "center",
   },
   closeButtonText: {
     color: "#fff",
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "bold",
     textAlign: "center",
   },

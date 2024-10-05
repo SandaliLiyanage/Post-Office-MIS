@@ -46,9 +46,8 @@ function App() {
           <Route path ="endtransaction" element={<EndTransaction/>}></Route>
           <Route path="failedtoDeliver" element={<ReturnMail/>}></Route>
           <Route path = "retaddress" element={<RetAddress/>}></Route>
-          <Route path = "/addaddress" element={<Addaddress/>}></Route>
+          <Route path = "addaddress" element={<Addaddress/>}></Route>
         </Route>
-
       </Routes>
     </Router>
   );

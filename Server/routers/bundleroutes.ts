@@ -13,6 +13,7 @@ import { getDistributedBundles } from "../controllers/bundlecontroller";
 import { getCreatedBundles } from "../controllers/bundlecontroller";
 import { getDispatchedBundles } from "../controllers/bundlecontroller";
 import { updateBundleStatus2 } from "../controllers/bundlecontroller";
+import { findBundle } from "../controllers/bundlecontroller";
 const authService = new AuthService();
 
 const router = Router();
@@ -25,5 +26,6 @@ router.get("/dispatched", getDispatchedBundles);
 router.get("/distributed", getDistributedBundles);
 router.patch("/update-status", updateBundleStatus2);
 router.get("/postoffice", getPostOfficeName);
+router.get("/find", findBundle);
 
 export default router;

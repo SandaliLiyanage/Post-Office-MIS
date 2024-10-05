@@ -12,7 +12,6 @@ import {
 import Modal from "react-native-modal";
 import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
-import axios from "axios";
 
 interface Bundle {
   bundleID: string;

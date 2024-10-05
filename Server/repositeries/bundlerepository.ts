@@ -201,6 +201,21 @@ class BundleRepository {
     }
   }
 
+  async findBundle2(bundleID: number): Promise<Bundle[]> {
+    console.log("in find bundle");
+    try {
+      const res = await prisma.bundle.findUnique({
+        where: {
+          bundleID: bundleID,
+        },
+      });
+      console.log("bundle found", res);
+      return res ? [res] : [];
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createBundle(
     destPostalCode: string,
     sourcePostalCode: string,

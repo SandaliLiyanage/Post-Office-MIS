@@ -227,4 +227,45 @@ export const getPostOfficeName = async (req: Request, res: Response) => {
   }
 };
 
+export const findBundle = async (req: Request, res: Response) => {
+  try {
+    const bundleID = req.query.bundleID as string;
+    if (!bundleID) {
+      return res.status(400).json({ error: "Bundle ID is required" });
+    }
+
+    const bundle = await bundleRepository.findBundle2(Number(bundleID));
+    if (!bundle || bundle.length === 0) {
+      return res.status(404).json({ error: "No bundles found" });
+    }
+
+    let routeNameArray: string[] = [];
+    for (const singleBundle of bundle) {
+      const destPostalName = await postOfficeRepository.getPostOfficeName(
+        singleBundle.destPostalCode
+      );
+      const currentPostalName = await postOfficeRepository.getPostOfficeName(
+        singleBundle.currentPostCode
+      );
+      for (const code of singleBundle.route) {
+        const postalName = await postOfficeRepository.getPostOfficeName(code);
+        if (postalName) {
+          routeNameArray.push(`${postalName.postOfficeName}`);
+        }
+      }
+      singleBundle.destPostalCode = destPostalName?.postOfficeName || "Unknown";
+      singleBundle.currentPostCode =
+        currentPostalName?.postOfficeName || "Unknown";
+      singleBundle.route = routeNameArray;
+      routeNameArray = [];
+    }
+
+    console.log("Bundle found:", bundle);
+    return res.status(200).json(bundle);
+  } catch (error) {
+    console.error("Error in findBundle controller:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 export { CreatedBundles, DeliveryBundles, UpdateBundleStatus };

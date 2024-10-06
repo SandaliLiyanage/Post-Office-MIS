@@ -1,33 +1,32 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography } from '@mui/material';
-import NavBar from '../components/ui/NavBar';
-import axios from 'axios';
+import NavBar from '../components/ui/NavBar';  
 
 const EstimateDeliveryTime: React.FC = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>('');  // Stores the tracking number
   const [estimatedTime, setEstimatedTime] = useState<string | null>(null);  // Stores the estimated delivery time
-  const [error, setError] = useState<string | null>(null);  // Stores error messages
+  const [receiverName, setReceiverName] = useState<string | null>(null);  // Stores the receiver's name (mocked)
 
-  const GOOGLE_MAPS_API_KEY = 'your_actual_api_key_here'; //AIzaSyCLI12v3YiFsivav4C2p1FqWEBU1acjFeQ
-
-  // Function to estimate delivery time based on tracking number
-  const handleEstimate = async () => {
+  // Mock function to estimate delivery time and receiver's name based on tracking number
+  const calculateEstimatedTime = (trackingNumber: string) => {
     if (trackingNumber) {
-      try {
-        // Send a POST request to the backend endpoint to estimate delivery time using Axios
-        const response = await axios.post('http://localhost:5001/mail/estimate-delivery-time', {
-          transactionID: trackingNumber, // Send tracking number as transactionID
-          apiKey: GOOGLE_MAPS_API_KEY,  // Include API key in the request
-        });
+      return {
+        deliveryTime: 'Estimated Delivery Time: 12 hours',  // Mocked delivery time
+        receiver: 'John Carter',  // Mocked receiver's name
+      };
+    }
+    return {
+      deliveryTime: 'Unknown',
+      receiver: 'Unknown',
+    };
+  };
 
-        // Set the estimated delivery time from the response
-        setEstimatedTime(response.data.deliveryTime);
-        setError(null); // Clear any previous error messages
-      } catch (err) {
-        console.error(err);
-        setError(err instanceof Error ? err.message : 'An unexpected error occurred.');
-        setEstimatedTime(null); // Clear the estimated time on error
-      }
+  // Event handler for when the user clicks 'Estimate'
+  const handleEstimate = () => {
+    if (trackingNumber) {
+      const { deliveryTime, receiver } = calculateEstimatedTime(trackingNumber);
+      setEstimatedTime(deliveryTime);  // Set the estimated time
+      setReceiverName(receiver);  // Set the receiver's name
     } else {
       alert('Please enter a tracking number.');
     }
@@ -35,7 +34,7 @@ const EstimateDeliveryTime: React.FC = () => {
 
   return (
     <div>
-      <NavBar />
+      <NavBar />  
       <Box
         display="flex"
         flexDirection="column"
@@ -66,15 +65,11 @@ const EstimateDeliveryTime: React.FC = () => {
           Estimate
         </Button>
 
-        {/* Display the estimated delivery time or error message */}
-        {estimatedTime && (
+        {/* Display the estimated delivery time and receiver's name */}
+        {estimatedTime && receiverName && (
           <Typography variant="h6" sx={{ marginTop: '20px' }}>
-            {estimatedTime}
-          </Typography>
-        )}
-        {error && (
-          <Typography variant="h6" sx={{ marginTop: '20px', color: 'red' }}>
-            {error}
+            {estimatedTime} <br />
+            Receiver: {receiverName}
           </Typography>
         )}
       </Box>

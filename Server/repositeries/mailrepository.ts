@@ -162,7 +162,7 @@ class MailRepository {
             FROM "Mail" AS m
             JOIN "PostOffice" AS p 
             ON m."postalCode" = p."postalCode"
-            WHERE m."transactionID" = ${transactionID}
+            WHERE m."mailID" = ${transactionID}
             LIMIT 100
         `;
 

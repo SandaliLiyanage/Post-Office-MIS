@@ -19,7 +19,7 @@ const CalculatePostalRates: React.FC = () => {
 
     try {
       // Make a POST request to the backend to calculate the postal rate
-      const response = await axios.post('http://localhost:5001/mail/calculatePrice', {
+      const response = await axios.post('http://localhost:5000/mail/calculatePrice', {
         mailType,
         weight: weightNumber
       });
@@ -87,7 +87,7 @@ const CalculatePostalRates: React.FC = () => {
         {/* Display the calculated rate */}
         {rate && (
           <Typography variant="h6" sx={{ marginTop: '20px' }}>
-            Estimated Postal Rate: {rate} LKR
+            Calculated Postal Rate: {rate} LKR
           </Typography>
         )}
       </Box>

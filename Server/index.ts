@@ -19,7 +19,7 @@ app.use("/auth", AuthRoutes);
 app.use("/delivery", DeliveryRoutes)
 app.use("/bundles", BundleRoutes)
 
-const port = 5001;
+const port = 5000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port} `);
 });

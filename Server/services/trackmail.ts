@@ -12,7 +12,7 @@ class TrackMail {
 
             // Check if conversion was successful and is a valid number
             if (isNaN(transactionIDInt)) {
-                throw new Error("Invalid transaction ID. Must be a number.");
+                throw new Error("Invalid tracking number. Must be a number.");
             }
 
             // Fetch mail details using the integer transaction ID
@@ -20,7 +20,7 @@ class TrackMail {
             if (mailDetails.length > 0) {
                 return mailDetails;
             } else {
-                throw new Error("No mail details found for the given transaction ID");
+                throw new Error("No mail details found for the given tracking number");
             }
         } catch (error) {
             console.error("Error fetching mail details:", error);

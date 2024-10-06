@@ -5,7 +5,7 @@ import {
   View,
   Text,
   TextInput,
-  Button,
+  TouchableOpacity,
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -14,8 +14,8 @@ import * as Location from "expo-location";
 
 const AddAddress = () => {
   const [region, setRegion] = useState({
-    latitude: 6.791534055020761,
-    longitude: 79.90200871740784,
+    latitude: 6.924172260546507,
+    longitude: 79.96982292945405,
     latitudeDelta: 0.02,
     longitudeDelta: 0.02,
   });
@@ -37,17 +37,12 @@ const AddAddress = () => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-      setRegion({
-        ...region,
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
       setCurrentLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
       });
     })();
-  }, []);
+  }, []); // Removed `region` from the dependency array to prevent overriding
 
   const handleAddAddress = () => {
     if (addressNo && streetName && locality) {
@@ -64,10 +59,36 @@ const AddAddress = () => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Map section */}
+
+      <View style={styles.topcontainer}>
+        <TextInput
+          style={styles.input}
+          placeholder="Address No"
+          value={addressNo}
+          onChangeText={setAddressNo}
+          selectionColor="black"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Street Name"
+          value={streetName}
+          onChangeText={setStreetName}
+          selectionColor="black"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Locality"
+          value={locality}
+          onChangeText={setLocality}
+          selectionColor="black"
+        />
+      </View>
       <MapView
         style={styles.map}
-        region={region}
-        onRegionChangeComplete={(region) => setRegion(region)}
+        initialRegion={region} // Use initialRegion here to avoid automatic re-focus
+        onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
+        showsUserLocation={true} // This enables the blue dot for the current GPS location
+        followsUserLocation={true} // Optionally, this makes the map follow the user's location
       >
         {currentLocation && (
           <Marker
@@ -80,25 +101,10 @@ const AddAddress = () => {
 
       {/* Address form section */}
       <View style={styles.formContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Address No"
-          value={addressNo}
-          onChangeText={setAddressNo}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Street Name"
-          value={streetName}
-          onChangeText={setStreetName}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Locality"
-          value={locality}
-          onChangeText={setLocality}
-        />
-        <Button title="Add Address" onPress={handleAddAddress} />
+        {/* Custom Button using TouchableOpacity */}
+        <TouchableOpacity style={styles.button} onPress={handleAddAddress}>
+          <Text style={styles.buttonText}>Add Address</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -108,14 +114,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
+    marginTop: -31, // Adjust the top margin to avoid the SafeAreaView padding
+  },
+  topcontainer: {
+    padding: 20,
+    paddingBottom: 10,
+    backgroundColor: "#fff",
   },
   map: {
     width: Dimensions.get("window").width,
-    height: "40%", // Top part of the screen
+    height: "55%", // Top part of the screen
   },
   formContainer: {
-    padding: 20,
+    padding: 10,
+    paddingTop: 15,
     backgroundColor: "#fff",
+    height: "50%", // Bottom part of the screen
   },
   input: {
     borderColor: "#ccc",
@@ -123,6 +137,18 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
+  },
+  button: {
+    backgroundColor: "#007BFF", // You can change this to any color
+    padding: 15,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  buttonText: {
+    color: "#fff", // Text color
+    fontSize: 17,
+    fontWeight: "bold",
   },
 });
 

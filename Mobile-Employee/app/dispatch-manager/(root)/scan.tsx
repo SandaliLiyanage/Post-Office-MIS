@@ -8,9 +8,14 @@ import {
   View,
   Modal,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
 
 import { useEffect, useRef, useState } from "react";
+import { useUser } from "../../auth/usercontext";
+//const { user } = useUser();
+//const employeeID = user?.employeeID;
+const employeeID = "0005";
 import { IP } from "../../../config";
 
 // Scan screen
@@ -54,6 +59,13 @@ export default function Scan() {
     };
   }, []);
 
+  useEffect(() => {
+    if (bundleData) {
+      console.log("Bundle Data Updated:", bundleData);
+      setModalVisible(true); // Show the modal only when bundleData is available
+    }
+  }, [bundleData]); // This effect runs whenever bundleData changes
+
   // Fetch bundle data from backend using barcode data
   const fetchBundleData = async (bundleID: string) => {
     try {
@@ -72,12 +84,45 @@ export default function Scan() {
 
       console.log("Bundle Data:", data);
       setBundleData(data); // Set the fetched bundle data
-      setModalVisible(true); // Show the modal
+      console.log("Bundle Data:", bundleData);
+      //setModalVisible(true); // Show the modal
     } catch (error) {
       Alert.alert(
         "Error",
         (error as Error).message || "Failed to fetch bundle data"
       );
+    }
+  };
+
+  // Function to mark the bundle as arrived
+  const markAsArrived = async () => {
+    if (bundleData) {
+      try {
+        const response = await fetch(`http://${IP}:5000/bundles/update`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bundleID: bundleData.bundleID,
+            employeeID: employeeID,
+            status: "ARRIVED", // Set the new status
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to update bundle status");
+        }
+
+        const updatedData = await response.json();
+        setBundleData(updatedData); // Update the state with the new bundle data
+        Alert.alert("Success", "Bundle status updated to 'Arrived'"); // Show success alert
+      } catch (error) {
+        Alert.alert(
+          "Error",
+          (error as Error).message || "Failed to update bundle status"
+        );
+      }
     }
   };
 
@@ -117,40 +162,56 @@ export default function Scan() {
 
       {/* Modal to display the bundle data */}
       <Modal
-        animationType="slide"
+        animationType="fade"
         transparent={true}
-        visible={modalVisible}
+        visible={modalVisible && !!bundleData} // Ensure modal is visible only if bundleData is available
         onRequestClose={() => {
-          setModalVisible(!modalVisible);
+          setModalVisible(false);
         }}
       >
         <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <Text style={styles.bundleText}>
-              Bundle ID: {bundleData?.bundleID}
-            </Text>
-            <Text style={styles.bundleText}>
-              Destination Postal Code: {bundleData?.destPostalCode}
-            </Text>
-            <Text style={styles.bundleText}>
-              Current Post Code: {bundleData?.currentPostCode}
-            </Text>
-            <Text style={styles.bundleText}>
-              Status: {bundleData?.bundleStatus}
-            </Text>
-            {/* <Text style={styles.bundleText}>
-              Route: {bundleData?.route.join(", ")}
-            </Text> */}
-            <TouchableOpacity
-              style={styles.closeButton}
-              onPress={() => {
-                setModalVisible(false);
-                setBundleData(null); // Clear bundle data on close
-              }}
-            >
-              <Text style={styles.closeButtonText}>Close</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalContent}>
+              {bundleData ? (
+                <>
+                  <Text style={styles.bundleText}>
+                    Bundle ID: {bundleData.bundleID}
+                  </Text>
+                  <Text style={styles.bundleText}>
+                    Destination Postal Code: {bundleData.destPostalCode}
+                  </Text>
+                  <Text style={styles.bundleText}>
+                    Current Post Code: {bundleData.currentPostCode}
+                  </Text>
+                  <Text style={styles.bundleText}>
+                    Status: {bundleData.bundleStatus}
+                  </Text>
+                  <View style={styles.buttonContainer}>
+                    <TouchableOpacity
+                      style={styles.markArrivedButton}
+                      onPress={markAsArrived}
+                    >
+                      <Text style={styles.markArrivedButtonText}>
+                        Mark as Arrived
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.closeButton}
+                      onPress={() => {
+                        qrLock.current = false; // Unlock the scanner
+                        setModalVisible(false);
+                        setBundleData(null); // Clear bundle data on close
+                      }}
+                    >
+                      <Text style={styles.closeButtonText}>Close</Text>
+                    </TouchableOpacity>
+                  </View>
+                </>
+              ) : (
+                <Text style={styles.bundleText}>Loading bundle data...</Text>
+              )}
+            </View>
+          </TouchableWithoutFeedback>
         </View>
       </Modal>
     </SafeAreaView>
@@ -181,11 +242,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 5,
   },
-  closeButton: {
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
+  },
+  markArrivedButton: {
+    backgroundColor: "#28a745",
+    padding: 10,
+    borderRadius: 5,
+    flex: 1,
+    marginRight: 10,
+  },
+  markArrivedButtonText: {
+    color: "white",
+    textAlign: "center",
+  },
+  closeButton: {
     backgroundColor: "#007bff",
     padding: 10,
     borderRadius: 5,
+    flex: 1,
   },
   closeButtonText: {
     color: "white",

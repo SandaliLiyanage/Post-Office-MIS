@@ -34,6 +34,9 @@ export default function Retaddress() {
             {addressID, mailID, postalCode}
           )
           setSearch("")
+          toast({
+            description: "Address Updated",
+          });
           if(res){
             toast({
               description: "Address Updated",
@@ -45,9 +48,7 @@ export default function Retaddress() {
           console.log(error)
         }
     }
-    const returnAddress = async ()=>{
-
-    }
+   
     const getAddress = async (search: string) => {
         try {
           if (search !== "") {
@@ -128,7 +129,7 @@ export default function Retaddress() {
                 </Command>
                 </div>
             <div className="flex justify-end mt-5 gap-2">
-                <Button >Change the Delivery Address</Button>
+                <Button onClick={()=>changeAddress()}>Change the Delivery Address</Button>
                 <Toaster/>
             </div>
       </div>   

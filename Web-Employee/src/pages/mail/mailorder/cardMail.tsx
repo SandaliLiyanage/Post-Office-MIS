@@ -48,6 +48,11 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
     setMailDetailsArray(newMailArray); // Update state to re-render the UI
     localStorage.setItem("mail details", JSON.stringify(newMailArray)); // Update localStorage
   };
+  useEffect(() => {
+    confirmedMailArray.forEach(mail => {
+      generateBarcode(mail.mailID);
+    });
+  }, [confirmedMailArray]);
 
   const generateBarcode = (mailID: number) => {
     const barcodeElement = document.getElementById(`barcode-${mailID}`);
@@ -98,7 +103,11 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
         
         </div>
       ))}
-      { transaction && confirmedMailArray.map((mail, index) => (
+          {  
+
+      
+      
+      transaction && confirmedMailArray.map((mail, index) => (
         <div key={index} className="m-5 p-4 bg-white ">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
@@ -111,7 +120,6 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             {transaction && 
             <div>
             <div ref={contentRef}></div>
-            <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>
             <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
             </div>
             }

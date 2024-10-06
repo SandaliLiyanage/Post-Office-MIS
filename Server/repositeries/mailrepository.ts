@@ -18,10 +18,16 @@ class MailRepository {
         where: {
           postalCode: postalCode,
         },
+        orderBy: {
+          mailID: 'asc',
+        },
         include: {
-          transaction: true
-        }
+          transaction: {
+            
+          },
+        },
       });
+      
       console.log("Mails queried", res);
       
       return res;
@@ -56,6 +62,7 @@ class MailRepository {
           bundleID: bundleID,
           mailstatus: mailstatus
         },
+        
       });
 
       return res;

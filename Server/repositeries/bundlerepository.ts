@@ -10,6 +10,9 @@ class BundleRepository{
                     currentPostCode: postalCode,
                     bundleStatus: BundleStatus.CREATED
                 },
+                include:{
+                    mail:true
+                },
             });
             console.log("Bundles queried", res)
             return res;
@@ -40,12 +43,14 @@ class BundleRepository{
         return null
     }
 
-    async findBundle(postalCode: string): Promise <Bundle[]>{
+    async findBundle(postalCode: string, sourcePostalCode:string): Promise <Bundle[]>{
         console.log("in find bundle")
+        console.log(sourcePostalCode, "source")
         try{
             const res = await prisma.bundle.findMany({
                 where:{
-                    destPostalCode : postalCode
+                    destPostalCode : postalCode,
+                    currentPostCode: sourcePostalCode
                 }
             })
             console.log("bundle found" , res)

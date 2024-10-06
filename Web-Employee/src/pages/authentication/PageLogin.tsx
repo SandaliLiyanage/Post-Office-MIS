@@ -57,7 +57,7 @@ export default function Login() {
           email: user.data.email
         }
       )
-      navigate('/dashboard/mailorder')}
+      navigate('/dashboard')}
       else{
         form.reset();
         toast({
@@ -99,7 +99,7 @@ export default function Login() {
                 <FormItem>
                   <FormLabel>Employee Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="Employee ID" {...field} />
+                    <Input placeholder="Employee Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

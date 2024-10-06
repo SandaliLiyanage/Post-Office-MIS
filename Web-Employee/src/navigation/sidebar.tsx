@@ -96,7 +96,7 @@ export default function SideBar() {
             {MailBundles}
             {PostmanAssignments}
             {RevenueReports}
-            {MailOrder}
+            {/* {MailOrder} */}
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (

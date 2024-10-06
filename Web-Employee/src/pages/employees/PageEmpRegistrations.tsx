@@ -161,10 +161,11 @@ export default function EmpRegistration() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="POSTMASTER">Postmaster</SelectItem>
                       <SelectItem value="RECEPTIONIST">Receptionist</SelectItem>
                       <SelectItem value="DISPATCHER">Dispatch Record Manager</SelectItem>
                       <SelectItem value="POSTMAN">Postman</SelectItem>
+                      <SelectItem value="POSTMAN">Supervisor</SelectItem>
+
                     </SelectContent>
                   </Select>
                   <FormMessage />

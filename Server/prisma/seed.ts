@@ -437,7 +437,7 @@ async function main() {
         destPostalCode: "10640",
         currentPostCode: "10640",
         bundleStatus: BundleStatus.ARRIVED,
-        route: ["20850", "00100", "10640"],
+        route: ["30600", "00100", "10640"],
       },
       {
         bundleID: 68,
@@ -514,7 +514,7 @@ async function main() {
         destPostalCode: "10640",
         currentPostCode: "20850",
         bundleStatus: BundleStatus.CREATED,
-        route: ["20850", "00100", "10640"],
+        route: ["20850", "20000", "10640"],
       },
     ],
   });

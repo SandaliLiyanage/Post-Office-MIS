@@ -121,31 +121,23 @@ const Home = () => {
             {/* Normal mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.NORMAL_MAIL !== undefined
+                4
+                {/* {deliveryCounts.NORMAL_MAIL !== undefined
                   ? deliveryCounts.NORMAL_MAIL
-                  : 0}
+                  : 0} */}
               </Text>
-              <Text style={styles.deliveryLabel}>To Create</Text>
-            </View>
-
-            {/* Registered mail */}
-            <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>
-                {deliveryCounts.REGISTERED_MAIL !== undefined
-                  ? deliveryCounts.REGISTERED_MAIL
-                  : 0}
-              </Text>
-              <Text style={styles.deliveryLabel}>To Dispatch</Text>
+              <Text style={styles.deliveryLabel}>Created</Text>
             </View>
 
             {/* Parcel */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.COURIER !== undefined
+                7
+                {/* {deliveryCounts.COURIER !== undefined
                   ? deliveryCounts.COURIER
-                  : 0}
+                  : 0} */}
               </Text>
-              <Text style={styles.deliveryLabel}>To Distribute</Text>
+              <Text style={styles.deliveryLabel}>Arrived</Text>
             </View>
           </View>
         </View>
@@ -244,16 +236,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   deliveryCount: {
-    fontSize: 45,
+    fontSize: 50,
     color: "white",
-    paddingLeft: 12,
+    //paddingLeft: 12,
     fontWeight: "bold",
   },
   deliveryLabel: {
-    fontSize: 14,
+    fontSize: 16,
     color: "white",
     alignItems: "center",
-    paddingLeft: 2,
+    //paddingLeft: 2,
   },
   actionsContainer: {
     marginTop: 19,

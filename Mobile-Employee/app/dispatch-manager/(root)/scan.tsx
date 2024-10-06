@@ -174,7 +174,7 @@ export default function Scan() {
             <View style={styles.modalContent}>
               {bundleData ? (
                 <>
-                  <Text style={styles.bundleText}>
+                  {/* <Text style={styles.bundleText}>
                     Bundle ID: {bundleData.bundleID}
                   </Text>
                   <Text style={styles.bundleText}>
@@ -185,7 +185,8 @@ export default function Scan() {
                   </Text>
                   <Text style={styles.bundleText}>
                     Status: {bundleData.bundleStatus}
-                  </Text>
+                  </Text> */}
+
                   <View style={styles.buttonContainer}>
                     <TouchableOpacity
                       style={styles.markArrivedButton}
@@ -203,7 +204,7 @@ export default function Scan() {
                         setBundleData(null); // Clear bundle data on close
                       }}
                     >
-                      <Text style={styles.closeButtonText}>Close</Text>
+                      <Text style={styles.closeButtonText}>Scan Again</Text>
                     </TouchableOpacity>
                   </View>
                 </>

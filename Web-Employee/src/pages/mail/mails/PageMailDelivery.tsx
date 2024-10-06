@@ -7,7 +7,7 @@ import { Button } from "../../../components/ui/button";
 interface AreaAssignments{
   area: string,
   employeeName: string,
-  mailID: string[]
+  dict: { [mailID: number]: { address: string } }[]
 
 
 }
@@ -60,17 +60,23 @@ export default function MailDelivery() {
             </div>
           </div>
           <div>
-            <Label className="text-base">Assigned Postman: <p className="text-slate-500 font-light text-sm"> {area.employeeName}</p></Label>
+            <Label className="text-base">Assigned Postman: {area.employeeName}</Label>
           </div>
           <div>
           <Label className="text-base">Mail To be delivered:</Label>
-          <div className="grid grid-cols-4">
-            {
-              area.mailID.map((ID, index)=>(
-                <p className="text-slate-500 font-light text-sm 2" key={index}>  {ID}</p>
-              ))
-            }
-          </div>
+          <div className="grid grid-cols-2">
+              {area.dict.map((item, index) => {
+                // Extract the mail ID (key) and address
+                const mailID = Number(Object.keys(item)[0]); // Get the mail ID
+                const address = item[mailID].address; // Get the associated address
+
+                return (
+                  <p className="text-slate-500 font-light text-sm" key={index}>
+                    Mail ID: {mailID}, Address: {address}
+                  </p>
+                );
+              })}
+            </div>
           </div>
           </div>
             </div>

@@ -27,18 +27,29 @@ class AreaRepository{
             LEFT JOIN "Bundle" AS b ON b."bundleID" = m."bundleID"
             WHERE a."postalCode" = ${postalCode} AND m."mailstatus" = 'IN_TRANSIT'::"MailStatus" 
             ;`
-   
-    const res : {[key: string]: {employeeName: string, mailID: number[]}}={};
-    response.forEach(response=>{
-        const area = response.areaName
-        const address =addressRepostiory.getAddress(response.addressID)
-        if(!res[area]){
-            res[area] = {employeeName: response.employeeName, mailID: [response.mailID],  }
+    console.log(response)
+    const res : {[key: string]: {employeeName: string,dict: { [mailID: number]: { address: string } }[] } }={};
+    await Promise.all(response.map(async (resp) => {
+        const area = resp.areaName;
+        const address = await addressRepostiory.getAddress(resp.addressID);
+        
+        if (address) {
+          if (!res[area]) {
+            res[area] = {
+              employeeName: resp.employeeName,
+              dict: [{ [resp.mailID]: { address } }],
+
+            };
+      console.log(res[area].dict[0],"ok")
+
+          } else {
+            res[area].dict.push({ [resp.mailID]: { address } });
+          }
         }
-        else{
-            res[area].mailID.push(response.mailID)
-        }
-    })
+      }));
+      console.log(res);
+    console.log(res, "huity")
+    console.log(res["Kaduwela-South"].dict[0], "hehe")
 
     const areaDetails = Object.entries(res).map(([area, det]) => ({
         area,

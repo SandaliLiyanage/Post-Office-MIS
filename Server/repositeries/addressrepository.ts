@@ -46,7 +46,6 @@ class AddressRepository{
       })
       if( res){
       const addressResult =  `${res.addressNo? `${res.addressNo}, `: ""  } ${res.streetName? `${res.streetName}, `: ""  } ${res.Locality? `${res.Locality}, `: ""  } ${res.postalCode}`
-      console.log(addressResult, "hi")
       return addressResult
       }else{
         return ""

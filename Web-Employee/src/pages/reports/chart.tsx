@@ -33,7 +33,18 @@ export default function Chart({ data }: { data: IChartData[] } ) {
       axisLine={false}
       tickFormatter={(value) => value.slice(0, 3)}
     />
-    <YAxis/>
+     <YAxis
+      label={{
+        value: 'Transaction Count',
+        angle: -90,
+        position: 'insideLeft', // Use 'insideLeft' or 'insideTopLeft' to keep it inside
+        offset: 0, // You can adjust this value as necessary
+        style: {
+          textAnchor: 'middle', // Center the text
+          fontSize: 14, // Increase font size if needed
+        },
+      }}
+    />
     <ChartTooltip content={<ChartTooltipContent />} />
     <ChartLegend content={<ChartLegendContent />} />
     <Bar dataKey="normal_mail" fill={chartConfig.normal_mail.color} radius={4} />

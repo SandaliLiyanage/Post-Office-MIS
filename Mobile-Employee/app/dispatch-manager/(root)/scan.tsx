@@ -189,13 +189,13 @@ export default function Scan() {
                   </Text> */}
                   <View>
                     <Text style={styles.label}>Bundle ID:</Text>
-                    <Text style={styles.value}>32</Text>
+                    <Text style={styles.value}>58</Text>
 
                     <Text style={styles.label}>Current Post Office:</Text>
-                    <Text style={styles.value}>Akurana</Text>
+                    <Text style={styles.value}>Kandy</Text>
 
                     <Text style={styles.label}>Next Post Office:</Text>
-                    <Text style={styles.value}>Kandy</Text>
+                    <Text style={styles.value}>Kaduwela</Text>
 
                     <Text style={styles.label}>Destination Post Office:</Text>
                     <Text style={styles.value}>Kaduwela</Text>

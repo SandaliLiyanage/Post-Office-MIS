@@ -155,7 +155,7 @@ async function main() {
       },
       {
         employeeID: "0002",
-        employeeName: "Jane Smith",
+        employeeName: "Nimal Silva",
         email: "jane.smith@gmail.com",
         telephone: "987654321",
         role: Role.POSTMAN,
@@ -370,11 +370,25 @@ async function main() {
         route: ["00100", "11000", "30600", "10640"],
       },
       {
+        bundleID: 41,
+        destPostalCode: "11000",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "30600", "11000"],
+      },
+      {
         bundleID: 20,
         destPostalCode: "10640",
         currentPostCode: "10640",
         bundleStatus: BundleStatus.ARRIVED,
         route: ["00100", "30600", "10640"],
+      },
+      {
+        bundleID: 48,
+        destPostalCode: "20000",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "30600", "10640", "20000"],
       },
       {
         bundleID: 21,
@@ -510,10 +524,10 @@ async function main() {
         route: ["00100", "10640", "20850", "10250"],
       },
       {
-        bundleID: 64,
+        bundleID: 58,
         destPostalCode: "10640",
-        currentPostCode: "20850",
-        bundleStatus: BundleStatus.CREATED,
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
         route: ["20850", "20000", "10640"],
       },
     ],

@@ -20,8 +20,8 @@ import { IP } from "../../../config";
 const Home = () => {
   const router = useRouter(); // Call useRouter at the top level of the component
   const { user } = useUser();
-  //const employeeID = user?.employeeID;
-  const employeeID = "0002";
+  const employeeID = user?.employeeID;
+  //const employeeID = "0002";
   console.log("employeeID", user);
   // Define a type for the available routes
   type RouteKeys = keyof typeof ROUTES;
@@ -226,11 +226,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   role: {
-    fontSize: 14,
+    fontSize: 16,
     color: "white",
   },
   branch: {
-    fontSize: 14,
+    fontSize: 16,
     color: "white",
   },
   bellIcon: {

@@ -19,8 +19,7 @@ const authService = new AuthService();
 
 const router = Router();
 
-router.use(authService.authorize);
-
+// router.use(authService.authorize);
 router.post("/calculatePrice", CalculatePrice);
 router.post("/viewmails", Mails);
 router.get("/employee", getMailItems);

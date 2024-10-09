@@ -9,7 +9,6 @@ class AddressRepository{
             const Array = searchArray.map(item => `${item}${'%'}`)
             console.log(Array)
             console.log("in query",searchArray)
-
             const res = await prisma.$queryRaw<Address[]> `SELECT "addressID","postalCode","Locality","addressNo","streetName" FROM "Address"
                 WHERE "addressNo" LIKE  ANY (array[${Array}])
                 UNION
@@ -24,10 +23,11 @@ class AddressRepository{
                 ;`
                 ;
             console.log("this is what was queried",res); 
-            return res
+
+            return res || null
         }catch (error){
             console.log("unable to query", error)
-            throw error
+            return []
     } 
     }
     async getAddress(addressID: number) : Promise<string|null>{

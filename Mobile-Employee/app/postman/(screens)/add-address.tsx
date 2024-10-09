@@ -46,7 +46,11 @@ const AddAddress = () => {
 
   const handleAddAddress = () => {
     if (addressNo && streetName && locality) {
-      Alert.alert("Success", "Address added successfully!");
+      console.log("Address No:", addressNo);
+      console.log("Street Name:", streetName);
+      console.log("Locality:", locality);
+      console.log("currentLocation:", currentLocation);
+      // Alert.alert("Success", "Address added successfully!");
       // Clear input fields
       setAddressNo("");
       setStreetName("");
@@ -55,6 +59,8 @@ const AddAddress = () => {
       Alert.alert("Error", "Please fill in all the fields.");
     }
   };
+
+  const [firstRegion, setFirstRegion] = useState(region);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +91,9 @@ const AddAddress = () => {
       </View>
       <MapView
         style={styles.map}
-        initialRegion={region} // Use initialRegion here to avoid automatic re-focus
+        //region={currentLocation ? { ...region, ...currentLocation } : region}
+        //region1={currentLocation ? { ...region, ...currentLocation } : region}
+        initialRegion={firstRegion} // Use initialRegion here to avoid automatic re-focus
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
         showsUserLocation={true} // This enables the blue dot for the current GPS location
         followsUserLocation={true} // Optionally, this makes the map follow the user's location

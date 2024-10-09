@@ -189,12 +189,17 @@ class BundleRepository {
     return null;
   }
 
-  async findBundle(postalCode: string): Promise<Bundle[]> {
+  async findBundle(
+    postalCode: string,
+    sourcePostalCode: string
+  ): Promise<Bundle[]> {
     console.log("in find bundle");
+    console.log(sourcePostalCode, "source");
     try {
       const res = await prisma.bundle.findMany({
         where: {
           destPostalCode: postalCode,
+          currentPostCode: sourcePostalCode,
         },
       });
       console.log("bundle found", res);
@@ -223,7 +228,7 @@ class BundleRepository {
     destPostalCode: string,
     sourcePostalCode: string,
     bundleRoute: string[]
-  ): Promise<number> {
+  ): Promise<number | null> {
     console.log("in create bundle");
     try {
       const res = await prisma.bundle.create({
@@ -238,7 +243,8 @@ class BundleRepository {
       console.log("bundle created", res);
       return res.bundleID;
     } catch (error) {
-      throw error;
+      console.error(error);
+      return null;
     }
   }
 
@@ -252,7 +258,7 @@ class BundleRepository {
       console.log("bundle created", res);
       return res.bundleID;
     } catch (error) {
-      throw error;
+      return null;
     }
   }
 

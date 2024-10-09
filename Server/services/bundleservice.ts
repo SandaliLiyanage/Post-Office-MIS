@@ -10,7 +10,7 @@ class BundleService {
         console.log("in bundle validation")
         const destPostalCode = await addressrepository.getDestPostalCode(addressID);
         if(destPostalCode){
-            const bundle = await bundleRepository.findBundle(destPostalCode);
+            const bundle = await bundleRepository.findBundle(destPostalCode, sourcePostalCode);
             if(bundle?.length != 0 && bundle){
                 console.log("bundle found");
                 for (const element of bundle) {
@@ -24,7 +24,10 @@ class BundleService {
                     }
                 };
                 
-            }else{
+            }else if(destPostalCode ==sourcePostalCode){
+                return null
+            }
+            else{
                 console.log("bundle not found. creating a new bundle")
                 const bundleRoute = await this.bundleRouteCreation( destPostalCode, sourcePostalCode)
                 const bundleID = await bundleRepository.createBundle(destPostalCode, sourcePostalCode, bundleRoute );

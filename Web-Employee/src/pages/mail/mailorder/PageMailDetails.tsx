@@ -27,7 +27,6 @@ import {
 } from "@/components/ui/command";
 import { useEffect } from "react";
 import { Label } from "../../../components/ui/label";
-
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
 import { CardMail } from "./cardMail";
@@ -38,7 +37,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
@@ -48,7 +55,7 @@ const formSchema = z.object({
     .min(1, { message: "Weight must be at least 1" })
     .max(2000, { message: "Weight cannot exceed 2000" }),
 });
-
+import Addaddress from "./addaddress";
 export type MailDetailsType = {
   price: number | null;
   mailType: string;
@@ -149,9 +156,10 @@ export default function MailDetails() {
 
   //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
   async function onConfirm(values: z.infer<typeof formSchema>) {
-    4;
+
     console.log("in confirm");
     try {
+  
       const mailDetails = { ...values, price, addressID };
       let localMailStorage = localStorage.getItem("mail details");
       console.log("in confirm", localMailStorage);
@@ -216,7 +224,7 @@ export default function MailDetails() {
       const postalCode = user?.postalCode;
       const localCustomerStorage = localStorage.getItem("customerDetails");
 
-      if (confirm && price && localCustomerStorage) {
+      if (localCustomerStorage) {
         const customerDetails = JSON.parse(localCustomerStorage);
         const response = await axios.post(
           "http://localhost:5000/mail/mailDetails",
@@ -240,12 +248,6 @@ export default function MailDetails() {
           mailArray,
           total
         );
-        // displayInvoice(
-        //   customerDetails.name,
-        //   customerDetails.telephone,
-        //   mailArray,
-        //   total
-        // )
 
         localStorage.removeItem("customerDetails");
         setTransaction(true);
@@ -264,15 +266,14 @@ export default function MailDetails() {
   };
   return (
     <div>
-     
-        {!transaction && (
-          <div className="flex overflow-hidden ">
-           <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
+      {!transaction && (
+        <div className="flex overflow-hidden ">
+          <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
             <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
               <p className="text-xl font-bold">Mail Order</p>
             </div>
 
-            <div className="p-8 bg-">
+            <div className="p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onConfirm)}>
                   <div className="grid grid-cols-2 gap-4 mb-4">
@@ -385,7 +386,7 @@ export default function MailDetails() {
                       name="weight"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Weight</FormLabel>
+                          <FormLabel>Weight (g)</FormLabel>
                           <FormControl>
                             <Input placeholder="Weight" {...field} />
                           </FormControl>
@@ -398,11 +399,11 @@ export default function MailDetails() {
                   <div className="flex justify-between mt-7">
                     <div className="flex justify-start gap-4">
                       <Button
-                        className="bg-white border border-slate-300 text-slate-800"
+                        className="bg-white border border-slate-300 text-slate-800 hover:bg-slate-300"
                         onClick={onClickCalculate}
                         type="button"
                       >
-                        Calculate
+                        Calculate Price
                       </Button>
                       <Toaster />
                       {error !== null && price == null && (
@@ -412,7 +413,7 @@ export default function MailDetails() {
                       )}
                       {price !== null && (
                         <div className="bg-stone-300 bg-opacity-10 p-2 border-opacity-45">
-                          {price}
+                           Rs: {price}
                         </div>
                       )}
                     </div>
@@ -420,19 +421,16 @@ export default function MailDetails() {
                     <div className="flex justify-end gap-2 ">
                       <Button
                         type="submit"
-                        className="bg-white border border-slate-300  text-slate-800"
+                        className="bg-white border border-slate-300  text-slate-800 hover:bg-slate-300"
                       >
                         Save Mail Details
                       </Button>
 
                       <Button
                         type="button"
-                        className="bg-white border-b-2 border border-slate-300 text-slate-800"
+                        className="bg-white border-b-2 border border-slate-300 text-slate-800 hover:bg-slate-300"
                         onClick={() => {
                           if (confirm) {
-                            // form.reset()
-                            // setSearch("")
-                            // setPrice(null)
                             location.reload();
                           }
                           setConfirm(false);
@@ -449,7 +447,7 @@ export default function MailDetails() {
                 <div className="flex justify-start  mr-10">
                   <Button
                     type="button"
-                    className="bg-slate-300 text-black flex justify-start"
+                    className="bg-red-400 text-black flex justify-start"
                     onClick={() => {
                       navigate("/dashboard/mailorder");
                       localStorage.removeItem("mail details");
@@ -483,35 +481,32 @@ export default function MailDetails() {
                 </div>
               </div>
             </div>
-            
           </div>
           <div className="flex-1 overflow-auto ">
-        <CardMail
-          mailArray={mailArray}
-          confirm={confirm}
-          price={price}
-          transaction={transaction}
-          confirmedMailArray={confirmedMailArray}
-        />
-      </div>
+            <CardMail
+              mailArray={mailArray}
+              confirm={confirm}
+              price={price}
+              transaction={transaction}
+              confirmedMailArray={confirmedMailArray}
+            />
           </div>
-        )}
+        </div>
+      )}
 
-        
-      {transaction &&
-      <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
-        <div className="">
-        <CardMail
-          mailArray={mailArray}
-          confirm={confirm}
-          price={price}
-          transaction={transaction}
-          confirmedMailArray={confirmedMailArray}
-        />
-      </div>
-      </div>
-      }
-
+      {transaction && (
+        <div className=" flex-1 pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-full flex-col static">
+          <div className="flex-1">
+            <CardMail
+              mailArray={mailArray}
+              confirm={confirm}
+              price={price}
+              transaction={transaction}
+              confirmedMailArray={confirmedMailArray}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

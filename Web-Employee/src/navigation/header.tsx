@@ -56,7 +56,7 @@ export default function Nav() {
           </div>
           <div className="grid gap-2">
           
-              <Button className=" bg-blue-200 text-black hover:text-white" onClick={()=> {{removeUser}; navigate('/')}}  >Logout</Button>
+              <Button className=" bg-blue-200 text-black hover:text-white" onClick={()=> {{removeUser(); navigate('/')}} } >Logout</Button>
               <Button className=" text-white "  onClick={() => navigate('/forgotpassword')}>Reset Password</Button>
             </div>      
           </div>
@@ -64,7 +64,7 @@ export default function Nav() {
     </Popover>
     <Sheet>
       <SheetTrigger asChild>
-        <Button  className="mt-3 bg-slate-800"><Bell className="bg-slate-800"></Bell></Button>
+        {/* <Button  className="mt-3 bg-slate-800"><Bell className="bg-slate-800"></Bell></Button> */}
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
@@ -91,9 +91,7 @@ export default function Nav() {
       </SheetContent>
     </Sheet>
     <Button  className="mt-3 pt-1 pb-1 mr-5 bg-slate-800 rounded-full text-white border border-white hover:bg-slate-600 hover:text-white"  variant="outline">{user?.role}</Button>
-
     </div>
-
     </div>
   )
 }

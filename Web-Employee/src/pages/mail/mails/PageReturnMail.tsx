@@ -52,7 +52,7 @@ export default function ReturnMail() {
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <p className="text-xl font-bold">Return Mail</p>
       </div>
-      <div className="flex flex-col space-y-4 bg-white border-0">
+      <div className="flex flex-col space-y-4 border-0">
       <DataTable columns={columns} data={returnMail}/>
       </div>
     </div>

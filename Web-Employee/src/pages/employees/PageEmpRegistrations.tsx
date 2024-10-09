@@ -25,16 +25,6 @@ import {
 import { Toaster } from "../../components/ui/toaster";
 import { useToast } from "../../hooks/use-toast";
 import { useUser } from "../authentication/usercontext";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTrigger,
-  DialogTitle,
-} from "@/components/ui/dialog"
-import {Label} from "../../components/ui/label";
 
 const ROLES = [
   "SUPERVISOR",
@@ -171,10 +161,10 @@ export default function EmpRegistration() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="POSTMASTER">Postmaster</SelectItem>
                       <SelectItem value="RECEPTIONIST">Receptionist</SelectItem>
                       <SelectItem value="DISPATCHER">Dispatch Record Manager</SelectItem>
                       <SelectItem value="POSTMAN">Postman</SelectItem>
+                      <SelectItem value="SUPERVISOR">Supervisor</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

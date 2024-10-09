@@ -3,7 +3,6 @@ import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Printer } from 'lucide-react';
 import { Barcode } from 'lucide-react';
-
 import JsBarcode from 'jsbarcode';
 import {
   Dialog,
@@ -14,12 +13,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
 export interface IBundle {
     destPostCode: string;
     bundleID: number;
     barcodeId: string;	
+    mail: string[]
   }
   
 const columnstoTransfer: ColumnDef<IBundle>[] = [
@@ -38,7 +38,7 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
     { 
       accessorKey: "PrintBarcode",
       header: "Print Barcode",
-      id: "actions",
+      id: "actions1",
       cell: ({ row }) => {
         const bundle = row.original
         const contentRef = useRef<HTMLDivElement>(null);
@@ -50,11 +50,14 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
           console.log(barcodeElement)
           JsBarcode(barcodeElement, ID);
           console.log("generating barcode")}
+        
+
         return (
+          
           <div>
           <Dialog>
             <DialogTrigger asChild>
-            <Button className="btn bg-white "  size="icon"  ><Printer color="black" size={18} /></Button>
+            <Button className="btn bg-white hover:bg-slate-300"  size="icon"  ><Printer color="black" size={18} /></Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
                   <DialogHeader>
@@ -67,7 +70,7 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
                   <svg id={`barcode-${bundle.bundleID}`}></svg>
                   </div>
                   <DialogFooter>
-                    <Button type="submit"className="btn bg-white "  size="icon"  onClick={()=> generateBarcode(bundle.bundleID)}><Barcode color="black" size={18}></Barcode></Button>
+                    <Button type="submit"className="btn bg-white hover:bg-slate-300"  size="icon"><Barcode color="black" size={18}  onClick={()=> generateBarcode(bundle.bundleID)}></Barcode></Button>
                     <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
                   </DialogFooter>
                 </DialogContent>
@@ -78,5 +81,18 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
         )
       },
     },  
+    {
+      header: "Number of mail items",
+      id: "actions2",
+      cell: ({ row }) => {
+        const count = row.original.mail.length;
+
+        return(
+          <div>
+            <Button size={"sm"} className="px-5 bg-green-400">{count}</Button>
+          </div>
+        )
+      }
+    }
   ]
 export { columnstoTransfer }

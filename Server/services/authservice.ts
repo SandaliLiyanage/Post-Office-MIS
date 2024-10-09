@@ -29,11 +29,13 @@ class AuthService{
             }
             const hashedPassword = await cryptService.hashPassword(password)
             const isVerified = await cryptService.comparePassword(password, employee.password)
-            if (isVerified){
+            if (isVerified && employee){
                 console.log("verified")
                 const sessionId = new Date().toISOString();
-                await session.storeSession(username)
+                // await session.storeSession(username)
+                const role = employee.role
                 const token = jwtToken.sign({sessionId})
+                console.log(token, "hehe")
                 const user = await employeeRepository.getUserData(username)
                 console.log(user.employeeName)
                 const loginResponse: LoginResponse = { name: user.employeeName, postalCode:user.postalCode, role: user.role, message: "login success", login: true, postOfficeName: user.postOfficeName, token: token, email: user.email}

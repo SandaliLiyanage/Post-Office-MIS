@@ -19,35 +19,61 @@ import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
 import RetAddress from "./pages/mail/mails/retaddress"
 import Addaddress from "./pages/mail/mailorder/addaddress";
+import { ProtectedRoute } from "./pages/authentication/protectedroutes";
+import { useUser } from "./pages/authentication/usercontext";
+import Unauthorized from "./pages/authentication/Unauthorized";
+import Retaddress from "./pages/mail/mails/retaddress";
 function App() {
+  
+  const {user} = useUser()
+
+  // const  role = user?.role
+  const role = user?.role
   return (
-    
     <Router>
       <Routes>
         <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         <Route path="/" element={<Login />} />
         <Route path="/validateOTP" element={< ValidateOTP/>} />
         <Route path="/setPassword" element={< SetPassword/>} />
+      {role &&
         <Route path= "/dashboard" element={<Layout/>}>
-          <Route path="register" element={<EmpRegistration />} />
-          <Route path="mailorder" element={<MailOrder/>} />
-          <Route path="maildetails" element={<MailDetails/>} />
-          <Route path="leaverequest" element={<LeaveRequest/>}/>
-          <Route path="employeerecords" element={<Emp/>}/>
-          <Route path="mailbundles" element={<Bundle/>}/>
+          <Route path="register" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
+          <EmpRegistration /></ProtectedRoute>}/>
+          <Route path="mailorder" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
+          <MailOrder /></ProtectedRoute>}/>
+          <Route path="maildetails" element={<ProtectedRoute allowedRoles={['POSTMASTER', 'RECEPTIONIST', 'SUPERVISOR']} userRole={role}>
+          <MailDelivery /></ProtectedRoute>}/>
+          <Route path="employeerecords" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
+            <Emp /></ProtectedRoute>}/>
+          <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <Bundle /></ProtectedRoute>}/>
           <Route path="viewleaverequests" element={<></>}></Route>
-          <Route path="viewmailassignments" element={<Mails/>}></Route>
-          <Route path="revenuereports" element={<RevenueReports/>}></Route>
-          <Route path="employeeregistrations" element={<EmpRegistration/>}></Route>
-          <Route path="mailassignments" element={<></>}></Route>
-          <Route path="viewmail" element={<Mails/>}></Route>
-          <Route path="view" element={<Employeeupdate/>}></Route>
-          <Route path ="postmanAssignments" element={<MailDelivery/>}></Route>
-          <Route path ="endtransaction" element={<EndTransaction/>}></Route>
-          <Route path="failedtoDeliver" element={<ReturnMail/>}></Route>
-          <Route path = "retaddress" element={<RetAddress/>}></Route>
-          <Route path = "addaddress" element={<Addaddress/>}></Route>
-        </Route>
+          <Route path="viewmailassignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
+          <RevenueReports /></ProtectedRoute>}/>
+          <Route path="revenuereports"element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <Emp /></ProtectedRoute>}/>
+          <Route path="employeeregistrations" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
+          <EmpRegistration /></ProtectedRoute>}/>
+          <Route path="mailassignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          < MailDelivery/></ProtectedRoute>}/>
+          <Route path="viewmail" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
+          < Mails/></ProtectedRoute>}/>
+          <Route path="view"element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
+          < Employeeupdate/></ProtectedRoute>}/>
+          <Route path ="postmanAssignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          < MailDelivery/></ProtectedRoute>}/>
+          <Route path ="endtransaction" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
+          < EndTransaction/></ProtectedRoute>}/>
+          <Route path="failedtoDeliver" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
+          < ReturnMail/></ProtectedRoute>}/>
+          <Route path = "retaddress" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
+          < Retaddress/></ProtectedRoute>}/>
+          <Route path = "addaddress" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          < Addaddress/></ProtectedRoute>}/>
+        </Route>}
+        <Route path="not-authorized" element={<Unauthorized/>}/>
+
       </Routes>
     </Router>
   );

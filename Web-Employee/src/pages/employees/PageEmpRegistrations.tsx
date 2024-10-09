@@ -164,8 +164,7 @@ export default function EmpRegistration() {
                       <SelectItem value="RECEPTIONIST">Receptionist</SelectItem>
                       <SelectItem value="DISPATCHER">Dispatch Record Manager</SelectItem>
                       <SelectItem value="POSTMAN">Postman</SelectItem>
-                      <SelectItem value="POSTMAN">Supervisor</SelectItem>
-
+                      <SelectItem value="SUPERVISOR">Supervisor</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />

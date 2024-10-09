@@ -20,7 +20,8 @@ import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
 import logo from '../../assets/logo.png';
 const formSchema = z.object({
-  employeeID: z.string(),
+  employeeID: z.string().min(3, {
+  }),
   password: z.string().min(5, {
   }),
 })
@@ -78,7 +79,7 @@ export default function Login() {
 
   return (
     <div className="bg-slate-800 min-h-screen flex items-center justify-center">
-      <div className=" bg-white rounded-lg h-96 grid grid-cols-2 w-full max-w-3xl">
+      <div className=" bg-white rounded-lg h-fit grid grid-cols-2 w-full max-w-3xl">
       <div className="flex justify-center items-center">
       <img src={logo} alt="Post Office Logo" className="w-2/3 h-auto" />
       </div>
@@ -119,11 +120,12 @@ export default function Login() {
               )}
             />
           </div >
-          <div className="flex justify-between gap-2">
+          <div className="gap-2 pb-20 flex ">
             <Button type="submit" className="bg-slate-800" >Log in</Button>
             <Toaster/>
             <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
           </div>
+          
         </form>
       </Form>
         </div>

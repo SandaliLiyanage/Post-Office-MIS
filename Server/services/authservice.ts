@@ -8,7 +8,6 @@ const employeeRepository = EmployeeRepository.getInstance();
 const cryptService = new BcryptService();
 const session = SessionStore.getInstance();
 const jwtToken = new JwtService();
-
 interface LoginResponse {
   name?: string;
   postalCode?: string;
@@ -32,19 +31,20 @@ class AuthService {
         };
         return loginResponse;
       }
-      const hashedPassword = await cryptService.hashPassword(employee.password);
+      const hashedPassword = await cryptService.hashPassword(password);
       const isVerified = await cryptService.comparePassword(
         password,
-        hashedPassword
+        employee.password
       );
-      if (isVerified) {
+      if (isVerified && employee) {
         console.log("verified");
         const sessionId = new Date().toISOString();
-        await session.storeSession(username);
+        // await session.storeSession(username)
+        const role = employee.role;
         const token = jwtToken.sign({ sessionId });
+        console.log(token, "hehe");
         const user = await employeeRepository.getUserData(username);
         console.log(user.employeeName);
-        console.log("full user", user);
         const loginResponse: LoginResponse = {
           name: user.employeeName,
           postalCode: user.postalCode,
@@ -54,7 +54,6 @@ class AuthService {
           postOfficeName: user.postOfficeName,
           token: token,
           email: user.email,
-          employeeID: username,
         };
         console.log("login resoponse", loginResponse);
         return loginResponse;
@@ -97,12 +96,15 @@ class AuthService {
     passwordCopy: string
   ) {
     console.log("in set password");
-    const response = await employeeRepository.changePassword(
-      employeeID,
-      newPassword
-    );
-    console.log("hehe response in auth service", response);
-    return response;
+    if (passwordCopy == newPassword) {
+      const hashedPassword = await cryptService.hashPassword(newPassword);
+      const response = await employeeRepository.changePassword(
+        employeeID,
+        hashedPassword
+      );
+      console.log("response in auth service", response);
+      return response;
+    }
   }
 }
 export default AuthService;

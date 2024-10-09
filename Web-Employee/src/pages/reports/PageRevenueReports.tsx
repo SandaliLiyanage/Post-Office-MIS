@@ -21,8 +21,9 @@ import {
 import {useEffect, useState} from 'react';
 import Chart from './chart'
 import axios from "axios";
- 
-  import { cn } from "@/lib/utils" 
+import { cn } from "@/lib/utils" 
+import { useUser } from '../authentication/usercontext';
+import { Label } from "@/components/ui/label";
 
 export interface IChartData {
   month: string,
@@ -31,6 +32,7 @@ export interface IChartData {
   courier: string,
 }
 export default function RevenueReports() {
+  const {user, removeUser} = useUser();
   const today = new Date();  // Get today's date
   const lastYearTimestamp = today.setFullYear(today.getFullYear() - 1);  // Modify the year
   const lastYearDate = new Date(lastYearTimestamp);
@@ -42,7 +44,14 @@ export default function RevenueReports() {
   useEffect(()=>{
     async function generateReports(){
       console.log("in generate reports", startDate,endDate, type)
-      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type})
+      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, 
+          }
+        }
+          
+      )
       console.log(response.data)
       setChartData(response.data)
     }
@@ -56,12 +65,14 @@ export default function RevenueReports() {
       </div>
     
         <div className="grid grid-cols-3 gap-4">
+        <div className="flex flex-col">
+        <Label>Start Date</Label>
         <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-[240px] justify-start text-left font-normal mt-2",
             !startDate && "text-muted-foreground"
           )}
         >
@@ -78,12 +89,16 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
+    </div>
+    <div className="flex flex-col">
+    <Label>End Date</Label>
+
     <Popover>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
-            "w-[240px] justify-start text-left font-normal",
+            "w-[240px] justify-start text-left font-normal mt-2",
             !endDate && "text-muted-foreground"
           )}
         >
@@ -100,23 +115,13 @@ export default function RevenueReports() {
         />
       </PopoverContent>
     </Popover>
-    {/* <Select 
-            onValueChange={(newValue) => setType(newValue)}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select Mail Type" onSelect={()=>setType(Select.name)} />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectGroup>
-        <SelectItem value="all">all</SelectItem>
-        <SelectItem value="NORMAL_MAIL" onClick={() => setType("normal mail")}>normal mail</SelectItem>
-      <SelectItem value="REGISTERED_MAIL" onClick={() => setType("registered mail")}>registered mail</SelectItem>
-      <SelectItem value="COURIER" onClick={() => setType("courier")}>courier</SelectItem>
-        </SelectGroup>
-      </SelectContent>
-    </Select> */}
+    </div>
+    <div className="flex flex-col">
+    <Label>Report Type</Label>
+
     <Select 
             onValueChange={(newValue) => setType(newValue)}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px] mt-2">
         <SelectValue placeholder="Select Report Type" onSelect={()=>setType(Select.name)} />
       </SelectTrigger>
       <SelectContent>
@@ -126,6 +131,8 @@ export default function RevenueReports() {
         </SelectGroup>
       </SelectContent>
     </Select>
+    </div>
+  
     {chartData && type=="Revenue" &&
     <ChartRevenue data={chartData}/>
     }
@@ -133,6 +140,9 @@ export default function RevenueReports() {
     <Chart data={chartData}/>
     }
         </div>
+        <div className="flex justify-center">
+    <p>Select start date end date and Report type to generate reports</p>
+    </div>
     </div>
   )
 }

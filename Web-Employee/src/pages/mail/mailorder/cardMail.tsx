@@ -7,6 +7,8 @@ import { Trash } from 'lucide-react';
 import {MailResponse} from './PageMailDetails';
 import {Barcode} from 'lucide-react';
 import JsBarcode from 'jsbarcode';
+import { useRef } from "react";
+import { useReactToPrint } from 'react-to-print';
 type CardMailProps = {
   mailArray: MailDetailsType[],
   confirm: boolean,
@@ -17,8 +19,9 @@ type CardMailProps = {
 
 
 export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMailProps) {
+  const contentRef = useRef<HTMLDivElement>(null);
+  const reactToPrintFn = useReactToPrint({ contentRef });
   const [mailDetailsArray, setMailDetailsArray] = useState<MailDetailsType[]>(mailArray);
-  
   // Fetch mail details from localStorage on component mount
   useEffect(() => {
     const fetchMailDetails = () => {
@@ -33,7 +36,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
 
     // Listen for changes to localStorage
     window.addEventListener("storage", fetchMailDetails);
-    console.log(confirmedMailArray, "hi")
+    console.log(confirmedMailArray)
     return () => {
       window.removeEventListener("storage", fetchMailDetails);
     };
@@ -45,25 +48,30 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
     setMailDetailsArray(newMailArray); // Update state to re-render the UI
     localStorage.setItem("mail details", JSON.stringify(newMailArray)); // Update localStorage
   };
+  useEffect(() => {
+    confirmedMailArray.forEach(mail => {
+      generateBarcode(mail.mailID);
+    });
+  }, [confirmedMailArray]);
 
   const generateBarcode = (mailID: number) => {
     const barcodeElement = document.getElementById(`barcode-${mailID}`);
     const ID =  mailID.toString();
-    JsBarcode(barcodeElement, ID,);
+    JsBarcode(barcodeElement, ID,{
+      height: 40,
+    });
     console.log("generating barcode")
   } 
-
-
-
+ 
   return (
-    <div className="mt-16  h-full top-16 bg-slate-300 bg-opacity-25 ">
+    <div className="mt-16  min-h-screen top-16 bg-slate-300 bg-opacity-25 flex-1">
       <div>
         <div className="font-bold pt-10 pl-2 pb-4 mt-16 ml-4 justify-start">
           <p>Current Mail List</p></div>
           
         </div>
       { !transaction && mailDetailsArray.map((mail, index) => (
-        <div key={index} className="m-5  p-4 bg-white">
+        <div key={index} className="m-5 p-4 bg-white">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
             <Label className="text-sky-800">Mail {index + 1}</Label>
@@ -95,8 +103,12 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
         
         </div>
       ))}
-      { transaction && confirmedMailArray.map((mail, index) => (
-        <div key={index} className="m-5  p-4 bg-white">
+          {  
+
+      
+      
+      transaction && confirmedMailArray.map((mail, index) => (
+        <div key={index} className="m-5 p-4 bg-white ">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
             <Label className="text-sky-800">Mail {index + 1}</Label>
@@ -107,12 +119,12 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             </div>}
             {transaction && 
             <div>
-            <Button className="btn bg-white "  size="icon" onClick={()=> generateBarcode(mail.mailID)}><Barcode color="black" size={18} /></Button>
-            <Button className="btn bg-white "  size="icon" ><Printer color="black" size={18} /></Button>
+            <div ref={contentRef}></div>
+            <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
             </div>
             }
           </div>
-          <div className="grid grid-cols-2">
+          <div className="grid grid-cols-6">
           <div >
             <Label className="text-base">Recepient Name: <p className="text-slate-500 font-light text-sm"> {mail.recepientName}</p></Label>
           </div>
@@ -128,8 +140,12 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
           <div>
             <Label className="text-base">MailID: <p className="text-slate-500 font-light text-sm"> {mail.mailID}</p></Label>
           </div>
+          <div ref={contentRef}>
+          <svg id={`barcode-${mail.mailID}`  } height="100"></svg>
           </div>
-          <svg id={`barcode-${mail.mailID}`}></svg>
+          </div>
+         
+
         </div>
       ))}
       

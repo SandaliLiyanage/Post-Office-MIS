@@ -10,6 +10,9 @@ class BundleRepository {
             currentPostCode: postalCode,
             bundleStatus: BundleStatus.CREATED,
           },
+          include: {
+            mail: true,
+          },
         });
         console.log("Bundles queried", res);
         return res;

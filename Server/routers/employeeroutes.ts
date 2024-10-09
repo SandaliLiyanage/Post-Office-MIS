@@ -1,5 +1,5 @@
 import { Router } from "express";
-
+import AuthService from "../services/authservice";
 import {
   EmployeeDetails,
   getEmployeeDetails,
@@ -9,7 +9,11 @@ import {
   SubmitFeedback,
 } from "../controllers/employeecontroller";
 
+const authService = new AuthService();
 const router = Router();
+
+// router.use(authService.authorize);
+
 router.post("/employeeRecords", EmployeeDetails);
 router.post("/registration", Registration);
 router.get("/user", getEmployeeDetails);

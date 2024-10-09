@@ -1,5 +1,6 @@
 import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
 import { start } from "repl";
+import Address from "../controllers/addresscontroller";
 const prisma = new PrismaClient();
 
 class MailRepository {
@@ -17,8 +18,18 @@ class MailRepository {
         where: {
           postalCode: postalCode,
         },
+        orderBy: {
+          mailID: 'asc',
+        },
+        include: {
+          transaction: {
+            
+          },
+        },
       });
+      
       console.log("Mails queried", res);
+      
       return res;
     } catch (error) {
       console.error("Error getting mails:", error);
@@ -34,7 +45,8 @@ class MailRepository {
     postalCode: string,
     mailCategoryName: MailType,
     transactionID: number,
-    bundleID: number
+    bundleID: number|null,
+    mailstatus: MailStatus
   ): Promise<Mail> {
     try {
       console.log("adding mail");
@@ -48,12 +60,14 @@ class MailRepository {
           transactionID: transactionID,
           price: price,
           bundleID: bundleID,
+          mailstatus: mailstatus
         },
+        
       });
 
       return res;
     } catch (error) {
-      throw error;
+      throw error
     }
   }
 
@@ -122,7 +136,6 @@ class MailRepository {
       data: { mailstatus: newStatus },
     });
   };
-
   updateMailStatusWithSignature = async (
     mailID: number,
     newStatus: MailStatus,
@@ -153,6 +166,50 @@ class MailRepository {
   });
     console.log(res)
     return res
+  }
+
+  getReturnMail = async(postalCode: string)=>{
+    const res = await prisma.mail.findMany({
+      where: {
+        deliveryAttempts: {
+          gte: 2, 
+        },
+        address: {
+          postalCode: postalCode // compare postal code in address
+        }
+       
+    },
+    include: {
+      address: true,
+      transaction: true
+    }
+  }
+  )
+  console.log(res, "res res")
+  return res
+  }
+
+  async updateRecepientAddress(addressID: number, mailID: number, postalCode: string){
+    try{
+      const res = await prisma.mail.update({
+        where: {
+          mailID: mailID
+        },
+        data:{
+          recepientAddressID: addressID,
+          postalCode: postalCode,
+          deliveryAttempts: 0
+        }
+      });
+      return res
+    
+    }catch(error){
+      console.log(error)
+    }
+    
+  
+ 
+    
   }
 }
   

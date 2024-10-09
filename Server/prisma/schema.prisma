@@ -78,8 +78,8 @@ model Mail {
   recepientAddressID         Int
   mailID         Int         @id @default(autoincrement())
   address           Address @relation(fields: [recepientAddressID], references: [addressID])
-  bundleID          Int       
-  bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
+  bundleID          Int?    
+  bundle            Bundle?    @relation(fields: [bundleID], references: [bundleID])
   mailstatus        MailStatus  @default(IN_TRANSIT)
   transactionID     Int
   transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
@@ -87,9 +87,9 @@ model Mail {
   price             Decimal       @db.Decimal(10,2)
   postalCode        String
   postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
-  signature     String?
+  signature      String?
+  deliveryAttempts  Int?     
 }
-
 model Bundle {
   bundleID              Int          @id @default(autoincrement())
   destPostalCode        String

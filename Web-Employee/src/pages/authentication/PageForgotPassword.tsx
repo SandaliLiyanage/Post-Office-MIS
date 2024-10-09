@@ -17,15 +17,17 @@ import {
 import { Input } from "../../components/ui/input"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
+import { useState } from "react"
 
 const formSchema = z.object({
   employeeID: z.string().min(1, {
-    message: "Incorrect EmployeeID",
+    message: "Invalid EmployeeID",
   }),
 })
 
 
 export default function ForgotPassword() {
+  const [id, setID] = useState<null|string>(null)
   const { toast } = useToast()
   const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -36,6 +38,7 @@ export default function ForgotPassword() {
   })
 
   const generateOTP= async function(values: z.infer<typeof formSchema>){
+    
     console.log("generating OTP ---  in front end")
     localStorage.setItem("employeeID", values.employeeID)
     console.log("hehe", values.employeeID)
@@ -43,7 +46,7 @@ export default function ForgotPassword() {
     console.log(result)
     if(result.data == true){
       const result =await axios.post("http://localhost:5000/auth/generateOTP", values)
-      navigate("/validateOTP")
+      navigate(`/validateOTP?employeeID=${values.employeeID}`)
       console.log(result)}
     else{
       form.reset();
@@ -59,7 +62,7 @@ export default function ForgotPassword() {
     <div className="mr-20 ml-20 mt-8 flex flex-col items-end ">
       <div>
       <div>
-      <h1 className="text-2xl mb-5 mt-5">Reset Password</h1>
+      <h1 className="text-2xl mb-5 mt-5">Set Password</h1>
       </div>
       <Form {...form}>
       <form onSubmit= {form.handleSubmit(generateOTP)} className="space-y-8">

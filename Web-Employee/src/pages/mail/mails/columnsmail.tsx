@@ -10,18 +10,16 @@ export interface IMail{
   }
 const columns: ColumnDef<IMail>[] = [
     {
+    accessorKey: "mailID",
+    header: "Mail ID",
+    },    
+    {
       accessorKey: "mailType",
       header: "Category",
-      },
+      },    
     {
-      accessorKey: "bundleID",
-      header: "BundleID",
-    },
-    
-    
-    {
-      accessorKey: "weight",
-      header: "Weight",
+      accessorKey: "transaction.date",
+      header: "Date",
     },
     {
       accessorKey: "price",
@@ -46,7 +44,7 @@ const columns: ColumnDef<IMail>[] = [
             case "IN_TRANSIT":
               return <Badge className="bg-sky-600 text-white">In Transit</Badge>;
             case "RETURNED":
-              return <Badge className="bg-yellow-500 text-white">Pending</Badge>;
+              return <Badge className="bg-yellow-500 text-white">Returned</Badge>;
             case "Failed":
               return <Badge className="bg-red-500 text-white">Failed</Badge>;
             default:

@@ -14,7 +14,19 @@ const CalculatePrice = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
+const ChangeAddress = async (req: Request, res: Response) => {
+  console.log("in mail controller", req)
+  const {addressID, mailID , postalCode} = req.body
+  const address = Number(addressID)
+  const mail = Number(mailID)
+  console.log(mail, address)
+  console.log(mail, addressID)
+  const result = await mailService.changeAddress(address, mail, postalCode);
+  console.log(result)
+  return res.status(200).json(result);
 
+
+}
 
 const MailDetails = async (req: Request, res: Response) => {
   console.log("Request received in mail details", req.body);
@@ -48,6 +60,13 @@ const Mails = async (req: Request, res: Response) => {
   const { postalCode } = req.body;
   console.log(postalCode)
   const result = await mailRepository.getMail(postalCode);
+  return res.status(200).json(result);
+};
+const ReturnMail = async (req: Request, res: Response) => {
+  console.log("Request received in mail", req.body);
+  const { postalCode } = req.body;
+  console.log(postalCode)
+  const result = await mailRepository.getReturnMail(postalCode);
   return res.status(200).json(result);
 };
 
@@ -198,4 +217,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, Mails, MailDetails };
+export { CalculatePrice, Mails, MailDetails,ReturnMail, ChangeAddress };

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
 import {
   FormDescription,
   Form,
@@ -14,12 +15,11 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
 import axios from "axios"
 import {useUser} from "../authentication/usercontext"
-import AddressSearch from '../mail/mailorder/address';
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,6 +52,7 @@ export default function Employeeupdate() {
     },});	
   const location = useLocation();
   const employee = location.state;
+  const {removeUser, user} = useUser()
 
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
@@ -61,8 +62,12 @@ export default function Employeeupdate() {
       const response = await axios.post(
         "http://localhost:5000/employee/update",
         {values,
-        employeeID}
-      )
+        employeeID},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, 
+          },
+        });
       if(response.data){
         toast({
           description:response.data,
@@ -108,7 +113,6 @@ export default function Employeeupdate() {
                 The current role is: {employee.role.toLowerCase()}
               </FormDescription>
                 </FormItem>
-                
                  )}
                 />
             {/* <div className='grid grid-2'>

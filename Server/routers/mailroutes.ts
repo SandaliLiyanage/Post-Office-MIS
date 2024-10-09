@@ -13,14 +13,14 @@ import Address from "../controllers/addresscontroller";
 import { MailDetails } from "../controllers/mailcontroller";
 import { ReportData } from "../controllers/reportcontroller";
 import { getAddresses } from "../controllers/mailcontroller";
+import {ReturnMail} from "../controllers/mailcontroller";
+import {ChangeAddress} from "../controllers/mailcontroller"
 const authService = new AuthService();
 
 const router = Router();
 
 // router.use(authService.authorize);
-
 router.post("/calculatePrice", CalculatePrice);
-
 router.post("/viewmails", Mails);
 router.get("/employee", getMailItems);
 router.get("/employee2", getMailItems2);
@@ -30,4 +30,6 @@ router.patch("/update-status", updateMailStatus);
 router.post("/reportData", ReportData);
 router.post("/addresssearch", Address);
 router.post("/mailDetails", MailDetails);
+router.post("/returnmail", ReturnMail);
+router.post("/changeaddress", ChangeAddress)
 export default router;

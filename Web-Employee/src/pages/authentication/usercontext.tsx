@@ -42,6 +42,7 @@ import React, { createContext, useState, ReactNode, useEffect } from 'react';
 
     const removeUser = () => {
       setUser(null);
+      console.log("removing user")
       localStorage.removeItem('user')
     };
   

@@ -26,15 +26,27 @@ import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
 import {Label} from "../../../components/ui/label"
+import { useToast } from "../../../hooks/use-toast";
+import { Toaster } from "../../../components/ui/toaster";
 
-
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import Addaddress from "./addaddress";
 const formSchema = z.object({
   customerName: z.string().min(5, {}),
-  address: z.string().min(5, {}),
+  address: z.string(),
   telephone: z.string().min(10, {}),
 });
 
 export default function MailOrder() {
+  const { toast } = useToast();
   const {user} = useUser();
   const navigate = useNavigate();
   const [search, setSearch] = useState<string>("");
@@ -42,6 +54,7 @@ export default function MailOrder() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [addressID, setAddressID] = useState<number|null>(null);
   const [addressMap, setAddressMap] = useState<{[key: string]: number}| null>(null);
+  const [addAddress, setAddress] =useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,7 +71,12 @@ export default function MailOrder() {
         console.log("this is search", search)
         const result= await axios.post(
           "http://localhost:5000/mail/addresssearch",
-          {search}
+          {search},
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          }
         );
         console.log(result.data)
         setAddressMap(result.data);
@@ -94,14 +112,47 @@ export default function MailOrder() {
     }
     checkforOngoingTransaction()
   })
+  const handleAddAddress= async()=>{
+
+  }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(addressID, " address id in onSubmit")
-    const postalCode = user?.postalCode
-    localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
-    const customerDetails = localStorage.getItem("customerDetails");
-    console.log("customer Details set",customerDetails);
-    navigate("/dashboard/maildetails" );
+    if(addressID){
+      toast(
+        {
+          description:"Address verified"
+        }
+      )
+      const postalCode = user?.postalCode
+      localStorage.setItem("customerDetails", JSON.stringify({values, postalCode, addressID} ));
+      const customerDetails = localStorage.getItem("customerDetails");
+      console.log("customer Details set",customerDetails);
+      navigate("/dashboard/maildetails" );
+    }else{
+      toast({
+      description: "Address not verified",
+      action:  <div><Dialog>
+      <DialogTrigger asChild>
+      <Button className="bg-white p-3 text-slate-600 border border-slate-500 hover:bg-slate-300" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Add New Address</DialogTitle>
+        </DialogHeader>
+        <DialogDescription>
+
+        </DialogDescription>
+          <Addaddress/>
+        <DialogFooter>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+
+   
+      </div>,
+      })
+    }
   }
 
   return (
@@ -202,11 +253,15 @@ export default function MailOrder() {
               </div>
             </div>
             <div className="flex justify-end mt-8">
-            <Button type="submit" className=" bg-teal-600">Proceed </Button>
+            <Button type="submit" className=" bg-teal-600" >Proceed </Button>
+            <Toaster/>
             </div>
           </div>
         </form>
       </Form>
+      {addAddress &&
+      <div className="flex justify-end"> 
+      <Addaddress/></div>}
     </div>
   );
 }

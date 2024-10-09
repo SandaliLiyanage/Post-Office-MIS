@@ -13,7 +13,7 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
   console.log("generating pdf");
   const date = new Date().toDateString()
   const props = {
-    outputType: OutputType.Blob, // To save the PDF
+    outputType: OutputType.Save, // To save the PDF
     returnJsPDFDocObject: true,  // Return jsPDF object if needed
     fileName: "Invoice 2024",    // Name of the PDF file
     orientationLandscape: false, // PDF orientation
@@ -79,5 +79,7 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
   const pdfObject = jsPDFInvoiceTemplate(props);
   console.log(pdfObject); // This will log the PDF object if needed
 };
+
+
 
 export { generateInvoice };

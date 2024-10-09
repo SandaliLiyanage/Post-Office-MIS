@@ -20,7 +20,7 @@ import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
 import logo from '../../assets/logo.png';
 const formSchema = z.object({
-  employeeEmail: z.string().min(3, {
+  employeeID: z.string().min(3, {
   }),
   password: z.string().min(5, {
   }),
@@ -33,7 +33,7 @@ export default function Login() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      employeeEmail: "",
+      employeeID: "",
       password: "",
     },
   })
@@ -94,12 +94,12 @@ export default function Login() {
           <div>
             <FormField
               control={form.control}
-              name="employeeEmail"
+              name="employeeID"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Employee Email</FormLabel>
+                  <FormLabel>Employee ID</FormLabel>
                   <FormControl>
-                    <Input placeholder="Employee Email" {...field} />
+                    <Input placeholder="Employee ID" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

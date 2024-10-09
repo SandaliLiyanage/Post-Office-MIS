@@ -3,9 +3,9 @@ import { EmployeeRepository } from "../repositeries/employeerepository"
 const employeeRepository = new EmployeeRepository();
 
 class EmployeeService{
-    async validateEmployeeID(employeeEmail: string){
+    async validateEmployeeID(employeeID: string){
         try{
-            const employee = await employeeRepository.findUserbyID(employeeEmail);
+            const employee = await employeeRepository.findUserbyID(employeeID);
             if (employee!=null) {
                 return true;
             }else{

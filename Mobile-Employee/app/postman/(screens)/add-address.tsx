@@ -37,12 +37,18 @@ const AddAddress = () => {
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
-      setCurrentLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+      const { latitude, longitude } = location.coords;
+      setCurrentLocation({ latitude, longitude });
+
+      // Set initial region to current location
+      setRegion({
+        latitude,
+        longitude,
+        latitudeDelta: 0.02,
+        longitudeDelta: 0.02,
       });
     })();
-  }, []); // Removed `region` from the dependency array to prevent overriding
+  }, []);
 
   const handleAddAddress = () => {
     if (addressNo && streetName && locality) {
@@ -50,7 +56,7 @@ const AddAddress = () => {
       console.log("Street Name:", streetName);
       console.log("Locality:", locality);
       console.log("currentLocation:", currentLocation);
-      // Alert.alert("Success", "Address added successfully!");
+      Alert.alert("Success", "Address added successfully!");
       // Clear input fields
       setAddressNo("");
       setStreetName("");
@@ -60,12 +66,9 @@ const AddAddress = () => {
     }
   };
 
-  const [firstRegion, setFirstRegion] = useState(region);
-
   return (
     <SafeAreaView style={styles.container}>
-      {/* Map section */}
-
+      {/* Address input fields */}
       <View style={styles.topcontainer}>
         <TextInput
           style={styles.input}
@@ -89,14 +92,14 @@ const AddAddress = () => {
           selectionColor="black"
         />
       </View>
+
+      {/* Map section */}
       <MapView
         style={styles.map}
-        //region={currentLocation ? { ...region, ...currentLocation } : region}
-        //region1={currentLocation ? { ...region, ...currentLocation } : region}
-        initialRegion={firstRegion} // Use initialRegion here to avoid automatic re-focus
+        region={region} // Dynamic region based on current location
         onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
-        showsUserLocation={true} // This enables the blue dot for the current GPS location
-        followsUserLocation={true} // Optionally, this makes the map follow the user's location
+        showsUserLocation={true} // Show blue dot for user's location
+        followsUserLocation={true} // Follow user's live location
       >
         {currentLocation && (
           <Marker
@@ -107,9 +110,8 @@ const AddAddress = () => {
         )}
       </MapView>
 
-      {/* Address form section */}
+      {/* Add address button */}
       <View style={styles.formContainer}>
-        {/* Custom Button using TouchableOpacity */}
         <TouchableOpacity style={styles.button} onPress={handleAddAddress}>
           <Text style={styles.buttonText}>Add Address</Text>
         </TouchableOpacity>
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "space-between",
-    marginTop: -31, // Adjust the top margin to avoid the SafeAreaView padding
+    marginTop: -31, // Adjust the top margin to avoid SafeAreaView padding
   },
   topcontainer: {
     padding: 20,
@@ -131,13 +133,13 @@ const styles = StyleSheet.create({
   },
   map: {
     width: Dimensions.get("window").width,
-    height: "55%", // Top part of the screen
+    height: "55%", // Map height
   },
   formContainer: {
     padding: 10,
     paddingTop: 15,
     backgroundColor: "#fff",
-    height: "50%", // Bottom part of the screen
+    height: "50%", // Form container height
   },
   input: {
     borderColor: "#ccc",
@@ -147,14 +149,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   button: {
-    backgroundColor: "#007BFF", // You can change this to any color
+    backgroundColor: "#007BFF", // Button color
     padding: 15,
     borderRadius: 8,
     alignItems: "center",
     marginTop: 10,
   },
   buttonText: {
-    color: "#fff", // Text color
+    color: "#fff", // Button text color
     fontSize: 17,
     fontWeight: "bold",
   },

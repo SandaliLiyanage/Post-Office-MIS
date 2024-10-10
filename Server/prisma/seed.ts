@@ -8,8 +8,10 @@ import {
   MailType,
   BundleStatus,
 } from "@prisma/client";
+import BCryptService from "../services/cryptservice";
 
 const prisma = new PrismaClient();
+const cryptservice = new BCryptService();
 
 async function main() {
   // Clear existing data
@@ -142,8 +144,8 @@ async function main() {
   });
 
   // Seed Employees
-  await prisma.employee.createMany({
-    data: [
+  const employeeCreate = async () => {
+    const data = [
       {
         employeeID: "0001",
         employeeName: "John Doe",
@@ -198,8 +200,23 @@ async function main() {
         postalCode: "20850",
         password: "password123",
       },
-    ],
-  });
+    ];
+    const hashedData = await Promise.all(
+      data.map(async (employee) => {
+        const hashedPassword = await cryptservice.hashPassword(
+          employee.password
+        ); // Call your hashing function
+        return {
+          ...employee,
+          password: hashedPassword, // Replace the plain text password with the hashed one
+        };
+      })
+    );
+    await prisma.employee.createMany({
+      data: hashedData,
+    });
+  };
+  await employeeCreate();
 
   // Seed Areas
   await prisma.area.createMany({

@@ -32,10 +32,13 @@ class AuthService {
         return loginResponse;
       }
       const hashedPassword = await cryptService.hashPassword(password);
+      console.log("hashed:", hashedPassword);
       const isVerified = await cryptService.comparePassword(
         password,
         employee.password
       );
+      console.log("isverified:", isVerified);
+      console.log("employee:", employee);
       if (isVerified && employee) {
         console.log("verified");
         const sessionId = new Date().toISOString();
@@ -45,6 +48,7 @@ class AuthService {
         console.log(token, "hehe");
         const user = await employeeRepository.getUserData(username);
         console.log(user.employeeName);
+        console.log("User:", user);
         const loginResponse: LoginResponse = {
           name: user.employeeName,
           postalCode: user.postalCode,
@@ -54,6 +58,7 @@ class AuthService {
           postOfficeName: user.postOfficeName,
           token: token,
           email: user.email,
+          employeeID: username,
         };
         console.log("login resoponse", loginResponse);
         return loginResponse;

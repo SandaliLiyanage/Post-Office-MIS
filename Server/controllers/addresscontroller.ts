@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import AdderessService from "../services/addressservice"
-
-const addressService = new AdderessService();
+import { AddressRepository } from '../repositeries/addressrepository';
+const addressRepository = new AddressRepository();
+const addressService = new AdderessService(addressRepository);
 
 const Address = async (req: Request, res: Response) => {
     const search = req.body.search

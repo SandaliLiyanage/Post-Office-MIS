@@ -1,7 +1,10 @@
 import { EmployeeRepository } from "../repositeries/employeerepository"
 import nodemailer from 'nodemailer';
-const employeeRepository = new EmployeeRepository();
 class EmailService{
+    private emailRepository: EmployeeRepository;
+    constructor(emailRepository: EmployeeRepository){
+        this.emailRepository = emailRepository;
+    }
     async sendEmail(otp: string, employeeID:string){
 
         console.log(process.env.USER, process.env.APP_PASSWORD)
@@ -40,7 +43,7 @@ class EmailService{
 
     }
     async getEmail(employeeID: string){
-        const result = await employeeRepository.findUserbyID(employeeID);
+        const result = await this.emailRepository.findUserbyID(employeeID);
         const email = result?.email
         return email
     }

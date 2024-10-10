@@ -1,12 +1,16 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {Badge} from  "../../../components/ui/badge"
+import { formatDate } from "./formatdate"
 export interface IMail{
-    category: string;
+    mailType: string;
     barcodeID: string;
     mailstatus: string;
     weight: number;
     bundleID: number;
     price: number;	
+    transaction: {
+      date: string;
+    }
   }
 const columns: ColumnDef<IMail>[] = [
     {
@@ -16,11 +20,33 @@ const columns: ColumnDef<IMail>[] = [
     {
       accessorKey: "mailType",
       header: "Category",
+      cell:( {row} ) => {
+        const getTypeBadge = (type: string) => {
+          switch (type) {
+            case "normal_mail":
+              return <Badge className="bg-blue-500 text-white">Normal Mail</Badge>;
+            case "registered_mail":
+              return <Badge className="bg-green-500 text-white">Registered Mail</Badge>;
+            case "courier":
+              return <Badge className="bg-yellow-500 text-white">Courier</Badge>;
+            default:
+                return null;
+          }
+        }
+        getTypeBadge(row.original.mailType);
+      }
       },    
     {
-      accessorKey: "transaction.date",
+      accessorKey: "transaction.date1",
       header: "Date",
+      cell: ({ row }) => {
+
+        const date = new Date(row.original.transaction.date);
+        return formatDate(date);
+      }
+      
     },
+
     {
       accessorKey: "price",
       header: "Price",

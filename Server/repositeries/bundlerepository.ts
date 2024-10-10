@@ -1,11 +1,16 @@
 import { Prisma, PrismaClient, Bundle, BundleStatus } from "@prisma/client";
-const prisma = new PrismaClient();
+import { PrismaSingleton } from "./prismasingleton";
+
 class BundleRepository {
+  private prisma = PrismaSingleton.getInstance();
+  constructor() {
+    this.prisma = PrismaSingleton.getInstance();
+  }
   async getCreatedBundles(postalCode: string): Promise<Bundle[] | null> {
     console.log("get bundles", postalCode);
     if (postalCode) {
       try {
-        const res = await prisma.bundle.findMany({
+        const res = await this.prisma.bundle.findMany({
           where: {
             currentPostCode: postalCode,
             bundleStatus: BundleStatus.CREATED,
@@ -28,7 +33,7 @@ class BundleRepository {
     console.log("get bundles in delivery", postalCode);
     if (postalCode) {
       try {
-        const res = await prisma.bundle.findMany({
+        const res = await this.prisma.bundle.findMany({
           where: {
             destPostalCode: postalCode,
             bundleStatus: BundleStatus.ARRIVED,
@@ -50,7 +55,7 @@ class BundleRepository {
     if (employeeID) {
       try {
         // First, fetch the employee's postal code using the employeeID
-        const employee = await prisma.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
           where: {
             employeeID: employeeID,
           },
@@ -65,7 +70,7 @@ class BundleRepository {
         }
 
         // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
-        const res = await prisma.bundle.findMany({
+        const res = await this.prisma.bundle.findMany({
           where: {
             currentPostCode: employee.postalCode, // Match the postal code of the employee
             bundleStatus: BundleStatus.ARRIVED, // Bundle status is ARRIVED
@@ -86,7 +91,7 @@ class BundleRepository {
     if (employeeID) {
       try {
         // First, fetch the employee's postal code using the employeeID
-        const employee = await prisma.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
           where: {
             employeeID: employeeID,
           },
@@ -101,7 +106,7 @@ class BundleRepository {
         }
 
         // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
-        const res = await prisma.bundle.findMany({
+        const res = await this.prisma.bundle.findMany({
           where: {
             currentPostCode: employee.postalCode, // Match the postal code of the employee
             bundleStatus: BundleStatus.CREATED, // Bundle status is ARRIVED
@@ -122,7 +127,7 @@ class BundleRepository {
     if (employeeID) {
       try {
         // First, fetch the employee's postal code using the employeeID
-        const employee = await prisma.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
           where: {
             employeeID: employeeID,
           },
@@ -137,7 +142,7 @@ class BundleRepository {
         }
 
         // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
-        const res = await prisma.bundle.findMany({
+        const res = await this.prisma.bundle.findMany({
           where: {
             currentPostCode: employee.postalCode, // Match the postal code of the employee
             bundleStatus: BundleStatus.DISPATCHED, // Bundle status is ARRIVED
@@ -158,7 +163,7 @@ class BundleRepository {
     if (employeeID) {
       try {
         // First, fetch the employee's postal code using the employeeID
-        const employee = await prisma.employee.findUnique({
+        const employee = await this.prisma.employee.findUnique({
           where: {
             employeeID: employeeID,
           },
@@ -173,7 +178,7 @@ class BundleRepository {
         }
 
         // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
-        const res = await prisma.bundle.findMany({
+        const res = await this.prisma.bundle.findMany({
           where: {
             currentPostCode: employee.postalCode, // Match the postal code of the employee
             bundleStatus: BundleStatus.DISTRIBUTED, // Bundle status is ARRIVED
@@ -196,7 +201,7 @@ class BundleRepository {
     console.log("in find bundle");
     console.log(sourcePostalCode, "source");
     try {
-      const res = await prisma.bundle.findMany({
+      const res = await this.prisma.bundle.findMany({
         where: {
           destPostalCode: postalCode,
           currentPostCode: sourcePostalCode,
@@ -212,7 +217,7 @@ class BundleRepository {
   async findBundle2(bundleID: number): Promise<Bundle[]> {
     console.log("in find bundle");
     try {
-      const res = await prisma.bundle.findUnique({
+      const res = await this.prisma.bundle.findUnique({
         where: {
           bundleID: bundleID,
         },
@@ -231,7 +236,7 @@ class BundleRepository {
   ): Promise<number | null> {
     console.log("in create bundle");
     try {
-      const res = await prisma.bundle.create({
+      const res = await this.prisma.bundle.create({
         data: {
           destPostalCode: destPostalCode,
           currentPostCode: sourcePostalCode,
@@ -251,7 +256,7 @@ class BundleRepository {
   async updateBundle(bundleID: number) {
     console.log("in create bundle");
     try {
-      const res = await prisma.bundle.update({
+      const res = await this.prisma.bundle.update({
         where: { bundleID: bundleID },
         data: { bundleStatus: BundleStatus.DISTRIBUTED },
       });
@@ -263,7 +268,7 @@ class BundleRepository {
   }
 
   updateBundleStatus = async (bundleID: number, newStatus: BundleStatus) => {
-    return await prisma.bundle.update({
+    return await this.prisma.bundle.update({
       where: { bundleID },
       data: { bundleStatus: newStatus },
     });

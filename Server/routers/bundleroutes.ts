@@ -1,4 +1,4 @@
-import { Router } from "express";
+import e, { Router } from "express";
 
 // import {CustomerDetails} from '../controllers/customerdetails';
 
@@ -15,7 +15,16 @@ import { getCreatedBundles } from "../controllers/bundlecontroller";
 import { getDispatchedBundles } from "../controllers/bundlecontroller";
 import { updateBundleStatus2 } from "../controllers/bundlecontroller";
 import { findBundle } from "../controllers/bundlecontroller";
-const authService = new AuthService();
+import { EmployeeRepository } from "../repositeries/employeerepository";
+import BcryptService  from "../services/cryptservice";
+import JwtService from "../services/jwtservice";
+import SessionStore  from "../services/sessionstore";
+
+const employeRepository = new EmployeeRepository();
+const cryptService = new BcryptService();
+const session = new SessionStore();
+const jwtToken = new JwtService();
+const authService = new AuthService(employeRepository, cryptService, session, jwtToken);
 
 const router = Router();
 // router.use(authService.authorize);

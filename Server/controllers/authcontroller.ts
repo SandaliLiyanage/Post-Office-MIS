@@ -2,10 +2,23 @@ import { Request, Response } from 'express';
 import AuthService from '../services/authservice';
 import {OTPService} from '../services/otpservice';
 import EmployeeService from '../services/employeeservice';
+import  BcryptService  from '../services/cryptservice';
+import JwtService from '../services/jwtservice';
+import SessionStore from '../services/sessionstore';
+import { EmployeeRepository } from '../repositeries/employeerepository';
+import OTPRepository  from '../repositeries/otprepository';
+import { EmailService } from '../services/emailservice';
 
-const authService = new AuthService();
-const otpService = new OTPService();
-const employeeService = new EmployeeService();
+const emailRepository = new EmployeeRepository();
+const otpRepository = new OTPRepository();
+const employeRepository = new EmployeeRepository();
+const cryptService = new BcryptService();
+const session = new SessionStore();
+const jwtToken = new JwtService();
+const emailService = new EmailService(emailRepository);
+const authService = new AuthService(employeRepository, cryptService, session, jwtToken);
+const otpService = new OTPService(otpRepository,emailService );
+const employeeService = new EmployeeService(emailRepository);
 
 const Login = async (req: Request, res: Response) => {
     const { employeeID, password } = req.body;

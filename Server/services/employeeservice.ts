@@ -1,11 +1,14 @@
 import { EmployeeRepository } from "../repositeries/employeerepository"
 
-const employeeRepository = new EmployeeRepository();
 
 class EmployeeService{
+    private employeeRepository: EmployeeRepository;
+    constructor(employeeRepository: EmployeeRepository){
+        this.employeeRepository = employeeRepository;
+    }
     async validateEmployeeID(employeeID: string){
         try{
-            const employee = await employeeRepository.findUserbyID(employeeID);
+            const employee = await this.employeeRepository.findUserbyID(employeeID);
             if (employee!=null) {
                 return true;
             }else{

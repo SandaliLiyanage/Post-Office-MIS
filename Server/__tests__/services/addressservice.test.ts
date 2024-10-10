@@ -4,15 +4,21 @@ import { AddressRepository } from '../../repositeries/addressrepository';
 // Mocking the AddressRepository
 jest.mock('../../repositeries/addressrepository');
 
-
-// Instantiate the service with the mocked repository
-const addressRepository = new AddressRepository();
-const addressService = new AddressService();
-
 describe('searchSuggestions', () => {
+    let addressService: AddressService;
+    let mockRepository: AddressRepository;
+
+    beforeEach(() => {
+        // Create a mock of AddressRepository
+        mockRepository = new AddressRepository();
+
+        // Pass the mockRepository into the AddressService constructor
+        addressService = new AddressService(mockRepository);
+    });
+
     it('should return a hashmap of address strings to address IDs', async () => {
         // Mocking the queryAddresses method to return expected results
-        addressRepository.queryAddresses = jest.fn().mockResolvedValue([
+        mockRepository.queryAddresses = jest.fn().mockResolvedValue([
             { 
                 addressNo: '123', 
                 streetName: 'Main St', 
@@ -39,13 +45,13 @@ describe('searchSuggestions', () => {
 
         expect(result).toEqual({
             '123, Main St, Downtown, 12345': 1,
-            '123, Second St, Uptown, 67890': 2  
+            '123, Second St, Uptown, 67890': 2
         });
     });
 
     it('should handle addresses with missing fields', async () => {
         // Mocking queryAddresses with missing fields
-        addressRepository.queryAddresses = jest.fn().mockResolvedValue([
+        mockRepository.queryAddresses = jest.fn().mockResolvedValue([
             { 
                 addressNo: '23', 
                 streetName: 'Main St', 
@@ -67,10 +73,11 @@ describe('searchSuggestions', () => {
 
     it('should return an empty hashmap if no addresses are found', async () => {
         // Mocking an empty result set
-        addressRepository.queryAddresses = jest.fn().mockResolvedValue([]);
+        mockRepository.queryAddresses = jest.fn().mockResolvedValue([]);
 
         const result = await addressService.searchSuggestions('Nonexistent');
 
+        // Expect the result to be an empty object
         expect(result).toEqual({});
     });
 });

@@ -2,10 +2,18 @@ import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
 import MailService from "../services/mailservice";
+import { BundleRepository } from "../repositeries/bundlerepository";
+import PostOfficeRepository from "../repositeries/postofficerepository";
+import { AddressRepository } from "../repositeries/addressrepository";
+import BundleService from "../services/bundleservice";
 
+const bundleRepository = new BundleRepository();
+const addressRepository = new AddressRepository();
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
-const mailService = new MailService();
+const postOfficeRepository = new PostOfficeRepository();
+const bundleservice = new BundleService(postOfficeRepository, bundleRepository, addressRepository);
+const mailService = new MailService(mailRepository, bundleservice);
 
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");

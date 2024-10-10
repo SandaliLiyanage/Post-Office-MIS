@@ -2,10 +2,13 @@ import BundleService from "../services/bundleservice";
 import { Request, Response } from "express";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
+import { AddressRepository } from "../repositeries/addressrepository";
 
-const bundleservice = new BundleService();
+const addressRepository = new AddressRepository();
 const bundleRepository = new BundleRepository();
 const postOfficeRepository = new PostOfficeRepository();
+const bundleservice = new BundleService(postOfficeRepository,bundleRepository, addressRepository);
+
 
 const CreatedBundles = async (req: Request, res: Response) => {
   console.log("Request received in mail bundle controller", req.body);

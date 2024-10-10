@@ -21,8 +21,9 @@ const Home = () => {
   const router = useRouter(); // Call useRouter at the top level of the component
   const { user } = useUser();
   //const employeeID = user?.employeeID;
-  const employeeID = "0002";
+  const employeeID = "0005";
   console.log("employeeID", user);
+  //const employeeID = "0002";
   // Define a type for the available routes
   type RouteKeys = keyof typeof ROUTES;
 
@@ -114,37 +115,29 @@ const Home = () => {
       {/* Delivery counts */}
       {deliveryCounts && ( // Check if deliveryCounts is not null
         <View style={styles.deliveriesContainer}>
-          <Text style={styles.deliveriesTitle}>Deliveries Remaining</Text>
+          <Text style={styles.deliveriesTitle}>Bundles Remaining</Text>
 
           <View style={styles.deliveryTypes}>
             {/* Normal mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.NORMAL_MAIL !== undefined
+                5
+                {/* {deliveryCounts.NORMAL_MAIL !== undefined
                   ? deliveryCounts.NORMAL_MAIL
-                  : 0}
+                  : 0} */}
               </Text>
-              <Text style={styles.deliveryLabel}>Normal</Text>
-            </View>
-
-            {/* Registered mail */}
-            <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>
-                {deliveryCounts.REGISTERED_MAIL !== undefined
-                  ? deliveryCounts.REGISTERED_MAIL
-                  : 0}
-              </Text>
-              <Text style={styles.deliveryLabel}>Registered</Text>
+              <Text style={styles.deliveryLabel}>Created</Text>
             </View>
 
             {/* Parcel */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                {deliveryCounts.COURIER !== undefined
+                8
+                {/* {deliveryCounts.COURIER !== undefined
                   ? deliveryCounts.COURIER
-                  : 0}
+                  : 0} */}
               </Text>
-              <Text style={styles.deliveryLabel}>Parcel</Text>
+              <Text style={styles.deliveryLabel}>Arrived</Text>
             </View>
           </View>
         </View>
@@ -152,28 +145,6 @@ const Home = () => {
 
       {/* Actions */}
       <View style={styles.actionsContainer}>
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => handleNavigation("STATUS")}
-        >
-          <Image
-            source={require("../../../assets/icons/status.png")}
-            style={styles.actionIcon}
-          />
-          <Text style={styles.actionText}>Status</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={styles.actionButton}
-          onPress={() => handleNavigation("ADD_ADDRESS")}
-        >
-          <Image
-            source={require("../../../assets/icons/address.png")}
-            style={styles.actionIcon}
-          />
-          <Text style={styles.actionText}>Add Address</Text>
-        </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.actionButton}
           onPress={() => handleNavigation("LEAVES")}
@@ -254,41 +225,44 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     marginBottom: 10,
-    marginLeft: 60,
+    marginLeft: 69,
   },
   deliveryTypes: {
     flexDirection: "row",
     justifyContent: "space-around",
+    //paddingLeft: 0,
   },
   deliveryItem: {
     alignItems: "center",
   },
   deliveryCount: {
-    fontSize: 45,
+    fontSize: 50,
     color: "white",
-
+    //paddingLeft: 12,
     fontWeight: "bold",
   },
   deliveryLabel: {
-    fontSize: 14,
-
+    fontSize: 16,
     color: "white",
+    alignItems: "center",
+    //paddingLeft: 2,
   },
   actionsContainer: {
     marginTop: 19,
-    marginLeft: 8,
-    marginRight: 8,
+    marginLeft: 65,
+    marginRight: 65,
     paddingLeft: 10,
     paddingRight: 10,
-    flexDirection: "row",
+    flexDirection: "column",
     flexWrap: "wrap",
     justifyContent: "space-around",
   },
   actionButton: {
-    width: "42%",
+    width: "100%",
     backgroundColor: "white",
     borderRadius: 10,
     padding: 20,
+    paddingHorizontal: 10,
     alignItems: "center",
     marginBottom: 25,
   },

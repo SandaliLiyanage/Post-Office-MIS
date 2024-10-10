@@ -3,13 +3,16 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker, Polyline } from "react-native-maps";
 import { StyleSheet, View, Text } from "react-native";
 import axios from "axios";
+import { useUser } from "../../auth/usercontext";
 import { IP } from "../../../config";
 
 const Route = () => {
+  const { user } = useUser();
+  const empID = user?.employeeID;
   const [routeCoordinates, setRouteCoordinates] = useState<
     { latitude: number; longitude: number }[]
   >([]);
-  const [employeeID] = useState("0002");
+  const [employeeID] = useState(empID);
   const [locations, setLocations] = useState<
     { id: string; latitude: number; longitude: number }[]
   >([]);

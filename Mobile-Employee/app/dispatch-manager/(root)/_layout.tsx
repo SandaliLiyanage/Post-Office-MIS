@@ -96,22 +96,12 @@ const Layout = () => (
       }}
     />
     <Tabs.Screen
-      name="mail"
+      name="bundles"
       options={{
-        title: "Mail",
+        title: "Bundles",
         headerShown: true,
         tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} source={icons.mail} />
-        ),
-      }}
-    />
-    <Tabs.Screen
-      name="route"
-      options={{
-        title: "Route",
-        headerShown: true,
-        tabBarIcon: ({ focused }) => (
-          <TabIcon focused={focused} source={icons.route} />
+          <TabIcon focused={focused} source={icons.bundle} />
         ),
       }}
     />

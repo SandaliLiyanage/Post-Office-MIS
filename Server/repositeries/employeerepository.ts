@@ -1,4 +1,4 @@
-import {Employee, Role} from "@prisma/client"
+import { Employee, Role, Feedback } from "@prisma/client";
 import { PrismaSingleton } from "./prismasingleton";
 
 interface User {
@@ -13,22 +13,21 @@ interface User {
 class EmployeeRepository {
   private prisma = PrismaSingleton.getInstance();
   private static instance: EmployeeRepository;
-  constructor(){
-      this.prisma = PrismaSingleton.getInstance();
-      
+  constructor() {
+    this.prisma = PrismaSingleton.getInstance();
   }
-  static getInstance(): EmployeeRepository{
-      if(!EmployeeRepository.instance){
-          EmployeeRepository.instance = new EmployeeRepository();
-      }
-      return EmployeeRepository.instance;
+  static getInstance(): EmployeeRepository {
+    if (!EmployeeRepository.instance) {
+      EmployeeRepository.instance = new EmployeeRepository();
+    }
+    return EmployeeRepository.instance;
   }
   async getUserData(userName: string): Promise<User> {
     try {
       console.log(userName, "hee");
       const res = await this.prisma.$queryRaw<
         User[]
-      >`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude"
+      >`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude", e."employeeID"
             FROM "Employee" AS e 
             JOIN 
             "PostOffice" AS p 
@@ -130,10 +129,33 @@ class EmployeeRepository {
       throw error;
     }
   }
-  
+
   async deleteEmployee(employeeID: string) {
     console.log(employeeID);
     console.log("in delete repository");
+    // const response = await prisma.employee.delete({
+    //     where: {
+    //         employeeID: employeeID
+    //     }
+    // })
+  }
+  async saveFeedback(
+    employeeID: string,
+    feedbackText: string
+  ): Promise<Feedback> {
+    try {
+      const feedback = await this.prisma.feedback.create({
+        data: {
+          employeeID: employeeID,
+          feedbackText: feedbackText,
+        },
+      });
+      console.log("Feedback saved:", feedback);
+      return feedback;
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      throw error;
+    }
   }
 }
 export { EmployeeRepository };

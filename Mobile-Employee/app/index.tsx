@@ -6,6 +6,7 @@ const Index = () => {
   // user is dericted to the login page
   //return <Redirect href="/auth/log-in" />;
   return <Redirect href="/postman/home" />;
+  //return <Redirect href="/dispatch-manager/home" />;
 };
 
 export default Index;

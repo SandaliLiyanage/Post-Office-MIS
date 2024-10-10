@@ -1,4 +1,4 @@
-import { Employee, Role } from "@prisma/client";
+import { Employee, Role, Feedback } from "@prisma/client";
 import { PrismaSingleton } from "./prismasingleton";
 
 interface User {
@@ -138,6 +138,24 @@ class EmployeeRepository {
     //         employeeID: employeeID
     //     }
     // })
+  }
+  async saveFeedback(
+    employeeID: string,
+    feedbackText: string
+  ): Promise<Feedback> {
+    try {
+      const feedback = await this.prisma.feedback.create({
+        data: {
+          employeeID: employeeID,
+          feedbackText: feedbackText,
+        },
+      });
+      console.log("Feedback saved:", feedback);
+      return feedback;
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      throw error;
+    }
   }
 }
 export { EmployeeRepository };

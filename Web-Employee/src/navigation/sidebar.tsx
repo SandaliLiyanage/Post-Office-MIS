@@ -47,12 +47,6 @@ export default function SideBar() {
                           handleClick('View Mail')
                           navigate("/dashboard/viewMail")
                         } }>View Mail</NavButton>
-
-  const LeaveRequest = <NavButton className={`${activeButton === 'leaveRequest' ? clickedColour : normalColour}`} 
-                        onClick={() => {
-                          handleClick('leaveRequest')
-                          navigate("/dashboard/leaveRequest")
-                        } }>Request Leaves</NavButton>
   const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('mailBundles')
@@ -70,7 +64,7 @@ export default function SideBar() {
                           handleClick('employeeRegistrations')
                           navigate("/dashboard/employeeRegistrations")
                         } }>Employee Registrations</NavButton>
-  const FailedToDeliver = <NavButton className={`${activeButton === 'failedtoDeliver' ? clickedColour : normalColour}`} 
+  const FailedToDeliver = <NavButton className={`${activeButton === 'failedtoDeliver'|| activeButton === 'retaddress' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('failedtoDeliver')
                           navigate("/dashboard/failedtoDeliver")
@@ -82,9 +76,9 @@ export default function SideBar() {
 
       {user?.role === 'POSTMASTER' && (
           <>
+            {ViewMail}
             {EmployeeRecords}
             {EmployeeRegistrations}
-            {ViewMail}
             {RevenueReports}
             {PostmanAssignments}
             {MailBundles}
@@ -101,8 +95,8 @@ export default function SideBar() {
         )}
         {user?.role === 'RECEPTIONIST' && (
           <>
-            {MailOrder}
             {ViewMail}
+            {MailOrder}
             {FailedToDeliver}
           </>
         )}

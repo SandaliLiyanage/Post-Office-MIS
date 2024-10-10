@@ -5,7 +5,6 @@ import MailOrder from "./pages/mail/mailorder/PageCustomerDetails";
 import MailDetails from "./pages/mail/mailorder/PageMailDetails";
 import Layout from "./navigation/layout";
 import EmpRegistration from "./pages/employees/PageEmpRegistrations";
-import LeaveRequest from "./pages/employees/PageLeaveRequests";
 import Emp from "./pages/employees/PageEmpRecords";
 import Bundle from "./pages/mail/bundles/PageBundles";
 import Mails from "./pages/mail/mails/PageViewMail";
@@ -17,7 +16,6 @@ import SetPassword from "./pages/authentication/PageSetPassword";
 import MailDelivery from "./pages/mail/mails/PageMailDelivery";
 import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
-import RetAddress from "./pages/mail/mails/retaddress"
 import Addaddress from "./pages/mail/mailorder/addaddress";
 import { ProtectedRoute } from "./pages/authentication/protectedroutes";
 import { useUser } from "./pages/authentication/usercontext";
@@ -49,10 +47,8 @@ function App() {
           <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
           <Bundle /></ProtectedRoute>}/>
           <Route path="viewleaverequests" element={<></>}></Route>
-          <Route path="viewmailassignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
-          <RevenueReports /></ProtectedRoute>}/>
           <Route path="revenuereports"element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
-          <Emp /></ProtectedRoute>}/>
+          <RevenueReports /></ProtectedRoute>}/>
           <Route path="employeeregistrations" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
           <EmpRegistration /></ProtectedRoute>}/>
           <Route path="mailassignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>

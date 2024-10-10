@@ -57,7 +57,7 @@ export default function Login() {
           email: user.data.email
         }
       )
-      navigate('/dashboard')}
+      navigate('/dashboard/viewmail')}
       else{
         form.reset();
         toast({

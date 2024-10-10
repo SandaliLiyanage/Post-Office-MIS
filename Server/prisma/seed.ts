@@ -153,7 +153,7 @@ async function main() {
         telephone: "123456789",
         role: Role.POSTMASTER,
         postalCode: "00100",
-        password: "password234",
+        password: "12345",
       },
       {
         employeeID: "0002",
@@ -162,7 +162,7 @@ async function main() {
         telephone: "987654321",
         role: Role.POSTMAN,
         postalCode: "10640",
-        password: "password123",
+        password: "12345",
       },
       {
         employeeID: "0003",
@@ -171,7 +171,7 @@ async function main() {
         telephone: "987654321",
         role: Role.SUPERVISOR,
         postalCode: "00100",
-        password: "password123",
+        password: "12345",
       },
       {
         employeeID: "0004",
@@ -180,7 +180,7 @@ async function main() {
         telephone: "987654321",
         role: Role.RECEPTIONIST,
         postalCode: "00100",
-        password: "password123",
+        password: "12345",
       },
       {
         employeeID: "0005",
@@ -189,7 +189,7 @@ async function main() {
         telephone: "987654321",
         role: Role.DISPATCHER,
         postalCode: "10640",
-        password: "password123",
+        password: "12345",
       },
       {
         employeeID: "0006",
@@ -198,7 +198,7 @@ async function main() {
         telephone: "987654321",
         role: Role.DISPATCHER,
         postalCode: "20850",
-        password: "password123",
+        password: "12345",
       },
     ];
     const hashedData = await Promise.all(

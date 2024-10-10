@@ -25,7 +25,8 @@ interface Mail {
 
 const Status = () => {
   const { user } = useUser();
-  const employeeID = user?.employeeID;
+  //const employeeID = user?.employeeID;
+  const employeeID = "0002";
   const [mail, setMail] = useState<Mail | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);

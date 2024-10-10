@@ -8,7 +8,8 @@ import { IP } from "../../../config";
 
 const Route = () => {
   const { user } = useUser();
-  const empID = user?.employeeID;
+  //const empID = user?.employeeID;
+  const empID = "0002";
   const [routeCoordinates, setRouteCoordinates] = useState<
     { latitude: number; longitude: number }[]
   >([]);

@@ -56,7 +56,8 @@ const SectionHeaderWithEmptyMessage = ({
 // Mail screen component
 const Mail = () => {
   const { user } = useUser();
-  const employeeID = user?.employeeID;
+  //const employeeID = user?.employeeID;
+  const employeeID = "0002";
   const [mailSections, setMailSections] = useState<MailSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedMail, setSelectedMail] = useState<MailItem | null>(null);

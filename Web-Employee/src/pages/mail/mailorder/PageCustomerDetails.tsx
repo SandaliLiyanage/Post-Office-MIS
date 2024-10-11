@@ -119,9 +119,6 @@ export default function MailOrder() {
     }
     checkforOngoingTransaction()
   })
-  const handleAddAddress= async()=>{
-
-  }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(addressID, " address id in onSubmit")
@@ -139,24 +136,8 @@ export default function MailOrder() {
     }else{
       toast({
       description: "Address not verified",
-      action:  <div><Dialog>
-      <DialogTrigger asChild>
+      action:  <div>
       <Button className="bg-white p-3 text-slate-600 border border-slate-500 hover:bg-slate-300" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add New Address</DialogTitle>
-        </DialogHeader>
-        <DialogDescription>
-
-        </DialogDescription>
-          <Addaddress/>
-        <DialogFooter>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-
-   
       </div>,
       })
     }

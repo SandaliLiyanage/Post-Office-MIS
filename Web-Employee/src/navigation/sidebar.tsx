@@ -69,6 +69,11 @@ export default function SideBar() {
                           handleClick('failedtoDeliver')
                           navigate("/dashboard/failedtoDeliver")
                         } }>Return Mail</NavButton>
+const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('addaddress')
+                          navigate("/dashboard/addAddress")
+                        } }>Add New Address</NavButton>
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full">
@@ -98,6 +103,7 @@ export default function SideBar() {
             {ViewMail}
             {MailOrder}
             {FailedToDeliver}
+            {AddNewAddress}
           </>
         )}
       </nav>

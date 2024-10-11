@@ -69,8 +69,11 @@ function App() {
           <Route path = "addaddress" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
           <Addaddress/></ProtectedRoute>}/>
           <Route path = "receipt" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <PageReceipt/></ProtectedRoute>}/>
+          <Route path = "addAddress" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <Addaddress/></ProtectedRoute>}/>
+          
         </Route>}
         <Route path="not-authorized" element={<Unauthorized/>}/>
+
 
       </Routes>
     </Router>

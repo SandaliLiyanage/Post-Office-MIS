@@ -13,7 +13,7 @@ import RevenueReports from  "./pages/reports/PageRevenueReports";
 import ForgotPassword from "./pages/authentication/PageForgotPassword";
 import ValidateOTP from "./pages/authentication/PageValidateOTP";
 import SetPassword from "./pages/authentication/PageSetPassword";
-import MailDelivery from "./pages/mail/mails/PageMailDelivery";
+import MailDelivery from "./pages/mail/mails/PageMailAssignment";
 import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
 import Addaddress from "./pages/mail/mailorder/PageAddAddress";
@@ -22,6 +22,7 @@ import { useUser } from "./pages/authentication/usercontext";
 import Unauthorized from "./pages/authentication/PageUnauthorized";
 import Retaddress from "./pages/mail/mails/retaddress";
 import PageReceipt from "./pages/mail/mailorder/PageReceipt";
+import PageDashboard from "./pages/PageDashboard";
 function App() {
   
   const {user} = useUser()
@@ -37,6 +38,7 @@ function App() {
         <Route path="/setPassword" element={< SetPassword/>} />
       {role &&
         <Route path= "/dashboard" element={<Layout/>}>
+          <Route path="" element={<PageDashboard/>}/>
           <Route path="register" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
           <EmpRegistration /></ProtectedRoute>}/>
           <Route path="mailorder" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>

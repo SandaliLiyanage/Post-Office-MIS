@@ -29,7 +29,7 @@ import { useEffect } from "react";
 import { Label } from "../../../components/ui/label";
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
-import { CardMail } from "./cardMail";
+import { CardMail } from "./MailList";
 import {
   Select,
   SelectContent,
@@ -37,7 +37,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-
+import { MailPlus } from "lucide-react";
+import { Save } from "lucide-react";
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
@@ -154,6 +155,7 @@ export default function MailDetails() {
       const mailDetails = { ...values, price, addressID };
       let localMailStorage = localStorage.getItem("mail details");
       console.log("in confirm", localMailStorage);
+      if(addressID){
       if (localMailStorage && price && !confirm) {
         let array: MailDetailsType[] = [];
         let item2 = JSON.parse(localMailStorage);
@@ -177,6 +179,13 @@ export default function MailDetails() {
         localStorage.setItem("mail details", JSON.stringify(array));
         setConfirm(true);
         setMailArray(array);
+      }}else{
+        toast({
+        description: "Address not verified",
+        action:  <div>
+        <Button className="p-3 text-white bg-slate-700 hover:bg-slate-700" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
+        </div>,
+        })
       }
     } catch (error) {
       console.error("Error submitting data", error);
@@ -212,76 +221,19 @@ export default function MailDetails() {
     }
   }, []);
 
-  const onConfirmTransaction = async function (mailArray: MailDetailsType[]) {
-    if (mailArray.length > 0) {
-      toast({
-        description: "Transaction Completed",
-      });
-      const postalCode = user?.postalCode;
-      const localCustomerStorage = localStorage.getItem("customerDetails");
-
-      if (localCustomerStorage) {
-        const customerDetails = JSON.parse(localCustomerStorage);
-        const response = await axios.post(
-          "http://localhost:5000/mail/mailDetails",
-          {
-            mailArray,
-            postalCode,
-            customerDetails,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${user?.token}`,
-            },
-          }
-        );
-        const total = response.data.total;
-        console.log(total);
-        console.log(total);
-        generateInvoice(
-          customerDetails.name,
-          customerDetails.telephone,
-          mailArray,
-          total
-        );
-        localStorage.setItem("total", total);
-        localStorage.removeItem("customerDetails");
-        setTransaction(true);
-        console.log("adata", response);
-        setConfrimedMailArray(response.data.result);
-        localStorage.setItem("confirmedMailArray", JSON.stringify(response.data.result));
-        console.log(confirmedMailArray);
-        console.log("Data submitted successfully", response.data);
-        navigate("/dashboard/receipt")
-      } else {
-        toast({
-          description: "Zero mails added",
-        });
-      }
-      console.log("in", mailArray);
-    }
-  };
   return (
     <div>
         <div className="flex overflow-hidden ">
-          <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
+          <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col ">
             <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between">
-              <div className="flex justify-start">
-              <p className="text-xl font-bold">Mail Order</p>
-              </div>
-              <div className="flex justify-end">
-              <Button
-                    type="button"
-                    className="bg-red-400 text-black flex justify-start"
-                    onClick={() => {
-                      navigate("/dashboard/mailorder");
-                      localStorage.removeItem("mail details");
-                      localStorage.removeItem("customerDetails");
-                    }}
-                  >
-                    Cancel Transacion
-                  </Button>
-              </div>
+             
+             
+                <p className="text-xl font-bold ">Mail Order</p>
+
+
+
+        
+            
             </div>
             <div className="flex justify-end  mr-10">
                 
@@ -412,7 +364,7 @@ export default function MailDetails() {
                   <div className="flex justify-between mt-7">
                     <div className="flex justify-start gap-4">
                       <Button
-                        className="bg-white border border-slate-300 text-slate-800 hover:bg-slate-300"
+                        className="bg-slate-600 text-white hover:bg-slate-300 hover:text-black"
                         onClick={onClickCalculate}
                         type="button"
                       >
@@ -432,30 +384,30 @@ export default function MailDetails() {
                     </div>
 
                     <div className="flex justify-end gap-2 ">
+                      {price && !confirm && 
                       <Button
                         type="submit"
-                        className="bg-white border border-slate-300  text-slate-800 hover:bg-slate-300"
+                        className="btn bg-stone-300 bg-opacity-15 hover:bg-white"
                       >
-                        Save Mail Details
-                      </Button>
-
-                      <Button
-                        type="button"
-                        className="bg-white border-b-2 border border-slate-300 text-slate-800 hover:bg-slate-300"
-                        onClick={() => {
-                          if (confirm) {
-                            location.reload();
-                          }
-                          setConfirm(false);
-                        }}
-                      >
-                        Add new mail item
-                      </Button>
+                        <Save color="black" size={30} />
+                      </Button>}
+                      {price &&
+                      <Button  type="submit" className="btn bg-stone-300 bg-opacity-15 hover:bg-white"
+                      size="icon" onClick={() => {
+                        if (confirm) {
+                          location.reload();
+                        }
+                        setConfirm(false);
+                      }}>
+                     <MailPlus color="black" size={30} />
+                     
+                    </Button>}
                       <Toaster />
                     </div>
                   </div>
                 </form>
               </Form>
+
             </div>
           </div>
           <div className="flex-1 overflow-auto ">

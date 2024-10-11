@@ -29,15 +29,7 @@ import {Label} from "../../../components/ui/label"
 import { useToast } from "../../../hooks/use-toast";
 import { Toaster } from "../../../components/ui/toaster";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+
 import Addaddress from "./PageAddAddress";
 const formSchema = z.object({
   customerName: z.string().min(5, {}),
@@ -137,7 +129,7 @@ export default function MailOrder() {
       toast({
       description: "Address not verified",
       action:  <div>
-      <Button className="bg-white p-3 text-slate-600 border border-slate-500 hover:bg-slate-300" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
+      <Button className="p-3 text-white bg-slate-700 hover:bg-slate-300" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
       </div>,
       })
     }

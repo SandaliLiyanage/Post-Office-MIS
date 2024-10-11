@@ -18,7 +18,18 @@ import { Input } from "../../components/ui/input"
 import { useUser } from './usercontext';
 import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
-import logo from '../../assets/logo.png';
+import logo from "../../assets/logo1.jpg"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+
+
 const formSchema = z.object({
   employeeID: z.string().min(3, {
   }),

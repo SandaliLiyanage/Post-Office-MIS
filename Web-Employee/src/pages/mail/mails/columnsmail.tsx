@@ -18,26 +18,27 @@ const columns: ColumnDef<IMail>[] = [
     header: "Mail ID",
     },    
     {
-      accessorKey: "mailType",
+      id: "actions",
       header: "Category",
-      cell:( {row} ) => {
+      cell: ({ row }) => {
         const getTypeBadge = (type: string) => {
           switch (type) {
-            case "normal_mail":
-              return <Badge className="bg-blue-500 text-white">Normal Mail</Badge>;
-            case "registered_mail":
-              return <Badge className="bg-green-500 text-white">Registered Mail</Badge>;
-            case "courier":
-              return <Badge className="bg-yellow-500 text-white">Courier</Badge>;
+            case "NORMAL_MAIL":
+              return "Normal Mail"
+            case "REGISTERED_MAIL":
+              return "Registered Mail"
+            case "COURIER":
+              return "Courier"
             default:
-                return null;
+              return null;
           }
-        }
-        getTypeBadge(row.original.mailType);
-      }
-      },    
+        };
+    
+        return getTypeBadge(row.original.mailType); // Return the badge here
+      },
+    },  
     {
-      accessorKey: "transaction.date1",
+      accessorKey: "transaction.date",
       header: "Date",
       cell: ({ row }) => {
 
@@ -79,7 +80,9 @@ const columns: ColumnDef<IMail>[] = [
           }
           
         }
-        
+        const sortByStatus = (status: string) => {
+          
+        }
         return getStatusBadge(mailStatus); 
       }
     },

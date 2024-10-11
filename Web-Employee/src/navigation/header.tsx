@@ -20,7 +20,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-// import logo from '../assets/logo.png';
+import logo from '../assets/logo2.png';
 
 export default function Nav() {
 
@@ -32,9 +32,9 @@ export default function Nav() {
     console.log("user iss", user)
   }
   return (
-    <div className = 'fixed top-0 w-full z-10 bg-slate-800 h-16 flex justify-between'>
+    <div className = 'fixed top-0 w-full z-10 bg-slate-800 h-16 flex justify-between shadow-sm'>
       <div className="p-4 flex justify-start">
-
+      {/* <img src={logo} alt="Post Office Logo"  /> */}
       <p className="text-xl text-white">Post-Office-{user?.postOfficeName}</p>
       </div>
       <div className="flex justify-end">

@@ -4,8 +4,8 @@ import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
-  const clickedColour: string = 'bg-blue-200 bg-opacity-90 text-black';
-  const normalColour: string = 'hover:bg-blue-200 text-white hover:bg-opacity-90';
+  const clickedColour: string = 'bg-slate-500 bg-opacity-90 text-black rounded-sm ';
+  const normalColour: string = 'hover:bg-blue-300 text-white hover:bg-opacity-90 rounded-sm p-2';
 
   // const clickedColour: string = 'bg-slate-800   rounded text-white';
   // const normalColour: string = 'hover:bg-slate-500 text-white hover:bg-opacity-90 hover:text-black';
@@ -76,8 +76,8 @@ const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? cl
                         } }>Add New Address</NavButton>
 
   return (
-    <div className="mt-16 fixed left-0 top-0 h-full">
-      <nav className="w-60 h-full bg-slate-800 ">
+    <div className="mt-16 fixed left-0 top-0 h-full shadow-lg">
+      <nav className="w-60 h-full bg-slate-800 shadow-xl">
 
       {user?.role === 'POSTMASTER' && (
           <>

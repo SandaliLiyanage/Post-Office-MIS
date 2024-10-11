@@ -89,7 +89,7 @@ const columnstoTransfer: ColumnDef<IBundle>[] = [
 
         return(
           <div>
-            <Button size={"sm"} className="px-5 bg-green-400">{count}</Button>
+            {count}
           </div>
         )
       }

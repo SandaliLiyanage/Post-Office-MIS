@@ -53,7 +53,7 @@ export default function MailDelivery() {
     {
         areaDet !=null && areaDet.map((area)=>(
             <div> 
-            <div className="bg-blue-200 m-5 p-5 rounded-sm">
+            <div className="bg-slate-200 m-5 p-5 rounded-sm shadow-lg">
             <div className="flex justify-between">
               <div className="flex justify-start">
             <Label className="font-bold text-black">{area.area} <p className="text-slate-500 font-light text-sm">  </p></Label>

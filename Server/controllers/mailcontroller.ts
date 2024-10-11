@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
-import MailService from "../services/mailservice";
+import MailService from "../services/mailmanagementservice";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
 import { AddressRepository } from "../repositeries/addressrepository";
-import BundleService from "../services/bundleservice";
+import BundleService from "../services/mailtransferservice";
 
 const bundleRepository = new BundleRepository();
 const addressRepository = new AddressRepository();

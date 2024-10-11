@@ -1,5 +1,5 @@
 import { MailRepository } from "../repositeries/mailrepository";
-import BundleService from "../services/bundleservice";
+import BundleService from "./mailtransferservice";
 import { MailStatus, MailType } from "@prisma/client";
 
 

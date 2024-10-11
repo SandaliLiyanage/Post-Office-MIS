@@ -2,13 +2,12 @@ import { useState, useEffect } from "react";
 import { MailDetailsType } from "./PageMailDetails";
 import { Label } from "../../../components/ui/label";
 import { Button } from "../../../components/ui/button";
-import { Printer } from 'lucide-react';
 import { Trash } from 'lucide-react';
 import {MailResponse} from './PageMailDetails';
-import {Barcode} from 'lucide-react';
 import JsBarcode from 'jsbarcode';
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
+
 type CardMailProps = {
   mailArray: MailDetailsType[],
   confirm: boolean,
@@ -22,6 +21,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
   const contentRef = useRef<HTMLDivElement>(null);
   const reactToPrintFn = useReactToPrint({ contentRef });
   const [mailDetailsArray, setMailDetailsArray] = useState<MailDetailsType[]>(mailArray);
+  
   // Fetch mail details from localStorage on component mount
   useEffect(() => {
     const fetchMailDetails = () => {
@@ -29,7 +29,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
       if (localMailStorage) {
         setMailDetailsArray(JSON.parse(localMailStorage));
       }
-      console.log(confirmedMailArray, "hi" )
+      console.log(mailDetailsArray, "in card mail" )
     };
 
     fetchMailDetails(); // Fetch initial mail details
@@ -48,21 +48,7 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
     setMailDetailsArray(newMailArray); // Update state to re-render the UI
     localStorage.setItem("mail details", JSON.stringify(newMailArray)); // Update localStorage
   };
-  useEffect(() => {
-    confirmedMailArray.forEach(mail => {
-      generateBarcode(mail.mailID);
-    });
-  }, [confirmedMailArray]);
 
-  const generateBarcode = (mailID: number) => {
-    const barcodeElement = document.getElementById(`barcode-${mailID}`);
-    const ID =  mailID.toString();
-    JsBarcode(barcodeElement, ID,{
-      height: 40,
-    });
-    console.log("generating barcode")
-  } 
- 
   return (
     <div className="mt-16  min-h-screen top-16 bg-slate-300 bg-opacity-25 flex-1">
       <div>
@@ -70,7 +56,8 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
           <p>Current Mail List</p></div>
           
         </div>
-      { !transaction && mailDetailsArray.map((mail, index) => (
+        {mailDetailsArray &&
+      mailDetailsArray.map((mail, index) => (
         <div key={index} className="m-5 p-4 bg-white">
           <div className="flex justify-between"> 
           <div className="flex justify-start">
@@ -79,7 +66,8 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
             {!transaction  && 
           <div className="flex justify-end" >
             <Button className="btn bg-white "  size="icon" onClick={()=>removeMail(index)} ><Trash color="red" size={18} /></Button>
-            </div>}
+            </div>
+            }
            
           </div>
           <div className="grid grid-cols-2">
@@ -103,52 +91,6 @@ export function CardMail({ mailArray , transaction, confirmedMailArray}: CardMai
         
         </div>
       ))}
-          {  
-
-      
-      
-      transaction && confirmedMailArray.map((mail, index) => (
-        <div key={index} className="m-5 p-4 bg-white ">
-          <div className="flex justify-between"> 
-          <div className="flex justify-start">
-            <Label className="text-sky-800">Mail {index + 1}</Label>
-            </div>
-            {!transaction  && 
-          <div className="flex justify-end" >
-            <Button className="btn bg-white "  size="icon" onClick={()=>removeMail(index)} ><Trash color="red" size={18} /></Button>
-            </div>}
-            {transaction && 
-            <div>
-            <div ref={contentRef}></div>
-            <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
-            </div>
-            }
-          </div>
-          <div className="grid grid-cols-6">
-          <div >
-            <Label className="text-base">Recepient Name: <p className="text-slate-500 font-light text-sm"> {mail.recepientName}</p></Label>
-          </div>
-          <div>
-            <Label className="text-base">Mail Type: <p className="text-slate-500 font-light text-sm"> {mail.mailType}</p></Label>
-          </div>
-          <div>
-            <Label className="text-base">Weight:<p className="text-slate-500 font-light text-sm">  {mail.weight}</p></Label>
-          </div>
-          <div>
-            <Label className="text-base">Price: <p className="text-slate-500 font-light text-sm"> {mail.price}</p></Label>
-          </div>
-          <div>
-            <Label className="text-base">MailID: <p className="text-slate-500 font-light text-sm"> {mail.mailID}</p></Label>
-          </div>
-          <div ref={contentRef}>
-          <svg id={`barcode-${mail.mailID}`  } height="100"></svg>
-          </div>
-          </div>
-         
-
-        </div>
-      ))}
-      
     </div>
   );
 }

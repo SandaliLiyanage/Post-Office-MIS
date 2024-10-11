@@ -38,7 +38,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import Addaddress from "./addaddress";
+import Addaddress from "./PageAddAddress";
 const formSchema = z.object({
   customerName: z.string().min(5, {}),
   address: z.string(),
@@ -104,10 +104,17 @@ export default function MailOrder() {
   useEffect(()=>{
     const checkforOngoingTransaction = ()=>{
       const customer = localStorage.getItem("customerDetails");
-      if(customer != null){
+      const confirmedMailArray = localStorage.getItem("confirmedMailArray");
+      
+      if(customer != null && confirmedMailArray == null){
         console.log(customer)
         navigate("/dashboard/maildetails" );
 
+      }
+      if(customer ==null ){
+        localStorage.removeItem("confirmedMailArray");
+        localStorage.removeItem("mailDetailsArray");
+        localStorage.removeItem("mail details");
       }
     }
     checkforOngoingTransaction()

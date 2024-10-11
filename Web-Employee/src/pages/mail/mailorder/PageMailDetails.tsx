@@ -37,15 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
+
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
@@ -55,7 +47,6 @@ const formSchema = z.object({
     .min(1, { message: "Weight must be at least 1" })
     .max(2000, { message: "Weight cannot exceed 2000" }),
 });
-import Addaddress from "./addaddress";
 export type MailDetailsType = {
   price: number | null;
   mailType: string;
@@ -166,9 +157,14 @@ export default function MailDetails() {
       if (localMailStorage && price && !confirm) {
         let array: MailDetailsType[] = [];
         let item2 = JSON.parse(localMailStorage);
-        item2.forEach((i: MailDetailsType) => {
-          array.push(i);
-        });
+        console.log("in if", item2);
+        if (item2.length > 0) {
+          console.log("in if");
+          item2.forEach((i: MailDetailsType) => {
+            array.push(i);
+          });
+        }
+     
         array.push(mailDetails);
         setMailArray(array);
         localStorage.setItem("mail details", JSON.stringify(array));
@@ -248,14 +244,15 @@ export default function MailDetails() {
           mailArray,
           total
         );
-
+        localStorage.setItem("total", total);
         localStorage.removeItem("customerDetails");
         setTransaction(true);
         console.log("adata", response);
         setConfrimedMailArray(response.data.result);
+        localStorage.setItem("confirmedMailArray", JSON.stringify(response.data.result));
         console.log(confirmedMailArray);
         console.log("Data submitted successfully", response.data);
-        // navigate("/dashboard/endtransaction")
+        navigate("/dashboard/receipt")
       } else {
         toast({
           description: "Zero mails added",
@@ -469,8 +466,7 @@ export default function MailDetails() {
                         onConfirmTransaction(JSON.parse(localMailStorage));
                         console.log("in if", JSON.parse(localMailStorage));
                         form.reset();
-                        localStorage.removeItem("mail details");
-                        localStorage.removeItem("customerDetails");
+                        
                         console.log(confirmedMailArray, "hi hi");
                       }
                     }}

@@ -16,11 +16,12 @@ import SetPassword from "./pages/authentication/PageSetPassword";
 import MailDelivery from "./pages/mail/mails/PageMailDelivery";
 import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
-import Addaddress from "./pages/mail/mailorder/addaddress";
+import Addaddress from "./pages/mail/mailorder/PageAddAddress";
 import { ProtectedRoute } from "./pages/authentication/protectedroutes";
 import { useUser } from "./pages/authentication/usercontext";
-import Unauthorized from "./pages/authentication/Unauthorized";
+import Unauthorized from "./pages/authentication/PageUnauthorized";
 import Retaddress from "./pages/mail/mails/retaddress";
+import PageReceipt from "./pages/mail/mailorder/PageReceipt";
 function App() {
   
   const {user} = useUser()
@@ -41,7 +42,7 @@ function App() {
           <Route path="mailorder" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
           <MailOrder /></ProtectedRoute>}/>
           <Route path="maildetails" element={<ProtectedRoute allowedRoles={['POSTMASTER', 'RECEPTIONIST', 'SUPERVISOR']} userRole={role}>
-          <MailDelivery /></ProtectedRoute>}/>
+          <MailDetails /></ProtectedRoute>}/>
           <Route path="employeerecords" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
             <Emp /></ProtectedRoute>}/>
           <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
@@ -54,19 +55,20 @@ function App() {
           <Route path="mailassignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
           < MailDelivery/></ProtectedRoute>}/>
           <Route path="viewmail" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
-          < Mails/></ProtectedRoute>}/>
+          <Mails/></ProtectedRoute>}/>
           <Route path="view"element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
           < Employeeupdate/></ProtectedRoute>}/>
           <Route path ="postmanAssignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
-          < MailDelivery/></ProtectedRoute>}/>
+          <MailDelivery/></ProtectedRoute>}/>
           <Route path ="endtransaction" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
           < EndTransaction/></ProtectedRoute>}/>
           <Route path="failedtoDeliver" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
-          < ReturnMail/></ProtectedRoute>}/>
+          <ReturnMail/></ProtectedRoute>}/>
           <Route path = "retaddress" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
           < Retaddress/></ProtectedRoute>}/>
-          <Route path = "addaddress" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
-          < Addaddress/></ProtectedRoute>}/>
+          <Route path = "addaddress" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
+          <Addaddress/></ProtectedRoute>}/>
+          <Route path = "receipt" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <PageReceipt/></ProtectedRoute>}/>
         </Route>}
         <Route path="not-authorized" element={<Unauthorized/>}/>
 

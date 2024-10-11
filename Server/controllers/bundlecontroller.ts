@@ -1,4 +1,4 @@
-import BundleService from "../services/bundleservice";
+import BundleService from "../services/mailtransferservice";
 import { Request, Response } from "express";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";

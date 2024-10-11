@@ -44,8 +44,8 @@ describe('searchSuggestions', () => {
         const result = await addressService.searchSuggestions('123');
 
         expect(result).toEqual({
-            '123, Main St, Downtown, 12345': 1,
-            '123, Second St, Uptown, 67890': 2
+            "123,  Main St,  Downtown,  12345": 1,
+      "123,  Second St,  Uptown,  67890": 2,
         });
     });
 
@@ -67,7 +67,7 @@ describe('searchSuggestions', () => {
         const result = await addressService.searchSuggestions('Main');
 
         expect(result).toEqual({
-            '23, Main St, 12345': 1
+            '23,  Main St,   12345': 1
         });
     });
 

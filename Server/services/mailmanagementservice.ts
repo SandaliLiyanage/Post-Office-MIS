@@ -147,7 +147,7 @@ class MailService {
   }
   
   else{
-    return '40.00'
+    return '00.00'
     }
       
     }

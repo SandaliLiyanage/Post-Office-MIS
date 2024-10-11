@@ -263,13 +263,29 @@ export default function MailDetails() {
   };
   return (
     <div>
-      {!transaction && (
         <div className="flex overflow-hidden ">
           <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col static">
-            <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between flex-col">
+            <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between">
+              <div className="flex justify-start">
               <p className="text-xl font-bold">Mail Order</p>
+              </div>
+              <div className="flex justify-end">
+              <Button
+                    type="button"
+                    className="bg-red-400 text-black flex justify-start"
+                    onClick={() => {
+                      navigate("/dashboard/mailorder");
+                      localStorage.removeItem("mail details");
+                      localStorage.removeItem("customerDetails");
+                    }}
+                  >
+                    Cancel Transacion
+                  </Button>
+              </div>
             </div>
-
+            <div className="flex justify-end  mr-10">
+                
+                </div>
             <div className="p-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onConfirm)}>
@@ -440,42 +456,6 @@ export default function MailDetails() {
                   </div>
                 </form>
               </Form>
-              <div className=" flex mt-32 justify-between">
-                <div className="flex justify-start  mr-10">
-                  <Button
-                    type="button"
-                    className="bg-red-400 text-black flex justify-start"
-                    onClick={() => {
-                      navigate("/dashboard/mailorder");
-                      localStorage.removeItem("mail details");
-                      localStorage.removeItem("customerDetails");
-                    }}
-                  >
-                    Cancel Transacion
-                  </Button>
-                </div>
-
-                <div className="flex justify-end">
-                  <Button
-                    type="button"
-                    className="bg-slate-600 "
-                    onClick={() => {
-                      const localMailStorage =
-                        localStorage.getItem("mail details");
-                      if (localMailStorage) {
-                        onConfirmTransaction(JSON.parse(localMailStorage));
-                        console.log("in if", JSON.parse(localMailStorage));
-                        form.reset();
-                        
-                        console.log(confirmedMailArray, "hi hi");
-                      }
-                    }}
-                  >
-                    End Transaction and Print Receipt
-                  </Button>
-                  <Toaster />
-                </div>
-              </div>
             </div>
           </div>
           <div className="flex-1 overflow-auto ">
@@ -484,25 +464,9 @@ export default function MailDetails() {
               confirm={confirm}
               price={price}
               transaction={transaction}
-              confirmedMailArray={confirmedMailArray}
             />
           </div>
         </div>
-      )}
-
-      {transaction && (
-        <div className=" flex-1 pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-full flex-col static">
-          <div className="flex-1">
-            <CardMail
-              mailArray={mailArray}
-              confirm={confirm}
-              price={price}
-              transaction={transaction}
-              confirmedMailArray={confirmedMailArray}
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }

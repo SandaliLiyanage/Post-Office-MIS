@@ -4,8 +4,8 @@ import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
-  const clickedColour: string = 'bg-slate-500 bg-opacity-90 text-black rounded-sm ';
-  const normalColour: string = 'hover:bg-blue-300 text-white hover:bg-opacity-90 rounded-sm p-2';
+  const clickedColour: string = 'bg-slate-500 bg-blue-300 bg-opacity-90 text-black rounded-sm ';
+  const normalColour: string = 'hover:bg-slate-90 text-white hover:bg-opacity-90 rounded-sm p-2';
 
   // const clickedColour: string = 'bg-slate-800   rounded text-white';
   // const normalColour: string = 'hover:bg-slate-500 text-white hover:bg-opacity-90 hover:text-black';

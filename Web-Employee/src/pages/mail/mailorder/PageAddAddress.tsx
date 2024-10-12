@@ -15,6 +15,8 @@ import { set, useForm } from "react-hook-form";
 import axios from 'axios';
 import {Toaster} from "../../../components/ui/toaster"
 import { useToast } from "../../../hooks/use-toast";
+import { useUser } from "@/pages/authentication/usercontext";
+
 const formSchema = z.object({
     addressNo: z.string().min(1, {}),
     streetName: z.string().min(2, {}),
@@ -23,7 +25,7 @@ const formSchema = z.object({
   });
 export default function Addaddress() {
 const { toast } = useToast();
-
+const { user } = useUser();
 const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -32,13 +34,26 @@ const form = useForm<z.infer<typeof formSchema>>({
         locality: "",
         postalCode: ""
     },});
-function handleSubmit(values: z.infer<typeof formSchema>){
+async function handleSubmit(values: z.infer<typeof formSchema>){
     console.log(values, "hierer")
-
-    if(values){
+    const response = await axios.post(
+      "http://localhost:5000/address/addAddress",
+      {
+        values
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
+      }
+    );
+    console.log(response.data)
+    if(response.data){
         toast({
-            description: "Address Updated ",})
+            description: "Address Added and sent for verification "})
+        form.reset()
     }
+   
 
     return 45
 }
@@ -110,10 +125,10 @@ function handleSubmit(values: z.infer<typeof formSchema>){
             />
            
           </div>
-        <Button type="submit" className='bg-green-600 justify-end' onClick={()=> {
+        <Button type="submit" className='bg-slate-600 justify-end' onClick={()=> {
         
-      }}>Save new Address and Send for verification</Button>
-
+      }}>Save new Address</Button>
+    <Toaster/>
       </form>
       </Form>
     </div>

@@ -79,6 +79,25 @@ class AddressRepository{
           return null;
         }
       }
- 
-}
-export {AddressRepository};
+      
+    async addAddress(addressNo: string, streetName: string, Locality: string, postalCode: string):Promise<boolean>{
+        try{
+        const res = await this.prisma.address.create({
+            data:{
+                addressNo: addressNo,
+                streetName: streetName,
+                Locality: Locality,
+                postalCode: postalCode,
+                verified: false
+            }
+        })
+        return true
+      }
+      catch(error){
+        console.log(error)
+        return false
+      }
+    }
+
+  }
+export  {AddressRepository};

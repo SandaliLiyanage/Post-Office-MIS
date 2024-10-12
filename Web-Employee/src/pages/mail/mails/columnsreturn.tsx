@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {Button} from  "../../../components/ui/button"
 import { useNavigate } from "react-router-dom"
-
+import { Pencil } from "lucide-react";
 export interface IReturnMail{
     mailID: string;
     customerName: string;
@@ -36,31 +36,12 @@ const columns: ColumnDef<IReturnMail>[] = [
         
         return(
           <div>
-            <Button className="rounded-sm bg-sky-600" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Change Address</Button>
+            <Button className="rounded-sm bg-stone-300 bg-opacity-5 hover:bg-stone-300 hover:bg-opacity-5" size={"lg"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }><Pencil color="black" size={25} /></Button>
           </div>
         )
       }
     },
-    { 
-      
-      header: "Return to the customer",
-      id: "actions",
-      cell: ({ row }) => {
-        const navigate = useNavigate()
-
-        const returnMail = row.original
-        function changeAddress(){
-
-        }
-        
-        return(
-          <div>
-            <Button className="rounded-sm bg-green-500" size={"sm"} onClick={()=>{changeAddress();  navigate(`/dashboard/retaddress?mailID=${returnMail.mailID}`);} }>Return </Button>
-          </div>
-        )
-      }
-    },
-  
+    
   ]
 
 

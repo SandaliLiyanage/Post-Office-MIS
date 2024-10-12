@@ -29,7 +29,7 @@ import { useEffect } from "react";
 import { Label } from "../../../components/ui/label";
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
-import { CardMail } from "./MailList";
+import { CardMail } from "./PageMailLIst";
 import {
   Select,
   SelectContent,
@@ -392,7 +392,7 @@ export default function MailDetails() {
                         <Save color="black" size={30} />
                       </Button>}
                       {price &&
-                      <Button  type="submit" className="btn bg-stone-300 bg-opacity-15 hover:bg-white"
+                      <Button  className="btn bg-stone-300 bg-opacity-15 hover:bg-white"
                       size="icon" onClick={() => {
                         if (confirm) {
                           location.reload();

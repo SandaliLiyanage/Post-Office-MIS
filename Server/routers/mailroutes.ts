@@ -9,7 +9,7 @@ import {
 import AuthService from "../services/authservice";
 import { Mails } from "../controllers/mailcontroller";
 import { getMailItems } from "../controllers/mailcontroller";
-import Address from "../controllers/addresscontroller";
+import {Address} from "../controllers/addresscontroller";
 import { MailDetails } from "../controllers/mailcontroller";
 import { ReportData } from "../controllers/reportcontroller";
 import { getAddresses } from "../controllers/mailcontroller";

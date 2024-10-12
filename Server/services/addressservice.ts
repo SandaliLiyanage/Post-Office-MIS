@@ -16,5 +16,10 @@ class AddressService{
         })}
         return hashMap
     }
+    async addAddress(addressNo: string, streetName: string, Locality: string, postalCode: string):Promise<boolean>{
+        const res = await this.addressRepository.addAddress(addressNo, streetName, Locality, postalCode);
+        console.log("In the address service", res)
+        return res
+    }
 }
 export default AddressService

@@ -6,6 +6,7 @@ import { BundleRepository } from "../repositeries/bundlerepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
 import { AddressRepository } from "../repositeries/addressrepository";
 import BundleService from "../services/mailtransferservice";
+import MailManagementService from "../services/mailmanagementservice";
 
 const bundleRepository = new BundleRepository();
 const addressRepository = new AddressRepository();
@@ -13,7 +14,7 @@ const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const postOfficeRepository = new PostOfficeRepository();
 const bundleservice = new BundleService(postOfficeRepository, bundleRepository, addressRepository);
-const mailService = new MailService(mailRepository, bundleservice);
+const mailService = new MailManagementService(mailRepository, bundleservice);
 
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");
@@ -74,7 +75,7 @@ const ReturnMail = async (req: Request, res: Response) => {
   console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
   console.log(postalCode)
-  const result = await mailRepository.getReturnMail(postalCode);
+  const result = await mailService.getReturnMail(postalCode);
   return res.status(200).json(result);
 };
 

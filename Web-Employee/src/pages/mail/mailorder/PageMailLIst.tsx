@@ -116,15 +116,15 @@ export function CardMail({ mailArray, transaction }: CardMailProps) {
     
     <div className="flex justify-between mx-2 gap-2 ">
       <div className="justify-start flex">
-      <div className="font-bold ml-4">
-      <p>Current Mail List</p>
+      <div className="text-lg font-bold ml-4">
+      <p>Ongoing Transaction</p>
     </div>
     </div>
     <div className=" flex justify-end gap-2">
   
           <Button
             type="button"
-            className="bg-slate-600 "
+            className="bg-slate-600 p-2"
             onClick={() => {
               const localMailStorage = localStorage.getItem("mail details");
               if (localMailStorage) {
@@ -133,18 +133,20 @@ export function CardMail({ mailArray, transaction }: CardMailProps) {
                 console.log(confirmedMailArray, "hi hi");
               }
             }}
+            size={"md"}
           >
             Print Receipt
           </Button> 
   
           <Button
                     type="button"
-                    className="bg-red-400 text-black flex justify-start"
+                    className="bg-red-400 text-black flex justify-start p-2"
                     onClick={() => {
                       navigate("/dashboard/mailorder");
                       localStorage.removeItem("mail details");
                       localStorage.removeItem("customerDetails");
                     }}
+                    size={"md"} 
                   >
                     Cancel 
           </Button>

@@ -3,7 +3,7 @@ import BundleService from "./mailtransferservice";
 import { MailStatus, MailType } from "@prisma/client";
 
 
-class MailService {
+class MailManagementService {
     private mailRepository: MailRepository;
     private bundleservice: BundleService;
     constructor(mailRepository: MailRepository, bundleservice: BundleService){
@@ -57,7 +57,11 @@ class MailService {
     return res
   }
 
-
+  async getReturnMail(postalCode: string){
+    const res = await this.mailRepository.getReturnMail(postalCode);
+    return res
+  }
+  
   calculatePrice(mailType: string, weight: number){
     if (mailType == "normal mail") {
     if (weight > 0 && weight <= 20) return '50.00';
@@ -153,4 +157,4 @@ class MailService {
     }
   }   
 
-export default MailService
+export default MailManagementService

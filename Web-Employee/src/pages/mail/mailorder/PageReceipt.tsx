@@ -57,7 +57,7 @@ export default function PageReceipt() {
       <p className="text-xl font-bold">Receipt</p>
     </div>
         <div>
-            <p>The Total Amount = Rs: {total}</p>
+            <p className="font-semibold">The Total Amount = Rs: {total}</p>
         </div>
         {mailResponse &&
        mailResponse.map((mail, index) => (
@@ -95,8 +95,8 @@ export default function PageReceipt() {
         </div>
         </div>
       )) }
-      <div className="flex justify-end mr-10 mb-8">
-       <Button onClick={()=> {
+      <div className="flex justify-between ml-10 mb-8">
+       <Button className="bg-red-500 px-40" onClick={()=> {
           localStorage.removeItem("mail details");
           localStorage.removeItem("customerDetails");
           localStorage.removeItem("confirmedMailArray");

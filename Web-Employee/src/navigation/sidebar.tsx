@@ -35,7 +35,7 @@ export default function SideBar() {
                           navigate("/dashboard/revenueReports")
                         }}>Reports</NavButton>
 
-  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' ? clickedColour : normalColour}`} 
+  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' || activeButton === 'receipt'? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('mailorder');
                           navigate("/dashboard/mailorder");

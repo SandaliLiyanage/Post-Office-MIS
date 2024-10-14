@@ -5,6 +5,7 @@ class MailRepository {
   private prisma = PrismaSingleton.getInstance();
   constructor() {
     this.prisma = PrismaSingleton.getInstance();
+    
   }
   async calculatePrice(mailType: string, weight: number) {
     console.log("Mail type:", mailType);
@@ -185,7 +186,9 @@ class MailRepository {
       transaction: true
     }
   }
+  
   )
+  
   console.log(res, "res res")
   return res
   }

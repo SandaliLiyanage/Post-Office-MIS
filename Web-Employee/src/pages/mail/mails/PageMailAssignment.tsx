@@ -45,9 +45,9 @@ export default function MailDelivery() {
         <div className="flex justify-start">
           <p className="text-xl font-bold">Mail and Area Assignments</p>
         </div>
-      <div className="flex justify-end">
+      {/* <div className="flex justify-end">
         <Button className="btn bg-white " variant="outline"  size="icon"><Edit color="black" size={18} className="hover:none"></Edit></Button>
-      </div>
+      </div> */}
     </div>
     <div className=" ">
     {

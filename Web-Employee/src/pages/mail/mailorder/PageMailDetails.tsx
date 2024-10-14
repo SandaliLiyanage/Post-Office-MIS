@@ -55,7 +55,12 @@ export type MailDetailsType = {
   address: string;
   weight: number;
 };
-
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 export interface MailResponse {
   mailType: string;
   recepientName: string;
@@ -148,44 +153,53 @@ export default function MailDetails() {
 
   //set the details of the mail to local storage(enable multiple mailitems to a single transaction)
   async function onConfirm(values: z.infer<typeof formSchema>) {
-
     console.log("in confirm");
     try {
-  
       const mailDetails = { ...values, price, addressID };
       let localMailStorage = localStorage.getItem("mail details");
       console.log("in confirm", localMailStorage);
-      if(addressID){
-      if (localMailStorage && price && !confirm) {
-        let array: MailDetailsType[] = [];
-        let item2 = JSON.parse(localMailStorage);
-        console.log("in if", item2);
-        if (item2.length > 0) {
-          console.log("in if");
-          item2.forEach((i: MailDetailsType) => {
-            array.push(i);
-          });
+      if (addressID) {
+        if (localMailStorage && price && !confirm) {
+          let array: MailDetailsType[] = [];
+          let item2 = JSON.parse(localMailStorage);
+          console.log("in if", item2);
+          if (item2.length > 0) {
+            console.log("in if");
+            item2.forEach((i: MailDetailsType) => {
+              array.push(i);
+            });
+          }
+
+          array.push(mailDetails);
+          setMailArray(array);
+          localStorage.setItem("mail details", JSON.stringify(array));
+          setConfirm(true);
+          const console2 = localStorage.getItem("mail details");
+          location.reload();
+          console.log("in if", console2);
+        } else if (price && !confirm) {
+          let array: MailDetailsType[] = [];
+          array.push(mailDetails);
+          localStorage.setItem("mail details", JSON.stringify(array));
+          setConfirm(true);
+          location.reload();
+          setMailArray(array);
         }
-     
-        array.push(mailDetails);
-        setMailArray(array);
-        localStorage.setItem("mail details", JSON.stringify(array));
-        setConfirm(true);
-        const console2 = localStorage.getItem("mail details");
-        console.log("in if", console2);
-      } else if (price && !confirm) {
-        let array: MailDetailsType[] = [];
-        array.push(mailDetails);
-        localStorage.setItem("mail details", JSON.stringify(array));
-        setConfirm(true);
-        setMailArray(array);
-      }}else{
+      } else {
         toast({
-        description: "Address not verified",
-        action:  <div>
-        <Button className="p-3 text-white bg-slate-700 hover:bg-slate-700" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
-        </div>,
-        })
+          description: "Address not verified",
+          action: (
+            <div>
+              <Button
+                className="p-3 text-white bg-slate-700 hover:bg-slate-700"
+                onClick={() => navigate("/dashboard/addAddress")}
+                size={"md"}
+              >
+                Add address
+              </Button>
+            </div>
+          ),
+        });
       }
     } catch (error) {
       console.error("Error submitting data", error);
@@ -223,202 +237,195 @@ export default function MailDetails() {
 
   return (
     <div>
-        <div className="flex overflow-hidden ">
-          <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col ">
-            <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between">
-             
-             
-                <p className="text-xl font-bold ">Mail Order</p>
-
-
-
-        
-            
-            </div>
-            <div className="flex justify-end  mr-10">
-                
-                </div>
-            <div className="p-8">
-              <Form {...form}>
-                <form onSubmit={form.handleSubmit(onConfirm)}>
-                  <div className="grid grid-cols-2 gap-4 mb-4">
-                    <FormField
-                      control={form.control}
-                      name="recepientName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Recepient Name</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Recepient Name" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <div>
-                      <Label>Recepient Address</Label>
-                      <FormField
-                        control={form.control}
-                        name="address"
-                        render={({ field }) => (
-                          <FormItem className="hidden">
-                            <FormControl>
-                              <Input placeholder="Address" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-
-                      <div className="relative">
-                        <Command className="mt-2">
-                          <CommandInput
-                            placeholder="Address"
-                            onValueChange={(value) => {
-                              handleChange(value);
-                              console.log(value);
-                            }}
-                            value={search}
-                          />
-                          <CommandList className="">
-                            {search != "" && searchSelect == false && (
-                              <div className="absolute top-full left-0 w-full h-min">
-                                <CommandEmpty>No address found.</CommandEmpty>
-                              </div>
-                            )}
-                            {search != "" && (
-                              <CommandGroup
-                                className="absolute top-full left-0 w-full h-[90px] overflow-y-auto rounded-md 
-                     bg-white"
-                              >
-                                {searchResults?.map((result) => (
-                                  <CommandItem
-                                    key={result}
-                                    onSelect={(value) => {
-                                      setSearch(value);
-                                      setSearchSelect(true);
-                                      setSearchResults([]);
-                                      if (addressMap) {
-                                        console.log(addressMap[value]);
-                                        setAddressID(addressMap[value]);
-                                        console.log(addressMap);
-                                      }
-                                    }}
-                                  >
-                                    {result}
-                                  </CommandItem>
-                                ))}
-                              </CommandGroup>
-                            )}
-                          </CommandList>
-                        </Command>
-                      </div>
-                    </div>
-                    <FormField
-                      control={form.control}
-                      name="mailType"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Mail Type</FormLabel>
-                          <Select
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                          >
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue
-                                  placeholder="Mail Type "
-                                  className="text-slate-500"
-                                />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="normal mail">
-                                Normal mail
-                              </SelectItem>
-                              <SelectItem value="registered mail">
-                                Register Mail
-                              </SelectItem>
-                              <SelectItem value="courier">Courier</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="weight"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Weight (g)</FormLabel>
-                          <FormControl>
-                            <Input placeholder="Weight" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  <div className="flex justify-between mt-7">
-                    <div className="flex justify-start gap-4">
-                      <Button
-                        className="bg-slate-600 text-white hover:bg-slate-300 hover:text-black"
-                        onClick={onClickCalculate}
-                        type="button"
-                      >
-                        Calculate Price
-                      </Button>
-                      <Toaster />
-                      {error !== null && price == null && (
-                        <div className="text-sm text-red-500 p-2 rounded-sm font-bold">
-                          {error}
-                        </div>
-                      )}
-                      {price !== null && (
-                        <div className="bg-stone-300 bg-opacity-10 p-2 border-opacity-45">
-                           Rs: {price}
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex justify-end gap-2 ">
-                      {price && !confirm && 
-                      <Button
-                        type="submit"
-                        className="btn bg-stone-300 bg-opacity-15 hover:bg-white"
-                      >
-                        <Save color="black" size={30} />
-                      </Button>}
-                      {price &&
-                      <Button  className="btn bg-stone-300 bg-opacity-15 hover:bg-white"
-                      size="icon" onClick={() => {
-                        if (confirm) {
-                          location.reload();
-                        }
-                        setConfirm(false);
-                      }}>
-                     <MailPlus color="black" size={30} />
-                     
-                    </Button>}
-                      <Toaster />
-                    </div>
-                  </div>
-                </form>
-              </Form>
-
-            </div>
+      <div className="flex overflow-hidden ">
+        <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col ">
+          <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between">
+            <p className="text-xl font-bold ">Mail Order</p>
           </div>
-          <div className="flex-1 overflow-auto ">
-            <CardMail
-              mailArray={mailArray}
-              confirm={confirm}
-              price={price}
-              transaction={transaction}
-            />
+          <div className="flex justify-end  mr-10"></div>
+          <div className="p-8">
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onConfirm)}>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <FormField
+                    control={form.control}
+                    name="recepientName"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Recepient Name</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Recepient Name" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div>
+                    <Label>Recepient Address</Label>
+                    <FormField
+                      control={form.control}
+                      name="address"
+                      render={({ field }) => (
+                        <FormItem className="hidden">
+                          <FormControl>
+                            <Input placeholder="Address" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+
+                    <div className="relative">
+                      <Command className="mt-2">
+                        <CommandInput
+                          placeholder="Address"
+                          onValueChange={(value) => {
+                            handleChange(value);
+                            console.log(value);
+                          }}
+                          value={search}
+                        />
+                        <CommandList className="">
+                          {search != "" && searchSelect == false && (
+                            <div className="absolute top-full left-0 w-full h-min">
+                              <CommandEmpty>No address found.</CommandEmpty>
+                            </div>
+                          )}
+                          {search != "" && (
+                            <CommandGroup
+                              className="absolute top-full left-0 w-full h-[90px] overflow-y-auto rounded-md 
+                     bg-white"
+                            >
+                              {searchResults?.map((result) => (
+                                <CommandItem
+                                  key={result}
+                                  onSelect={(value) => {
+                                    setSearch(value);
+                                    setSearchSelect(true);
+                                    setSearchResults([]);
+                                    if (addressMap) {
+                                      console.log(addressMap[value]);
+                                      setAddressID(addressMap[value]);
+                                      console.log(addressMap);
+                                    }
+                                  }}
+                                >
+                                  {result}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          )}
+                        </CommandList>
+                      </Command>
+                    </div>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="mailType"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Mail Type</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger>
+                              <SelectValue
+                                placeholder="Mail Type "
+                                className="text-slate-500"
+                              />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent>
+                            <SelectItem value="normal mail">
+                              Normal mail
+                            </SelectItem>
+                            <SelectItem value="registered mail">
+                              Register Mail
+                            </SelectItem>
+                            <SelectItem value="courier">Courier</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="weight"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Weight (g)</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Weight" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="flex justify-between mt-7">
+                  <div className="flex justify-start gap-4">
+                    <Button
+                      className="bg-slate-600 text-white hover:bg-slate-300 hover:text-black"
+                      onClick={onClickCalculate}
+                      type="button"
+                    >
+                      Calculate Price
+                    </Button>
+                    <Toaster />
+                    {error !== null && price == null && (
+                      <div className="text-sm text-red-500 p-2 rounded-sm font-bold">
+                        {error}
+                      </div>
+                    )}
+                    {price !== null && (
+                      <div className="bg-stone-300 bg-opacity-0 p-2 border-opacity-45">
+                        Rs: {price}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-end gap-2 ">
+                    {price && !confirm && (
+                      <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                        <Button
+                        type="submit"
+                        className="bg-green-600 text-white hover:bg-slate-300 hover:text-black"
+                        // className="btn bg-stone-300 bg-opacity-5 hover:bg-stone-300 hover:bg-opacity-5"
+                      >
+                        Add to the List
+                        {/* <MailPlus color="black" size={30} /> */}
+                      </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Add to the List</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                
+                      
+                    )}
+                    <Toaster />
+                  </div>
+                </div>
+              </form>
+            </Form>
           </div>
         </div>
+        <div className="flex-1 overflow-auto ">
+          <CardMail
+            mailArray={mailArray}
+            confirm={confirm}
+            price={price}
+            transaction={transaction}
+          />
+        </div>
+      </div>
     </div>
   );
 }

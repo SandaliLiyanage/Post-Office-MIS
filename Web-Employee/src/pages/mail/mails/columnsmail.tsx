@@ -38,7 +38,7 @@ const columns: ColumnDef<IMail>[] = [
       },
     },  
     {
-      accessorKey: "transaction.date",
+      accessorKey: "transaction.date1",
       header: "Date",
       cell: ({ row }) => {
 

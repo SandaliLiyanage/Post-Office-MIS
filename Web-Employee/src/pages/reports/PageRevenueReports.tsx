@@ -65,8 +65,8 @@ export default function RevenueReports() {
       </div>
     
         <div className="grid grid-cols-3 gap-4">
-        <div className="flex flex-col">
-        <Label>Start Date</Label>
+        <div className="flex flex-row ">
+        <p className="font-semibold p-3">Start Date: </p>
         <Popover>
       <PopoverTrigger asChild>
         <Button
@@ -90,8 +90,8 @@ export default function RevenueReports() {
       </PopoverContent>
     </Popover>
     </div>
-    <div className="flex flex-col">
-    <Label>End Date</Label>
+    <div className="flex flex-row">
+    <p className="font-semibold p-3">End Date:</p>
 
     <Popover>
       <PopoverTrigger asChild>
@@ -116,8 +116,8 @@ export default function RevenueReports() {
       </PopoverContent>
     </Popover>
     </div>
-    <div className="flex flex-col">
-    <Label>Report Type</Label>
+    <div className="flex flex-row">
+    <p className="font-semibold p-3">Report Type:</p>
 
     <Select 
             onValueChange={(newValue) => setType(newValue)}>

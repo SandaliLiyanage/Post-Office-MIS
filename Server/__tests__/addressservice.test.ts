@@ -1,5 +1,5 @@
-import AddressService from '../../services/addressservice';
-import { AddressRepository } from '../../repositeries/addressrepository';
+import AddressService from '../services/addressservice';
+import { AddressRepository } from '../repositeries/addressrepository';
 
 // Mocking the AddressRepository
 jest.mock('../../repositeries/addressrepository');

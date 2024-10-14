@@ -5,7 +5,7 @@ import MailService from "../services/mailmanagementservice";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
 import { AddressRepository } from "../repositeries/addressrepository";
-import BundleService from "../services/mailtransferservice";
+import MailTransferService from "../services/mailtransferservice";
 import MailManagementService from "../services/mailmanagementservice";
 
 const bundleRepository = new BundleRepository();
@@ -13,7 +13,7 @@ const addressRepository = new AddressRepository();
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const postOfficeRepository = new PostOfficeRepository();
-const bundleservice = new BundleService(postOfficeRepository, bundleRepository, addressRepository);
+const bundleservice = new MailTransferService(postOfficeRepository, bundleRepository, addressRepository);
 const mailService = new MailManagementService(mailRepository, bundleservice);
 
 const CalculatePrice = async (req: Request, res: Response) => {
@@ -46,7 +46,7 @@ const MailDetails = async (req: Request, res: Response) => {
   const { customerName, telephone } = cutomerDetails;
   console.log("hyikjk;", customerName, telephone, addressID);
   const amount = mailService.calculateTotal(mailArray);
-  const transaction = await transactionRepository.createTransactoin(
+  const transaction = await transactionRepository.createTransaction(
     telephone,
     customerName,
     amount,

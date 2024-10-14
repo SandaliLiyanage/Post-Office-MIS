@@ -2,7 +2,7 @@ import { BundleRepository } from "../repositeries/bundlerepository";
 import { AddressRepository } from "../repositeries/addressrepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
 
-class BundleService {
+class MailTransferService {
   private postOfficeRepository: PostOfficeRepository;
   private bundleRepository: BundleRepository;
   private addressRepository: AddressRepository;
@@ -140,4 +140,4 @@ class BundleService {
   }
 }
 
-export default BundleService;
+export default MailTransferService;

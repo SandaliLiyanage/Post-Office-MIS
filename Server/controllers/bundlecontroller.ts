@@ -1,4 +1,4 @@
-import BundleService from "../services/mailtransferservice";
+import MailTransferService from "../services/mailtransferservice";
 import { Request, Response } from "express";
 import { BundleRepository } from "../repositeries/bundlerepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
@@ -7,7 +7,7 @@ import { AddressRepository } from "../repositeries/addressrepository";
 const addressRepository = new AddressRepository();
 const bundleRepository = new BundleRepository();
 const postOfficeRepository = new PostOfficeRepository();
-const bundleservice = new BundleService(postOfficeRepository,bundleRepository, addressRepository);
+const bundleservice = new MailTransferService(postOfficeRepository,bundleRepository, addressRepository);
 
 
 const CreatedBundles = async (req: Request, res: Response) => {

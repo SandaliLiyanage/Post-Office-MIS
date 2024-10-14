@@ -2,6 +2,7 @@ import { Employee, Role, Feedback } from "@prisma/client";
 import { PrismaSingleton } from "./prismasingleton";
 
 interface User {
+  employeeID: string,
   postOfficeName: string;
   employeeName: string;
   postalCode: string;

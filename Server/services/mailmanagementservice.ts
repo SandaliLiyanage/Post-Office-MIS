@@ -1,12 +1,12 @@
 import { MailRepository } from "../repositeries/mailrepository";
-import BundleService from "./mailtransferservice";
+import MailTransferService from "./mailtransferservice";
 import { MailStatus, MailType } from "@prisma/client";
 
 
 class MailManagementService {
     private mailRepository: MailRepository;
-    private bundleservice: BundleService;
-    constructor(mailRepository: MailRepository, bundleservice: BundleService){
+    private bundleservice: MailTransferService;
+    constructor(mailRepository: MailRepository, bundleservice: MailTransferService){
         this.bundleservice = bundleservice;
         this.mailRepository = mailRepository;
     }

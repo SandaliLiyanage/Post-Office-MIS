@@ -6,7 +6,7 @@ class TransactionRepository{
     constructor(){
         this.prisma = PrismaSingleton.getInstance();
     }
-    async createTransactoin(customerTelephone:string, customerName: string, amount: number, customerAddressID: number):Promise<Transaction>{
+    async createTransaction(customerTelephone:string, customerName: string, amount: number, customerAddressID: number):Promise<Transaction>{
         const dateTimeObject = new Date()
         console.log(dateTimeObject)
         const res = await this.prisma.transaction.create({

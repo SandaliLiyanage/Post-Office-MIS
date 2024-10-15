@@ -1,4 +1,4 @@
-import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
+import { PrismaClient, Mail, MailType, MailStatus, PostOffice } from "@prisma/client";
 import { start } from "repl";
 const prisma = new PrismaClient();
 
@@ -137,7 +137,7 @@ class MailRepository {
     });
   };
 
-  getMailCountByType = async(startDate: Date, endDate:Date)=>{
+  getMailCountByType = async(startDate: Date, endDate:Date)=> {
     console.log("in mail count")
     const res = await prisma.transaction.findMany({
       where: {
@@ -150,12 +150,12 @@ class MailRepository {
           date: true,  
           mail: true,   
       },
-  });
+    });
     console.log(res)
     return res
   }
 
-  async trackMail(transactionID: number): Promise<any[]> { // Change the parameter type to number
+  async trackMail(transactionID: number): Promise<any[]> { 
     try {
         const res = await prisma.$queryRaw<any[]>`
             SELECT m."recepientName", m."mailstatus", p."postOfficeName"
@@ -183,6 +183,21 @@ class MailRepository {
       },
     });
   }
-}
+
+  async findByPostalCode(postalCode: string): Promise<PostOffice | null> {
+    try {
+      const postOffice = await prisma.postOffice.findUnique({
+        where: { postalCode },
+      });
   
-export {MailRepository};
+      return postOffice;
+    } catch (error) {
+      console.error("Error fetching post office:", error);
+      throw error;
+    }
+  }
+  
+  
+}
+
+export { MailRepository };

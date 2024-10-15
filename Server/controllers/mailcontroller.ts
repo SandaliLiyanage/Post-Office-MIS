@@ -237,11 +237,9 @@ export class MailController {
 
       res.status(200).json({ success: true, deliveryTime: estimatedTime });
     } catch (error) {
-      // Check if the error is an instance of the Error class
       if (error instanceof Error) {
         res.status(500).json({ success: false, message: error.message });
       } else {
-        // Handle unknown error types
         res.status(500).json({ success: false, message: 'An unknown error occurred.' });
       }
     }

@@ -1,7 +1,6 @@
 import { MailRepository } from "../repositeries/mailrepository";
 import axios from 'axios';
 
-
 const mailRepository = new MailRepository();
 
 class TrackMail {
@@ -28,27 +27,51 @@ class TrackMail {
         }
     }
 
+    // Updated estimateDeliveryTime function using coordinates
     async estimateDeliveryTime(bundleID: number): Promise<string> {
         // Fetch the bundle using the repository
         const bundle = await mailRepository.findBundleById(bundleID);
     
         if (!bundle) {
-          throw new Error('Bundle not found');
+            throw new Error('Bundle not found');
         }
     
         const { currentPostCode, destPostalCode } = bundle;
-    
-        // Use Google Maps API or other service to estimate delivery time
-        const apiKey = "AIzaSyCLI12v3YiFsivav4C2p1FqWEBU1acjF";
-        const googleMapsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${currentPostCode}&destination=${destPostalCode}&key=${apiKey}`;
-    
-        const response = await axios.get(googleMapsUrl);
-    
-        const { duration } = response.data.routes[0].legs[0]; // Get estimated duration
-    
-        return `Estimated delivery time is ${duration.text}`;
-      }
-}
+        
+        // Fetch the current post office using its postal code
+        const currentPostOffice = await mailRepository.findByPostalCode(currentPostCode);
+        const destinationPostOffice = await mailRepository.findByPostalCode(destPostalCode);
+        
+        if (!currentPostOffice || !destinationPostOffice) {
+            throw new Error('Post office not found for one of the postal codes');
+        }
 
+        // Ensure both post offices have latitude and longitude
+        if (!currentPostOffice.latitude || !currentPostOffice.longitude || 
+            !destinationPostOffice.latitude || !destinationPostOffice.longitude) {
+            throw new Error('Coordinates are missing for one of the post offices');
+        }
+        
+        // Use the coordinates (latitude, longitude) for the Google Maps API
+        const origin = `${currentPostOffice.latitude},${currentPostOffice.longitude}`;
+        const destination = `${destinationPostOffice.latitude},${destinationPostOffice.longitude}`;
+
+        const apiKey = "AIzaSyCLI12v3YiFsivav4C2p1FqWEBU1acjFeQ";  // Your API key
+        const googleMapsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&key=${apiKey}`;
+
+        // Call the Google Maps API with the coordinates
+        const response = await axios.get(googleMapsUrl);
+        console.log("Google Maps API Response:", response.data); // Log the response
+
+
+        // Get the estimated duration from the response
+        if (response.data.routes.length > 0) {
+            const duration = response.data.routes[0].legs[0].duration; // Get estimated duration
+            return `Estimated delivery time is ${duration.text}`; // Return the estimated time
+        } else {
+            throw new Error("No routes found for the given locations");
+        }
+    }
+}
 
 export default TrackMail;

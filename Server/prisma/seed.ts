@@ -216,7 +216,95 @@ async function main() {
     ]
     
   });
- 
+  await prisma.transaction.createMany({
+    data: [
+      {
+        transactionID: 1,
+        customerName: "Alice Johnson",
+        customerTelephone: "555123456",
+        customerAddressID: 36,
+        date: new Date(),
+        amount: 10.5,
+      },
+    ],
+  });
+
+  // Seed Bundles
+  await prisma.bundle.createMany({
+    data: [
+      {
+        bundleID: 1,
+        destPostalCode: "10640",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "11000", "30600", "10640"],
+      },
+      {
+        bundleID: 2,
+        destPostalCode: "10640",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "30600", "10640"],
+      },
+      {
+        bundleID: 3,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "30600", "10250"],
+      },
+      {
+        bundleID: 4,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "30600", "10250"],
+      },
+      {
+        bundleID: 5,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "11500", "10250"],
+      },
+      {
+        bundleID: 6,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "10250"],
+      },
+      {
+        bundleID: 7,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "30600", "10250"],
+      },
+      {
+        bundleID: 8,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "10250"],
+      },
+      {
+        bundleID: 9,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "30600", "10250"],
+      },
+      {
+        bundleID: 10,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "30600", "10250"],
+      },
+    ],
+  });
+
   // // Seed Employees
   const employeeCreate = async()=>{
     const data = [

@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useNavigate } from 'react-router-dom';
+import { Input } from '@/components/ui/input';
 import {
   FormDescription,
   Form,
@@ -14,12 +15,18 @@ import {
   FormLabel,
   FormMessage,
 } from "../../components/ui/form";
-import { Input } from "../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select"
 import axios from "axios"
 import {useUser} from "../authentication/usercontext"
-import AddressSearch from '../mail/mailorder/address';
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -52,6 +59,7 @@ export default function Employeeupdate() {
     },});	
   const location = useLocation();
   const employee = location.state;
+  const {removeUser, user} = useUser()
 
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
@@ -61,8 +69,12 @@ export default function Employeeupdate() {
       const response = await axios.post(
         "http://localhost:5000/employee/update",
         {values,
-        employeeID}
-      )
+        employeeID},
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`, 
+          },
+        });
       if(response.data){
         toast({
           description:response.data,
@@ -100,15 +112,24 @@ export default function Employeeupdate() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Employee Role</FormLabel>
-                  <FormControl>
-                    <Input placeholder= "Updated Employee Role" {...field} />
-                  </FormControl>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Employee Role" className="text-slate-500" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="RECEPTIONIST">Receptionist</SelectItem>
+                      <SelectItem value="DISPATCHER">Dispatch Record Manager</SelectItem>
+                      <SelectItem value="POSTMAN">Postman</SelectItem>
+                      <SelectItem value="SUPERVISOR">Supervisor</SelectItem>
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                   <FormDescription>
                 The current role is: {employee.role.toLowerCase()}
               </FormDescription>
                 </FormItem>
-                
                  )}
                 />
             {/* <div className='grid grid-2'>

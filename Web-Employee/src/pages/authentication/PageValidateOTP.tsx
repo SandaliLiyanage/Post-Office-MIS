@@ -44,8 +44,10 @@ export default function ValidateOTP() {
       },
   })
   async function validateOTP(values: z.infer<typeof formSchema>){
-    const employeeID = localStorage.getItem("employeeID")
+    const queryParams = new URLSearchParams(location.search);
+    const employeeID = queryParams.get('employeeID'); 
     const localCount = localStorage.getItem("count")
+    console.log(employeeID)
     if (localCount == null){
       let count = 1
       setCount(1)
@@ -71,9 +73,9 @@ export default function ValidateOTP() {
       console.log(response)
       if(response.data == "valid"){
         toast({
-          description:"OTP Validated",
+          description:`OTP Validated`,
         })
-        navigate("/setpassword")
+        navigate(`/setpassword?employeeID=${employeeID}`)
         localStorage.removeItem("count")
         localStorage.removeItem("employeeID")
         

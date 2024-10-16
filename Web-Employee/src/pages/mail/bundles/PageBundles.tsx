@@ -23,7 +23,13 @@ export default function Bundle() {
         console.log(user.token)
         console.log(user.postalCode, "user")
         const response = await axios.post('http://localhost:5000/bundles/createdBundles', 
-          {postalCode: user.postalCode});
+          {postalCode: user.postalCode},
+          {
+            headers: {
+              Authorization: `Bearer ${user?.token}`, 
+            },
+          }
+        );
         console.log(response.data)
         setTransferBundle(response.data);}
       } catch (error) {
@@ -70,14 +76,14 @@ export default function Bundle() {
     <Tabs defaultValue="account">
       <TabsList>
         <TabsTrigger value="account">Mail Bundles for Transfer</TabsTrigger>
-        <TabsTrigger value="password">Mail Bundles for Delivery</TabsTrigger>
+        <TabsTrigger value="password">Mail Bundles for Distribution</TabsTrigger>
       </TabsList>
       <TabsContent value="account" ><div className='bg-white'><DataTable columns={columnstoTransfer} data={transferBundle} /></div></TabsContent>
       <TabsContent value="password"><div className='bg-white'><DataTable columns={columnsforDelivery} data={deliveryBundle} /></div></TabsContent>
     </Tabs>
     </div>
     <div className="flex flex-col space-y-4 bg-white border-0">
-      </div>
+    </div>
     </div>
   )
 }

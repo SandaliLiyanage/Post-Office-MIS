@@ -50,7 +50,7 @@ export default function Scan() {
       // Show an alert with the scanned
       Alert.alert(
         "Scan Successful",
-        `Scanned Data: ${data}`,
+        `Mail Details: ${data}`,
         [
           {
             text: "Scan Again",

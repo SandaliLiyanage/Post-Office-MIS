@@ -1,10 +1,13 @@
 import {Prisma, PrismaClient, PostOffice} from "@prisma/client"
-const prisma = new PrismaClient();
-
+import { PrismaSingleton } from "./prismasingleton";
 class PostOfficeRepository{
+    private prisma = PrismaSingleton.getInstance();
+    constructor(){
+        this.prisma = PrismaSingleton.getInstance();
+    }
     async getHeadOffice(postalCode: string): Promise<string |null>{
         try{
-          const headOffice = await prisma.postOffice.findUnique({
+          const headOffice = await this.prisma.postOffice.findUnique({
             where: {
               postalCode: postalCode
             },
@@ -20,7 +23,7 @@ class PostOfficeRepository{
       }
 
       async getPostOfficeName(postalCode: string){
-        const name = await prisma.postOffice.findUnique({
+        const name = await this.prisma.postOffice.findUnique({
           where: {
             postalCode: postalCode
           },
@@ -28,8 +31,7 @@ class PostOfficeRepository{
             postOfficeName: true
           }
         })
-      return name
-
+      return name;
       }
 }
 export default PostOfficeRepository

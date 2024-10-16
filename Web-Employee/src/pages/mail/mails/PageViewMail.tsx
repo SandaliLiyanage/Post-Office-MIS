@@ -11,7 +11,7 @@ export default function Mails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
 
-  useEffect(() => {
+useEffect(() => {
     async function fetchMails() {
       try { 
         if(user){
@@ -36,7 +36,6 @@ export default function Mails() {
   if (loading) {
     return <p>Loading...</p>;
   }
-
   if (error) {
     return <p>{error}</p>;
   }
@@ -45,11 +44,8 @@ export default function Mails() {
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <p className="text-xl font-bold">Mail</p>
-        <div className='flex flex-end gap-2 '>
-        <Input type="email" placeholder="Search Mail by ID"className='w-50'  />
-        </div>
     </div>
-    <div className="flex flex-col space-y-4 bg-white border-0">
+    <div className="flex flex-col space-y-4  border-0">
       <DataTable columns={columns} data={mail} />
       </div>
     </div>

@@ -1,28 +1,53 @@
 import { ColumnDef } from "@tanstack/react-table"
 import {Badge} from  "../../../components/ui/badge"
+import { formatDate } from "./formatdate"
 export interface IMail{
-    category: string;
+    mailType: string;
     barcodeID: string;
     mailstatus: string;
     weight: number;
     bundleID: number;
     price: number;	
+    transaction: {
+      date: string;
+    }
   }
 const columns: ColumnDef<IMail>[] = [
     {
-      accessorKey: "mailType",
+    accessorKey: "mailID",
+    header: "Mail ID",
+    },    
+    {
+      id: "actions",
       header: "Category",
+      cell: ({ row }) => {
+        const getTypeBadge = (type: string) => {
+          switch (type) {
+            case "NORMAL_MAIL":
+              return "Normal Mail"
+            case "REGISTERED_MAIL":
+              return "Registered Mail"
+            case "COURIER":
+              return "Courier"
+            default:
+              return null;
+          }
+        };
+    
+        return getTypeBadge(row.original.mailType); // Return the badge here
       },
+    },  
     {
-      accessorKey: "bundleID",
-      header: "BundleID",
+      accessorKey: "transaction.date1",
+      header: "Date",
+      cell: ({ row }) => {
+
+        const date = new Date(row.original.transaction.date);
+        return formatDate(date);
+      }
+      
     },
-    
-    
-    {
-      accessorKey: "weight",
-      header: "Weight",
-    },
+
     {
       accessorKey: "price",
       header: "Price",
@@ -46,7 +71,7 @@ const columns: ColumnDef<IMail>[] = [
             case "IN_TRANSIT":
               return <Badge className="bg-sky-600 text-white">In Transit</Badge>;
             case "RETURNED":
-              return <Badge className="bg-yellow-500 text-white">Pending</Badge>;
+              return <Badge className="bg-yellow-500 text-white">Returned</Badge>;
             case "Failed":
               return <Badge className="bg-red-500 text-white">Failed</Badge>;
             default:
@@ -55,7 +80,9 @@ const columns: ColumnDef<IMail>[] = [
           }
           
         }
-        
+        const sortByStatus = (status: string) => {
+          
+        }
         return getStatusBadge(mailStatus); 
       }
     },

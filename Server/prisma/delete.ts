@@ -10,6 +10,7 @@ async function deleteAllRecords() {
     await prisma.address.deleteMany({});
     await prisma.area.deleteMany({});
     await prisma.leave.deleteMany({});
+    await prisma.feedback.deleteMany({});
     await prisma.employee.deleteMany({});
     await prisma.postOffice.deleteMany({});
     console.log("All records deleted:");

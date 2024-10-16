@@ -1,6 +1,9 @@
 # Node modules
 node_modules/
-coverage/
+
+
+coverage
+
 # Logs
 logs/
 *.log
@@ -17,7 +20,7 @@ build/
 
 # Dependency directories
 jspm_packages/
-
+coverage
 # IDE specific files
 .idea/
 .vscode/

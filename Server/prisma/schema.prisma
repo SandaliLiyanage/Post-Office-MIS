@@ -27,6 +27,7 @@ model Employee {
   leave       Leave[]
   area        Area[]
   otp         OTP[]
+  feedback    Feedback[]
 }
 
 enum PostOfficeCategory {
@@ -62,6 +63,7 @@ model Address {
   area          Area? @relation(fields: [areaID], references: [areaID])
   transaction   Transaction[]
   mail          Mail[]
+  verified      Boolean
 }
 
 enum MailType {
@@ -77,8 +79,8 @@ model Mail {
   recepientAddressID         Int
   mailID         Int         @id @default(autoincrement())
   address           Address @relation(fields: [recepientAddressID], references: [addressID])
-  bundleID          Int       
-  bundle            Bundle     @relation(fields: [bundleID], references: [bundleID])
+  bundleID          Int?    
+  bundle            Bundle?    @relation(fields: [bundleID], references: [bundleID])
   mailstatus        MailStatus  @default(IN_TRANSIT)
   transactionID     Int
   transaction       Transaction @relation(fields: [transactionID], references: [transactionID])
@@ -86,9 +88,9 @@ model Mail {
   price             Decimal       @db.Decimal(10,2)
   postalCode        String
   postOffice        PostOffice @relation(fields: [postalCode], references: [postalCode])
-  signature     String?
+  signature      String?
+  deliveryAttempts  Int?     
 }
-
 model Bundle {
   bundleID              Int          @id @default(autoincrement())
   destPostalCode        String
@@ -132,8 +134,8 @@ model Leave{
   endDate DateTime
   employee Employee @relation(fields: [employeeID], references: [employeeID])
   description String
-  status String
   RequestStatus RequestStatus @default(PENDING)
+  requstedDate DateTime
 
 }
 
@@ -167,3 +169,16 @@ model OTP{
   unused       Boolean @default(true)
   @@unique([employeeID, unused, expiresAt, createdAt])
 }
+
+model Feedback {
+  id           Int      @id @default(autoincrement())
+  employeeID   String
+  feedbackText String
+  createdAt    DateTime @default(now())
+
+  // Relation to the Employee model
+  employee     Employee @relation(fields: [employeeID], references: [employeeID])
+
+  @@map("feedback") // This ensures the table is named "feedback"
+}
+

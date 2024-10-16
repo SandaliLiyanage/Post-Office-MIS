@@ -1,10 +1,8 @@
-import { PrismaClient, Employee, Role, PostOffice } from "@prisma/client";
-import { response } from "express";
-import { FileWatcherEventKind } from "typescript";
-import { DeleteEmployee } from "../controllers/employeecontroller";
-const prisma = new PrismaClient();
+import { Employee, Role, Feedback } from "@prisma/client";
+import { PrismaSingleton } from "./prismasingleton";
 
 interface User {
+  employeeID: string,
   postOfficeName: string;
   employeeName: string;
   postalCode: string;
@@ -14,7 +12,11 @@ interface User {
   longitude: number;
 }
 class EmployeeRepository {
+  private prisma = PrismaSingleton.getInstance();
   private static instance: EmployeeRepository;
+  constructor() {
+    this.prisma = PrismaSingleton.getInstance();
+  }
   static getInstance(): EmployeeRepository {
     if (!EmployeeRepository.instance) {
       EmployeeRepository.instance = new EmployeeRepository();
@@ -24,9 +26,9 @@ class EmployeeRepository {
   async getUserData(userName: string): Promise<User> {
     try {
       console.log(userName, "hee");
-      const res = await prisma.$queryRaw<
+      const res = await this.prisma.$queryRaw<
         User[]
-      >`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude"
+      >`SELECT e."employeeID",  e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude", e."employeeID"
             FROM "Employee" AS e 
             JOIN 
             "PostOffice" AS p 
@@ -42,13 +44,12 @@ class EmployeeRepository {
   }
   async findUserbyID(username: string): Promise<Employee | null> {
     try {
-      const res = await prisma.employee.findUnique({
+      const res = await this.prisma.employee.findUnique({
         where: {
           employeeID: username,
         },
       });
 
-      console.log("employee queried", res);
       return res;
     } catch (error) {
       console.error("Error getting password from DB:", error);
@@ -64,7 +65,7 @@ class EmployeeRepository {
     role: Role
   ): Promise<Employee | null> {
     try {
-      const result = await prisma.employee.create({
+      const result = await this.prisma.employee.create({
         data: {
           employeeID: employeeID,
           postalCode: postalCode,
@@ -84,7 +85,7 @@ class EmployeeRepository {
   async getEmployees(postalCode: string): Promise<Employee[]> {
     try {
       console.log(postalCode);
-      const res = await prisma.employee.findMany({
+      const res = await this.prisma.employee.findMany({
         where: {
           postalCode: postalCode,
         },
@@ -104,7 +105,7 @@ class EmployeeRepository {
   ): Promise<string> {
     try {
       console.log("hehe role", role, telephone, email, employeeID);
-      const employee: Employee = await prisma.employee.update({
+      const employee: Employee = await this.prisma.employee.update({
         where: { employeeID: employeeID },
         data: { telephone: telephone },
       });
@@ -118,7 +119,7 @@ class EmployeeRepository {
 
   async changePassword(employeeID: string, newPassword: string) {
     try {
-      const response = await prisma.employee.update({
+      const response = await this.prisma.employee.update({
         where: { employeeID: employeeID },
         data: { password: newPassword },
       });
@@ -137,6 +138,24 @@ class EmployeeRepository {
     //         employeeID: employeeID
     //     }
     // })
+  }
+  async saveFeedback(
+    employeeID: string,
+    feedbackText: string
+  ): Promise<Feedback> {
+    try {
+      const feedback = await this.prisma.feedback.create({
+        data: {
+          employeeID: employeeID,
+          feedbackText: feedbackText,
+        },
+      });
+      console.log("Feedback saved:", feedback);
+      return feedback;
+    } catch (error) {
+      console.error("Error saving feedback:", error);
+      throw error;
+    }
   }
 }
 export { EmployeeRepository };

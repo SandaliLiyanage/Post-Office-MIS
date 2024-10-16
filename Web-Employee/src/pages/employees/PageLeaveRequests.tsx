@@ -16,6 +16,13 @@ import {
 } from "../../components/ui/form"
 import { Input } from "../../components/ui/input"
 import { useUser } from "@/pages/authentication/usercontext"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select"
 
 const formSchema = z.object({
   employeeid: z.string().min(1, {}),
@@ -86,19 +93,30 @@ export default function LeaveRequest() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="requestType"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Request Type</FormLabel>
-                  <FormControl>
-                    <Input placeholder="" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+          control={form.control}
+          name="requestType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Leave Type</FormLabel>
+              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Leave Type" className="text-slate-500" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="Half_Day">Half Day</SelectItem>
+                  <SelectItem value="Full_Day">Full Day</SelectItem>
+                  <SelectItem value="Vacation">Vacation</SelectItem>
+                </SelectContent>
+              </Select>
+    
+              <FormMessage />
+            </FormItem>
+          )}
+        />    
+         
             <FormField
               control={form.control}
               name="startDate"

@@ -1,12 +1,15 @@
 import {PrismaClient, Transaction} from "@prisma/client"
-const prisma = new PrismaClient();
-
+import { PrismaSingleton } from "./prismasingleton";
 
 class TransactionRepository{
-    async createTransactoin(customerTelephone:string, customerName: string, amount: number, customerAddressID: number):Promise<Transaction>{
+    private prisma = PrismaSingleton.getInstance();
+    constructor(){
+        this.prisma = PrismaSingleton.getInstance();
+    }
+    async createTransaction(customerTelephone:string, customerName: string, amount: number, customerAddressID: number):Promise<Transaction>{
         const dateTimeObject = new Date()
         console.log(dateTimeObject)
-        const res = await prisma.transaction.create({
+        const res = await this.prisma.transaction.create({
             data:{
                 customerTelephone: customerTelephone,
                 customerName: customerName,

@@ -1,6 +1,19 @@
 import { Request, Response } from "express";
 import { EmployeeRepository } from "../repositeries/employeerepository";
+import EmployeeManagementService from "../services/employeemanagementservice";
+import LeaveRepository from "../repositeries/leaverepository";
 
+
+const UpdateLeaveStatus = async (req: Request, res: Response) => {
+  const empRepo = EmployeeRepository.getInstance();
+  const leaveRepo = new LeaveRepository
+  const empService = new EmployeeManagementService(empRepo, leaveRepo);
+  const { status, employeeID } = req.body;
+  console.log(employeeID);
+  console.log("in update status");
+  const response = await empService.updateStatus(employeeID, status);
+  return res.json(response);
+}
 const EmployeeDetails = async (req: Request, res: Response) => {
   const employeeRepo = EmployeeRepository.getInstance();
   const employees = await employeeRepo.getEmployees(req.body.postalCode);
@@ -97,10 +110,40 @@ const DeleteEmployee = async (req: Request, res: Response) => {
   const response = await employeeRepo.deleteEmployee(employeeID);
 };
 
+const SubmitFeedback = async (req: Request, res: Response) => {
+  const employeeRepo = EmployeeRepository.getInstance();
+  const { employeeID, feedback } = req.body;
+
+  if (!employeeID || !feedback) {
+    return res
+      .status(400)
+      .json({ error: "Employee ID and feedback are required" });
+  }
+
+  try {
+    await employeeRepo.saveFeedback(employeeID, feedback);
+    return res.status(200).json({ message: "Feedback submitted successfully" });
+  } catch (error) {
+    console.error("Error saving feedback:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+const getLeaves = async (req: Request, res: Response) => {
+  const empRepo = EmployeeRepository.getInstance();
+  const leaveRepo = new LeaveRepository
+  const empService = new EmployeeManagementService(empRepo, leaveRepo);
+  const result = await empService.getLeaves(req.body.postalCode);
+  return res.status(200).json(result);
+}
+
 export {
+  getLeaves,
   EmployeeDetails,
   Registration,
   getEmployeeDetails,
   UpdateEmployee,
   DeleteEmployee,
+  SubmitFeedback,
+  UpdateLeaveStatus as UpdateStatus
 };

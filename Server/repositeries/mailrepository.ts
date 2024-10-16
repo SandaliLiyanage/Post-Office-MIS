@@ -211,7 +211,7 @@ class MailRepository {
 
   async trackMail(transactionID: number): Promise<any[]> {
     try {
-      const res = await prisma.$queryRaw<any[]>`
+      const res = await this.prisma.$queryRaw<any[]>`
             SELECT m."recepientName", m."mailstatus", p."postOfficeName"
             FROM "Mail" AS m
             JOIN "PostOffice" AS p 
@@ -229,7 +229,7 @@ class MailRepository {
   }
 
   async findBundleById(bundleID: number) {
-    return await prisma.bundle.findUnique({
+    return await this.prisma.bundle.findUnique({
       where: { bundleID },
       include: {
         destPostOffice: true,
@@ -240,7 +240,7 @@ class MailRepository {
 
   async findByPostalCode(postalCode: string): Promise<PostOffice | null> {
     try {
-      const postOffice = await prisma.postOffice.findUnique({
+      const postOffice = await this.prisma.postOffice.findUnique({
         where: { postalCode },
       });
 

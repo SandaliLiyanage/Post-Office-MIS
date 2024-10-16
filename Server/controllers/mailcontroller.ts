@@ -280,54 +280,54 @@ export class MailController {
   }
 }
 
-export const getTrackingDetails = async (req: Request, res: Response) => {
-  try {
-    const { transactionID } = req.body; // Get transactionID from the request body
-    console.log(
-      `Fetching tracking details for Transaction ID: ${transactionID}`
-    );
+// export const getTrackingDetails = async (req: Request, res: Response) => {
+//   try {
+//     const { transactionID } = req.body; // Get transactionID from the request body
+//     console.log(
+//       `Fetching tracking details for Transaction ID: ${transactionID}`
+//     );
 
-    const mailDetails = await mailRepository.trackMail(transactionID);
+//     const mailDetails = await mailRepository.trackMail(transactionID);
 
-    if (mailDetails) {
-      res.status(200).json({
-        success: true,
-        data: mailDetails,
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        message: "Mail not found for the given Transaction ID",
-      });
-    }
-  } catch (error) {
-    console.error("Error fetching mail details:", error);
-    res.status(500).json({
-      success: false,
-      message: "An error occurred while tracking mail",
-    });
-  }
-};
+//     if (mailDetails) {
+//       res.status(200).json({
+//         success: true,
+//         data: mailDetails,
+//       });
+//     } else {
+//       res.status(404).json({
+//         success: false,
+//         message: "Mail not found for the given Transaction ID",
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error fetching mail details:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "An error occurred while tracking mail",
+//     });
+//   }
+// };
 
-export class MailController {
-  async estimateDeliveryTime(req: Request, res: Response) {
-    try {
-      const { bundleID } = req.body;
+// export class MailController {
+//   async estimateDeliveryTime(req: Request, res: Response) {
+//     try {
+//       const { bundleID } = req.body;
 
-      // Call service to estimate delivery time
-      const estimatedTime = await trackMail.estimateDeliveryTime(bundleID);
+//       // Call service to estimate delivery time
+//       const estimatedTime = await trackMail.estimateDeliveryTime(bundleID);
 
-      res.status(200).json({ success: true, deliveryTime: estimatedTime });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(500).json({ success: false, message: error.message });
-      } else {
-        res
-          .status(500)
-          .json({ success: false, message: "An unknown error occurred." });
-      }
-    }
-  }
-}
+//       res.status(200).json({ success: true, deliveryTime: estimatedTime });
+//     } catch (error) {
+//       if (error instanceof Error) {
+//         res.status(500).json({ success: false, message: error.message });
+//       } else {
+//         res
+//           .status(500)
+//           .json({ success: false, message: "An unknown error occurred." });
+//       }
+//     }
+//   }
+// }
 
 export { CalculatePrice, Mails, MailDetails, ReturnMail, ChangeAddress };

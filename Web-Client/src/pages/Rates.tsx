@@ -1,28 +1,40 @@
-import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
-import NavBar from '../components/ui/NavBar';
-import axios from 'axios'; // Import axios for HTTP requests
+import React, { useState } from "react";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl,
+} from "@mui/material";
+import NavBar from "../components/ui/NavBar";
+import axios from "axios"; // Import axios for HTTP requests
 
 const CalculatePostalRates: React.FC = () => {
-  const [weight, setWeight] = useState<string>(''); // Stores the weight input by the user
+  const [weight, setWeight] = useState<string>(""); // Stores the weight input by the user
   const [rate, setRate] = useState<string | null>(null); // Stores the calculated rate
-  const [mailType, setMailType] = useState<string>('normal mail'); // Stores the selected mail type
+  const [mailType, setMailType] = useState<string>("normal mail"); // Stores the selected mail type
 
   // Event handler when the user clicks 'Calculate'
   const handleCalculate = async () => {
     const weightNumber = Number(weight);
 
     if (!weight || isNaN(weightNumber) || weightNumber <= 0) {
-      alert('Please enter a valid weight!');
+      alert("Please enter a valid weight!");
       return;
     }
 
     try {
       // Make a POST request to the backend to calculate the postal rate
-      const response = await axios.post('http://localhost:5001/mail/calculatePrice', {
-        mailType,
-        weight: weightNumber
-      });
+      const response = await axios.post(
+        "http://localhost:5000/mail/calculatePrice",
+        {
+          mailType,
+          weight: weightNumber,
+        }
+      );
 
       console.log(response.data);
 
@@ -30,7 +42,7 @@ const CalculatePostalRates: React.FC = () => {
       setRate(response.data);
     } catch (error) {
       console.error("Error calculating postal rate:", error);
-      alert('Failed to calculate postal rate');
+      alert("Failed to calculate postal rate");
     }
   };
 
@@ -43,14 +55,17 @@ const CalculatePostalRates: React.FC = () => {
         alignItems="center"
         justifyContent="center"
         minHeight="100vh"
-        sx={{ marginTop: '64px' }} // Adjust margin to ensure content is below the NavBar
+        sx={{ marginTop: "64px" }} // Adjust margin to ensure content is below the NavBar
       >
-        <Typography variant="h4" sx={{ marginBottom: '20px' }}>
+        <Typography variant="h4" sx={{ marginBottom: "20px" }}>
           Calculate Postal Rates
         </Typography>
 
-                {/* Dropdown for selecting mail type */}
-                <FormControl variant="outlined" sx={{ marginBottom: '20px', width: '300px' }}>
+        {/* Dropdown for selecting mail type */}
+        <FormControl
+          variant="outlined"
+          sx={{ marginBottom: "20px", width: "300px" }}
+        >
           <InputLabel id="mail-type-label">Mail Type</InputLabel>
           <Select
             labelId="mail-type-label"
@@ -70,7 +85,7 @@ const CalculatePostalRates: React.FC = () => {
           variant="outlined"
           value={weight}
           onChange={(e) => setWeight(e.target.value)}
-          sx={{ marginBottom: '20px', width: '300px' }}
+          sx={{ marginBottom: "20px", width: "300px" }}
           type="number" // Set type to number for better user experience
           inputProps={{ min: "0" }} // Prevent negative values
         />
@@ -79,14 +94,14 @@ const CalculatePostalRates: React.FC = () => {
         <Button
           variant="contained"
           onClick={handleCalculate}
-          sx={{ backgroundColor: '#884343' }}
+          sx={{ backgroundColor: "#884343" }}
         >
           Calculate
         </Button>
 
         {/* Display the calculated rate */}
         {rate && (
-          <Typography variant="h6" sx={{ marginTop: '20px' }}>
+          <Typography variant="h6" sx={{ marginTop: "20px" }}>
             Calculated Postal Rate: {rate} LKR
           </Typography>
         )}

@@ -63,6 +63,7 @@ model Address {
   area          Area? @relation(fields: [areaID], references: [areaID])
   transaction   Transaction[]
   mail          Mail[]
+  verified      Boolean
 }
 
 enum MailType {
@@ -133,8 +134,8 @@ model Leave{
   endDate DateTime
   employee Employee @relation(fields: [employeeID], references: [employeeID])
   description String
-  status String
   RequestStatus RequestStatus @default(PENDING)
+  requstedDate DateTime
 
 }
 
@@ -180,3 +181,4 @@ model Feedback {
 
   @@map("feedback") // This ensures the table is named "feedback"
 }
+

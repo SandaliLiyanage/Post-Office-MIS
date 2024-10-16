@@ -18,7 +18,10 @@ import { Input } from "../../components/ui/input"
 import { useUser } from './usercontext';
 import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
-import logo from '../../assets/logo.png';
+import logo from "../../assets/logo1.jpg"
+
+
+
 const formSchema = z.object({
   employeeID: z.string().min(3, {
   }),
@@ -49,6 +52,7 @@ export default function Login() {
       console.log("Data submitted successfully", user.data)
       saveUser(
         {
+          employeeID: user.data.employeeID,
           name: user.data.name,
           role: user.data.role,
           token: user.data.token,

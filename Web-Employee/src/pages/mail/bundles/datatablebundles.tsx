@@ -1,10 +1,12 @@
 "use client"
- 
+import { Button } from "@/components/ui/button"
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
+
 } from "@tanstack/react-table"
  
 import {
@@ -29,10 +31,12 @@ export function DataTable<TData, TValue>({
     const table = useReactTable({
       data,
       columns,
+      getPaginationRowModel: getPaginationRowModel(),
       getCoreRowModel: getCoreRowModel(),
     })
     return (
-        <div className="rounded-md border">
+      <div>
+        <div className="rounded-md borderbg-stone-300 bg-opacity-15 ">
           <Table>
             <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
@@ -78,5 +82,25 @@ export function DataTable<TData, TValue>({
             </TableBody>
           </Table>
         </div>
+        <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
+    </div>
+   
       )
     }

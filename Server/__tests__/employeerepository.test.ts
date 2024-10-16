@@ -1,6 +1,5 @@
-import prisma from "../../client";
-import { EmployeeRepository } from "../../repositeries/employeerepository";
-import { prismaMock } from '../../singleton'
+import { EmployeeRepository } from "../repositeries/employeerepository";
+import { prismaMock } from '../singleton'
 
 jest.mock('@prisma/client', () => ({
     PrismaClient: jest.fn(() => prismaMock),

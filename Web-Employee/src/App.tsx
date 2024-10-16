@@ -13,14 +13,18 @@ import RevenueReports from  "./pages/reports/PageRevenueReports";
 import ForgotPassword from "./pages/authentication/PageForgotPassword";
 import ValidateOTP from "./pages/authentication/PageValidateOTP";
 import SetPassword from "./pages/authentication/PageSetPassword";
-import MailDelivery from "./pages/mail/mails/PageMailDelivery";
+import MailDelivery from "./pages/mail/mails/PageMailAssignment";
 import EndTransaction from "./pages/mail/mailorder/PageMailDetails";
 import ReturnMail from "./pages/mail/mails/PageReturnMail";
-import Addaddress from "./pages/mail/mailorder/addaddress";
+import Addaddress from "./pages/mail/mailorder/PageAddAddress";
 import { ProtectedRoute } from "./pages/authentication/protectedroutes";
 import { useUser } from "./pages/authentication/usercontext";
-import Unauthorized from "./pages/authentication/Unauthorized";
-import Retaddress from "./pages/mail/mails/retaddress";
+import Unauthorized from "./pages/authentication/PageUnauthorized";
+import Retaddress from "./pages/mail/mails/PageReturnAddress";
+import PageReceipt from "./pages/mail/mailorder/PageReceipt";
+import PageDashboard from "./pages/PageDashboard";
+import PageViewLeaves from "./pages/employees/PageViewLeaves";
+import LeaveRequest from "./pages/employees/PageLeaveRequests";
 function App() {
   
   const {user} = useUser()
@@ -36,17 +40,19 @@ function App() {
         <Route path="/setPassword" element={< SetPassword/>} />
       {role &&
         <Route path= "/dashboard" element={<Layout/>}>
+          <Route path="" element={<PageDashboard/>}/>
           <Route path="register" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
           <EmpRegistration /></ProtectedRoute>}/>
           <Route path="mailorder" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
           <MailOrder /></ProtectedRoute>}/>
           <Route path="maildetails" element={<ProtectedRoute allowedRoles={['POSTMASTER', 'RECEPTIONIST', 'SUPERVISOR']} userRole={role}>
-          <MailDelivery /></ProtectedRoute>}/>
+          <MailDetails /></ProtectedRoute>}/>
           <Route path="employeerecords" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
             <Emp /></ProtectedRoute>}/>
-          <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMAN','SUPERVISOR']} userRole={role}>
           <Bundle /></ProtectedRoute>}/>
-          <Route path="viewleaverequests" element={<></>}></Route>
+          <Route path="leaverequests" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <LeaveRequest /></ProtectedRoute>}/>
           <Route path="revenuereports"element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
           <RevenueReports /></ProtectedRoute>}/>
           <Route path="employeeregistrations" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
@@ -54,21 +60,25 @@ function App() {
           <Route path="mailassignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
           < MailDelivery/></ProtectedRoute>}/>
           <Route path="viewmail" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
-          < Mails/></ProtectedRoute>}/>
+          <Mails/></ProtectedRoute>}/>
           <Route path="view"element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
           < Employeeupdate/></ProtectedRoute>}/>
           <Route path ="postmanAssignments" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
-          < MailDelivery/></ProtectedRoute>}/>
+          <MailDelivery/></ProtectedRoute>}/>
           <Route path ="endtransaction" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
           < EndTransaction/></ProtectedRoute>}/>
           <Route path="failedtoDeliver" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
-          < ReturnMail/></ProtectedRoute>}/>
+          <ReturnMail/></ProtectedRoute>}/>
           <Route path = "retaddress" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}>
           < Retaddress/></ProtectedRoute>}/>
-          <Route path = "addaddress" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
-          < Addaddress/></ProtectedRoute>}/>
+          <Route path = "addaddress" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR', 'RECEPTIONIST']} userRole={role}>
+          <Addaddress/></ProtectedRoute>}/>
+          <Route path = "receipt" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <PageReceipt/></ProtectedRoute>}/>
+          <Route path = "addAddress" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <Addaddress/></ProtectedRoute>}/>
+          <Route path="veiwleaves" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}><PageViewLeaves/></ProtectedRoute>}/>
         </Route>}
         <Route path="not-authorized" element={<Unauthorized/>}/>
+
 
       </Routes>
     </Router>

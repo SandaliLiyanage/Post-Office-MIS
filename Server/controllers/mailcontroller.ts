@@ -1,11 +1,20 @@
 import { Request, Response } from "express";
 import { MailRepository } from "../repositeries/mailrepository";
 import { TransactionRepository } from "../repositeries/transactionrepository";
-import MailService from "../services/mailservice";
+import MailService from "../services/mailmanagementservice";
+import { BundleRepository } from "../repositeries/bundlerepository";
+import PostOfficeRepository from "../repositeries/postofficerepository";
+import { AddressRepository } from "../repositeries/addressrepository";
+import MailTransferService from "../services/mailtransferservice";
+import MailManagementService from "../services/mailmanagementservice";
 
+const bundleRepository = new BundleRepository();
+const addressRepository = new AddressRepository();
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
-const mailService = new MailService();
+const postOfficeRepository = new PostOfficeRepository();
+const bundleservice = new MailTransferService(postOfficeRepository, bundleRepository, addressRepository);
+const mailService = new MailManagementService(mailRepository, bundleservice);
 
 const CalculatePrice = async (req: Request, res: Response) => {
   console.log("Request received in controller");
@@ -37,7 +46,7 @@ const MailDetails = async (req: Request, res: Response) => {
   const { customerName, telephone } = cutomerDetails;
   console.log("hyikjk;", customerName, telephone, addressID);
   const amount = mailService.calculateTotal(mailArray);
-  const transaction = await transactionRepository.createTransactoin(
+  const transaction = await transactionRepository.createTransaction(
     telephone,
     customerName,
     amount,
@@ -66,7 +75,7 @@ const ReturnMail = async (req: Request, res: Response) => {
   console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
   console.log(postalCode)
-  const result = await mailRepository.getReturnMail(postalCode);
+  const result = await mailService.getReturnMail(postalCode);
   return res.status(200).json(result);
 };
 

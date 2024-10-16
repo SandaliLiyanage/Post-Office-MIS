@@ -1,6 +1,7 @@
 import {PrismaClient, BundleStatus} from "@prisma/client"
 import { AddressRepository } from "./addressrepository";
-const prisma = new PrismaClient();
+import { PrismaSingleton } from "./prismasingleton";
+
 interface  AreaDet{
     areaName: string,
     employeeName: string,
@@ -10,11 +11,14 @@ interface  AreaDet{
 
 const addressRepostiory = new AddressRepository()
 class AreaRepository{
-    
+    private prisma = PrismaSingleton.getInstance();
+    constructor(){
+        this.prisma = PrismaSingleton.getInstance();
+    }
     async getArea (postalCode: string ){
         try{
         console.log("in area repository")
-        const response= await prisma.$queryRaw<AreaDet[]>`
+        const response= await this.prisma.$queryRaw<AreaDet[]>`
         SELECT 
                 a."areaName",
                 m."mailID",

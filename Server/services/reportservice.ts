@@ -3,7 +3,6 @@ import { MailType } from "@prisma/client";
 
 
 class ReportService {
-    
     mailrepository = new MailRepository()
 
     getReportData =async (startDate: Date, endDate: Date, type: String)=>{

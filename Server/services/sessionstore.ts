@@ -1,5 +1,3 @@
-import { Session } from "inspector";
-
 class SessionStore{
     private static instance: SessionStore;
     static getInstance(): SessionStore{
@@ -10,9 +8,6 @@ class SessionStore{
     }
     async storeSession(username:string){
         console.log("session stored", username)
-    }
-    async createSession(username:string){
-        console.log("session created")
     }
 
 }

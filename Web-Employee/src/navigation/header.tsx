@@ -6,21 +6,18 @@ import {
 } from "../components/ui/popover"
 import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom"
-import { User, Bell } from 'lucide-react';
-import {useEffect, useState} from 'react';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { User} from 'lucide-react';
+import { useState} from 'react';
+
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-// import logo from '../assets/logo.png';
 
 export default function Nav() {
 
@@ -32,9 +29,9 @@ export default function Nav() {
     console.log("user iss", user)
   }
   return (
-    <div className = 'fixed top-0 w-full z-10 bg-slate-800 h-16 flex justify-between'>
+    <div className = 'fixed top-0 w-full z-10 bg-slate-800 h-16 flex justify-between shadow-sm'>
       <div className="p-4 flex justify-start">
-
+      {/* <img src={logo} alt="Post Office Logo"  /> */}
       <p className="text-xl text-white">Post-Office-{user?.postOfficeName}</p>
       </div>
       <div className="flex justify-end">

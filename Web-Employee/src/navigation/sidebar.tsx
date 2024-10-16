@@ -4,8 +4,8 @@ import { useUser } from "@/pages/authentication/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
-  const clickedColour: string = 'bg-blue-200 bg-opacity-90 text-black';
-  const normalColour: string = 'hover:bg-blue-200 text-white hover:bg-opacity-90';
+  const clickedColour: string = 'bg-slate-500 bg-blue-300 bg-opacity-90 text-black rounded-sm ';
+  const normalColour: string = 'hover:bg-slate-90 text-white hover:bg-opacity-90 rounded-sm p-2';
 
   // const clickedColour: string = 'bg-slate-800   rounded text-white';
   // const normalColour: string = 'hover:bg-slate-500 text-white hover:bg-opacity-90 hover:text-black';
@@ -35,7 +35,7 @@ export default function SideBar() {
                           navigate("/dashboard/revenueReports")
                         }}>Reports</NavButton>
 
-  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' ? clickedColour : normalColour}`} 
+  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' || activeButton === 'receipt'? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('mailorder');
                           navigate("/dashboard/mailorder");
@@ -69,10 +69,25 @@ export default function SideBar() {
                           handleClick('failedtoDeliver')
                           navigate("/dashboard/failedtoDeliver")
                         } }>Return Mail</NavButton>
+const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('addaddress')
+                          navigate("/dashboard/addAddress")
+                        } }>Add New Address</NavButton>
+const ViewLeaves = <NavButton className={`${activeButton === 'veiwleaves'? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('veiwleaves')
+                          navigate("/dashboard/veiwleaves")
+                        } }>Approve Leaves</NavButton>
+const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('leaverequests')
+                          navigate("/dashboard/leaverequests")
+                        } }>Approve Leaves</NavButton>
 
   return (
-    <div className="mt-16 fixed left-0 top-0 h-full">
-      <nav className="w-60 h-full bg-slate-800 ">
+    <div className="mt-16 fixed left-0 top-0 h-full shadow-lg">
+      <nav className="w-60 h-full bg-slate-800 shadow-xl">
 
       {user?.role === 'POSTMASTER' && (
           <>
@@ -81,7 +96,7 @@ export default function SideBar() {
             {EmployeeRegistrations}
             {RevenueReports}
             {PostmanAssignments}
-            {MailBundles}
+            {ViewLeaves}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (
@@ -90,7 +105,7 @@ export default function SideBar() {
             {MailBundles}
             {PostmanAssignments}
             {RevenueReports}
-            {/* {MailOrder} */}
+            {LeaveRequests}
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (
@@ -98,6 +113,8 @@ export default function SideBar() {
             {ViewMail}
             {MailOrder}
             {FailedToDeliver}
+            {AddNewAddress}
+            {LeaveRequests}
           </>
         )}
       </nav>

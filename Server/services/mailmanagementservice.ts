@@ -1,21 +1,22 @@
 import { MailRepository } from "../repositeries/mailrepository";
-import BundleService from "../services/bundleservice";
+import MailTransferService from "./mailtransferservice";
 import { MailStatus, MailType } from "@prisma/client";
 
 
-const mailRepository = new MailRepository();
-const bundleservice = new BundleService();
-class MailService {
-    async totalPrice(){   
+class MailManagementService {
+    private mailRepository: MailRepository;
+    private bundleservice: MailTransferService;
+    constructor(mailRepository: MailRepository, bundleservice: MailTransferService){
+        this.bundleservice = bundleservice;
+        this.mailRepository = mailRepository;
     }
-    
 
     async insertMail(mailArray: [], transactionID: number, postalCode: string){
       const confirmedMail = []
       console.log("in mail insertion", postalCode)
         for (let mail of mailArray) {
             const {addressID, mailType, price, recepientName, telephone, weight} = mail
-            const bundleID = await bundleservice.bundleValidation(addressID, postalCode)
+            const bundleID = await this.bundleservice.bundleValidation(addressID, postalCode)
             console.log(postalCode, "bundle ID is this", bundleID);
             let enumMail: MailType | null = null
             if (mailType == "normal mail"){
@@ -28,12 +29,12 @@ class MailService {
             console.log(enumMail, "enum Mail", bundleID,bundleID)
             if ((typeof (bundleID) === "number") &&  enumMail != null  ){
               console.log(enumMail)
-              const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID, MailStatus.IN_TRANSIT ); 
+              const mail = await this.mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID, MailStatus.IN_TRANSIT ); 
               confirmedMail.push(mail)
             }
             if ((bundleID == null )&&  enumMail != null  ){
               console.log(enumMail)
-              const mail = await mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID, MailStatus.IN_TRANSIT ); 
+              const mail = await this.mailRepository.addMail(addressID, price, recepientName, weight, postalCode, enumMail, transactionID, bundleID, MailStatus.IN_TRANSIT ); 
               confirmedMail.push(mail)
             }
           }
@@ -52,11 +53,15 @@ class MailService {
   }
 
   async changeAddress(addressID: number, mailID: number, postalCode: string){
-    const res = await mailRepository.updateRecepientAddress(addressID, mailID, postalCode);
+    const res = await this.mailRepository.updateRecepientAddress(addressID, mailID, postalCode);
     return res
   }
 
-
+  async getReturnMail(postalCode: string){
+    const res = await this.mailRepository.getReturnMail(postalCode);
+    return res
+  }
+  
   calculatePrice(mailType: string, weight: number){
     if (mailType == "normal mail") {
     if (weight > 0 && weight <= 20) return '50.00';
@@ -146,10 +151,10 @@ class MailService {
   }
   
   else{
-    return '40.00'
+    return '00.00'
     }
       
     }
   }   
 
-export default MailService
+export default MailManagementService

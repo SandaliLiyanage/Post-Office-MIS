@@ -1,10 +1,12 @@
-import { PrismaClient, Mail, MailType, MailStatus } from "@prisma/client";
-import { start } from "repl";
-import Address from "../controllers/addresscontroller";
-const prisma = new PrismaClient();
+import { Mail, MailType, MailStatus } from "@prisma/client";
+import { PrismaSingleton } from "./prismasingleton";
 
 class MailRepository {
-
+  private prisma = PrismaSingleton.getInstance();
+  constructor() {
+    this.prisma = PrismaSingleton.getInstance();
+    
+  }
   async calculatePrice(mailType: string, weight: number) {
     console.log("Mail type:", mailType);
     console.log("Weight:", weight);
@@ -14,7 +16,7 @@ class MailRepository {
   async getMail(postalCode: string): Promise<Mail[]> {
     console.log("in mail repository");
     try {
-      const res = await prisma.mail.findMany({
+      const res = await this.prisma.mail.findMany({
         where: {
           postalCode: postalCode,
         },
@@ -50,7 +52,7 @@ class MailRepository {
   ): Promise<Mail> {
     try {
       console.log("adding mail");
-      const res = await prisma.mail.create({
+      const res = await this.prisma.mail.create({
         data: {
           recepientAddressID: recepientAddressID,
           recepientName: recepientName,
@@ -74,7 +76,7 @@ class MailRepository {
   // Fetch all mail items for the given employee
   async getMailItemsByEmployeeID(employeeID: string): Promise<any[]> {
     try {
-      const mailItems = await prisma.$queryRaw<any[]>`
+      const mailItems = await this.prisma.$queryRaw<any[]>`
             SELECT 
                 m."mailID",
                 m."recepientName", 
@@ -105,7 +107,7 @@ class MailRepository {
   // Fetch all unique delivery addresses for the given employee
   async getDeliveryAddressesByEmployeeID(employeeID: string): Promise<any[]> {
     try {
-      const uniqueAddresses = await prisma.$queryRaw<any[]>`
+      const uniqueAddresses = await this.prisma.$queryRaw<any[]>`
       SELECT DISTINCT 
           a."addressNo",
           a."streetName",
@@ -131,7 +133,7 @@ class MailRepository {
 
   // Update the mail status
   updateMailStatus = async (mailID: number, newStatus: MailStatus) => {
-    return await prisma.mail.update({
+    return await this.prisma.mail.update({
       where: { mailID },
       data: { mailstatus: newStatus },
     });
@@ -141,7 +143,7 @@ class MailRepository {
     newStatus: MailStatus,
     signature: string
   ) => {
-    return await prisma.mail.update({
+    return await this.prisma.mail.update({
       where: { mailID },
       data: {
         mailstatus: newStatus,
@@ -152,7 +154,7 @@ class MailRepository {
 
   getMailCountByType = async(startDate: Date, endDate:Date)=>{
     console.log("in mail count")
-    const res = await prisma.transaction.findMany({
+    const res = await this.prisma.transaction.findMany({
       where: {
           date: {
               gte: startDate,
@@ -169,7 +171,7 @@ class MailRepository {
   }
 
   getReturnMail = async(postalCode: string)=>{
-    const res = await prisma.mail.findMany({
+    const res = await this.prisma.mail.findMany({
       where: {
         deliveryAttempts: {
           gte: 2, 
@@ -184,14 +186,16 @@ class MailRepository {
       transaction: true
     }
   }
+  
   )
+  
   console.log(res, "res res")
   return res
   }
 
   async updateRecepientAddress(addressID: number, mailID: number, postalCode: string){
     try{
-      const res = await prisma.mail.update({
+      const res = await this.prisma.mail.update({
         where: {
           mailID: mailID
         },

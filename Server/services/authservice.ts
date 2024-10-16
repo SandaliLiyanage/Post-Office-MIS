@@ -3,11 +3,6 @@ import { EmployeeRepository } from "../repositeries/employeerepository";
 import BcryptService from "./cryptservice";
 import JwtService from "./jwtservice";
 import SessionStore from "./sessionstore";
-
-const employeeRepository = EmployeeRepository.getInstance();
-const cryptService = new BcryptService();
-const session = SessionStore.getInstance();
-const jwtToken = new JwtService();
 interface LoginResponse {
   name?: string;
   postalCode?: string;
@@ -20,9 +15,19 @@ interface LoginResponse {
   employeeID?: string;
 }
 class AuthService {
+  private employeeRepository: EmployeeRepository;
+  private cryptService: BcryptService;
+  private session: SessionStore;
+  private jwtToken: JwtService;
+  constructor(employeRepository: EmployeeRepository, crypeService: BcryptService, session: SessionStore, jwtToken: JwtService) {
+    this.employeeRepository = employeRepository;
+    this.cryptService = crypeService;
+    this.session = session;
+    this.jwtToken = jwtToken;
+  }  
   async login(username: string, password: string): Promise<LoginResponse> {
     try {
-      const employee = await employeeRepository.findUserbyID(username);
+      const employee = await this.employeeRepository.findUserbyID(username);
       console.log(employee?.password);
       if (!employee?.password) {
         const loginResponse: LoginResponse = {
@@ -31,9 +36,8 @@ class AuthService {
         };
         return loginResponse;
       }
-      const hashedPassword = await cryptService.hashPassword(password);
-      console.log("hashed:", hashedPassword);
-      const isVerified = await cryptService.comparePassword(
+      const hashedPassword = await this.cryptService.hashPassword(password);
+      const isVerified = await this.cryptService.comparePassword(
         password,
         employee.password
       );
@@ -44,9 +48,9 @@ class AuthService {
         const sessionId = new Date().toISOString();
         // await session.storeSession(username)
         const role = employee.role;
-        const token = jwtToken.sign({ sessionId });
+        const token = this.jwtToken.sign({ sessionId });
         console.log(token, "hehe");
-        const user = await employeeRepository.getUserData(username);
+        const user = await this.employeeRepository.getUserData(username);
         console.log(user.employeeName);
         console.log("User:", user);
         const loginResponse: LoginResponse = {
@@ -87,7 +91,7 @@ class AuthService {
     if (!token) return res.status(401).json({ message: "No token provided" });
 
     try {
-      const decoded = jwtToken.verify(token) as { sessionId: string };
+      const decoded = this.jwtToken.verify(token) as { sessionId: string };
       console.log("authorized");
       next();
     } catch (err) {
@@ -102,8 +106,8 @@ class AuthService {
   ) {
     console.log("in set password");
     if (passwordCopy == newPassword) {
-      const hashedPassword = await cryptService.hashPassword(newPassword);
-      const response = await employeeRepository.changePassword(
+      const hashedPassword = await this.cryptService.hashPassword(newPassword);
+      const response = await this.employeeRepository.changePassword(
         employeeID,
         hashedPassword
       );

@@ -2,18 +2,23 @@ import { BundleRepository } from "../repositeries/bundlerepository";
 import { AddressRepository } from "../repositeries/addressrepository";
 import PostOfficeRepository from "../repositeries/postofficerepository";
 
-const postOfficeRepository = new PostOfficeRepository();
-const bundleRepository = new BundleRepository();
-const addressrepository = new AddressRepository();
-class BundleService {
+class MailTransferService {
+  private postOfficeRepository: PostOfficeRepository;
+  private bundleRepository: BundleRepository;
+  private addressRepository: AddressRepository;
+  constructor(postOfficeRepository: PostOfficeRepository, bundleRepository: BundleRepository, addressRepository: AddressRepository) {
+    this.postOfficeRepository = postOfficeRepository;
+    this.bundleRepository = bundleRepository;
+    this.addressRepository = addressRepository
+  }
   async bundleValidation(
     addressID: number,
     sourcePostalCode: string
   ): Promise<number | string | null> {
     console.log("in bundle validation");
-    const destPostalCode = await addressrepository.getDestPostalCode(addressID);
+    const destPostalCode = await this.addressRepository.getDestPostalCode(addressID);
     if (destPostalCode) {
-      const bundle = await bundleRepository.findBundle(
+      const bundle = await this.bundleRepository.findBundle(
         destPostalCode,
         sourcePostalCode
       );
@@ -40,7 +45,7 @@ class BundleService {
           destPostalCode,
           sourcePostalCode
         );
-        const bundleID = await bundleRepository.createBundle(
+        const bundleID = await this.bundleRepository.createBundle(
           destPostalCode,
           sourcePostalCode,
           bundleRoute
@@ -53,10 +58,10 @@ class BundleService {
   }
 
   async bundleRouteCreation(destPostalCode: string, sourcePostalCode: string) {
-    const sourceHeadOffice = await postOfficeRepository.getHeadOffice(
+    const sourceHeadOffice = await this.postOfficeRepository.getHeadOffice(
       sourcePostalCode
     );
-    const destHeadOffice = await postOfficeRepository.getHeadOffice(
+    const destHeadOffice = await this.postOfficeRepository.getHeadOffice(
       destPostalCode
     );
     let bundleRoute: string[] = [sourcePostalCode];
@@ -84,15 +89,15 @@ class BundleService {
   }
 
   async getCreatedBundles(postalCode: string) {
-    const bundles = await bundleRepository.getCreatedBundles(postalCode);
+    const bundles = await this.bundleRepository.getCreatedBundles(postalCode);
     let routeNameArray: string[] = [];
     if (bundles) {
       for (const bundle of bundles) {
-        const destPostalName = await postOfficeRepository.getPostOfficeName(
+        const destPostalName = await this.postOfficeRepository.getPostOfficeName(
           bundle.destPostalCode
         );
         for (const code of bundle.route) {
-          const postalName = await postOfficeRepository.getPostOfficeName(code);
+          const postalName = await this.postOfficeRepository.getPostOfficeName(code);
           if (postalName) {
             routeNameArray.push(`${postalName.postOfficeName}`);
           }
@@ -107,15 +112,15 @@ class BundleService {
   }
 
   async getDeliveryBundles(postalCode: string) {
-    const bundles = await bundleRepository.getDeliveryBundles(postalCode);
+    const bundles = await this.bundleRepository.getDeliveryBundles(postalCode);
     let routeNameArray: string[] = [];
     if (bundles) {
       for (const bundle of bundles) {
-        const destPostalName = await postOfficeRepository.getPostOfficeName(
+        const destPostalName = await this.postOfficeRepository.getPostOfficeName(
           bundle.destPostalCode
         );
         for (const code of bundle.route) {
-          const postalName = await postOfficeRepository.getPostOfficeName(code);
+          const postalName = await this.postOfficeRepository.getPostOfficeName(code);
           if (postalName) {
             routeNameArray.push(`${postalName.postOfficeName}`);
           }
@@ -130,9 +135,9 @@ class BundleService {
   }
 
   async updateStatus(bundleID: number) {
-    const res = await bundleRepository.updateBundle(bundleID);
+    const res = await this.bundleRepository.updateBundle(bundleID);
     return res;
   }
 }
 
-export default BundleService;
+export default MailTransferService;

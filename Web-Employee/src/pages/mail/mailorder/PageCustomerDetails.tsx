@@ -29,16 +29,8 @@ import {Label} from "../../../components/ui/label"
 import { useToast } from "../../../hooks/use-toast";
 import { Toaster } from "../../../components/ui/toaster";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import Addaddress from "./addaddress";
+
+import Addaddress from "./PageAddAddress";
 const formSchema = z.object({
   customerName: z.string().min(5, {}),
   address: z.string(),
@@ -104,17 +96,21 @@ export default function MailOrder() {
   useEffect(()=>{
     const checkforOngoingTransaction = ()=>{
       const customer = localStorage.getItem("customerDetails");
-      if(customer != null){
+      const confirmedMailArray = localStorage.getItem("confirmedMailArray");
+      
+      if(customer != null && confirmedMailArray == null){
         console.log(customer)
         navigate("/dashboard/maildetails" );
 
       }
+      if(customer ==null ){
+        localStorage.removeItem("confirmedMailArray");
+        localStorage.removeItem("mailDetailsArray");
+        localStorage.removeItem("mail details");
+      }
     }
     checkforOngoingTransaction()
   })
-  const handleAddAddress= async()=>{
-
-  }
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(addressID, " address id in onSubmit")
@@ -132,24 +128,8 @@ export default function MailOrder() {
     }else{
       toast({
       description: "Address not verified",
-      action:  <div><Dialog>
-      <DialogTrigger asChild>
-      <Button className="bg-white p-3 text-slate-600 border border-slate-500 hover:bg-slate-300" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Add New Address</DialogTitle>
-        </DialogHeader>
-        <DialogDescription>
-
-        </DialogDescription>
-          <Addaddress/>
-        <DialogFooter>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-
-   
+      action:  <div>
+      <Button className="p-3 text-white bg-slate-700 hover:bg-slate-300" onClick={()=>navigate("/dashboard/addAddress") }size={"md"}>Add address</Button>
       </div>,
       })
     }

@@ -2,6 +2,7 @@ import { Employee, Role, Feedback } from "@prisma/client";
 import { PrismaSingleton } from "./prismasingleton";
 
 interface User {
+  employeeID: string,
   postOfficeName: string;
   employeeName: string;
   postalCode: string;
@@ -27,7 +28,7 @@ class EmployeeRepository {
       console.log(userName, "hee");
       const res = await this.prisma.$queryRaw<
         User[]
-      >`SELECT e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude", e."employeeID"
+      >`SELECT e."employeeID",  e."employeeName",  e."role", e."postalCode", p."postOfficeName", e."email", p."latitude", p."longitude", e."employeeID"
             FROM "Employee" AS e 
             JOIN 
             "PostOffice" AS p 
@@ -49,7 +50,6 @@ class EmployeeRepository {
         },
       });
 
-      console.log("employee queried", res);
       return res;
     } catch (error) {
       console.error("Error getting password from DB:", error);

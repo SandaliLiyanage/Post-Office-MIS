@@ -1,11 +1,14 @@
 import {OTP, PrismaClient} from "@prisma/client";
-const prisma = new PrismaClient();
-
+import { PrismaSingleton } from "./prismasingleton";
 class OTPRepository{
+    private prisma = PrismaSingleton.getInstance();
+    constructor(){
+        this.prisma = PrismaSingleton.getInstance();
+    }
     async insertOTP(employeeID: string, otp: string){
         const currentTime = new Date()
         try{
-            const res = await prisma.oTP.create({
+            const res = await this.prisma.oTP.create({
                 data:{
                     employeeID: employeeID,
                     OTP: otp,
@@ -22,7 +25,7 @@ class OTPRepository{
     console.log("heeh in getOTP")
     console.log(employeeID, time)
     try{
-    const res = await prisma.oTP.findFirst({
+    const res = await this.prisma.oTP.findFirst({
         where: {
             employeeID: employeeID,
             createdAt: {

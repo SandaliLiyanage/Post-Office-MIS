@@ -12,7 +12,8 @@ import { EmployeeRepository } from "../repositeries/employeerepository";
 import BcryptService  from "../services/cryptservice";
 import JwtService from "../services/jwtservice";
 import SessionStore  from "../services/sessionstore";
-
+import {getLeaves} from "../controllers/employeecontroller";
+import {UpdateStatus} from "../controllers/employeecontroller";
 const employeRepository = new EmployeeRepository();
 const cryptService = new BcryptService();
 const session = new SessionStore();
@@ -28,4 +29,6 @@ router.get("/user", getEmployeeDetails);
 router.post("/update", UpdateEmployee);
 router.post("/delete", DeleteEmployee);
 router.post("/feedback", SubmitFeedback);
+router.post("/getLeaves", getLeaves);
+router.post("/updateStatus", UpdateStatus)
 export default router;

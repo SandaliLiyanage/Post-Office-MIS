@@ -23,6 +23,8 @@ import Unauthorized from "./pages/authentication/PageUnauthorized";
 import Retaddress from "./pages/mail/mails/PageReturnAddress";
 import PageReceipt from "./pages/mail/mailorder/PageReceipt";
 import PageDashboard from "./pages/PageDashboard";
+import PageViewLeaves from "./pages/employees/PageViewLeaves";
+import LeaveRequest from "./pages/employees/PageLeaveRequests";
 function App() {
   
   const {user} = useUser()
@@ -47,9 +49,10 @@ function App() {
           <MailDetails /></ProtectedRoute>}/>
           <Route path="employeerecords" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
             <Emp /></ProtectedRoute>}/>
-          <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMAN','SUPERVISOR']} userRole={role}>
           <Bundle /></ProtectedRoute>}/>
-          <Route path="viewleaverequests" element={<></>}></Route>
+          <Route path="leaverequests" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <LeaveRequest /></ProtectedRoute>}/>
           <Route path="revenuereports"element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
           <RevenueReports /></ProtectedRoute>}/>
           <Route path="employeeregistrations" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}>
@@ -72,7 +75,7 @@ function App() {
           <Addaddress/></ProtectedRoute>}/>
           <Route path = "receipt" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <PageReceipt/></ProtectedRoute>}/>
           <Route path = "addAddress" element={<ProtectedRoute allowedRoles={['RECEPTIONIST']} userRole={role}> <Addaddress/></ProtectedRoute>}/>
-          
+          <Route path="veiwleaves" element={<ProtectedRoute allowedRoles={['POSTMASTER']} userRole={role}><PageViewLeaves/></ProtectedRoute>}/>
         </Route>}
         <Route path="not-authorized" element={<Unauthorized/>}/>
 

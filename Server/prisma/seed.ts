@@ -1098,20 +1098,20 @@ async function main() {
     ],
   });
 
-  // // Seed Leaves
-  // await prisma.leave.createMany({
-  //   data: [
-  //     {
-  //       employeeID: "0003",
-  //       leaveType: LeaveType.FULL_DAY,
-  //       startDate: new Date("2024-09-10"),
-  //       endDate: new Date("2024-09-11"),
-  //       description: "Annual Leave",
-  //       status: "Pending",
-  //       RequestStatus: RequestStatus.PENDING,
-  //     },
-  //   ],
-  // });
+  // Seed Leaves
+  await prisma.leave.createMany({
+    data: [
+      {
+        employeeID: "0003",
+        leaveType: LeaveType.FULL_DAY,
+        startDate: new Date("2024-09-10"),
+        endDate: new Date("2024-09-11"),
+        description: "Annual Leave",
+        RequestStatus: RequestStatus.PENDING,
+        requstedDate: new Date("2024-09-03"),
+      },
+    ],
+  });
 
   console.log("Database has been seeded successfully!");
 }

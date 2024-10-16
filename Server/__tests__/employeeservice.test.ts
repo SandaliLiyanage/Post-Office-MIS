@@ -1,15 +1,17 @@
-import EmployeeService from '../services/employeeservice';
+import EmployeeManagementService from '../services/employeemanagementservice';
 import { EmployeeRepository } from '../repositeries/employeerepository';
+import LeaveRepository from '../repositeries/leaverepository';
 
 jest.mock('../../repositeries/employeerepository');  // Mock the EmployeeRepository
 
 describe('EmployeeService', () => {
-    let employeeService: EmployeeService;
+    let employeeService: EmployeeManagementService;
     let employeeRepository: jest.Mocked<EmployeeRepository>;
-
+    let leaveRepository: jest.Mocked<LeaveRepository>;
     beforeEach(() => {
         employeeRepository = new EmployeeRepository() as jest.Mocked<EmployeeRepository>;
-        employeeService = new EmployeeService(employeeRepository);
+        leaveRepository = new LeaveRepository() as jest.Mocked<LeaveRepository>;
+        employeeService = new EmployeeManagementService(employeeRepository, leaveRepository);
     });
 
     it('should return true if employee exists', async () => {

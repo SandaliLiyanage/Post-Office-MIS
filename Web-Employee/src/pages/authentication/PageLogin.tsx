@@ -19,15 +19,7 @@ import { useUser } from './usercontext';
 import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
 import logo from "../../assets/logo1.jpg"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
+
 
 
 const formSchema = z.object({
@@ -60,6 +52,7 @@ export default function Login() {
       console.log("Data submitted successfully", user.data)
       saveUser(
         {
+          employeeID: user.data.employeeID,
           name: user.data.name,
           role: user.data.role,
           token: user.data.token,

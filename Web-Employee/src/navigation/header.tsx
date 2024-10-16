@@ -6,21 +6,18 @@ import {
 } from "../components/ui/popover"
 import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom"
-import { User, Bell } from 'lucide-react';
-import {useEffect, useState} from 'react';
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { User} from 'lucide-react';
+import { useState} from 'react';
+
 import {
   Sheet,
   SheetClose,
   SheetContent,
-  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import logo from '../assets/logo2.png';
 
 export default function Nav() {
 

@@ -74,6 +74,16 @@ const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? cl
                           handleClick('addaddress')
                           navigate("/dashboard/addAddress")
                         } }>Add New Address</NavButton>
+const ViewLeaves = <NavButton className={`${activeButton === 'veiwleaves'? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('veiwleaves')
+                          navigate("/dashboard/veiwleaves")
+                        } }>Approve Leaves</NavButton>
+const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'? clickedColour : normalColour}`} 
+                        onClick={() => {
+                          handleClick('leaverequests')
+                          navigate("/dashboard/leaverequests")
+                        } }>Approve Leaves</NavButton>
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full shadow-lg">
@@ -86,7 +96,7 @@ const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? cl
             {EmployeeRegistrations}
             {RevenueReports}
             {PostmanAssignments}
-            {MailBundles}
+            {ViewLeaves}
           </>
         )}
         {user?.role === 'SUPERVISOR' && (
@@ -95,7 +105,7 @@ const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? cl
             {MailBundles}
             {PostmanAssignments}
             {RevenueReports}
-            {/* {MailOrder} */}
+            {LeaveRequests}
           </>
         )}
         {user?.role === 'RECEPTIONIST' && (
@@ -104,6 +114,7 @@ const AddNewAddress = <NavButton className={`${activeButton === 'addAddress'? cl
             {MailOrder}
             {FailedToDeliver}
             {AddNewAddress}
+            {LeaveRequests}
           </>
         )}
       </nav>

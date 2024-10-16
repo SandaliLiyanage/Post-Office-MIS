@@ -134,8 +134,8 @@ model Leave{
   endDate DateTime
   employee Employee @relation(fields: [employeeID], references: [employeeID])
   description String
-  status String
   RequestStatus RequestStatus @default(PENDING)
+  requstedDate DateTime
 
 }
 

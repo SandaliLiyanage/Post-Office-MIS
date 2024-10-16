@@ -10,10 +10,10 @@ export default function Unauthorized() {
           You don't have permission to view this page. Please login with an authorized account or return to the home page.
         </p>
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/dashboard/viewMail')}
           className="bg-slate-700 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Go to Login
+          Go Back
         </button>
       </div>
     </div>

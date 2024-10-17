@@ -1,5 +1,3 @@
-// prettier-ignore
-
 import {
   PrismaClient,
   Role,
@@ -15,6 +13,7 @@ import BCryptService from "../services/cryptservice";
 
 const prisma = new PrismaClient();
 const cryptservice = new BCryptService();
+
 async function main() {
   // Clear existing data
   await prisma.mail.deleteMany({});
@@ -27,6 +26,7 @@ async function main() {
   await prisma.employee.deleteMany({});
   await prisma.postOffice.deleteMany({});
   await prisma.oTP.deleteMany({});
+
 
   // Seed Post Offices
   await prisma.postOffice.createMany({
@@ -56,8 +56,8 @@ async function main() {
       { postalCode: "80650", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Ahangama",      headOfficeID: "80000", latitude: 5.9722, longitude: 80.3680 },
     ],
   });
+ 
   
-
   // Seed Employees
   const employeeCreate = async () => {
     const data = [
@@ -79,7 +79,6 @@ async function main() {
       { employeeID: "0016", employeeName: "Saman",       email: "Saman@gmail.com",      telephone: "0712345655", role: Role.RECEPTIONIST, postalCode: "20850", password: "password16" },
     ];
     
-    
     const hashedData = await Promise.all(
       data.map(async (employee) => {
         const hashedPassword = await cryptservice.hashPassword(
@@ -97,7 +96,8 @@ async function main() {
   };
   await employeeCreate();
 
-  // // Seed Areas
+
+  // Seed Areas
   await prisma.area.createMany({
     data: [
       { areaID: 1, areaName: "Kaduwela-South", postalCode: "10640", employeeID: "0010" },
@@ -108,7 +108,8 @@ async function main() {
     ],
   });
 
-  // // Seed Addresses
+
+  // Seed Addresses
   await prisma.address.createMany({
     data: [
       { addressID: 26, postalCode: "10640", addressNo: "123", streetName: "Jaya St", Locality: "Kaduwela", latitude: 6.932900155314793, longitude: 79.98257295440071, areaID: 1, verified: true },
@@ -139,10 +140,14 @@ async function main() {
       { addressID: 51, postalCode: "80650", addressNo: "10", streetName: "Matara Rd", Locality: "Ahangama", latitude: 6.0329, longitude: 80.3753, verified: true },
       { addressID: 52, postalCode: "10640", addressNo: "10", streetName: "Temple Rd", Locality: "Kaduwela", latitude: 6.945, longitude: 78.98390472475725, areaID: 2, verified: true },
       { addressID: 53, postalCode: "10640", addressNo: "68/5", streetName: "Temple Rd", Locality: "Kaduwela", latitude: 6.8646, longitude: 34.98390472475725, areaID: 3, verified: true },
-      { addressID: 54, postalCode: "10640", addressNo: "81/7", streetName: "Flower Rd", Locality: "Kaduwela", latitude: 6.9359585237643095, longitude: 56.98390472475725, areaID: 3, verified: true }
+      { addressID: 54, postalCode: "10640", addressNo: "81/7", streetName: "Flower Rd", Locality: "Kaduwela", latitude: 6.9359585237643095, longitude: 56.98390472475725, areaID: 3, verified: true },
+      { addressID: 55, postalCode: "10640", addressNo: "123", streetName: "Jaya St", Locality: "Kaduwela", latitude: 6.932900155314793, longitude: 79.98257295440071, areaID: 3, verified: false },
+      { addressID: 56, postalCode: "10640", addressNo: "124", streetName: "Wijaya St", Locality: "Kaduwela", latitude: 6.931829673826147, longitude: 79.98283733773043, areaID: 3, verified: false },
+      { addressID: 57, postalCode: "10640", addressNo: "123", streetName: "Jaya St", Locality: "Kaduwela", latitude: 6.932900155314793, longitude: 79.98257295440071, areaID: 3, verified: false },
+      { addressID: 58, postalCode: "10640", addressNo: "124", streetName: "Wijaya St", Locality: "Kaduwela", latitude: 6.931829673826147, longitude: 79.98283733773043, areaID: 3, verified: false },
     ]
-    
   });
+
 
   // Seed Transactions
   await prisma.transaction.createMany({
@@ -151,6 +156,7 @@ async function main() {
       { transactionID: 4, customerName: "Alice Johnson", customerTelephone: "555123456", customerAddressID: 36, date: "2024-08-03T07:08:57.492Z", amount: 10.5,},
     ],
   });
+
 
   // Seed Mail
   await prisma.mail.createMany({
@@ -186,6 +192,7 @@ async function main() {
       },
     ],
   });
+
 
   // Seed Leaves
   await prisma.leave.createMany({

@@ -83,7 +83,7 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
                         onClick={() => {
                           handleClick('leaverequests')
                           navigate("/dashboard/leaverequests")
-                        } }>Approve Leaves</NavButton>
+                        } }>Request Leaves</NavButton>
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full shadow-lg">

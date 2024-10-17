@@ -51,7 +51,7 @@ function App() {
             <Emp /></ProtectedRoute>}/>
           <Route path="mailbundles" element={<ProtectedRoute allowedRoles={['POSTMAN','SUPERVISOR']} userRole={role}>
           <Bundle /></ProtectedRoute>}/>
-          <Route path="leaverequests" element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
+          <Route path="leaverequests" element={<ProtectedRoute allowedRoles={['RECEPTIONIST','SUPERVISOR']} userRole={role}>
           <LeaveRequest /></ProtectedRoute>}/>
           <Route path="revenuereports"element={<ProtectedRoute allowedRoles={['POSTMASTER','SUPERVISOR']} userRole={role}>
           <RevenueReports /></ProtectedRoute>}/>

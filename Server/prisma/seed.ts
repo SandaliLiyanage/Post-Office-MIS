@@ -7,7 +7,7 @@ import {
   MailStatus,
   MailType,
   BundleStatus,
-  OTP
+  OTP,
 } from "@prisma/client";
 import BCryptService from "../services/cryptservice";
 
@@ -21,13 +21,13 @@ async function main() {
   await prisma.address.deleteMany({});
   await prisma.area.deleteMany({});
   await prisma.leave.deleteMany({});
-  await prisma.oTP.deleteMany({})
+  await prisma.oTP.deleteMany({});
   await prisma.employee.deleteMany({});
   await prisma.postOffice.deleteMany({});
-  await prisma.oTP.deleteMany({})
+  await prisma.oTP.deleteMany({});
   // Seed Post Offices
   await prisma.postOffice.createMany({
-    data : [
+    data: [
       {
         postalCode: "00100",
         postOfficeCategory: "HEAD_OFFICE",
@@ -58,7 +58,7 @@ async function main() {
         postOfficeName: "Galle",
         headOfficeID: "80000",
         latitude: 6.0535,
-        longitude: 80.2210,
+        longitude: 80.221,
       },
       {
         postalCode: "80520",
@@ -66,7 +66,7 @@ async function main() {
         postOfficeName: "Ahangama",
         headOfficeID: "80000",
         latitude: 5.9722,
-        longitude: 80.3680,
+        longitude: 80.368,
       },
       {
         postalCode: "11500",
@@ -195,7 +195,7 @@ async function main() {
         postOfficeName: "Ginthota",
         headOfficeID: "80000",
         latitude: 6.0387,
-        longitude: 80.2360,
+        longitude: 80.236,
       },
       {
         postalCode: "80142",
@@ -211,10 +211,85 @@ async function main() {
         postOfficeName: "Ahangama",
         headOfficeID: "80000",
         latitude: 5.9722,
-        longitude: 80.3680,
-      }
-    ]
-    
+        longitude: 80.368,
+      },
+    ],
+  });
+
+  // Seed Bundles
+  await prisma.bundle.createMany({
+    data: [
+      {
+        bundleID: 1,
+        destPostalCode: "10640",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "11000", "30600", "10640"],
+      },
+      {
+        bundleID: 2,
+        destPostalCode: "10640",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "30600", "10640"],
+      },
+      {
+        bundleID: 3,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "30600", "10250"],
+      },
+      {
+        bundleID: 4,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "30600", "10250"],
+      },
+      {
+        bundleID: 5,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "11500", "10250"],
+      },
+      {
+        bundleID: 6,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "10250"],
+      },
+      {
+        bundleID: 7,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "30600", "10250"],
+      },
+      {
+        bundleID: 8,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "10250"],
+      },
+      {
+        bundleID: 9,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.CREATED,
+        route: ["10640", "11500", "30600", "10250"],
+      },
+      {
+        bundleID: 10,
+        destPostalCode: "10250",
+        currentPostCode: "10640",
+        bundleStatus: BundleStatus.ARRIVED,
+        route: ["00100", "10640", "30600", "10250"],
+      },
+    ],
   });
   await prisma.transaction.createMany({
     data: [
@@ -306,7 +381,7 @@ async function main() {
   });
 
   // // Seed Employees
-  const employeeCreate = async()=>{
+  const employeeCreate = async () => {
     const data = [
       {
         employeeID: "0001",
@@ -452,23 +527,24 @@ async function main() {
         postalCode: "20850",
         password: "password16",
       },
-    ]
+    ];
     const hashedData = await Promise.all(
-    data.map(async (employee) => {
-      const hashedPassword = await cryptservice.hashPassword(employee.password); // Call your hashing function
-      return {
-        ...employee,
-        password: hashedPassword, // Replace the plain text password with the hashed one
-      };
-      
-    }))
+      data.map(async (employee) => {
+        const hashedPassword = await cryptservice.hashPassword(
+          employee.password
+        ); // Call your hashing function
+        return {
+          ...employee,
+          password: hashedPassword, // Replace the plain text password with the hashed one
+        };
+      })
+    );
     await prisma.employee.createMany({
-      data: hashedData
+      data: hashedData,
     });
-  
-  }
+  };
   await employeeCreate();
- 
+
   // // Seed Areas
   await prisma.area.createMany({
     data: [
@@ -502,9 +578,7 @@ async function main() {
         postalCode: "00100",
         employeeID: "0014",
       },
-      
-    ]
-    
+    ],
   });
 
   // // Seed Addresses
@@ -519,8 +593,7 @@ async function main() {
         latitude: 6.932900155314793,
         longitude: 79.98257295440071,
         areaID: 1,
-        verified: true
-        
+        verified: true,
       },
       {
         addressID: 27,
@@ -531,8 +604,7 @@ async function main() {
         latitude: 6.931829673826147,
         longitude: 79.98283733773043,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 28,
@@ -543,8 +615,7 @@ async function main() {
         latitude: 6.926691701903446,
         longitude: 79.98007013891583,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 29,
@@ -555,8 +626,7 @@ async function main() {
         latitude: 6.921379683015376,
         longitude: 79.9748551127648,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 30,
@@ -567,8 +637,7 @@ async function main() {
         latitude: 6.92625283379399,
         longitude: 79.97224505313936,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 31,
@@ -579,8 +648,7 @@ async function main() {
         latitude: 6.930090869184906,
         longitude: 79.97488263874345,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 32,
@@ -591,8 +659,7 @@ async function main() {
         latitude: 6.936511594394954,
         longitude: 79.97497555414972,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 33,
@@ -603,8 +670,7 @@ async function main() {
         latitude: 6.936982597575644,
         longitude: 79.97664553759417,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 34,
@@ -615,8 +681,7 @@ async function main() {
         latitude: 6.936934494539469,
         longitude: 79.98072335547656,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 35,
@@ -627,8 +692,7 @@ async function main() {
         latitude: 6.9359585237643095,
         longitude: 79.98390472475725,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 36,
@@ -639,8 +703,7 @@ async function main() {
         latitude: 6.925986987017987,
         longitude: 79.97453528966999,
         areaID: 1,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 37,
@@ -651,8 +714,7 @@ async function main() {
         latitude: 40.7128,
         longitude: -74.006,
         areaID: 5,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 38,
@@ -662,8 +724,7 @@ async function main() {
         Locality: "Colombo6",
         latitude: 5.993564,
         longitude: 80.376049,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 39,
@@ -671,11 +732,10 @@ async function main() {
         addressNo: "123",
         streetName: "Bauddhaloka Rd",
         Locality: "Colombo5",
-        latitude: 5.997070,
+        latitude: 5.99707,
         longitude: 80.377324,
         areaID: 5,
-        verified: true
-
+        verified: true,
       },
       // Newly added addresses without areaID
       {
@@ -686,8 +746,7 @@ async function main() {
         Locality: "Colombo",
         latitude: 6.9322,
         longitude: 79.8572,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 41,
@@ -697,8 +756,7 @@ async function main() {
         Locality: "Kandy",
         latitude: 7.2931,
         longitude: 80.6413,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 42,
@@ -708,8 +766,7 @@ async function main() {
         Locality: "Galle",
         latitude: 6.0535,
         longitude: 80.2105,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 43,
@@ -719,8 +776,7 @@ async function main() {
         Locality: "Akurana",
         latitude: 7.3854,
         longitude: 80.5468,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 44,
@@ -730,8 +786,7 @@ async function main() {
         Locality: "Peradeniya",
         latitude: 7.2567,
         longitude: 80.5946,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 45,
@@ -741,8 +796,7 @@ async function main() {
         Locality: "Akurana",
         latitude: 7.3858,
         longitude: 80.5472,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 46,
@@ -752,8 +806,7 @@ async function main() {
         Locality: "Mount Lavinia",
         latitude: 6.8292,
         longitude: 79.8654,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 47,
@@ -763,8 +816,7 @@ async function main() {
         Locality: "Ambatale",
         latitude: 6.9396,
         longitude: 79.9435,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 48,
@@ -774,8 +826,7 @@ async function main() {
         Locality: "Battaramulla",
         latitude: 6.9061,
         longitude: 79.9393,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 49,
@@ -785,8 +836,7 @@ async function main() {
         Locality: "Ginthota",
         latitude: 6.0712,
         longitude: 80.2016,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 50,
@@ -796,8 +846,7 @@ async function main() {
         Locality: "Opatha",
         latitude: 5.9937,
         longitude: 80.3762,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 51,
@@ -807,8 +856,7 @@ async function main() {
         Locality: "Ahangama",
         latitude: 6.0329,
         longitude: 80.3753,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 52,
@@ -819,8 +867,7 @@ async function main() {
         latitude: 6.945,
         longitude: 78.98390472475725,
         areaID: 2,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 53,
@@ -831,8 +878,7 @@ async function main() {
         latitude: 6.8646,
         longitude: 34.98390472475725,
         areaID: 3,
-        verified: true
-
+        verified: true,
       },
       {
         addressID: 54,
@@ -843,10 +889,9 @@ async function main() {
         latitude: 6.9359585237643095,
         longitude: 56.98390472475725,
         areaID: 3,
-        verified: true
-
+        verified: true,
       },
-    ]
+    ],
   });
 
   // Seed Transactions
@@ -861,16 +906,15 @@ async function main() {
         amount: 10.5,
       },
 
-        {
-          transactionID: 4,
-          customerName: "Alice Johnson",
-          customerTelephone: "555123456",
-          customerAddressID: 36,
-          date: "2024-08-03T07:08:57.492Z",
-          amount: 10.5,
-        },
+      {
+        transactionID: 4,
+        customerName: "Alice Johnson",
+        customerTelephone: "555123456",
+        customerAddressID: 36,
+        date: "2024-08-03T07:08:57.492Z",
+        amount: 10.5,
+      },
     ],
-    
   });
   // // Seed Mail
   await prisma.mail.createMany({
@@ -883,7 +927,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 0.5,
-        price: 65.00,
+        price: 65.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -894,7 +938,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 13,
-        price: 110.00,
+        price: 110.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -916,7 +960,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 1.5,
-        price: 7.00,
+        price: 7.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -927,7 +971,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 200,
-        price: 120.00,
+        price: 120.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -938,7 +982,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 100,
-        price: 45.00,
+        price: 45.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -949,7 +993,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 1.1,
-        price: 6.50,
+        price: 6.5,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -960,7 +1004,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 78,
-        price: 65.00,
+        price: 65.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -970,8 +1014,8 @@ async function main() {
         postalCode: "10640",
         transactionID: 4,
         mailType: MailType.COURIER,
-        weight: 92.00,
-        price: 5.20,
+        weight: 92.0,
+        price: 5.2,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -982,7 +1026,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.COURIER,
         weight: 200,
-        price: 92.00,
+        price: 92.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -993,7 +1037,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 56,
-        price: 65.00,
+        price: 65.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1004,7 +1048,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.REGISTERED_MAIL,
         weight: 40,
-        price: 57.00,
+        price: 57.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1015,7 +1059,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 34,
-        price: 82.00,
+        price: 82.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1026,7 +1070,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 68,
-        price: 45.00,
+        price: 45.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1037,7 +1081,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 20,
-        price: 30.00,
+        price: 30.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1048,7 +1092,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 20,
-        price: 30.00,
+        price: 30.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1059,7 +1103,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.COURIER,
         weight: 2000,
-        price: 400.00,
+        price: 400.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1070,7 +1114,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 80,
-        price: 100.00,
+        price: 100.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1081,7 +1125,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.REGISTERED_MAIL,
         weight: 82,
-        price: 35.00,
+        price: 35.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
       {
@@ -1092,7 +1136,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.REGISTERED_MAIL,
         weight: 50,
-        price: 100.00,
+        price: 100.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -1102,7 +1146,7 @@ async function main() {
         postalCode: "10640",
         transactionID: 4,
         mailType: MailType.REGISTERED_MAIL,
-        weight: 300.00,
+        weight: 300.0,
         price: 1000.0,
         mailstatus: MailStatus.IN_TRANSIT,
       },
@@ -1125,7 +1169,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.COURIER,
         weight: 2000,
-        price: 1000.00,
+        price: 1000.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -1136,7 +1180,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.COURIER,
         weight: 800,
-        price: 950.00,
+        price: 950.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -1147,7 +1191,7 @@ async function main() {
         transactionID: 4,
         mailType: MailType.NORMAL_MAIL,
         weight: 45,
-        price: 120.00,
+        price: 120.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {
@@ -1158,7 +1202,7 @@ async function main() {
         transactionID: 3,
         mailType: MailType.NORMAL_MAIL,
         weight: 1.2,
-        price: 6.00,
+        price: 6.0,
         mailstatus: MailStatus.DELIVERED,
       },
       {

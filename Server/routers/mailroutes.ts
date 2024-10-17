@@ -9,24 +9,32 @@ import {
 import AuthService from "../services/authservice";
 import { Mails } from "../controllers/mailcontroller";
 import { getMailItems } from "../controllers/mailcontroller";
-import {Address} from "../controllers/addresscontroller";
+import { Address } from "../controllers/addresscontroller";
 import { MailDetails } from "../controllers/mailcontroller";
 import { ReportData } from "../controllers/reportcontroller";
 import { getAddresses } from "../controllers/mailcontroller";
-import {ReturnMail} from "../controllers/mailcontroller";
-import {ChangeAddress} from "../controllers/mailcontroller"
+import { getTrackingDetails } from "../controllers/mailcontroller";
+import { estimateDeliveryTime } from "../controllers/mailcontroller";
+import { ReturnMail } from "../controllers/mailcontroller";
+import { ChangeAddress } from "../controllers/mailcontroller";
 import { EmployeeRepository } from "../repositeries/employeerepository";
-import BcryptService  from "../services/cryptservice";
+import BcryptService from "../services/cryptservice";
 import JwtService from "../services/jwtservice";
-import SessionStore  from "../services/sessionstore";
+import SessionStore from "../services/sessionstore";
 
 const employeRepository = new EmployeeRepository();
 const cryptService = new BcryptService();
 const session = new SessionStore();
 const jwtToken = new JwtService();
-const authService = new AuthService(employeRepository, cryptService, session, jwtToken);
+const authService = new AuthService(
+  employeRepository,
+  cryptService,
+  session,
+  jwtToken
+);
 
 const router = Router();
+//const mailController = new MailController();
 
 // router.use(authService.authorize);
 router.post("/calculatePrice", CalculatePrice);
@@ -40,5 +48,7 @@ router.post("/reportData", ReportData);
 router.post("/addresssearch", Address);
 router.post("/mailDetails", MailDetails);
 router.post("/returnmail", ReturnMail);
-router.post("/changeaddress", ChangeAddress)
+router.post("/changeaddress", ChangeAddress);
+router.post("/track", getTrackingDetails);
+router.post("/estimate-delivery-time", estimateDeliveryTime);
 export default router;

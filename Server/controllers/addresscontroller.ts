@@ -45,6 +45,7 @@ export const getUnverifiedAddresses = async (req: Request, res: Response) => {
     );
 
     return res.status(200).json(addresses); // 200 status code for OK
+    console.log("Unverified addresses fetched:", addresses);
   } catch (error) {
     console.error("Error fetching delivery addresses:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error

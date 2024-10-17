@@ -106,7 +106,8 @@ class AddressRepository {
   async getUnverifiedAddresses(employeeID: string): Promise<any[]> {
     try {
       const uniqueAddresses = await this.prisma.$queryRaw<any[]>`
-        SELECT 
+        SELECT
+            a."addressID", 
             a."addressNo",
             a."streetName",
             a."Locality",

@@ -12,10 +12,11 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { IP } from "../../../config";
 
 interface Address {
-  id: string;
-  street: string;
-  city: string;
-  postalCode: string;
+  addressID: string;
+  addressNo: string;
+  streetName: string;
+  areaName: string;
+  Locality: string;
 }
 
 const AddAddressScreen = () => {
@@ -43,8 +44,9 @@ const AddAddressScreen = () => {
   const renderItem = ({ item }: { item: Address }) => (
     <View style={styles.addressItem}>
       <View style={styles.addressDetails}>
-        <Text>
-          {item.street}, {item.city}, {item.postalCode}
+        <Text style={styles.addressID}>Address ID: {item.addressID}</Text>
+        <Text style={styles.address}>
+          {item.addressNo}, {item.streetName}, {item.areaName}, {item.Locality}
         </Text>
       </View>
       <TouchableOpacity
@@ -66,7 +68,7 @@ const AddAddressScreen = () => {
       {addresses.length > 0 ? (
         <FlatList
           data={addresses}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.addressID}
           renderItem={renderItem}
         />
       ) : (
@@ -83,30 +85,52 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
-    marginBottom: 16,
+    color: "#fff",
+    marginTop: 15,
+    marginBottom: 10,
+    backgroundColor: "#C60024EF",
+    padding: 8,
+    borderRadius: 5,
   },
   addressItem: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    padding: 14,
+    marginBottom: 10,
+    backgroundColor: "#F2F2F2",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    position: "relative",
   },
   addressDetails: {
     flex: 1,
   },
   addButton: {
     backgroundColor: "#007bff",
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 4,
+    paddingVertical: 7,
+    paddingHorizontal: 15,
+    borderRadius: 6,
   },
   addButtonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 16,
+  },
+  addressID: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  address: {
+    fontSize: 16,
+    color: "gray",
+    marginTop: 4,
   },
 });
 

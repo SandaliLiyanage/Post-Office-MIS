@@ -13,7 +13,11 @@ const addressRepository = new AddressRepository();
 const transactionRepository = new TransactionRepository();
 const mailRepository = new MailRepository();
 const postOfficeRepository = new PostOfficeRepository();
-const bundleservice = new MailTransferService(postOfficeRepository, bundleRepository, addressRepository);
+const bundleservice = new MailTransferService(
+  postOfficeRepository,
+  bundleRepository,
+  addressRepository
+);
 const mailService = new MailManagementService(mailRepository, bundleservice);
 
 const CalculatePrice = async (req: Request, res: Response) => {
@@ -24,18 +28,16 @@ const CalculatePrice = async (req: Request, res: Response) => {
 };
 
 const ChangeAddress = async (req: Request, res: Response) => {
-  console.log("in mail controller", req)
-  const {addressID, mailID , postalCode} = req.body
-  const address = Number(addressID)
-  const mail = Number(mailID)
-  console.log(mail, address)
-  console.log(mail, addressID)
+  console.log("in mail controller", req);
+  const { addressID, mailID, postalCode } = req.body;
+  const address = Number(addressID);
+  const mail = Number(mailID);
+  console.log(mail, address);
+  console.log(mail, addressID);
   const result = await mailService.changeAddress(address, mail, postalCode);
-  console.log(result)
+  console.log(result);
   return res.status(200).json(result);
-
-
-}
+};
 
 const MailDetails = async (req: Request, res: Response) => {
   console.log("Request received in mail details", req.body);
@@ -61,20 +63,20 @@ const MailDetails = async (req: Request, res: Response) => {
     postalCode
   );
   console.log(result, "mail list");
-  return res.status(200).json({result, total: transaction.amount} );
+  return res.status(200).json({ result, total: transaction.amount });
 };
 
 const Mails = async (req: Request, res: Response) => {
   console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
-  console.log(postalCode)
+  console.log(postalCode);
   const result = await mailRepository.getMail(postalCode);
   return res.status(200).json(result);
 };
 const ReturnMail = async (req: Request, res: Response) => {
   console.log("Request received in mail", req.body);
   const { postalCode } = req.body;
-  console.log(postalCode)
+  console.log(postalCode);
   const result = await mailService.getReturnMail(postalCode);
   return res.status(200).json(result);
 };
@@ -190,12 +192,12 @@ export const getAddresses = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
     }
 
-    // Fetch mail details from the repository
-    const mailItems = await mailRepository.getDeliveryAddressesByEmployeeID(
+    // Fetch addresses from the repository
+    const addresses = await mailRepository.getDeliveryAddressesByEmployeeID(
       employeeID
     );
 
-    return res.status(200).json(mailItems); // 200 status code for OK
+    return res.status(200).json(addresses); // 200 status code for OK
   } catch (error) {
     console.error("Error fetching delivery addresses:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error
@@ -226,4 +228,4 @@ export const updateMailStatus = async (req: Request, res: Response) => {
   }
 };
 
-export { CalculatePrice, Mails, MailDetails,ReturnMail, ChangeAddress };
+export { CalculatePrice, Mails, MailDetails, ReturnMail, ChangeAddress };

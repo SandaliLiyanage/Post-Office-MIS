@@ -14,7 +14,7 @@ import { MailDetails } from "../controllers/mailcontroller";
 import { ReportData } from "../controllers/reportcontroller";
 import { getAddresses } from "../controllers/mailcontroller";
 import { getTrackingDetails } from "../controllers/mailcontroller";
-import { MailController } from "../controllers/mailcontroller";
+import { estimateDeliveryTime } from "../controllers/mailcontroller";
 import { ReturnMail } from "../controllers/mailcontroller";
 import { ChangeAddress } from "../controllers/mailcontroller";
 import { EmployeeRepository } from "../repositeries/employeerepository";
@@ -34,7 +34,7 @@ const authService = new AuthService(
 );
 
 const router = Router();
-const mailController = new MailController();
+//const mailController = new MailController();
 
 // router.use(authService.authorize);
 router.post("/calculatePrice", CalculatePrice);
@@ -50,5 +50,5 @@ router.post("/mailDetails", MailDetails);
 router.post("/returnmail", ReturnMail);
 router.post("/changeaddress", ChangeAddress);
 router.post("/track", getTrackingDetails);
-router.post("/estimate-delivery-time", mailController.estimateDeliveryTime);
+router.post("/estimate-delivery-time", estimateDeliveryTime);
 export default router;

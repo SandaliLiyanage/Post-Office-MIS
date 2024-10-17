@@ -259,26 +259,45 @@ export const getTrackingDetails = async (req: Request, res: Response) => {
   }
 };
 
-export class MailController {
-  async estimateDeliveryTime(req: Request, res: Response) {
-    try {
-      const { bundleID } = req.body;
+export const estimateDeliveryTime = async (req: Request, res: Response) => {
+  try {
+    const { bundleID } = req.body;
 
-      // Call service to estimate delivery time
-      const estimatedTime = await trackMail.estimateDeliveryTime(bundleID);
+    // Call service to estimate delivery time
+    const estimatedTime = await trackMail.estimateDeliveryTime(bundleID);
 
-      res.status(200).json({ success: true, deliveryTime: estimatedTime });
-    } catch (error) {
-      if (error instanceof Error) {
-        res.status(500).json({ success: false, message: error.message });
-      } else {
-        res
-          .status(500)
-          .json({ success: false, message: "An unknown error occurred." });
-      }
+    res.status(200).json({ success: true, deliveryTime: estimatedTime });
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ success: false, message: error.message });
+    } else {
+      res
+        .status(500)
+        .json({ success: false, message: "An unknown error occurred." });
     }
   }
-}
+};
+
+// export class MailController {
+//   async estimateDeliveryTime(req: Request, res: Response) {
+//     try {
+//       const { bundleID } = req.body;
+
+//       // Call service to estimate delivery time
+//       const estimatedTime = await trackMail.estimateDeliveryTime(bundleID);
+
+//       res.status(200).json({ success: true, deliveryTime: estimatedTime });
+//     } catch (error) {
+//       if (error instanceof Error) {
+//         res.status(500).json({ success: false, message: error.message });
+//       } else {
+//         res
+//           .status(500)
+//           .json({ success: false, message: "An unknown error occurred." });
+//       }
+//     }
+//   }
+// }
 
 // export const getTrackingDetails = async (req: Request, res: Response) => {
 //   try {

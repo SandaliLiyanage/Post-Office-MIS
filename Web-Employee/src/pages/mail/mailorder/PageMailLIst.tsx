@@ -134,6 +134,7 @@ export function CardMail({ mailArray, transaction }: CardMailProps) {
               }
             }}
             size={"md"}
+            data-testid="print-receipt-button"
           >
             Print Receipt
           </Button> 

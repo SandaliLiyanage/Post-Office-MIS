@@ -1,11 +1,11 @@
-import { Mail, MailType, MailStatus } from "@prisma/client";
+import { Mail, MailType, MailStatus, PostOffice } from "@prisma/client";
 import { PrismaSingleton } from "./prismasingleton";
+import { start } from "repl";
 
 class MailRepository {
   private prisma = PrismaSingleton.getInstance();
   constructor() {
     this.prisma = PrismaSingleton.getInstance();
-    
   }
   async calculatePrice(mailType: string, weight: number) {
     console.log("Mail type:", mailType);
@@ -21,17 +21,15 @@ class MailRepository {
           postalCode: postalCode,
         },
         orderBy: {
-          mailID: 'asc',
+          mailID: "asc",
         },
         include: {
-          transaction: {
-            
-          },
+          transaction: {},
         },
       });
-      
+
       console.log("Mails queried", res);
-      
+
       return res;
     } catch (error) {
       console.error("Error getting mails:", error);
@@ -47,7 +45,7 @@ class MailRepository {
     postalCode: string,
     mailCategoryName: MailType,
     transactionID: number,
-    bundleID: number|null,
+    bundleID: number | null,
     mailstatus: MailStatus
   ): Promise<Mail> {
     try {
@@ -62,14 +60,13 @@ class MailRepository {
           transactionID: transactionID,
           price: price,
           bundleID: bundleID,
-          mailstatus: mailstatus
+          mailstatus: mailstatus,
         },
-        
       });
 
       return res;
     } catch (error) {
-      throw error
+      throw error;
     }
   }
 
@@ -147,74 +144,112 @@ class MailRepository {
       where: { mailID },
       data: {
         mailstatus: newStatus,
-        signature: signature, 
+        signature: signature,
       },
     });
   };
 
-  getMailCountByType = async(startDate: Date, endDate:Date)=>{
-    console.log("in mail count")
+  getMailCountByType = async (startDate: Date, endDate: Date) => {
+    console.log("in mail count");
     const res = await this.prisma.transaction.findMany({
       where: {
-          date: {
-              gte: startDate,
-              lt: endDate,
-          },
+        date: {
+          gte: startDate,
+          lt: endDate,
+        },
       },
       select: {
-          date: true,  
-          mail: true,   
+        date: true,
+        mail: true,
       },
-  });
-    console.log(res)
-    return res
-  }
+    });
+    console.log(res);
+    return res;
+  };
 
-  getReturnMail = async(postalCode: string)=>{
+  getReturnMail = async (postalCode: string) => {
     const res = await this.prisma.mail.findMany({
       where: {
         deliveryAttempts: {
-          gte: 2, 
+          gte: 2,
         },
         address: {
-          postalCode: postalCode // compare postal code in address
-        }
-       
-    },
-    include: {
-      address: true,
-      transaction: true
-    }
-  }
-  
-  )
-  
-  console.log(res, "res res")
-  return res
-  }
+          postalCode: postalCode, // compare postal code in address
+        },
+      },
+      include: {
+        address: true,
+        transaction: true,
+      },
+    });
 
-  async updateRecepientAddress(addressID: number, mailID: number, postalCode: string){
-    try{
+    console.log(res, "res res");
+    return res;
+  };
+
+  async updateRecepientAddress(
+    addressID: number,
+    mailID: number,
+    postalCode: string
+  ) {
+    try {
       const res = await this.prisma.mail.update({
         where: {
-          mailID: mailID
+          mailID: mailID,
         },
-        data:{
+        data: {
           recepientAddressID: addressID,
           postalCode: postalCode,
-          deliveryAttempts: 0
-        }
+          deliveryAttempts: 0,
+        },
       });
-      return res
-    
-    }catch(error){
-      console.log(error)
+      return res;
+    } catch (error) {
+      console.log(error);
     }
-    
-  
- 
-    
+  }
+
+  async trackMail(transactionID: number): Promise<any[]> {
+    try {
+      const res = await this.prisma.$queryRaw<any[]>`
+            SELECT m."recepientName", m."mailstatus", p."postOfficeName"
+            FROM "Mail" AS m
+            JOIN "PostOffice" AS p 
+            ON m."postalCode" = p."postalCode"
+            WHERE m."mailID" = ${transactionID}
+            LIMIT 100
+        `;
+
+      console.log("Mail details queried", res);
+      return res;
+    } catch (error) {
+      console.error("Error fetching mail details:", error);
+      throw error;
+    }
+  }
+
+  async findBundleById(bundleID: number) {
+    return await this.prisma.bundle.findUnique({
+      where: { bundleID },
+      include: {
+        destPostOffice: true,
+        currentPostOffice: true,
+      },
+    });
+  }
+
+  async findByPostalCode(postalCode: string): Promise<PostOffice | null> {
+    try {
+      const postOffice = await this.prisma.postOffice.findUnique({
+        where: { postalCode },
+      });
+
+      return postOffice;
+    } catch (error) {
+      console.error("Error fetching post office:", error);
+      throw error;
+    }
   }
 }
-  
-export {MailRepository};
+
+export { MailRepository };

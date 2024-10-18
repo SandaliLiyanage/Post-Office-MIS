@@ -240,7 +240,7 @@ export default function MailDetails() {
       <div className="flex overflow-hidden ">
         <div className=" flex-[2_2_0%] pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col ">
           <div className="font-bold top-16 pt-8 pb-8 mt-16 flex justify-between">
-            <p className="text-xl font-bold ">Mail Order</p>
+            <p className="text-xl font-bold " data-testId="cypress-mailorder-title">Mail Order</p>
           </div>
           <div className="flex justify-end  mr-10"></div>
           <div className="p-8">
@@ -262,19 +262,6 @@ export default function MailDetails() {
                   />
                   <div>
                     <Label>Recepient Address</Label>
-                    <FormField
-                      control={form.control}
-                      name="address"
-                      render={({ field }) => (
-                        <FormItem className="hidden">
-                          <FormControl>
-                            <Input placeholder="Address" {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-
                     <div className="relative">
                       <Command className="mt-2">
                         <CommandInput
@@ -284,20 +271,22 @@ export default function MailDetails() {
                             console.log(value);
                           }}
                           value={search}
+                          data-testId="cypress-address_search"
                         />
-                        <CommandList className="">
+                        <CommandList >
                           {search != "" && searchSelect == false && (
                             <div className="absolute top-full left-0 w-full h-min">
                               <CommandEmpty>No address found.</CommandEmpty>
                             </div>
                           )}
                           {search != "" && (
-                            <CommandGroup
-                              className="absolute top-full left-0 w-full h-[90px] overflow-y-auto rounded-md 
+                            <CommandGroup data-testid="suggestion-dropdown"
+                              className="absolute top-full left-0 w-full h-[90px] rounded-md 
                      bg-white"
                             >
                               {searchResults?.map((result) => (
                                 <CommandItem
+                                data-testid="suggestion-item"
                                   key={result}
                                   onSelect={(value) => {
                                     setSearch(value);
@@ -330,15 +319,15 @@ export default function MailDetails() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger data-testid="mailtype-dropdown">
                               <SelectValue
                                 placeholder="Mail Type "
                                 className="text-slate-500"
                               />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
-                            <SelectItem value="normal mail">
+                          <SelectContent data-testId="mailtypeselect-dropdown">
+                            <SelectItem value="normal mail" data-testid="select-item">
                               Normal mail
                             </SelectItem>
                             <SelectItem value="registered mail">
@@ -368,7 +357,7 @@ export default function MailDetails() {
 
                 <div className="flex justify-between mt-7">
                   <div className="flex justify-start gap-4">
-                    <Button
+                    <Button data-testid="calculate-button"
                       className="bg-slate-600 text-white hover:bg-slate-300 hover:text-black"
                       onClick={onClickCalculate}
                       type="button"

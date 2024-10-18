@@ -42,10 +42,10 @@ export default function SideBar() {
                         }
                          }>Mail Order</NavButton>
 
-  const ViewMail = <NavButton className={`${activeButton === 'viewMail' ? clickedColour : normalColour}`} 
+  const ViewMail = <NavButton className={`${activeButton === 'viewmail' ? clickedColour : normalColour}`} 
                         onClick={() => {
                           handleClick('View Mail')
-                          navigate("/dashboard/viewMail")
+                          navigate("/dashboard/viewmail")
                         } }>View Mail</NavButton>
   const MailBundles = <NavButton className={`${activeButton === 'mailBundles' ? clickedColour : normalColour}`} 
                         onClick={() => {
@@ -83,7 +83,7 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
                         onClick={() => {
                           handleClick('leaverequests')
                           navigate("/dashboard/leaverequests")
-                        } }>Approve Leaves</NavButton>
+                        } }>Request Leaves</NavButton>
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full shadow-lg">

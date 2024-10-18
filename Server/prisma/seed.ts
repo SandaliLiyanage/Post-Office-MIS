@@ -8,7 +8,6 @@ import {
   MailType,
   BundleStatus,
   OTP,
-  OTP,
 } from "@prisma/client";
 import BCryptService from "../services/cryptservice";
 
@@ -125,7 +124,6 @@ async function main() {
     await prisma.employee.createMany({
       data: hashedData,
     });
-  };
   };
   await employeeCreate();
 

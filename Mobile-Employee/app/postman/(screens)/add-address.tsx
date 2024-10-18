@@ -102,7 +102,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 14,
-    marginBottom: 10,
+    paddingVertical: 13,
+    marginBottom: 11,
     backgroundColor: "#F2F2F2",
     borderRadius: 8,
     shadowColor: "#000",
@@ -134,6 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "gray",
     marginTop: 4,
+    lineHeight: 21,
   },
 });
 

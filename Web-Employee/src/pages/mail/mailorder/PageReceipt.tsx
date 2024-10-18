@@ -69,7 +69,7 @@ export default function PageReceipt() {
             </div>
             <div>
             <div ref={contentRef}></div>
-            <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18} /></Button>
+            <Button className="btn bg-white "  size="icon" onClick={()=>reactToPrintFn()}><Printer color="black" size={18}  data-testId="print-barcode-button"/></Button>
             </div>
           </div>
           <div className="grid grid-cols-6">
@@ -101,7 +101,7 @@ export default function PageReceipt() {
           localStorage.removeItem("customerDetails");
           localStorage.removeItem("confirmedMailArray");
           navigate("/dashboard/mailorder")
-        }}>End Transaction</Button>
+        }}data-testId="end-transaction">End Transaction</Button>
     </div>
     </div>
   )

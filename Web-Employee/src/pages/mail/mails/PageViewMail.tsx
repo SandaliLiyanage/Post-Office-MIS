@@ -43,7 +43,7 @@ useEffect(() => {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl font-bold">Mail</p>
+        <p className="text-xl font-bold" data-testId="cypress-mail-title">Mail</p>
     </div>
     <div className="flex flex-col space-y-4  border-0">
       <DataTable columns={columns} data={mail} />

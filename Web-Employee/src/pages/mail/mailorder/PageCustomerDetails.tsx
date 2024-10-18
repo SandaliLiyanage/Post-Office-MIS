@@ -138,7 +138,7 @@ export default function MailOrder() {
   return (
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl font-bold">Mail Order</p>
+        <h1 className="text-xl font-bold" data-testId="cypress-mailorder-title">Mail Order</h1>
       </div>
       <Form {...form}>
         
@@ -170,19 +170,7 @@ export default function MailOrder() {
               )}
             />
            <div>
-              <Label>Address</Label>
-              <FormField
-                control={form.control}
-                name="address"
-                render={({ field }) => (
-                  <FormItem className="hidden">
-                    <FormControl>
-                      <Input placeholder="Address" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              
               <div className="relative">
                 <Command className="mt-2">
                   <CommandInput
@@ -191,9 +179,10 @@ export default function MailOrder() {
                       handleChange(value);
                       console.log(value);
                     }}
+                    data-testId="cypress-address_search"
                     value={search}
                   />
-                  <CommandList className="">
+                  <CommandList >
                     {search != "" && searchSelect == false && (
                      <div className="absolute top-full left-0 w-full h-min">
                       <CommandEmpty >No address found.</CommandEmpty>
@@ -201,11 +190,11 @@ export default function MailOrder() {
                     )}
                     {search != "" && (
                       <CommandGroup
-                        className="absolute top-full left-0 w-full h-[90px] overflow-y-auto rounded-md 
-                     bg-white"
+                        className="absolute top-full left-0 w-full h-[90px] rounded-md 
+                     bg-white" data-testid="suggestion-dropdown"
                       >
                         {searchResults?.map((result) => (
-                          <CommandItem
+                          <CommandItem data-testid="suggestion-item"
                             key={result}
                             onSelect={(value) => {
                               setSearch(value);

@@ -90,7 +90,7 @@ export default function Login() {
       <div className="mr-20 ml-20 mt-8 ">
         <div>
         <div>
-        <h1 className="text-2xl mb-5 mt-5">Employee Login</h1>
+        <h1 className="text-2xl mb-5 mt-5" data-testId="cypress-login-title">Employee Login</h1>
         </div>
  
         <Form {...form}>

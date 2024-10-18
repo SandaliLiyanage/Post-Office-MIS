@@ -1,165 +1,140 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
-  StyleSheet,
-  Dimensions,
   View,
   Text,
-  TextInput,
+  FlatList,
   TouchableOpacity,
-  Alert,
+  StyleSheet,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import MapView, { Marker } from "react-native-maps";
-import * as Location from "expo-location";
+import { useRouter } from "expo-router";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+import { IP } from "../../../config";
 
-const AddAddress = () => {
-  const [region, setRegion] = useState({
-    latitude: 6.924172260546507,
-    longitude: 79.96982292945405,
-    latitudeDelta: 0.02,
-    longitudeDelta: 0.02,
-  });
+interface Address {
+  addressID: string;
+  addressNo: string;
+  streetName: string;
+  areaName: string;
+  Locality: string;
+}
 
-  const [currentLocation, setCurrentLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  } | null>(null);
-  const [addressNo, setAddressNo] = useState("");
-  const [streetName, setStreetName] = useState("");
-  const [locality, setLocality] = useState("");
+const AddAddressScreen = () => {
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const router = useRouter();
+  const navigation = useNavigation();
 
-  // Request permission and get current location
-  useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("Permission Denied", "Allow location access to proceed.");
-        return;
-      }
-      let location = await Location.getCurrentPositionAsync({});
-      const { latitude, longitude } = location.coords;
-      setCurrentLocation({ latitude, longitude });
-
-      // Set initial region to current location
-      setRegion({
-        latitude,
-        longitude,
-        latitudeDelta: 0.02,
-        longitudeDelta: 0.02,
-      });
-    })();
-  }, []);
-
-  const handleAddAddress = () => {
-    if (addressNo && streetName && locality) {
-      console.log("Address No:", addressNo);
-      console.log("Street Name:", streetName);
-      console.log("Locality:", locality);
-      console.log("currentLocation:", currentLocation);
-      Alert.alert("Success", "Address added successfully!");
-      // Clear input fields
-      setAddressNo("");
-      setStreetName("");
-      setLocality("");
-    } else {
-      Alert.alert("Error", "Please fill in all the fields.");
+  // Fetch unverified addresses from the backend
+  const fetchAddresses = async () => {
+    try {
+      const response = await fetch(
+        `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=0002`
+      );
+      const data = await response.json();
+      setAddresses(data);
+    } catch (error) {
+      console.error("Error fetching unverified addresses:", error);
     }
   };
 
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* Address input fields */}
-      <View style={styles.topcontainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Address No"
-          value={addressNo}
-          onChangeText={setAddressNo}
-          selectionColor="black"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Street Name"
-          value={streetName}
-          onChangeText={setStreetName}
-          selectionColor="black"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Locality"
-          value={locality}
-          onChangeText={setLocality}
-          selectionColor="black"
-        />
-      </View>
+  // Use useFocusEffect to refetch data when the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      fetchAddresses();
+    }, [])
+  );
 
-      {/* Map section */}
-      <MapView
-        style={styles.map}
-        region={region} // Dynamic region based on current location
-        onRegionChangeComplete={(newRegion) => setRegion(newRegion)}
-        showsUserLocation={true} // Show blue dot for user's location
-        followsUserLocation={true} // Follow user's live location
+  const renderItem = ({ item }: { item: Address }) => (
+    <View style={styles.addressItem}>
+      <View style={styles.addressDetails}>
+        <Text style={styles.addressID}>Address ID: {item.addressID}</Text>
+        <Text style={styles.address}>
+          {item.addressNo}, {item.streetName}, {item.areaName}, {item.Locality}
+        </Text>
+      </View>
+      <TouchableOpacity
+        style={styles.addButton}
+        onPress={() =>
+          (navigation as any).navigate("add-location", {
+            addressID: item.addressID,
+            address: item,
+          })
+        }
       >
-        {currentLocation && (
-          <Marker
-            coordinate={currentLocation}
-            title="You are here"
-            description="Current location"
-          />
-        )}
-      </MapView>
+        <Text style={styles.addButtonText}>Add</Text>
+      </TouchableOpacity>
+    </View>
+  );
 
-      {/* Add address button */}
-      <View style={styles.formContainer}>
-        <TouchableOpacity style={styles.button} onPress={handleAddAddress}>
-          <Text style={styles.buttonText}>Add Address</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.header}>Addresses to Add</Text>
+      {addresses.length > 0 ? (
+        <FlatList
+          data={addresses}
+          keyExtractor={(item) => item.addressID}
+          renderItem={renderItem}
+        />
+      ) : (
+        <Text>No unverified addresses available</Text>
+      )}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
-    marginTop: -31, // Adjust the top margin to avoid SafeAreaView padding
-  },
-  topcontainer: {
-    padding: 20,
-    paddingBottom: 10,
+    padding: 16,
     backgroundColor: "#fff",
   },
-  map: {
-    width: Dimensions.get("window").width,
-    height: "55%", // Map height
-  },
-  formContainer: {
-    padding: 10,
-    paddingTop: 15,
-    backgroundColor: "#fff",
-    height: "50%", // Form container height
-  },
-  input: {
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
-  },
-  button: {
-    backgroundColor: "#007BFF", // Button color
-    padding: 15,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  buttonText: {
-    color: "#fff", // Button text color
-    fontSize: 17,
+  header: {
+    fontSize: 22,
     fontWeight: "bold",
+    color: "#fff",
+    marginTop: 15,
+    marginBottom: 10,
+    backgroundColor: "#C60024EF",
+    padding: 8,
+    borderRadius: 5,
+  },
+  addressItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 14,
+    marginBottom: 10,
+    backgroundColor: "#F2F2F2",
+    borderRadius: 8,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 2,
+    elevation: 2,
+    position: "relative",
+  },
+  addressDetails: {
+    flex: 1,
+  },
+  addButton: {
+    backgroundColor: "#007bff",
+    paddingVertical: 7,
+    paddingHorizontal: 15,
+    borderRadius: 6,
+  },
+  addButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+  addressID: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+  address: {
+    fontSize: 16,
+    color: "gray",
+    marginTop: 4,
   },
 });
 
-export default AddAddress;
+export default AddAddressScreen;

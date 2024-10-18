@@ -194,12 +194,12 @@ export const getAddresses = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Employee ID is required" }); // 400 status code for Bad Request
     }
 
-    // Fetch mail details from the repository
-    const mailItems = await mailRepository.getDeliveryAddressesByEmployeeID(
+    // Fetch addresses from the repository
+    const addresses = await mailRepository.getDeliveryAddressesByEmployeeID(
       employeeID
     );
 
-    return res.status(200).json(mailItems); // 200 status code for OK
+    return res.status(200).json(addresses); // 200 status code for OK
   } catch (error) {
     console.error("Error fetching delivery addresses:", error);
     return res.status(500).json({ error: "Internal Server Error" }); // 500 status code for Internal Server Error

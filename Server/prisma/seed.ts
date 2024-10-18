@@ -33,11 +33,12 @@ async function main() {
     data: [
       { postalCode: "00100", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Colombo",       headOfficeID: "00100", latitude: 6.9271, longitude: 79.8612 },
       { postalCode: "20000", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Kandy",         headOfficeID: "20000", latitude: 7.2906, longitude: 80.6337 },
-      { postalCode: "10250", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Nugegoda",      headOfficeID: "00100", latitude: 6.8649, longitude: 79.8997 },
+      { postalCode: "20500", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Gampola",       headOfficeID: "20000", latitude: 7.1649, longitude: 80.5747 },
       { postalCode: "80000", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Galle",         headOfficeID: "80000", latitude: 6.0535, longitude: 80.2210 },
+      { postalCode: "40000", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Anuradhapura",  headOfficeID: "40000", latitude: 8.3114, longitude: 80.4037 },
+      { postalCode: "10250", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Nugegoda",      headOfficeID: "00100", latitude: 6.8649, longitude: 79.8997 },
       { postalCode: "80520", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Ahangama",      headOfficeID: "80000", latitude: 5.9722, longitude: 80.3680 },
       { postalCode: "11500", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Negombo",       headOfficeID: "00100", latitude: 7.2008, longitude: 79.8737 },
-      { postalCode: "40000", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Anuradhapura",  headOfficeID: "40000", latitude: 8.3114, longitude: 80.4037 },
       { postalCode: "10300", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Mount Lavinia", headOfficeID: "00100", latitude: 6.8319, longitude: 79.8641 },
       { postalCode: "11000", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Maharagama",    headOfficeID: "00100", latitude: 6.8468, longitude: 79.9287 },
       { postalCode: "30600", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Kurunegala",    headOfficeID: "30000", latitude: 7.4863, longitude: 80.3624 },
@@ -47,7 +48,6 @@ async function main() {
       { postalCode: "10640", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Kaduwela",      headOfficeID: "50000", latitude: 6.9337, longitude: 79.9835 },
       { postalCode: "20850", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Akurana",       headOfficeID: "20000", latitude: 7.3667, longitude: 80.6176 },
       { postalCode: "20400", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Peradeniya",    headOfficeID: "20000", latitude: 7.2598, longitude: 80.5968 },
-      { postalCode: "20500", postOfficeCategory: "HEAD_OFFICE",  postOfficeName: "Gampola",       headOfficeID: "20000", latitude: 7.1649, longitude: 80.5747 },
       { postalCode: "10370", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Mount Lavinia", headOfficeID: "00100", latitude: 6.8375, longitude: 79.8637 },
       { postalCode: "11640", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Ambatale",      headOfficeID: "00100", latitude: 6.9369, longitude: 79.9695 },
       { postalCode: "10120", postOfficeCategory: "SUB_OFFICE",   postOfficeName: "Battaramulla",  headOfficeID: "00100", latitude: 6.9189, longitude: 79.9282 },
@@ -57,15 +57,46 @@ async function main() {
     ],
   });
  
-  
+
+  // Seed Bundles
+  await prisma.bundle.createMany({
+    data: [
+      { bundleID: 1, destPostalCode: "10640", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "11000", "30600", "10640"] },
+      { bundleID: 41, destPostalCode: "11000", currentPostCode: "10640", bundleStatus: BundleStatus.CREATED, route: ["10640", "30600", "11000"] },
+      { bundleID: 20, destPostalCode: "10640", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "30600", "10640"] },
+      { bundleID: 48, destPostalCode: "20000", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "30600", "10640", "20000"] },
+      { bundleID: 21, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "30600", "10250"] },
+      { bundleID: 22, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "30600", "10250"] },
+      { bundleID: 23, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "11500", "10250"] },
+      { bundleID: 24, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.CREATED, route: ["10640", "11500", "10250"] },
+      { bundleID: 25, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.CREATED, route: ["10640", "11500", "30600", "10250"] },
+      { bundleID: 26, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.CREATED, route: ["10640", "11500", "10250"] },
+      { bundleID: 27, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.CREATED, route: ["10640", "11500", "30600", "10250"] },
+      { bundleID: 28, destPostalCode: "10250", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "30600", "10250"] },
+      { bundleID: 32, destPostalCode: "10640", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["30600", "00100", "10640"] },
+      { bundleID: 68, destPostalCode: "10640", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "20850", "30600", "10640"] },
+      { bundleID: 69, destPostalCode: "10640", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "30600", "20850"] },
+      { bundleID: 70, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "20850", "10250"] },
+      { bundleID: 71, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "20850", "10250"] },
+      { bundleID: 72, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "20850", "11500", "10250"] },
+      { bundleID: 73, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["20850", "11500", "10250"] },
+      { bundleID: 67, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["10640", "11500", "20850", "10250"] },
+      { bundleID: 75, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["20850", "11500", "10250"] },
+      { bundleID: 76, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["10640", "20850", "30600", "10250"] },
+      { bundleID: 77, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "20850", "10250"] },
+      { bundleID: 58, destPostalCode: "10640", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["20850", "20000", "10640"] },
+    ],
+  });
+
+
   // Seed Employees
   const employeeCreate = async () => {
     const data = [
-      { employeeID: "0001", employeeName: "John Doe",    email: "john.doe@gmail.com",   telephone: "123456789",  role: Role.POSTMASTER,   postalCode: "00100", password: "password1" },
-      { employeeID: "0002", employeeName: "Jane Smith",  email: "jane.smith@gmail.com", telephone: "987654321",  role: Role.POSTMAN,      postalCode: "10640", password: "password2" },
+      { employeeID: "0001", employeeName: "Amal Perera",    email: "john.doe@gmail.com",   telephone: "123456789",  role: Role.POSTMASTER,   postalCode: "00100", password: "password1" },
+      { employeeID: "0002", employeeName: "Sandaru Perera",  email: "jane.smith@gmail.com", telephone: "987654321",  role: Role.POSTMAN,      postalCode: "10640", password: "password2" },
       { employeeID: "0003", employeeName: "Jane Smith",  email: "abc@gmail.com",        telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "00100", password: "password3" },
-      { employeeID: "0004", employeeName: "Jane Smith",  email: "bcd@gmail.com",        telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "00100", password: "password4" },
-      { employeeID: "0005", employeeName: "sahan Smith", email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "00100", password: "password5" },
+      { employeeID: "0004", employeeName: "John Doe",  email: "bcd@gmail.com",        telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "00100", password: "password4" },
+      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "00100", password: "password5" },
       { employeeID: "0006", employeeName: "Sanuda",      email: "sanuda@gmail.com",     telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "10640", password: "password6" },
       { employeeID: "0007", employeeName: "Malith",      email: "Malith@gmail.com",     telephone: "987654321",  role: Role.POSTMASTER,   postalCode: "10640", password: "password7" },
       { employeeID: "0008", employeeName: "Sahan",       email: "Sahan@gmail.com",      telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "10640", password: "password8" },
@@ -73,7 +104,7 @@ async function main() {
       { employeeID: "0010", employeeName: "Gamini",      email: "sandlik@gmail.com",    telephone: "0769445455", role: Role.POSTMAN,      postalCode: "10640", password: "password10" },
       { employeeID: "0011", employeeName: "Sudath",      email: "sudath@gmail.com",     telephone: "0771234564", role: Role.POSTMAN,      postalCode: "10640", password: "password11" },
       { employeeID: "0012", employeeName: "Namal",       email: "namal@gmail.com",      telephone: "0712344658", role: Role.POSTMAN,      postalCode: "10640", password: "password12" },
-      { employeeID: "0013", employeeName: "kamal",       email: "kamal@gmail.com",      telephone: "0712345655", role: Role.POSTMAN,      postalCode: "10640", password: "password13" },
+      { employeeID: "0013", employeeName: "Kamal",       email: "kamal@gmail.com",      telephone: "0712345655", role: Role.POSTMAN,      postalCode: "10640", password: "password13" },
       { employeeID: "0014", employeeName: "Nuwan",       email: "Nuwan@gmail.com",      telephone: "0712345655", role: Role.POSTMASTER,   postalCode: "20850", password: "password14" },
       { employeeID: "0015", employeeName: "Sunil",       email: "Sunil@gmail.com",      telephone: "0712345655", role: Role.SUPERVISOR,   postalCode: "20850", password: "password13" },
       { employeeID: "0016", employeeName: "Saman",       email: "Saman@gmail.com",      telephone: "0712345655", role: Role.RECEPTIONIST, postalCode: "20850", password: "password16" },
@@ -112,17 +143,17 @@ async function main() {
   // Seed Addresses
   await prisma.address.createMany({
     data: [
-      { addressID: 26, postalCode: "10640", addressNo: "123", streetName: "Jaya St", Locality: "Kaduwela", latitude: 6.932900155314793, longitude: 79.98257295440071, areaID: 1, verified: true },
-      { addressID: 27, postalCode: "10640", addressNo: "124", streetName: "Wijaya St", Locality: "Kaduwela", latitude: 6.931829673826147, longitude: 79.98283733773043, areaID: 1, verified: true },
-      { addressID: 28, postalCode: "10640", addressNo: "125", streetName: "3rd St", Locality: "Arangala", latitude: 6.926691701903446, longitude: 79.98007013891583, areaID: 1, verified: true },
-      { addressID: 29, postalCode: "10640", addressNo: "126", streetName: "4th St", Locality: "Kaduwela North", latitude: 6.921379683015376, longitude: 79.9748551127648, areaID: 1, verified: true },
-      { addressID: 30, postalCode: "10640", addressNo: "127", streetName: "5th St", Locality: "Kaduwela", latitude: 6.92625283379399, longitude: 79.97224505313936, areaID: 1, verified: true },
-      { addressID: 31, postalCode: "10640", addressNo: "128", streetName: "6th St", Locality: "Central City", latitude: 6.930090869184906, longitude: 79.97488263874345, areaID: 1, verified: true },
-      { addressID: 32, postalCode: "10640", addressNo: "129", streetName: "Daham Mw", Locality: "Kaduwela", latitude: 6.936511594394954, longitude: 79.97497555414972, areaID: 1, verified: true },
-      { addressID: 33, postalCode: "10640", addressNo: "130", streetName: "8th Rd", Locality: "Kaduwela", latitude: 6.936982597575644, longitude: 79.97664553759417, areaID: 1, verified: true },
-      { addressID: 34, postalCode: "10640", addressNo: "131", streetName: "9th Rd", Locality: "Talahena", latitude: 6.936934494539469, longitude: 79.98072335547656, areaID: 1, verified: true },
-      { addressID: 35, postalCode: "10640", addressNo: "132", streetName: "Molpe Mw", Locality: "Kaduwla", latitude: 6.9359585237643095, longitude: 79.98390472475725, areaID: 1, verified: true },
-      { addressID: 36, postalCode: "10640", addressNo: "132", streetName: "10th St", Locality: "Kadwela", latitude: 6.925986987017987, longitude: 79.97453528966999, areaID: 1, verified: true },
+      { addressID: 26, postalCode: "10640", addressNo: "123", streetName: "Jaya St", Locality: "Kaduwela", latitude: 6.932900155314793, longitude: 79.98257295440071, areaID: 3, verified: true },
+      { addressID: 27, postalCode: "10640", addressNo: "124", streetName: "Wijaya St", Locality: "Kaduwela", latitude: 6.931829673826147, longitude: 79.98283733773043, areaID: 3, verified: true },
+      { addressID: 28, postalCode: "10640", addressNo: "125", streetName: "3rd St", Locality: "Arangala", latitude: 6.926691701903446, longitude: 79.98007013891583, areaID: 3, verified: true },
+      { addressID: 29, postalCode: "10640", addressNo: "126", streetName: "4th St", Locality: "Kaduwela North", latitude: 6.921379683015376, longitude: 79.9748551127648, areaID: 3, verified: true },
+      { addressID: 30, postalCode: "10640", addressNo: "127", streetName: "5th St", Locality: "Kaduwela", latitude: 6.92625283379399, longitude: 79.97224505313936, areaID: 3, verified: true },
+      { addressID: 31, postalCode: "10640", addressNo: "128", streetName: "6th St", Locality: "Central City", latitude: 6.930090869184906, longitude: 79.97488263874345, areaID: 3, verified: true },
+      { addressID: 32, postalCode: "10640", addressNo: "129", streetName: "Daham Mw", Locality: "Kaduwela", latitude: 6.936511594394954, longitude: 79.97497555414972, areaID: 3, verified: true },
+      { addressID: 33, postalCode: "10640", addressNo: "130", streetName: "8th Rd", Locality: "Kaduwela", latitude: 6.936982597575644, longitude: 79.97664553759417, areaID: 3, verified: true },
+      { addressID: 34, postalCode: "10640", addressNo: "131", streetName: "9th Rd", Locality: "Talahena", latitude: 6.936934494539469, longitude: 79.98072335547656, areaID: 3, verified: true },
+      { addressID: 35, postalCode: "10640", addressNo: "132", streetName: "Molpe Mw", Locality: "Kaduwla", latitude: 6.9359585237643095, longitude: 79.98390472475725, areaID: 3, verified: true },
+      { addressID: 36, postalCode: "10640", addressNo: "132", streetName: "10th St", Locality: "Kadwela", latitude: 6.925986987017987, longitude: 79.97453528966999, areaID: 3, verified: true },
       { addressID: 37, postalCode: "00100", addressNo: "123", streetName: "Main St", Locality: "Colombo", latitude: 40.7128, longitude: -74.006, areaID: 5, verified: true },
       { addressID: 38, postalCode: "00100", addressNo: "123", streetName: "Opatha Mawatha", Locality: "Colombo6", latitude: 5.993564, longitude: 80.376049, verified: true },
       { addressID: 39, postalCode: "00100", addressNo: "123", streetName: "Bauddhaloka Rd", Locality: "Colombo5", latitude: 5.99707, longitude: 80.377324, areaID: 5, verified: true },
@@ -192,7 +223,6 @@ async function main() {
       },
     ],
   });
-
 
   // Seed Leaves
   await prisma.leave.createMany({

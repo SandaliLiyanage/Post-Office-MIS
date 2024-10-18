@@ -4,13 +4,14 @@ import {
   Dimensions,
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
+import { useRoute, useNavigation } from "@react-navigation/native";
+import { IP } from "../../../config"; // Assuming IP is stored in config
 
 const AddAddress = () => {
   const [region, setRegion] = useState({
@@ -24,9 +25,12 @@ const AddAddress = () => {
     latitude: number;
     longitude: number;
   } | null>(null);
-  const [addressNo, setAddressNo] = useState("");
-  const [streetName, setStreetName] = useState("");
-  const [locality, setLocality] = useState("");
+
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  // Retrieve the addressID from the route parameters
+  const { addressID } = route.params as { addressID: string };
 
   // Request permission and get current location
   useEffect(() => {
@@ -50,49 +54,44 @@ const AddAddress = () => {
     })();
   }, []);
 
-  const handleAddAddress = () => {
-    if (addressNo && streetName && locality) {
-      console.log("Address No:", addressNo);
-      console.log("Street Name:", streetName);
-      console.log("Locality:", locality);
-      console.log("currentLocation:", currentLocation);
-      Alert.alert("Success", "Address added successfully!");
-      // Clear input fields
-      setAddressNo("");
-      setStreetName("");
-      setLocality("");
-    } else {
-      Alert.alert("Error", "Please fill in all the fields.");
+  // Function to update the address on the backend
+  const handleAddAddress = async () => {
+    if (!currentLocation) {
+      Alert.alert("Error", "Current location not available.");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://${IP}:5000/address/updateAddressLocation`, // Assuming this is the correct backend route
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            addressID: addressID, // Sending the address ID
+            latitude: currentLocation.latitude, // Sending current latitude
+            longitude: currentLocation.longitude, // Sending current longitude
+            verified: true, // Set verified to true
+          }),
+        }
+      );
+
+      if (response.ok) {
+        Alert.alert("Success", "Address location updated successfully!");
+        navigation.goBack(); // Go back to the previous screen after updating
+      } else {
+        Alert.alert("Error", "Failed to update address. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error updating address:", error);
+      Alert.alert("Error", "An error occurred while updating the address.");
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Address input fields */}
-      <View style={styles.topcontainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Address No"
-          value={addressNo}
-          onChangeText={setAddressNo}
-          selectionColor="black"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Street Name"
-          value={streetName}
-          onChangeText={setStreetName}
-          selectionColor="black"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Locality"
-          value={locality}
-          onChangeText={setLocality}
-          selectionColor="black"
-        />
-      </View>
-
       {/* Map section */}
       <MapView
         style={styles.map}
@@ -126,27 +125,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: -31, // Adjust the top margin to avoid SafeAreaView padding
   },
-  topcontainer: {
-    padding: 20,
-    paddingBottom: 10,
-    backgroundColor: "#fff",
-  },
   map: {
     width: Dimensions.get("window").width,
-    height: "55%", // Map height
+    height: "84%", // Map height
   },
   formContainer: {
     padding: 10,
     paddingTop: 15,
     backgroundColor: "#fff",
     height: "50%", // Form container height
-  },
-  input: {
-    borderColor: "#ccc",
-    borderWidth: 1,
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 10,
   },
   button: {
     backgroundColor: "#007BFF", // Button color

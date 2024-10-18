@@ -52,4 +52,32 @@ export const getUnverifiedAddresses = async (req: Request, res: Response) => {
   }
 };
 
+export const updateAddressLocation = async (req: Request, res: Response) => {
+  const { addressID, latitude, longitude, verified } = req.body;
+
+  try {
+    if (!addressID || !latitude || !longitude) {
+      return res.status(400).json({ error: "Missing required fields." });
+    }
+
+    const updatedAddress = await addressRepository.updateAddressLocation(
+      addressID,
+      latitude,
+      longitude,
+      verified
+    );
+
+    if (updatedAddress) {
+      return res.status(200).json(updatedAddress);
+    } else {
+      return res.status(404).json({ error: "Address not found." });
+    }
+  } catch (error) {
+    console.error("Error updating address location:", error);
+    return res
+      .status(500)
+      .json({ error: "Failed to update address location." });
+  }
+};
+
 export { Address, AddAddress };

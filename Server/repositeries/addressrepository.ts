@@ -127,5 +127,29 @@ class AddressRepository {
       throw error;
     }
   }
+
+  async updateAddressLocation(
+    addressID: number,
+    latitude: number,
+    longitude: number,
+    verified: boolean
+  ) {
+    try {
+      // Update the address with the new latitude, longitude, and verification status
+      const updatedAddress = await this.prisma.address.update({
+        where: { addressID: addressID },
+        data: {
+          latitude: latitude,
+          longitude: longitude,
+          verified: verified,
+        },
+      });
+
+      return updatedAddress;
+    } catch (error) {
+      console.error("Error in updateAddressLocation repository:", error);
+      return null; // Return null if the address update fails
+    }
+  }
 }
 export { AddressRepository };

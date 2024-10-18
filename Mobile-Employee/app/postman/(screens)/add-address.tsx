@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
-  Button,
   FlatList,
   TouchableOpacity,
   StyleSheet,
@@ -25,21 +24,24 @@ const AddAddressScreen = () => {
   const navigation = useNavigation();
 
   // Fetch unverified addresses from the backend
-  useEffect(() => {
-    const fetchAddresses = async () => {
-      try {
-        const response = await fetch(
-          `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=0002`
-        );
-        const data = await response.json();
-        setAddresses(data);
-      } catch (error) {
-        console.error("Error fetching unverified addresses:", error);
-      }
-    };
+  const fetchAddresses = async () => {
+    try {
+      const response = await fetch(
+        `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=0002`
+      );
+      const data = await response.json();
+      setAddresses(data);
+    } catch (error) {
+      console.error("Error fetching unverified addresses:", error);
+    }
+  };
 
-    fetchAddresses();
-  }, []);
+  // Use useFocusEffect to refetch data when the screen is focused
+  useFocusEffect(
+    useCallback(() => {
+      fetchAddresses();
+    }, [])
+  );
 
   const renderItem = ({ item }: { item: Address }) => (
     <View style={styles.addressItem}>
@@ -53,6 +55,7 @@ const AddAddressScreen = () => {
         style={styles.addButton}
         onPress={() =>
           (navigation as any).navigate("add-location", {
+            addressID: item.addressID,
             address: item,
           })
         }

@@ -92,22 +92,22 @@ async function main() {
   // Seed Employees
   const employeeCreate = async () => {
     const data = [
-      { employeeID: "0001", employeeName: "Amal Perera",    email: "john.doe@gmail.com",   telephone: "123456789",  role: Role.POSTMASTER,   postalCode: "00100", password: "password1" },
-      { employeeID: "0002", employeeName: "Sandaru Perera",  email: "jane.smith@gmail.com", telephone: "987654321",  role: Role.POSTMAN,      postalCode: "10640", password: "password2" },
-      { employeeID: "0003", employeeName: "Jane Smith",  email: "abc@gmail.com",        telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "00100", password: "password3" },
-      { employeeID: "0004", employeeName: "John Doe",  email: "bcd@gmail.com",        telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "00100", password: "password4" },
-      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "00100", password: "password5" },
-      { employeeID: "0006", employeeName: "Sanuda",      email: "sanuda@gmail.com",     telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "10640", password: "password6" },
-      { employeeID: "0007", employeeName: "Malith",      email: "Malith@gmail.com",     telephone: "987654321",  role: Role.POSTMASTER,   postalCode: "10640", password: "password7" },
-      { employeeID: "0008", employeeName: "Sahan",       email: "Sahan@gmail.com",      telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "10640", password: "password8" },
-      { employeeID: "0009", employeeName: "Gamini",      email: "sandli@gmail.com",     telephone: "0769445455", role: Role.POSTMAN,      postalCode: "10120", password: "password9" },
-      { employeeID: "0010", employeeName: "Gamini",      email: "sandlik@gmail.com",    telephone: "0769445455", role: Role.POSTMAN,      postalCode: "10640", password: "password10" },
-      { employeeID: "0011", employeeName: "Sudath",      email: "sudath@gmail.com",     telephone: "0771234564", role: Role.POSTMAN,      postalCode: "10640", password: "password11" },
-      { employeeID: "0012", employeeName: "Namal",       email: "namal@gmail.com",      telephone: "0712344658", role: Role.POSTMAN,      postalCode: "10640", password: "password12" },
-      { employeeID: "0013", employeeName: "Kamal",       email: "kamal@gmail.com",      telephone: "0712345655", role: Role.POSTMAN,      postalCode: "10640", password: "password13" },
-      { employeeID: "0014", employeeName: "Nuwan",       email: "Nuwan@gmail.com",      telephone: "0712345655", role: Role.POSTMASTER,   postalCode: "20850", password: "password14" },
-      { employeeID: "0015", employeeName: "Sunil",       email: "Sunil@gmail.com",      telephone: "0712345655", role: Role.SUPERVISOR,   postalCode: "20850", password: "password13" },
-      { employeeID: "0016", employeeName: "Saman",       email: "Saman@gmail.com",      telephone: "0712345655", role: Role.RECEPTIONIST, postalCode: "20850", password: "password16" },
+      { employeeID: "0001", employeeName: "Amal Perera",    email: "john.doe@gmail.com",   telephone: "123456789",  role: Role.POSTMASTER,   postalCode: "00100", password: "testpassword1" },
+      { employeeID: "0002", employeeName: "Sandaru Perera",  email: "jane.smith@gmail.com", telephone: "987654321",  role: Role.POSTMAN,      postalCode: "10640", password: "testpassword2" },
+      { employeeID: "0003", employeeName: "Jane Smith",  email: "abc@gmail.com",        telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "00100", password: "testpassword3" },
+      { employeeID: "0004", employeeName: "John Doe",  email: "bcd@gmail.com",        telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "00100", password: "testpassword4" },
+      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "00100", password: "testpassword5" },
+      { employeeID: "0006", employeeName: "Sanuda",      email: "sanuda@gmail.com",     telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "10640", password: "testpassword6" },
+      { employeeID: "0007", employeeName: "Malith",      email: "Malith@gmail.com",     telephone: "987654321",  role: Role.POSTMASTER,   postalCode: "10640", password: "testpassword7" },
+      { employeeID: "0008", employeeName: "Sahan",       email: "Sahan@gmail.com",      telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "10640", password: "testpassword8" },
+      { employeeID: "0009", employeeName: "Gamini",      email: "sandli@gmail.com",     telephone: "0769445455", role: Role.POSTMAN,      postalCode: "10120", password: "testpassword9" },
+      { employeeID: "0010", employeeName: "Gamini",      email: "sandlik@gmail.com",    telephone: "0769445455", role: Role.POSTMAN,      postalCode: "10640", password: "testpassword10" },
+      { employeeID: "0011", employeeName: "Sudath",      email: "sudath@gmail.com",     telephone: "0771234564", role: Role.POSTMAN,      postalCode: "10640", password: "testpassword11" },
+      { employeeID: "0012", employeeName: "Namal",       email: "namal@gmail.com",      telephone: "0712344658", role: Role.POSTMAN,      postalCode: "10640", password: "testpassword12" },
+      { employeeID: "0013", employeeName: "Kamal",       email: "kamal@gmail.com",      telephone: "0712345655", role: Role.POSTMAN,      postalCode: "10640", password: "testpassword13" },
+      { employeeID: "0014", employeeName: "Nuwan",       email: "Nuwan@gmail.com",      telephone: "0712345655", role: Role.POSTMASTER,   postalCode: "20850", password: "testpassword14" },
+      { employeeID: "0015", employeeName: "Sunil",       email: "Sunil@gmail.com",      telephone: "0712345655", role: Role.SUPERVISOR,   postalCode: "20850", password: "testpassword13" },
+      { employeeID: "0016", employeeName: "Saman",       email: "Saman@gmail.com",      telephone: "0712345655", role: Role.RECEPTIONIST, postalCode: "20850", password: "testpassword16" },
     ];
     
     const hashedData = await Promise.all(

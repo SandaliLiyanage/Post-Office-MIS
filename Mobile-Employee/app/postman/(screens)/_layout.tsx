@@ -21,6 +21,7 @@ const Layout = () => {
       >
         <Stack.Screen name="status" options={{ title: "Status" }} />
         <Stack.Screen name="add-address" options={{ title: "Add Address" }} />
+        <Stack.Screen name="add-location" options={{ title: "Add Location" }} />
         <Stack.Screen name="leaves" options={{ title: "Leaves" }} />
         <Stack.Screen name="feedback" options={{ title: "Feedback" }} />
         <Stack.Screen name="signaturescreen" options={{ title: "Signature" }} />

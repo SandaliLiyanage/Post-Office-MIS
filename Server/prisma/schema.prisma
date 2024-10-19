@@ -182,3 +182,23 @@ model Feedback {
   @@map("feedback") // This ensures the table is named "feedback"
 }
 
+model MoneyOrder {
+  id                Int      @id @default(autoincrement()) // Unique identifier for each money order
+  recipientName     String   // Name of the recipient
+  recipientAddress  String   // Address of the recipient
+  recipientNIC      String   @db.VarChar(12) // NIC number of the recipient (12 digits)
+  senderName        String   // Name of the sender
+  senderPhoneNumber String   @db.VarChar(10) // Phone number of the sender (10 digits)
+  amount            Decimal  @db.Decimal(10, 2) // Amount of the money order in Rs
+  paymentStatus     PaymentStatus @default(PENDING) // Status of the payment
+  transactionId     String?  // Transaction ID from the payment gateway (PayHere)
+  createdAt         DateTime @default(now()) // Time of creation
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+

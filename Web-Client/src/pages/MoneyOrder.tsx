@@ -14,23 +14,39 @@ const PayMoneyOrder: React.FC = () => {
   const [pin, setPin] = useState<string>('');  // Stores the card pin
   const [error, setError] = useState<string | null>(null);  // Stores validation errors
 
-  // Function to handle formatting of the card number
+  // Function to handle card number formatting
   const handleCardNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\s+/g, ''); // Remove any spaces
-    if (value.length > 16) {
-      return; // Restrict card number to 16 digits
-    }
-    // Add a space after every 4 digits
-    value = value.replace(/(\d{4})/g, '$1 ').trim();
+    let value = e.target.value.replace(/\s+/g, ''); // Remove spaces
+    if (value.length > 16) return; // Restrict card number to 16 digits
+    value = value.replace(/(\d{4})/g, '$1 ').trim(); // Add space every 4 digits
     setCardNumber(value);
   };
 
   // Function to handle PIN input and ensure it is only 3 digits
   const handlePinChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
-    if (value.length <= 3) {
-      setPin(value); // Restrict PIN to 3 digits
-    }
+    if (value.length <= 3) setPin(value); // Restrict PIN to 3 digits
+  };
+
+  // NIC validation (must be exactly 12 digits)
+  const validateNIC = (nic: string) => {
+    return /^\d{12}$/.test(nic);
+  };
+
+  // Phone number validation (must be 10 digits and can start with 0)
+  const validatePhoneNumber = (phone: string) => {
+    return /^0?\d{9}$/.test(phone);
+  };
+
+  // Expiry date validation (MM/YY format and must be valid)
+  const validateExpiryDate = (date: string) => {
+    if (!/^(0[1-9]|1[0-2])\/\d{2}$/.test(date)) return false; // Check format
+    const [monthStr, yearStr] = date.split('/');
+    const month = parseInt(monthStr, 10);  // Parse month as integer
+    const year = parseInt(`20${yearStr}`, 10);  // Parse year as integer and add 20 prefix
+    const now = new Date();
+    const expiry = new Date(year, month - 1); // JavaScript months are 0-based, so subtract 1
+    return expiry > now;
   };
 
   // Function to handle payment processing
@@ -40,6 +56,18 @@ const PayMoneyOrder: React.FC = () => {
     // Validate form inputs
     if (!recipientName || !recipientAddress || !recipientNIC || !amount || !senderName || !phoneNumber || !cardNumber || !expiryDate || !pin) {
       setError('All fields are required.');
+      return;
+    }
+    if (!validateNIC(recipientNIC)) {
+      setError('Please enter a valid 12-digit NIC number.');
+      return;
+    }
+    if (!validatePhoneNumber(phoneNumber)) {
+      setError('Please enter a valid 10-digit phone number (with optional leading 0).');
+      return;
+    }
+    if (!validateExpiryDate(expiryDate)) {
+      setError('Please enter a valid expiry date (MM/YY).');
       return;
     }
     if (isNaN(amountNumber) || amountNumber <= 0) {
@@ -171,7 +199,7 @@ const PayMoneyOrder: React.FC = () => {
               variant="outlined"
               value={expiryDate}
               onChange={(e) => {
-                let input = e.target.value.replace(/\D/g, '');  // Remove any non-digit characters
+                let input = e.target.value.replace(/\D/g, '');  // Remove non-digit characters
                 if (input.length > 2) {
                   input = input.slice(0, 2) + '/' + input.slice(2);  // Insert '/' after first 2 digits
                 }
@@ -180,7 +208,6 @@ const PayMoneyOrder: React.FC = () => {
               sx={{ marginBottom: '20px', width: '100%' }}
               inputProps={{ maxLength: 5 }}  // Max length of MM/YY
             />
-
 
             {/* Input field for PIN */}
             <TextField

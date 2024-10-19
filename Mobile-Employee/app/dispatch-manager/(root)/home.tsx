@@ -121,10 +121,9 @@ const Home = () => {
             {/* Normal mail */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                5
-                {/* {deliveryCounts.NORMAL_MAIL !== undefined
+                {deliveryCounts.NORMAL_MAIL !== undefined
                   ? deliveryCounts.NORMAL_MAIL
-                  : 0} */}
+                  : 0}
               </Text>
               <Text style={styles.deliveryLabel}>Created</Text>
             </View>
@@ -132,10 +131,9 @@ const Home = () => {
             {/* Parcel */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
-                8
-                {/* {deliveryCounts.COURIER !== undefined
+                {deliveryCounts.COURIER !== undefined
                   ? deliveryCounts.COURIER
-                  : 0} */}
+                  : 0}
               </Text>
               <Text style={styles.deliveryLabel}>Arrived</Text>
             </View>

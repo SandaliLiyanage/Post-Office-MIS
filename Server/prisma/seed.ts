@@ -96,7 +96,7 @@ async function main() {
       { employeeID: "0002", employeeName: "Sandaru Perera",  email: "jane.smith@gmail.com", telephone: "987654321",  role: Role.POSTMAN,      postalCode: "10640", password: "testpassword2" },
       { employeeID: "0003", employeeName: "Jane Smith",  email: "abc@gmail.com",        telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "00100", password: "testpassword3" },
       { employeeID: "0004", employeeName: "John Doe",  email: "bcd@gmail.com",        telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "00100", password: "testpassword4" },
-      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "00100", password: "testpassword5" },
+      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "10640", password: "testpassword5" },
       { employeeID: "0006", employeeName: "Sanuda",      email: "sanuda@gmail.com",     telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "10640", password: "testpassword6" },
       { employeeID: "0007", employeeName: "Malith",      email: "Malith@gmail.com",     telephone: "987654321",  role: Role.POSTMASTER,   postalCode: "10640", password: "testpassword7" },
       { employeeID: "0008", employeeName: "Sahan",       email: "Sahan@gmail.com",      telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "10640", password: "testpassword8" },

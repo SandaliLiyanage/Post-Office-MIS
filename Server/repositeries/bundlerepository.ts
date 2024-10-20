@@ -276,6 +276,10 @@ class BundleRepository {
 
   updateAsArrived = async (bundleID: number, newStatus: BundleStatus) => {
     try {
+      console.log(
+        "Updating bundle status to ARRIVED, in repo, bundleID:",
+        bundleID
+      );
       // Retrieve the current route and currentPostCode of the bundle
       const bundle = await this.prisma.bundle.findUnique({
         where: { bundleID },

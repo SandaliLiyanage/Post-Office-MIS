@@ -82,9 +82,9 @@ export default function Scan() {
         throw new Error("Invalid bundle data");
       }
 
-      console.log("Bundle Data:", data);
+      console.log("Bundle Data1:", data);
       setBundleData(data); // Set the fetched bundle data
-      console.log("Bundle Data:", bundleData);
+      console.log("Bundle Data2", bundleData);
       //setModalVisible(true); // Show the modal
     } catch (error) {
       Alert.alert(

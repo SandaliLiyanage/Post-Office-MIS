@@ -11,7 +11,7 @@ interface MoneyOrderRequest {
   recipientNIC: string;
   amount: number;
   senderName: string;
-  phoneNumber: string;
+  senderPhoneNumber: string;
 }
 
 class MoneyOrderController {

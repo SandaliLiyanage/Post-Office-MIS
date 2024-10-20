@@ -151,6 +151,33 @@ export default function Scan() {
     );
   }
 
+  // Show alert with bundle data
+  // if (bundleData) {
+  //   Alert.alert(
+  //     "Bundle Details",
+  //     `Bundle ID: ${bundleData.bundleID}\n` +
+  //       `Destination Postal Code: ${bundleData.destPostalCode}\n` +
+  //       `Current Post Code: ${bundleData.currentPostCode}\n` +
+  //       `Status: ${bundleData.bundleStatus}`,
+  //     [
+  //       {
+  //         text: "Mark as Arrived",
+  //         onPress: () => {
+  //           qrLock.current = false; // Unlock the scanner
+  //           setBundleData(null); // Clear bundle data
+  //         },
+  //       },
+  //       {
+  //         text: "Scan Again",
+  //         onPress: () => {
+  //           qrLock.current = false; // Unlock the scanner
+  //           setBundleData(null); // Clear bundle data
+  //         },
+  //       },
+  //     ]
+  //   );
+  // }
+
   // Render the camera view
   return (
     <SafeAreaView style={styles.container}>
@@ -175,7 +202,7 @@ export default function Scan() {
               <Text style={styles.title}>Bundle Details</Text>
               {bundleData ? (
                 <>
-                  {/* <Text style={styles.bundleText}>
+                  <Text style={styles.bundleText}>
                     Bundle ID: {bundleData.bundleID}
                   </Text>
                   <Text style={styles.bundleText}>
@@ -186,8 +213,8 @@ export default function Scan() {
                   </Text>
                   <Text style={styles.bundleText}>
                     Status: {bundleData.bundleStatus}
-                  </Text> */}
-                  <View>
+                  </Text>
+                  {/* <View>
                     <Text style={styles.label}>Bundle ID:</Text>
                     <Text style={styles.value}>58</Text>
 
@@ -205,7 +232,7 @@ export default function Scan() {
 
                     <Text style={styles.label}>Current Status:</Text>
                     <Text style={styles.value}>Dispatched</Text>
-                  </View>
+                  </View> */}
 
                   <View style={styles.buttonContainer}>
                     <TouchableOpacity

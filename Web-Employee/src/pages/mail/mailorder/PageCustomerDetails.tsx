@@ -28,7 +28,7 @@ import axios from "axios";
 import {Label} from "../../../components/ui/label"
 import { useToast } from "../../../hooks/use-toast";
 import { Toaster } from "../../../components/ui/toaster";
-
+import { IP } from "../../../../config";
 
 import Addaddress from "./PageAddAddress";
 const formSchema = z.object({
@@ -62,7 +62,7 @@ export default function MailOrder() {
       if (search !== "") {
         console.log("this is search", search)
         const result= await axios.post(
-          "http://localhost:5000/mail/addresssearch",
+          `http://${IP}/mail/addresssearch`,
           {search},
           {
             headers: {

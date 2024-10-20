@@ -37,8 +37,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import { MailPlus } from "lucide-react";
-import { Save } from "lucide-react";
+import {IP} from "../../../../config";
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
@@ -109,7 +108,7 @@ export default function MailDetails() {
       if (search !== "") {
         console.log("this is search", search);
         const result = await axios.post(
-          "http://localhost:5000/mail/addresssearch",
+          `http://${IP}/mail/addresssearch`,
           { search }
         );
         console.log(result.data);
@@ -137,7 +136,7 @@ export default function MailDetails() {
     } else {
       const calculationData = { mailType, weight };
       const response = await axios.post(
-        "http://localhost:5000/mail/calculatePrice",
+        `http://${IP}/mail/calculatePrice`,
         calculationData,
         {
           headers: {

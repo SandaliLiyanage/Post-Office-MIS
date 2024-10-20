@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 import { Input } from '../../../components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {columnsforDelivery} from './columnsdelivery';
-import JsBarcode from 'jsbarcode';
+import {IP} from '../../../../config';
 
 export default function Bundle() {
   const {user, removeUser} = useUser();
@@ -22,7 +22,7 @@ export default function Bundle() {
         if(user != null){
         console.log(user.token)
         console.log(user.postalCode, "user")
-        const response = await axios.post('http://localhost:5000/bundles/createdBundles', 
+        const response = await axios.post(`http://${IP}/bundles/createdBundles`, 
           {postalCode: user.postalCode},
           {
             headers: {
@@ -44,7 +44,7 @@ export default function Bundle() {
         if(user !=null){
           console.log(user.token)
         console.log(user.postalCode, "user")
-        const response = await axios.post('http://localhost:5000/bundles/deliveryBundles', 
+        const response = await axios.post(`http://${IP}/bundles/deliveryBundles`, 
           {postalCode: user.postalCode})
           setDeliveryBundle(response.data)
 

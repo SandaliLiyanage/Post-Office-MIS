@@ -1,11 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table"
-import { MoreHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Printer } from 'lucide-react';
 import axios from 'axios';
 import { useUser } from '../../authentication/usercontext';
-import { resolve } from "path";
-
+import {IP} from "../../../../config"
 export interface IBundle {
     destPostCode: string;
     bundleID: number;
@@ -37,7 +34,7 @@ const columnsforDelivery: ColumnDef<IBundle>[] = [
         const sendForDistribution = async(bundleID: number)=>{
           if(user){
             console.log(bundle, "bundleID")
-            const response = await axios.post('http://localhost:5000/bundles/updateBundleStatus', 
+            const response = await axios.post(`http:/${IP}/bundles/updateBundleStatus`, 
               {postalCode: user.postalCode, bundleID: bundleID});
             console.log(response)
           }

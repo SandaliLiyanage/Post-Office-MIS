@@ -25,7 +25,7 @@ import {
 import { Toaster } from "../../components/ui/toaster";
 import { useToast } from "../../hooks/use-toast";
 import { useUser } from "../authentication/usercontext";
-
+import { IP} from "../../../config"
 const ROLES = [
   "SUPERVISOR",
   "POSTMASTER",
@@ -66,7 +66,7 @@ export default function EmpRegistration() {
         const newValue = { ...values, postalCode, password }; 
         console.log(newValue)
         const response = await axios.post(
-          "http://localhost:5000/employee/registration",
+          `http://${IP}/employee/registration`,
           newValue
         );
         console.log("Data submitted successfully", response.data);

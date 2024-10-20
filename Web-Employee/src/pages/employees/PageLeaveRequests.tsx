@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import axios from "axios"
-
+import {IP} from "../../../config"
 import { Button } from "../../components/ui/button"
 import {
   Form,
@@ -55,7 +55,7 @@ export default function LeaveRequest() {
         const role = user?.role;
         console.log("This is the postmaster",role)
         const response = await axios.post(
-          "http://localhost:5000/employee/leaveRequests", 
+          `http://${IP}/employee/leaveRequests`, 
           values, 
           {
             headers: {

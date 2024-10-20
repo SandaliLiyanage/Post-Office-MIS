@@ -26,7 +26,7 @@ import axios from "axios"
 import {useUser} from "../authentication/usercontext"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
-
+import { IP } from "../../../config"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -67,7 +67,7 @@ export default function Employeeupdate() {
       console.log(employeeID);
       console.log("heeh");
       const response = await axios.post(
-        "http://localhost:5000/employee/update",
+        `http://${IP}employee/update`,
         {values,
         employeeID},
         {
@@ -88,7 +88,7 @@ export default function Employeeupdate() {
 
   const deleteAccount = async(employeeID: string)=>{
     console.log(employeeID)
-    const response  = await axios.post("http://localhost:5000/employee/delete", {employeeID})
+    const response  = await axios.post(`http://${IP}/employee/delete`, {employeeID})
     console.log(response)
   }
   return (

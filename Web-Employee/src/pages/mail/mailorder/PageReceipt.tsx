@@ -9,7 +9,6 @@ import { MailResponse } from './PageMailDetails';
 import { Label } from "../../../components/ui/label";
 import { useNavigate } from "react-router-dom";
 
-
 export default function PageReceipt() {
   const navigate = useNavigate();
   const contentRef = useRef<HTMLDivElement>(null);

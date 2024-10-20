@@ -5,7 +5,7 @@ import { useUser } from '../authentication/usercontext';
 import axios from "axios";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "../mail/mails/formatdate"
-
+import { IP } from "../../../config"
 export interface Leave {
   employeeID: string;
   employeeName: string;
@@ -89,7 +89,7 @@ const columns: ColumnDef<Leave>[] = [
           const employeeID = row.original.employeeID; // Assigning employeeID
           const {removeUser, user} = useUser()
           async function changeStatus(status: string) {
-            const res = await axios.post('http://localhost:5000/employee/updateStatus', 
+            const res = await axios.post(`http://${IP}/employee/updateStatus`, 
               {status: status, employeeID: employeeID},
               {
                 headers: {

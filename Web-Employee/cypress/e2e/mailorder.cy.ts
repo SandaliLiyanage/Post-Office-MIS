@@ -1,6 +1,6 @@
 describe('Mail Order Form', () => {
   beforeEach(() => {
-    cy.login("0008", "password8");
+    cy.login("0008", "testpassword8");
   });
 
   const fillCustomerData = (name:string, telephone:string, search: string, address:string) => {

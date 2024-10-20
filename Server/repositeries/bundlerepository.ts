@@ -273,5 +273,45 @@ class BundleRepository {
       data: { bundleStatus: newStatus },
     });
   };
+
+  updateAsArrived = async (bundleID: number, newStatus: BundleStatus) => {
+    try {
+      // Retrieve the current route and currentPostCode of the bundle
+      const bundle = await this.prisma.bundle.findUnique({
+        where: { bundleID },
+        select: {
+          currentPostCode: true,
+          route: true, // Assuming route is stored as an array of postcodes
+        },
+      });
+
+      if (!bundle) {
+        throw new Error("Bundle not found");
+      }
+
+      const { currentPostCode, route } = bundle;
+
+      // Find the index of the currentPostCode in the route array
+      const currentIndex = route.indexOf(currentPostCode);
+
+      // Get the next postcode in the route, if available
+      const nextPostCode =
+        currentIndex !== -1 && currentIndex < route.length - 1
+          ? route[currentIndex + 1]
+          : currentPostCode; // If no next post code, keep the current one
+
+      // Update the bundle's status and currentPostCode
+      return await this.prisma.bundle.update({
+        where: { bundleID },
+        data: {
+          bundleStatus: newStatus,
+          currentPostCode: nextPostCode, // Set the next post code in the route
+        },
+      });
+    } catch (error) {
+      console.error("Error updating bundle:", error);
+      throw new Error("Failed to update bundle");
+    }
+  };
 }
 export { BundleRepository };

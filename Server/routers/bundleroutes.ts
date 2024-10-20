@@ -21,6 +21,7 @@ import JwtService from "../services/jwtservice";
 import SessionStore from "../services/sessionstore";
 import { getCreatedBundlesCount } from "../controllers/bundlecontroller";
 import { getArrivedBundlesCount } from "../controllers/bundlecontroller";
+import { updateAsArrived } from "../controllers/bundlecontroller";
 
 const employeRepository = new EmployeeRepository();
 const cryptService = new BcryptService();
@@ -47,5 +48,6 @@ router.get("/postoffice", getPostOfficeName);
 router.get("/find", findBundle);
 router.get("/created-count", getCreatedBundlesCount);
 router.get("/arrived-count", getArrivedBundlesCount);
+router.patch("/update-arrived", updateAsArrived);
 
 export default router;

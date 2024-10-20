@@ -98,17 +98,20 @@ export default function Scan() {
   const markAsArrived = async () => {
     if (bundleData) {
       try {
-        const response = await fetch(`http://${IP}:5000/bundles/update`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            bundleID: bundleData.bundleID,
-            employeeID: employeeID,
-            status: "ARRIVED", // Set the new status
-          }),
-        });
+        const response = await fetch(
+          `http://${IP}:5000/bundles/update-arrived`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              bundleID: bundleData.bundleID,
+              employeeID: employeeID,
+              status: "ARRIVED", // Set the new status
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to update bundle status");
@@ -239,6 +242,7 @@ export default function Scan() {
                       style={styles.markArrivedButton}
                       // onPress={markAsArrived}
                       onPress={() => {
+                        markAsArrived();
                         qrLock.current = false; // Unlock the scanner
                         setModalVisible(false);
                         setBundleData(null); // Clear bundle data on close

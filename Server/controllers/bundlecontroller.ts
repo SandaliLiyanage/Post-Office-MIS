@@ -263,6 +263,19 @@ export const updateBundleStatus2 = async (req: Request, res: Response) => {
   }
 };
 
+export const updateAsArrived = async (req: Request, res: Response) => {
+  const { bundleID, newStatus } = req.body;
+
+  try {
+    let updatedBundle;
+    updatedBundle = await bundleRepository.updateAsArrived(bundleID, newStatus);
+    res.status(200).json(updatedBundle);
+  } catch (error) {
+    console.error("Error updating mail status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 export const getPostOfficeName = async (req: Request, res: Response) => {
   const postalCode = req.query.postalCode as string;
 

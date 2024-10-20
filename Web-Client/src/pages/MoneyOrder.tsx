@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import NavBar from '../components/ui/NavBar';  // Import the NavBar component
+import {IP} from '../../config'
 
 const PayMoneyOrder: React.FC = () => {
   const [recipientName, setRecipientName] = useState<string>('');  // Stores the recipient's name

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Box, TextField, Button, Typography } from "@mui/material";
 import NavBar from "../components/ui/NavBar";
 import axios from "axios";
+import {IP} from '../../config'
 
 const EstimateDeliveryTime: React.FC = () => {
   const [trackingNumber, setTrackingNumber] = useState<string>(""); // Stores the tracking number
@@ -24,7 +25,7 @@ const EstimateDeliveryTime: React.FC = () => {
       try {
         // Send a POST request to the backend endpoint to estimate delivery time using Axios
         const response = await axios.post(
-          "http://localhost:5000/mail/estimate-delivery-time",
+          `http://${IP}/estimate-delivery-time`,
           {
             bundleID: numericTrackingNumber, // Send tracking number as transactionID
           }

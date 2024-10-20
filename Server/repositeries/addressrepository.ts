@@ -41,6 +41,7 @@ class AddressRepository {
       const res = await this.prisma.address.findUnique({
         where: {
           addressID: addressID,
+          verified: true,
         },
         select: {
           addressNo: true,

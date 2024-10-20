@@ -32,7 +32,7 @@ export interface IChartData {
   courier: string,
 }
 export default function RevenueReports() {
-  const {user, removeUser} = useUser();
+  const {user} = useUser();
   const today = new Date();  // Get today's date
   const lastYearTimestamp = today.setFullYear(today.getFullYear() - 1);  // Modify the year
   const lastYearDate = new Date(lastYearTimestamp);

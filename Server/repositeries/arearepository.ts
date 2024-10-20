@@ -53,7 +53,6 @@ class AreaRepository{
       }));
       console.log(res);
     console.log(res, "huity")
-    console.log(res["Kaduwela-South"].dict[0], "hehe")
 
     const areaDetails = Object.entries(res).map(([area, det]) => ({
         area,

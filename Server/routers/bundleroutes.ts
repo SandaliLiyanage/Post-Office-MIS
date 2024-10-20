@@ -30,7 +30,7 @@ const router = Router();
 // router.use(authService.authorize);
 router.post("/createdBundles", CreatedBundles);
 router.post("/deliveryBundles", DeliveryBundles);
-router.post("/UpdateBundleStatus", UpdateBundleStatus);
+router.post("/updateBundleStatus", UpdateBundleStatus);
 router.get("/arrived", getArrivedBundles);
 router.get("/created", getCreatedBundles);
 router.get("/dispatched", getDispatchedBundles);

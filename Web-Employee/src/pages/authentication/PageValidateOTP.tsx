@@ -34,7 +34,6 @@ export default function ValidateOTP() {
   const { toast } = useToast()
   const navigate = useNavigate();
   const [count, setCount] = useState<number>(0);
-  const [employeeID, setEmployeeID] = useState<string|null>();
 
   const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -108,7 +107,6 @@ export default function ValidateOTP() {
       if(ID == null){
         navigate("/forgotpassword")
       }
-      setEmployeeID(ID)
     }
     getUser();
   }, [])

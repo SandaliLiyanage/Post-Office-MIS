@@ -26,7 +26,26 @@ class LeaveRepository{
           throw error
         }
       }
-
+      async getNotifications(employeeID: string): Promise<Leave[] | null>{
+        try{
+          console.log("in repo notifications")
+          const notifications = await this.prisma.leave.findMany({
+            where: {
+                employeeID: employeeID,
+                startDate: {
+                  lt: new Date()
+                }
+            },
+            include:{
+              employee: true
+            }
+          })
+          console.log(notifications)
+          return notifications || null ;
+        }catch(error){
+          throw error
+      }
+    }
       async updateStatus(employeeID: string, status: string): Promise<Leave | null>{
         try{
           console.log("in update status", employeeID, status)

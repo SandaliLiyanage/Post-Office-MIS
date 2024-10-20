@@ -29,7 +29,7 @@ const columnsforDelivery: ColumnDef<IBundle>[] = [
       id: "actions",
       cell: ({ row }) => {
         const bundle = row.original
-        const {user, removeUser} = useUser();
+        const {user} = useUser();
 
         const sendForDistribution = async(bundleID: number)=>{
           if(user){

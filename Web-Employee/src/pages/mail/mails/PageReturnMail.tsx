@@ -6,8 +6,8 @@ import {IReturnMail, columns} from './columnsreturn';
 import {IP} from '../../../../config';
 export default function ReturnMail() {
     const {user} = useUser();
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<null|string>(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState<null|string>(null);
     const [returnMail, setReturnMail] = useState<IReturnMail[]>([]);
     useEffect(() => {
         async function fetchMails() {
@@ -40,9 +40,9 @@ export default function ReturnMail() {
             
             };
           } catch (error) {
-            setError('Failed to fetch bundles');
+            // setError('Failed to fetch bundles');
           } finally {
-            setLoading(false);
+            // setLoading(false);
           }
         }
         fetchMails();

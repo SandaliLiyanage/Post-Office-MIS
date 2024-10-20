@@ -6,25 +6,42 @@ import {
 } from "../components/ui/popover"
 import { Button } from "../components/ui/button"
 import { useNavigate } from "react-router-dom"
-import { User} from 'lucide-react';
+import { User, Bell} from 'lucide-react';
 import { useState} from 'react';
-
+import axios from "axios";
 import {
   Sheet,
   SheetClose,
   SheetContent,
+  SheetDescription,
   SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
+import { IP } from "../../config"
+type Notification = {
+  RequestStatus: string;
+  startDate: string;
+}
 
 export default function Nav() {
 
-  const [open, setOpen] = useState(false);
   const {removeUser, user} = useUser()
+  const [notifications, setNotifications] = useState([] as Notification[])
   const navigate = useNavigate()
-
+  async function getNotifications(){
+    console.log("Getting Notifications")
+    const res = await axios.post(`http://${IP}/employee/getNotifications`, 
+      { employeeID: user?.employeeID},
+      {
+        headers: {
+          Authorization: `Bearer ${user?.token}`, 
+        },
+      })
+    console.log(res)
+    setNotifications(res.data)
+  }
   function handleClick(){
     console.log("user iss", user)
   }
@@ -35,6 +52,7 @@ export default function Nav() {
       <p className="text-xl text-white">Post-Office-{user?.postOfficeName}</p>
       </div>
       <div className="flex justify-end">
+      {/* <Button onClick={handleClick} className="mt-3 bg-slate-800"><Bell className="bg-slate-800"></Bell></Button> */}
 
       <Popover>
       <PopoverTrigger asChild>
@@ -61,25 +79,28 @@ export default function Nav() {
     </Popover>
     <Sheet>
       <SheetTrigger asChild>
-        {/* <Button  className="mt-3 bg-slate-800"><Bell className="bg-slate-800"></Bell></Button> */}
+        <Button  className="mt-3 bg-slate-800 "><Bell className="bg-slate-800" onClick={()=> {getNotifications()}}></Bell></Button>
       </SheetTrigger>
       <SheetContent>
+        <SheetDescription>
+          
+        </SheetDescription>
         <SheetHeader>
-          <SheetTitle>Notifications</SheetTitle>
-          {/* <SheetDescription>
-            Make changes to your profile here. Click save when you're done.
-          </SheetDescription> */}
+          <SheetTitle className="text-white">Notifications</SheetTitle>
         </SheetHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 bg-white w-full h-40 gap-4 rounded-md">
-            <p>Notifications will appear here</p>
-          </div>
-          {/* <div className="grid grid-cols-4 gap-4">
-            <Label htmlFor="username" >
-              Username
-            </Label>
-          </div> */}
-        </div>
+        {notifications.length > 0 ? (
+          notifications.map((notification, index) => (
+            <div key={index} className="grid gap-4 py-4">
+              <div className="bg-slate-400 w-full h-20 gap-4 rounded-md p-5">
+                <p>Your Leave request has been for the date {notification.startDate} {notification.RequestStatus.toLowerCase()}.</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No Notifications</p>
+        )}
+
+        
         <SheetFooter>
           <SheetClose asChild>
             {/* <Button type="submit">Save changes</Button> */}

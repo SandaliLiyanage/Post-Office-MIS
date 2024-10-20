@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
-import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import {
   Form,
@@ -45,8 +44,6 @@ const formSchema = z.object({
 export default function EmpRegistration() {
   const { user } = useUser();
   const { toast } = useToast();
-  const [password, setPassword] = useState<string>(""); // Use state to store the password
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,7 +60,7 @@ export default function EmpRegistration() {
       if (user && user.role == "POSTMASTER" && user.postalCode) {
         const postalCode = user.postalCode;
         console.log("in if", postalCode, user);
-        const newValue = { ...values, postalCode, password }; 
+        const newValue = { ...values, postalCode}; 
         console.log(newValue)
         const response = await axios.post(
           `http://${IP}/employee/registration`,

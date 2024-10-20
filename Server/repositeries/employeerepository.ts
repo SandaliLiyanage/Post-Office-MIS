@@ -42,6 +42,8 @@ class EmployeeRepository {
       throw error;
     }
   }
+
+  
   async findUserbyID(username: string): Promise<Employee | null> {
     try {
       const res = await this.prisma.employee.findUnique({

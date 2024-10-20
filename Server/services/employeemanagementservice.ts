@@ -8,7 +8,15 @@ class EmployeeManagementService{
         this.employeeRepository = employeeRepository;
         this.leaveRepository = leaveRepository;
     }
-
+    async getNotifications(employeeID: string){
+        try{
+            const notifications = await this.leaveRepository.getNotifications(employeeID);
+            
+            return notifications;
+        }catch(error){
+            return null;
+        }
+    }
 
     async validateEmployeeID(employeeID: string){
         try{

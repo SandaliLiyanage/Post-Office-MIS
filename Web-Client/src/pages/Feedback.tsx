@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, MenuItem } from '@mui/material';
 import NavBar from '../components/ui/NavBar';  // Import your NavBar component
-import {IP} from '../../config'
 
 const Feedback: React.FC = () => {
   const [formData, setFormData] = useState({

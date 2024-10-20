@@ -25,7 +25,7 @@ const EstimateDeliveryTime: React.FC = () => {
       try {
         // Send a POST request to the backend endpoint to estimate delivery time using Axios
         const response = await axios.post(
-          `http://${IP}/estimate-delivery-time`,
+          `http://${IP}/mail/estimate-delivery-time`,
           {
             bundleID: numericTrackingNumber, // Send tracking number as transactionID
           }

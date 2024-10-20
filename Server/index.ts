@@ -6,6 +6,7 @@ import DeliveryRoutes from "./routers/deliveryroutes";
 import cors from "cors";
 import BundleRoutes from "./routers/bundleroutes";
 import AddressRoutes from "./routers/addressroutes";
+import MoneyOrderRoutes from 	"./routers/moneyorderroutes";
 const app = express();
 const router = express.Router();
 
@@ -20,8 +21,10 @@ app.use("/auth", AuthRoutes);
 app.use("/delivery", DeliveryRoutes);
 app.use("/bundles", BundleRoutes);
 app.use("/address", AddressRoutes);
+app.use("/money-order",  MoneyOrderRoutes);
 
-const port = 5000;
+
+const port = 5001;
 app.listen(port, () => {
   console.log(`Server is running on port ${port} `);
 });

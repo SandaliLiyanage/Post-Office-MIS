@@ -40,10 +40,12 @@ const Home = () => {
   } | null>(null); // Set the initial value null
 
   // State to store delivery counts
-  const [deliveryCounts, setDeliveryCounts] = useState<{
-    NORMAL_MAIL: number;
-    REGISTERED_MAIL: number;
-    COURIER: number;
+  const [arrivedCounts, setArrivedCounts] = useState<{
+    count: number;
+  } | null>(null); // Set the initial value null
+
+  const [createdCounts, setCreatedCounts] = useState<{
+    count: number;
   } | null>(null); // Set the initial value null
 
   // State to store loading status
@@ -64,13 +66,25 @@ const Home = () => {
         }
       };
 
-      const fetchDeliveryCounts = async () => {
+      const fetchArrivedCounts = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/mail/employee?employeeID=${employeeID}`
+            `http://${IP}:5000/bundles/arrived-count?employeeID=${employeeID}`
           );
           const data = await response.json();
-          setDeliveryCounts(data);
+          setArrivedCounts(data);
+        } catch (error) {
+          console.error("Error fetching delivery counts:", error);
+        }
+      };
+
+      const fetchCreatedCounts = async () => {
+        try {
+          const response = await fetch(
+            `http://${IP}:5000/bundles/created-count?employeeID=${employeeID}`
+          );
+          const data = await response.json();
+          setCreatedCounts(data);
         } catch (error) {
           console.error("Error fetching delivery counts:", error);
         }
@@ -78,7 +92,11 @@ const Home = () => {
 
       const fetchData = async () => {
         setLoading(true);
-        await Promise.all([fetchUserData(), fetchDeliveryCounts()]);
+        await Promise.all([
+          fetchUserData(),
+          fetchArrivedCounts(),
+          fetchCreatedCounts(),
+        ]);
         setLoading(false);
       };
 
@@ -113,35 +131,30 @@ const Home = () => {
       )}
 
       {/* Delivery counts */}
-      {deliveryCounts && ( // Check if deliveryCounts is not null
-        <View style={styles.deliveriesContainer}>
-          <Text style={styles.deliveriesTitle}>Bundles Remaining</Text>
+      {arrivedCounts &&
+        createdCounts && ( // Check if deliveryCounts is not null
+          <View style={styles.deliveriesContainer}>
+            <Text style={styles.deliveriesTitle}>Bundles Remaining</Text>
 
-          <View style={styles.deliveryTypes}>
-            {/* Normal mail */}
-            <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>
-                5
-                {/* {deliveryCounts.NORMAL_MAIL !== undefined
-                  ? deliveryCounts.NORMAL_MAIL
-                  : 0} */}
-              </Text>
-              <Text style={styles.deliveryLabel}>Created</Text>
-            </View>
+            <View style={styles.deliveryTypes}>
+              {/* Created */}
+              <View style={styles.deliveryItem}>
+                <Text style={styles.deliveryCount}>
+                  {createdCounts.count !== undefined ? createdCounts.count : 0}
+                </Text>
+                <Text style={styles.deliveryLabel}>Created</Text>
+              </View>
 
-            {/* Parcel */}
-            <View style={styles.deliveryItem}>
-              <Text style={styles.deliveryCount}>
-                8
-                {/* {deliveryCounts.COURIER !== undefined
-                  ? deliveryCounts.COURIER
-                  : 0} */}
-              </Text>
-              <Text style={styles.deliveryLabel}>Arrived</Text>
+              {/* Arrived */}
+              <View style={styles.deliveryItem}>
+                <Text style={styles.deliveryCount}>
+                  {arrivedCounts.count !== undefined ? arrivedCounts.count : 0}
+                </Text>
+                <Text style={styles.deliveryLabel}>Arrived</Text>
+              </View>
             </View>
           </View>
-        </View>
-      )}
+        )}
 
       {/* Actions */}
       <View style={styles.actionsContainer}>

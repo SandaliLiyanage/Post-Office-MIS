@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { Box, TextField, Button, Typography, MenuItem } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
+  SelectChangeEvent,
+} from '@mui/material';
 import NavBar from '../components/ui/NavBar';  // Import your NavBar component
 
 const Feedback: React.FC = () => {
@@ -18,9 +28,17 @@ const Feedback: React.FC = () => {
   const postOffices = ['Colombo Main', 'Galle', 'Jaffna', 'Negombo', 'Kandy']; 
 
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+  ) => {
+    const { name, value } = e.target as { name: string; value: string }; // Assert type here
+    setFormData(prev => ({ ...prev, [name]: value })); // Now name is definitely a string
+  };
+
+  // Handle select changes
+  const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData(prev => ({ ...prev, [name as string]: value })); // Cast name to string
   };
 
   // Handle form submission
@@ -98,22 +116,22 @@ const Feedback: React.FC = () => {
         />
 
         {/* Dropdown for Post Office */}
-        <TextField
-          select
-          label="Post Office"
-          name="postOffice"
-          variant="outlined"
-          required
-          value={formData.postOffice}
-          onChange={handleChange}
-          sx={{ marginBottom: '20px', width: '300px' }}
-        >
-          {postOffices.map((office) => (
-            <MenuItem key={office} value={office}>
-              {office}
-            </MenuItem>
-          ))}
-        </TextField>
+        <FormControl variant="outlined" sx={{ marginBottom: '20px', width: '300px' }}>
+          <InputLabel id="post-office-label">Post Office</InputLabel>
+          <Select
+            labelId="post-office-label"
+            name="postOffice"
+            value={formData.postOffice}
+            onChange={handleSelectChange} // Use the new handleSelectChange function
+            label="Post Office"
+          >
+            {postOffices.map((office) => (
+              <MenuItem key={office} value={office}>
+                {office}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
         {/* Input for Issue Description */}
         <TextField

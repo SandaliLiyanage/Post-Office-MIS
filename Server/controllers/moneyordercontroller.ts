@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import MoneyOrderService from '../services/moneyorderservice';
 import { PaymentStatus } from '@prisma/client';
+import Stripe from 'stripe';
+
+const stripe = new Stripe('sk_test_51QBsL1GhXMGZ3V9gkm03eLRzuGxGnuw6ZNxn6toOqJ6ttwpATadCaZJIk6H6CksB59YUYM3Iy3vcAuCzXBqm0Lds00U7gEIU3J'); // Replace with your Stripe secret key
 
 interface MoneyOrderRequest {
   recipientName: string;
@@ -23,17 +26,23 @@ class MoneyOrderController {
     try {
       // Validate the incoming request body (type-checking)
       const orderData: MoneyOrderRequest = req.body;
-
+  
       // Validate required fields
       if (!orderData.recipientName || !orderData.amount || !orderData.senderName) {
         return res.status(400).json({ message: 'Required fields are missing' });
       }
-
-      // Call service to create the money order
-      const moneyOrder = await this.moneyOrderService.createMoneyOrder(orderData);
-      return res.status(201).json(moneyOrder);
+  
+      // Create a payment intent
+      const paymentIntent = await stripe.paymentIntents.create({
+        amount: orderData.amount * 100, // Amount in cents
+        currency: 'lkr', // Replace with your currency
+        metadata: { recipientName: orderData.recipientName, senderName: orderData.senderName },
+      });
+  
+      // Optionally store the order data and payment intent ID in your database
+  
+      return res.status(201).json({ id: paymentIntent.id });
     } catch (error: unknown) {
-      // Type checking for error message extraction
       if (error instanceof Error) {
         return res.status(500).json({ message: error.message });
       }
@@ -42,20 +51,39 @@ class MoneyOrderController {
   }
 
   // PayHere payment webhook handler
-  async payHereWebhook(req: Request, res: Response) {
-    try {
-      const webhookData = req.body;
-
-      // Call service to handle the PayHere webhook data
-      await this.moneyOrderService.handlePayHereWebhook(webhookData);
-      return res.status(200).send('Webhook processed successfully');
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        return res.status(500).json({ message: error.message });
+  async handleStripeWebhook(req: Request, res: Response) {
+    const sig = req.headers['stripe-signature'];
+    const webhookSecret = 'YOUR_STRIPE_WEBHOOK_SECRET'; // Replace with your Stripe webhook secret
+    
+    if (!sig) {
+        return res.status(400).send('Missing Stripe signature');
       }
-      return res.status(500).json({ message: 'Unknown error occurred' });
+    
+    let event;
+  
+    try {
+        // Use express.raw() middleware for webhook endpoint
+        event = stripe.webhooks.constructEvent(req.body, sig, webhookSecret);
+      } catch (err: unknown) {
+        const errorMessage = err instanceof Error ? err.message : 'Webhook error';
+        return res.status(400).send(`Webhook Error: ${errorMessage}`);
+      }
+  
+    switch (event.type) {
+    case 'payment_intent.succeeded':
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const orderId = paymentIntent.metadata.orderId;
+
+        // Ensure orderId is handled correctly (convert to number if needed)
+        await this.moneyOrderService.updatePaymentStatus(Number(orderId), PaymentStatus.COMPLETED, paymentIntent.id);
+        break;
+    // Handle other event types as needed
+    default:
+        console.log(`Unhandled event type ${event.type}`);
     }
+    res.json({ received: true });
   }
+  
 }
 
 export default MoneyOrderController;

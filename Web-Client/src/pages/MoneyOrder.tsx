@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import NavBar from '../components/ui/NavBar';  // Import the NavBar component
+import { loadStripe } from '@stripe/stripe-js';
+
+const stripePromise = loadStripe('pk_test_51QBsL1GhXMGZ3V9gwb1DsAGvR0HgUYokgug0GLlU79ov39KzR2bVPOMvRYpnFAbmFnlsj22PWiN0fFn155Z7DqKq00bsPiBdhw'); // Replace with your Stripe public key
+
 
 const PayMoneyOrder: React.FC = () => {
   const [recipientName, setRecipientName] = useState<string>('');  // Stores the recipient's name
@@ -34,9 +38,9 @@ const PayMoneyOrder: React.FC = () => {
   };
 
   // Function to handle payment processing
-  const handlePayment = () => {
+  const handlePayment = async () => {
     const amountNumber = Number(amount);
-
+  
     // Validate form inputs
     if (!recipientName || !recipientAddress || !recipientNIC || !amount || !senderName || !phoneNumber || !cardNumber || !expiryDate || !pin) {
       setError('All fields are required.');
@@ -50,13 +54,49 @@ const PayMoneyOrder: React.FC = () => {
       setError('The maximum amount for a Money Order is Rs. 50,000.');
       return;
     }
-
+  
     // Reset error if validation passes
     setError(null);
-
-    // Handle payment logic here
-    alert(`Processing payment of Rs. ${amountNumber} to ${recipientName}. Payment made by ${senderName}.`);
+  
+    // Call your backend to create the payment intent
+    const response = await fetch('/api/money-orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        recipientName,
+        recipientAddress,
+        recipientNIC,
+        amount: amountNumber,
+        senderName,
+        phoneNumber,
+        // Add additional necessary fields as required
+      }),
+    });
+  
+    const paymentIntentData = await response.json();
+  
+    if (response.ok) {
+      const stripe = await stripePromise;
+  
+      if (!stripe) {
+        setError('Stripe has not loaded properly. Please try again later.');
+        return;
+      }
+  
+      const result = await stripe.redirectToCheckout({
+        sessionId: paymentIntentData.id,
+      });
+  
+      if (result.error) {
+        setError(result.error.message || 'An unknown error occurred during the payment process.');
+      }
+    } else {
+      setError(paymentIntentData.message);
+    }
   };
+  
 
   return (
     <div>
@@ -88,6 +128,7 @@ const PayMoneyOrder: React.FC = () => {
 
             {/* Input field for sender's name */}
             <TextField
+              data-cy="sender-name"  
               label="Sender's Name"
               variant="outlined"
               value={senderName}
@@ -95,8 +136,8 @@ const PayMoneyOrder: React.FC = () => {
               sx={{ marginBottom: '20px', width: '100%' }}
             />
 
-            {/* Input field for phone number */}
             <TextField
+              data-cy="phone-number"  
               label="Phone Number"
               variant="outlined"
               value={phoneNumber}
@@ -113,6 +154,7 @@ const PayMoneyOrder: React.FC = () => {
 
             {/* Input field for recipient name */}
             <TextField
+              data-cy="recipient-name"  
               label="Recipient Name"
               variant="outlined"
               value={recipientName}
@@ -120,8 +162,8 @@ const PayMoneyOrder: React.FC = () => {
               sx={{ marginBottom: '20px', width: '100%' }}
             />
 
-            {/* Input field for recipient address */}
             <TextField
+              data-cy="recipient-address"  
               label="Recipient Address"
               variant="outlined"
               value={recipientAddress}
@@ -129,8 +171,8 @@ const PayMoneyOrder: React.FC = () => {
               sx={{ marginBottom: '20px', width: '100%' }}
             />
 
-            {/* Input field for recipient NIC */}
             <TextField
+              data-cy="recipient-nic"  
               label="NIC Number"
               variant="outlined"
               value={recipientNIC}
@@ -138,8 +180,8 @@ const PayMoneyOrder: React.FC = () => {
               sx={{ marginBottom: '20px', width: '100%' }}
             />
 
-            {/* Input field for amount */}
             <TextField
+              data-cy="amount"  
               label="Amount (Rs.)"
               variant="outlined"
               type="number"
@@ -157,16 +199,17 @@ const PayMoneyOrder: React.FC = () => {
 
             {/* Input field for card number */}
             <TextField
+              data-cy="card-number"  
               label="Card Number"
               variant="outlined"
               value={cardNumber}
               onChange={handleCardNumberChange}
               sx={{ marginBottom: '20px', width: '100%' }}
-              inputProps={{ maxLength: 19 }}  
+              inputProps={{ maxLength: 19 }}
             />
 
-            {/* Input field for expiry date */}
             <TextField
+              data-cy="expiry-date"
               label="Expiry Date (MM/YY)"
               variant="outlined"
               value={expiryDate}
@@ -181,17 +224,17 @@ const PayMoneyOrder: React.FC = () => {
               inputProps={{ maxLength: 5 }}  // Max length of MM/YY
             />
 
-
-            {/* Input field for PIN */}
             <TextField
+              data-cy="pin"  
               label="PIN"
               variant="outlined"
               type="password"
               value={pin}
               onChange={handlePinChange}
               sx={{ marginBottom: '20px', width: '100%' }}
-              inputProps={{ maxLength: 3 }}  
+              inputProps={{ maxLength: 3 }}
             />
+
           </Paper>
         </Box>
 

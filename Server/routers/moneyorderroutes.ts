@@ -8,6 +8,6 @@ const moneyOrderController = new MoneyOrderController();
 router.post('/', (req, res) => moneyOrderController.createMoneyOrder(req, res));
 
 // Route for PayHere webhook
-router.post('/payhere-webhook', (req, res) => moneyOrderController.payHereWebhook(req, res));
+router.post('/stripe-webhook', (req, res) => moneyOrderController.handleStripeWebhook(req, res));
 
 export default router;

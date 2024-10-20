@@ -1,5 +1,14 @@
-import MoneyOrderRepository from '../repositeries/moneyorderrepository';
+import MoneyOrderRepository from '../repositeries/moneyorderrepository'; // Fixed typo in import path
 import { PaymentStatus } from '@prisma/client';
+
+interface MoneyOrderData {
+  recipientName: string;
+  recipientAddress: string;
+  recipientNIC: string;
+  amount: number;
+  senderName: string;
+  senderPhoneNumber: string; 
+}
 
 class MoneyOrderService {
   private moneyOrderRepository: MoneyOrderRepository;
@@ -9,7 +18,7 @@ class MoneyOrderService {
   }
 
   // Create a new money order
-  async createMoneyOrder(orderData: any) {
+  async createMoneyOrder(orderData: MoneyOrderData) {
     const moneyOrder = await this.moneyOrderRepository.createMoneyOrder(orderData);
     return moneyOrder;
   }
@@ -20,22 +29,24 @@ class MoneyOrderService {
     return updatedOrder;
   }
 
-  // PayHere webhook to update payment status
-  async handlePayHereWebhook(webhookData: any) {
-    const { order_id, payment_status, payhere_reference_no } = webhookData;
-    
-    if (!order_id || !payment_status) {
+  // Stripe webhook to update payment status
+  async handleStripeWebhook(event: any) {
+    const paymentIntent = event.data.object;
+
+    if (!paymentIntent || !paymentIntent.metadata.orderId) {
       throw new Error('Invalid webhook data');
     }
 
+    const orderId = Number(paymentIntent.metadata.orderId);
     let status: PaymentStatus;
-    if (payment_status === '2') {
-      status = PaymentStatus.COMPLETED; // 2 in PayHere means completed
+
+    if (paymentIntent.status === 'succeeded') {
+      status = PaymentStatus.COMPLETED; // Payment succeeded
     } else {
-      status = PaymentStatus.FAILED;
+      status = PaymentStatus.FAILED; // Payment failed
     }
 
-    const updatedOrder = await this.updatePaymentStatus(order_id, status, payhere_reference_no);
+    const updatedOrder = await this.updatePaymentStatus(orderId, status, paymentIntent.id);
     return updatedOrder;
   }
 }

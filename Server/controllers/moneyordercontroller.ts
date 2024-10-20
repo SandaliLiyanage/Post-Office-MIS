@@ -53,7 +53,7 @@ class MoneyOrderController {
   // PayHere payment webhook handler
   async handleStripeWebhook(req: Request, res: Response) {
     const sig = req.headers['stripe-signature'];
-    const webhookSecret = 'YOUR_STRIPE_WEBHOOK_SECRET'; // Replace with your Stripe webhook secret
+    const webhookSecret = 'whsec_waWWxf9wScPNBxTPN9Nc0G3m4ykLTtrI'; // Replace with your Stripe webhook secret
     
     if (!sig) {
         return res.status(400).send('Missing Stripe signature');

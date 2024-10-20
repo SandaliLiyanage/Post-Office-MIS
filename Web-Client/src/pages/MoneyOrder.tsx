@@ -13,7 +13,7 @@ const PayMoneyOrder: React.FC = () => {
   const [recipientNIC, setRecipientNIC] = useState<string>('');  // Stores the recipient's NIC
   const [amount, setAmount] = useState<string>('');  // Stores the money order amount
   const [senderName, setSenderName] = useState<string>('');  // Stores the sender's name
-  const [phoneNumber, setPhoneNumber] = useState<string>('');  // Stores the sender's phone number
+  const [senderPhoneNumber, setPhoneNumber] = useState<string>('');  // Stores the sender's phone number
   const [error, setError] = useState<string | null>(null);  // Stores validation errors
 
   // Function to handle payment processing
@@ -21,7 +21,7 @@ const PayMoneyOrder: React.FC = () => {
     const amountNumber = Number(amount);
 
     // Validate form inputs
-    if (!recipientName || !recipientAddress || !recipientNIC || !amount || !senderName || !phoneNumber) {
+    if (!recipientName || !recipientAddress || !recipientNIC || !amount || !senderName || !senderPhoneNumber) {
       setError('All fields are required.');
       return;
     }
@@ -38,7 +38,7 @@ const PayMoneyOrder: React.FC = () => {
     setError(null);
 
     // Call your backend to create the payment intent
-    const response = await fetch('/api/money-orders', {
+    const response = await fetch('/money-order', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ const PayMoneyOrder: React.FC = () => {
         recipientNIC,
         amount: amountNumber,
         senderName,
-        phoneNumber,
+        senderPhoneNumber,
       }),
     });
 
@@ -69,7 +69,7 @@ const PayMoneyOrder: React.FC = () => {
           card: cardElement,
           billing_details: {
             name: senderName,
-            phone: phoneNumber,
+            phone: senderPhoneNumber,
           },
         },
       });
@@ -129,7 +129,7 @@ const PayMoneyOrder: React.FC = () => {
               data-cy="phone-number"  
               label="Phone Number"
               variant="outlined"
-              value={phoneNumber}
+              value={senderPhoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
               sx={{ marginBottom: '20px', width: '100%' }}
             />

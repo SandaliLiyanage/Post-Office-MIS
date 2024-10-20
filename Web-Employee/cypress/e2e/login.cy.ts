@@ -7,7 +7,7 @@ describe('login for receptionist', () => {
   
     it("renders the login form", () => {
       cy.visit('/');
-      cy.login("0008", "password8");
+      cy.login("0008", "testpassword8");
 
     })
   })

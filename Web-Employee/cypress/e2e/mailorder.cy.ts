@@ -1,3 +1,5 @@
+import { time } from "console";
+
 describe('Mail Order Form', () => {
   beforeEach(() => {
     cy.login("0008", "testpassword8");
@@ -38,7 +40,7 @@ describe('Mail Order Form', () => {
   }
 
   it('fills out the mail order form correctly', () => {
-      cy.visit('/dashboard/mailorder');
+      cy.visit('/dashboard/mailorder', {timeout: 10000});
 
       fillCustomerData("Sandali", "0769445355", "4", "440, Dutugemunu Mw, Battaramulla, 10120");
       cy.get('button[type="submit"]').click();

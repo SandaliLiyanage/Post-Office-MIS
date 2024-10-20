@@ -140,7 +140,7 @@ async function main() {
   });
 
 
-  // // Seed Addresses
+  // Seed Addresses
   await prisma.address.createMany({
     data: [
       { addressID: 26, postalCode: "10640", addressNo: "123", streetName: "Jaya St", Locality: "Kaduwela", latitude: 6.932900155314793, longitude: 79.98257295440071, areaID: 3, verified: true },

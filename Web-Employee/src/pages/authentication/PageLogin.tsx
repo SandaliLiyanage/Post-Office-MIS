@@ -44,9 +44,9 @@ export default function Login() {
   async function handleLoginData(values: z.infer<typeof formSchema>) {
     try {
       console.log("Submitting login data", values)
-      const validateID = await axios.post(`http://${IP}/auth/validateID`, values)
+      const validateID = await axios.post(`https://${IP}/auth/validateID`, values)
       if(validateID.data == true){
-      const user = await axios.post(`http://${IP}/auth/login`, values)
+      const user = await axios.post(`https://${IP}/auth/login`, values)
       if(user.data.login == true){
       console.log(user.data.login)
       console.log("Data submitted successfully", user.data)

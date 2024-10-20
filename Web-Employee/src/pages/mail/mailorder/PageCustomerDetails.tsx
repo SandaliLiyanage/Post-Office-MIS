@@ -25,10 +25,9 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
 import axios from "axios";
-import {Label} from "../../../components/ui/label"
 import { useToast } from "../../../hooks/use-toast";
 import { Toaster } from "../../../components/ui/toaster";
-
+import { IP } from "../../../../config";
 
 import Addaddress from "./PageAddAddress";
 const formSchema = z.object({
@@ -46,7 +45,7 @@ export default function MailOrder() {
   const [searchResults, setSearchResults] = useState<string[]>([]);
   const [addressID, setAddressID] = useState<number|null>(null);
   const [addressMap, setAddressMap] = useState<{[key: string]: number}| null>(null);
-  const [addAddress, setAddress] =useState<boolean>(false);
+  const [addAddress] =useState<boolean>(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -62,7 +61,7 @@ export default function MailOrder() {
       if (search !== "") {
         console.log("this is search", search)
         const result= await axios.post(
-          "http://localhost:5000/mail/addresssearch",
+          `http://${IP}/mail/addresssearch`,
           {search},
           {
             headers: {

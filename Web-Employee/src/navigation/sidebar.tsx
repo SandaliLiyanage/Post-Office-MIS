@@ -92,11 +92,13 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
       {user?.role === 'POSTMASTER' && (
           <>
             {ViewMail}
-            {EmployeeRecords}
-            {EmployeeRegistrations}
-            {RevenueReports}
-            {PostmanAssignments}
             {ViewLeaves}
+            {RevenueReports}
+            {EmployeeRecords}
+            {PostmanAssignments}
+            {EmployeeRegistrations}
+            
+            
           </>
         )}
         {user?.role === 'SUPERVISOR' && (

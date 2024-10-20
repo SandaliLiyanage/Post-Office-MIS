@@ -23,7 +23,7 @@ import Chart from './chart'
 import axios from "axios";
 import { cn } from "@/lib/utils" 
 import { useUser } from '../authentication/usercontext';
-import { Label } from "@/components/ui/label";
+import {IP} from '../../../config'
 
 export interface IChartData {
   month: string,
@@ -32,7 +32,7 @@ export interface IChartData {
   courier: string,
 }
 export default function RevenueReports() {
-  const {user, removeUser} = useUser();
+  const {user} = useUser();
   const today = new Date();  // Get today's date
   const lastYearTimestamp = today.setFullYear(today.getFullYear() - 1);  // Modify the year
   const lastYearDate = new Date(lastYearTimestamp);
@@ -44,7 +44,7 @@ export default function RevenueReports() {
   useEffect(()=>{
     async function generateReports(){
       console.log("in generate reports", startDate,endDate, type)
-      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type},
+      const response = await axios.post(`http://${IP}/mail/reportData`, {startDate, endDate, type},
         {
           headers: {
             Authorization: `Bearer ${user?.token}`, 
@@ -122,7 +122,7 @@ export default function RevenueReports() {
     <Select 
             onValueChange={(newValue) => setType(newValue)}>
       <SelectTrigger className="w-[180px] mt-2">
-        <SelectValue placeholder="Select Report Type" onSelect={()=>setType(Select.name)} />
+        <SelectValue placeholder="Revenue" onSelect={()=>setType(Select.name)} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

@@ -14,6 +14,7 @@ import JwtService from "../services/jwtservice";
 import SessionStore  from "../services/sessionstore";
 import {getLeaves} from "../controllers/employeecontroller";
 import {UpdateStatus} from "../controllers/employeecontroller";
+import {getNotifications} from "../controllers/employeecontroller";
 const employeRepository = new EmployeeRepository();
 const cryptService = new BcryptService();
 const session = new SessionStore();
@@ -31,4 +32,5 @@ router.post("/delete", DeleteEmployee);
 router.post("/feedback", SubmitFeedback);
 router.post("/getLeaves", getLeaves);
 router.post("/updateStatus", UpdateStatus)
+router.post("/getNotifications", getNotifications)
 export default router;

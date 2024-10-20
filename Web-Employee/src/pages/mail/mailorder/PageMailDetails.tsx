@@ -1,7 +1,6 @@
 "use client";
-import { generateInvoice } from "./generatePDF";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import { useState } from "react";
@@ -37,8 +36,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../../../components/ui/select";
-import { MailPlus } from "lucide-react";
-import { Save } from "lucide-react";
+import {IP} from "../../../../config";
 const formSchema = z.object({
   mailType: z.string().min(1, {}),
   recepientName: z.string().min(5, {}),
@@ -88,11 +86,8 @@ export default function MailDetails() {
     [key: string]: number;
   } | null>(null);
   const [mailArray, setMailArray] = useState<MailDetailsType[]>([]);
-  const [transaction, setTransaction] = useState<boolean>(false);
+  const transaction = false;
   const navigate = useNavigate();
-  const [confirmedMailArray, setConfrimedMailArray] = useState<MailResponse[]>(
-    []
-  );
   const [customerName, setCustomerName] = useState<String>("");
   const [customerAddress, setCustomerAddress] = useState<String>("");
   const form = useForm<z.infer<typeof formSchema>>({
@@ -109,7 +104,7 @@ export default function MailDetails() {
       if (search !== "") {
         console.log("this is search", search);
         const result = await axios.post(
-          "http://localhost:5000/mail/addresssearch",
+          `https://${IP}/mail/addresssearch`,
           { search }
         );
         console.log(result.data);
@@ -137,7 +132,7 @@ export default function MailDetails() {
     } else {
       const calculationData = { mailType, weight };
       const response = await axios.post(
-        "http://localhost:5000/mail/calculatePrice",
+        `http://${IP}/mail/calculatePrice`,
         calculationData,
         {
           headers: {

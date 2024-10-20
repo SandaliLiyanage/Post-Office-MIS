@@ -1,6 +1,5 @@
 import { Button } from "../../../components/ui/button";
 import { Printer } from 'lucide-react';
-import { Trash } from 'lucide-react';
 import JsBarcode from 'jsbarcode';
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';
@@ -8,7 +7,6 @@ import { useState, useEffect } from "react";
 import { MailResponse } from './PageMailDetails';
 import { Label } from "../../../components/ui/label";
 import { useNavigate } from "react-router-dom";
-
 
 export default function PageReceipt() {
   const navigate = useNavigate();

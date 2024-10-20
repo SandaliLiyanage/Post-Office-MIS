@@ -23,7 +23,7 @@ import {
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
 import {useEffect, useState} from 'react';
-
+import { IP } from "../../../config"
 const formSchema = z.object({
   pin: z.string(),
   
@@ -34,7 +34,6 @@ export default function ValidateOTP() {
   const { toast } = useToast()
   const navigate = useNavigate();
   const [count, setCount] = useState<number>(0);
-  const [employeeID, setEmployeeID] = useState<string|null>();
 
   const form = useForm<z.infer<typeof formSchema>>({
       resolver: zodResolver(formSchema),
@@ -65,7 +64,7 @@ export default function ValidateOTP() {
 
     
     if(count <= 3){
-    const response = await axios.post("http://localhost:5000/auth/validateOTP", 
+    const response = await axios.post(`http://${IP}/auth/validateOTP`, 
       {values,
       time : new Date(),
       employeeID
@@ -108,7 +107,6 @@ export default function ValidateOTP() {
       if(ID == null){
         navigate("/forgotpassword")
       }
-      setEmployeeID(ID)
     }
     getUser();
   }, [])

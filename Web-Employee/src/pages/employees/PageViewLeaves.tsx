@@ -3,23 +3,19 @@ import {DataTable} from './dataleaves';
 import { useUser } from '../authentication/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
-
-
-
+import { IP } from '../../../config';
 
 export default function PageViewLeaves() {
-  const {removeUser, user} = useUser()
+  const {user} = useUser()
   const [leaves, setLeaves] = useState<Leave[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
-  const navigate = useNavigate();
   useEffect(() => {
     async function fetchEmployees() {
       try {
         if(user){
         console.log(user, "token")
-        const response = await axios.post('http://localhost:5000/employee/getLeaves', 
+        const response = await axios.post(`http://${IP}/employee/getLeaves`, 
           {postalCode: user.postalCode},
           {
             headers: {

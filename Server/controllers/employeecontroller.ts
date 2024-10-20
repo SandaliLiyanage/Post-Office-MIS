@@ -14,6 +14,14 @@ const UpdateLeaveStatus = async (req: Request, res: Response) => {
   const response = await empService.updateStatus(employeeID, status);
   return res.json(response);
 }
+
+const getNotifications = async (req: Request, res: Response) => {
+  const empRepo = EmployeeRepository.getInstance();
+  const leaveRepo = new LeaveRepository
+  const empService = new EmployeeManagementService(empRepo, leaveRepo);
+  const result = await empService.getNotifications(req.body.employeeID);
+  return res.status(200).json(result);
+}
 const EmployeeDetails = async (req: Request, res: Response) => {
   const employeeRepo = EmployeeRepository.getInstance();
   const employees = await employeeRepo.getEmployees(req.body.postalCode);
@@ -145,5 +153,6 @@ export {
   UpdateEmployee,
   DeleteEmployee,
   SubmitFeedback,
-  UpdateLeaveStatus as UpdateStatus
+  UpdateLeaveStatus as UpdateStatus,
+  getNotifications
 };

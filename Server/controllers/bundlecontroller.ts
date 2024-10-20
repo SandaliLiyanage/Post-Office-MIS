@@ -7,8 +7,11 @@ import { AddressRepository } from "../repositeries/addressrepository";
 const addressRepository = new AddressRepository();
 const bundleRepository = new BundleRepository();
 const postOfficeRepository = new PostOfficeRepository();
-const bundleservice = new MailTransferService(postOfficeRepository,bundleRepository, addressRepository);
-
+const bundleservice = new MailTransferService(
+  postOfficeRepository,
+  bundleRepository,
+  addressRepository
+);
 
 const CreatedBundles = async (req: Request, res: Response) => {
   console.log("Request received in mail bundle controller", req.body);
@@ -108,7 +111,7 @@ export const getCreatedBundles = async (req: Request, res: Response) => {
 
     return res.status(200).json(bundles); // Send bundles as JSON response
   } catch (error) {
-    console.error("Error in getArrivedBundles controller:", error);
+    console.error("Error in getCreatedBundles controller:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -195,6 +198,54 @@ export const getDistributedBundles = async (req: Request, res: Response) => {
   }
 };
 
+export const getCreatedBundlesCount = async (req: Request, res: Response) => {
+  try {
+    const employeeID = req.query.employeeID as string; // Extract employeeID from query params
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" });
+    }
+
+    console.log("fetching bundle count");
+    const bundles = await bundleRepository.getCreatedBundles2(employeeID);
+
+    if (!bundles || bundles.length === 0) {
+      return res.status(404).json({ error: "No bundles found" });
+    }
+
+    // Send only the count of bundles
+    return res.status(200).json({
+      count: bundles.length, // Count of bundles
+    });
+  } catch (error) {
+    console.error("Error in getCreatedBundlesCount controller:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const getArrivedBundlesCount = async (req: Request, res: Response) => {
+  try {
+    const employeeID = req.query.employeeID as string; // Extract employeeID from query params
+    if (!employeeID) {
+      return res.status(400).json({ error: "Employee ID is required" });
+    }
+
+    console.log("fetching arrived bundle count");
+    const bundles = await bundleRepository.getArrivedBundles(employeeID);
+
+    if (!bundles || bundles.length === 0) {
+      return res.status(404).json({ error: "No arrived bundles found" });
+    }
+
+    // Send only the count of arrived bundles
+    return res.status(200).json({
+      count: bundles.length, // Count of arrived bundles
+    });
+  } catch (error) {
+    console.error("Error in getArrivedBundlesCount controller:", error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
 // Update mail status
 export const updateBundleStatus2 = async (req: Request, res: Response) => {
   const { bundleID, newStatus } = req.body;
@@ -205,6 +256,19 @@ export const updateBundleStatus2 = async (req: Request, res: Response) => {
       bundleID,
       newStatus
     );
+    res.status(200).json(updatedBundle);
+  } catch (error) {
+    console.error("Error updating mail status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+export const updateAsArrived = async (req: Request, res: Response) => {
+  const { bundleID, newStatus } = req.body;
+
+  try {
+    let updatedBundle;
+    updatedBundle = await bundleRepository.updateAsArrived(bundleID, newStatus);
     res.status(200).json(updatedBundle);
   } catch (error) {
     console.error("Error updating mail status:", error);

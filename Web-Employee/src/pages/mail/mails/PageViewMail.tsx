@@ -3,8 +3,7 @@ import { DataTable } from './datatablemail';
 import { useUser } from '../../authentication/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import { Input } from '../../../components/ui/input';
-
+import {IP} from '../../../../config';
 export default function Mails() {
   const {user} = useUser();
   const [mail, setMail] = useState<IMail[]>([]);
@@ -16,7 +15,7 @@ useEffect(() => {
       try { 
         if(user){
         console.log(user?.token)
-        const response = await axios.post('http://localhost:5000/mail/viewmails', 
+        const response = await axios.post(`http://${IP}/mail/viewmails`, 
           {postalCode: user.postalCode},
           {
             headers: {

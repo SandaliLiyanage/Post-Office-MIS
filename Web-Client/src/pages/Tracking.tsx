@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Typography, TextField, Button, Grid } from "@mui/material";
 import NavBar from "../components/ui/NavBar";
 import axios from "axios";
-
+import {IP} from '../../config'
 enum MailStatus {
   IN_TRANSIT = "In Transit",
   DELIVERED = "Delivered",
@@ -23,7 +23,7 @@ const TrackYourMail: React.FC = () => {
   // Function to fetch tracking information from the backend API
   const fetchTrackingInfo = async (transactionID: number): Promise<TrackingInfo | null> => {
     try {
-      const response = await axios.post("http://localhost:5001/mail/track", {
+      const response = await axios.post(`http://${IP}/mail/track`, {
         transactionID,
       });
       console.log("Response from server:", response.data);

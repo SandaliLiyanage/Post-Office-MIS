@@ -104,7 +104,7 @@ export default function MailDetails() {
       if (search !== "") {
         console.log("this is search", search);
         const result = await axios.post(
-          `https://${IP}/mail/addresssearch`,
+          `http://${IP}/mail/addresssearch`,
           { search }
         );
         console.log(result.data);

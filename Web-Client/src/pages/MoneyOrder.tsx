@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import NavBar from '../components/ui/NavBar';  // Import the NavBar component
+import {IP} from '../../config'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-
 
 const PayMoneyOrder: React.FC = () => {
   const stripe = useStripe();

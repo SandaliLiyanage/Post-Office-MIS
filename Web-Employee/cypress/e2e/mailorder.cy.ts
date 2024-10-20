@@ -41,12 +41,9 @@ describe('Mail Order Form', () => {
 
   it('fills out the mail order form correctly', () => {
       cy.visit('/dashboard/mailorder', {timeout: 10000});
-
       fillCustomerData("Sandali", "0769445355", "4", "440, Dutugemunu Mw, Battaramulla, 10120");
       cy.get('button[type="submit"]').click();
-      
       cy.get('[data-testId="cypress-mailorder-title"]').should('have.text', 'Mail Order');
-      
       fillRecipientData("Sandali", "5", "55, Matale Rd, Akurana, 20850");
       selectMailType("Normal mail");
       cy.get('input[placeholder="Weight"]').clear().type("56");

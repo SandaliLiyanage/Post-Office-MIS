@@ -82,9 +82,9 @@ export default function Scan() {
         throw new Error("Invalid bundle data");
       }
 
-      console.log("Bundle Data:", data);
+      console.log("Bundle Data1:", data);
       setBundleData(data); // Set the fetched bundle data
-      console.log("Bundle Data:", bundleData);
+      console.log("Bundle Data2", bundleData);
       //setModalVisible(true); // Show the modal
     } catch (error) {
       Alert.alert(
@@ -98,17 +98,20 @@ export default function Scan() {
   const markAsArrived = async () => {
     if (bundleData) {
       try {
-        const response = await fetch(`http://${IP}:5000/bundles/update`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            bundleID: bundleData.bundleID,
-            employeeID: employeeID,
-            status: "ARRIVED", // Set the new status
-          }),
-        });
+        const response = await fetch(
+          `http://${IP}:5000/bundles/update-arrived`,
+          {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              bundleID: bundleData.bundleID,
+              employeeID: employeeID,
+              status: "ARRIVED", // Set the new status
+            }),
+          }
+        );
 
         if (!response.ok) {
           throw new Error("Failed to update bundle status");
@@ -151,6 +154,33 @@ export default function Scan() {
     );
   }
 
+  // Show alert with bundle data
+  // if (bundleData) {
+  //   Alert.alert(
+  //     "Bundle Details",
+  //     `Bundle ID: ${bundleData.bundleID}\n` +
+  //       `Destination Postal Code: ${bundleData.destPostalCode}\n` +
+  //       `Current Post Code: ${bundleData.currentPostCode}\n` +
+  //       `Status: ${bundleData.bundleStatus}`,
+  //     [
+  //       {
+  //         text: "Mark as Arrived",
+  //         onPress: () => {
+  //           qrLock.current = false; // Unlock the scanner
+  //           setBundleData(null); // Clear bundle data
+  //         },
+  //       },
+  //       {
+  //         text: "Scan Again",
+  //         onPress: () => {
+  //           qrLock.current = false; // Unlock the scanner
+  //           setBundleData(null); // Clear bundle data
+  //         },
+  //       },
+  //     ]
+  //   );
+  // }
+
   // Render the camera view
   return (
     <SafeAreaView style={styles.container}>
@@ -175,7 +205,7 @@ export default function Scan() {
               <Text style={styles.title}>Bundle Details</Text>
               {bundleData ? (
                 <>
-                  {/* <Text style={styles.bundleText}>
+                  <Text style={styles.bundleText}>
                     Bundle ID: {bundleData.bundleID}
                   </Text>
                   <Text style={styles.bundleText}>
@@ -186,8 +216,8 @@ export default function Scan() {
                   </Text>
                   <Text style={styles.bundleText}>
                     Status: {bundleData.bundleStatus}
-                  </Text> */}
-                  <View>
+                  </Text>
+                  {/* <View>
                     <Text style={styles.label}>Bundle ID:</Text>
                     <Text style={styles.value}>58</Text>
 
@@ -205,13 +235,14 @@ export default function Scan() {
 
                     <Text style={styles.label}>Current Status:</Text>
                     <Text style={styles.value}>Dispatched</Text>
-                  </View>
+                  </View> */}
 
                   <View style={styles.buttonContainer}>
                     <TouchableOpacity
                       style={styles.markArrivedButton}
                       // onPress={markAsArrived}
                       onPress={() => {
+                        markAsArrived();
                         qrLock.current = false; // Unlock the scanner
                         setModalVisible(false);
                         setBundleData(null); // Clear bundle data on close

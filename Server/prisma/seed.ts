@@ -84,7 +84,7 @@ async function main() {
       { bundleID: 75, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["20850", "11500", "10250"] },
       { bundleID: 76, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["10640", "20850", "30600", "10250"] },
       { bundleID: 77, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "20850", "10250"] },
-      { bundleID: 58, destPostalCode: "10640", currentPostCode: "10640", bundleStatus: BundleStatus.ARRIVED, route: ["20850", "20000", "10640"] },
+      { bundleID: 58, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
     ],
   });
 
@@ -96,7 +96,7 @@ async function main() {
       { employeeID: "0002", employeeName: "Sandaru Perera",  email: "jane.smith@gmail.com", telephone: "987654321",  role: Role.POSTMAN,      postalCode: "10640", password: "testpassword2" },
       { employeeID: "0003", employeeName: "Jane Smith",  email: "abc@gmail.com",        telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "00100", password: "testpassword3" },
       { employeeID: "0004", employeeName: "John Doe",  email: "bcd@gmail.com",        telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "00100", password: "testpassword4" },
-      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "00100", password: "testpassword5" },
+      { employeeID: "0005", employeeName: "Tharusha Perera",  email: "sahan@gmail.com",      telephone: "987654321",  role: Role.DISPATCHER,   postalCode: "10640", password: "testpassword5" },
       { employeeID: "0006", employeeName: "Sanuda",      email: "sanuda@gmail.com",     telephone: "987654321",  role: Role.SUPERVISOR,   postalCode: "10640", password: "testpassword6" },
       { employeeID: "0007", employeeName: "Malith",      email: "Malith@gmail.com",     telephone: "987654321",  role: Role.POSTMASTER,   postalCode: "10640", password: "testpassword7" },
       { employeeID: "0008", employeeName: "Sahan",       email: "Sahan@gmail.com",      telephone: "987654321",  role: Role.RECEPTIONIST, postalCode: "10640", password: "testpassword8" },

@@ -122,7 +122,7 @@ export default function RevenueReports() {
     <Select 
             onValueChange={(newValue) => setType(newValue)}>
       <SelectTrigger className="w-[180px] mt-2">
-        <SelectValue placeholder="Select Report Type" onSelect={()=>setType(Select.name)} />
+        <SelectValue placeholder="Revenue" onSelect={()=>setType(Select.name)} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

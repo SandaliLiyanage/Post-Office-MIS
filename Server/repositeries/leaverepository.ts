@@ -35,6 +35,7 @@ class LeaveRepository{
                 startDate: {
                   lt: new Date()
                 }
+                
             },
             include:{
               employee: true

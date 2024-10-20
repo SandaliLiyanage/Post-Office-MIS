@@ -9,7 +9,7 @@ import {columnsforDelivery} from './columnsdelivery';
 import {IP} from '../../../../config';
 
 export default function Bundle() {
-  const {user, removeUser} = useUser();
+  const {user} = useUser();
   const [transferBundle, setTransferBundle] = useState<IBundle[]>([]);
   const [deliveryBundle, setDeliveryBundle] = useState<IBundle[]>([]);
   const [loading, setLoading] = useState(true);

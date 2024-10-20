@@ -19,19 +19,19 @@ import { useUser } from "@/pages/authentication/usercontext";
 import axios from "axios";
 import { generateInvoice } from "./generatePDF";
 import { useNavigate } from "react-router-dom";
-
+import { IP } from "../../../../config";
 export function CardMail({ mailArray, transaction }: CardMailProps) {
   const navigate = useNavigate();
   const { toast } = useToast();
   const { user } = useUser();
   const contentRef = useRef<HTMLDivElement>(null);
-  const reactToPrintFn = useReactToPrint({ contentRef });
   const [mailDetailsArray, setMailDetailsArray] =
     useState<MailDetailsType[]>(mailArray);
   const [confirmedMailArray, setConfrimedMailArray] = useState<MailResponse[]>(
     []
   );
   const onConfirmTransaction = async function (mailArray: MailDetailsType[]) {
+    console.log("in confirm transaction");
     if (mailArray.length > 0) {
       toast({
         description: "Transaction Completed",
@@ -40,9 +40,10 @@ export function CardMail({ mailArray, transaction }: CardMailProps) {
       const localCustomerStorage = localStorage.getItem("customerDetails");
 
       if (localCustomerStorage) {
+        console.log("axios post");
         const customerDetails = JSON.parse(localCustomerStorage);
         const response = await axios.post(
-          "http://localhost:5000/mail/mailDetails",
+          `http://${IP}/mail/mailDetails`,
           {
             mailArray,
             postalCode,
@@ -55,8 +56,8 @@ export function CardMail({ mailArray, transaction }: CardMailProps) {
           }
         );
         const total = response.data.total;
-        console.log(total);
-        console.log(total);
+        console.log(response.data.total);
+        console.log("transaction");
         generateInvoice(
           customerDetails.name,
           customerDetails.telephone,

@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useUser } from '../../authentication/usercontext';
 import { Label } from "../../../components/ui/label";
-import { Edit } from 'lucide-react';
-import { Button } from "../../../components/ui/button";
+import {IP} from "../../../../config"
 interface AreaAssignments{
   area: string,
   employeeName: string,
@@ -21,7 +20,7 @@ export default function MailDelivery() {
         try{
             if(user){
             console.log("he")
-            const response= await axios.post('http://localhost:5000/delivery/areaDet',
+            const response= await axios.post(`http://${IP}/delivery/areaDet`,
                 {postalCode: user.postalCode},
                 {
                     headers: {

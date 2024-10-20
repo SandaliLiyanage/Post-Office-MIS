@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { useUser } from '../../authentication/usercontext';
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
+import {IP} from "../../../../config"
 export default function Retaddress() {
     const [search, setSearch] = useState<string>("");
     const [searchSelect, setSearchSelect] = useState<boolean>(false);
@@ -30,7 +31,7 @@ export default function Retaddress() {
           const mailID = queryParams.get('mailID'); 
           console.log(mailID, addressID, postalCode)
           const  res = await axios.post(
-              "http://localhost:5000/mail/changeaddress",
+              `http://${IP}/mail/changeaddress`,
             {addressID, mailID, postalCode}
           )
           setSearch("")
@@ -54,7 +55,7 @@ export default function Retaddress() {
           if (search !== "") {
             console.log("this is search", search)
             const result= await axios.post(
-              "http://localhost:5000/mail/addresssearch",
+              `http://${IP}/mail/addresssearch`,
               {search}
             );
             console.log(result.data)

@@ -23,7 +23,7 @@ import Chart from './chart'
 import axios from "axios";
 import { cn } from "@/lib/utils" 
 import { useUser } from '../authentication/usercontext';
-import { Label } from "@/components/ui/label";
+import {IP} from '../../../config'
 
 export interface IChartData {
   month: string,
@@ -44,7 +44,7 @@ export default function RevenueReports() {
   useEffect(()=>{
     async function generateReports(){
       console.log("in generate reports", startDate,endDate, type)
-      const response = await axios.post("http://localhost:5000/mail/reportData", {startDate, endDate, type},
+      const response = await axios.post(`http://${IP}/mail/reportData`, {startDate, endDate, type},
         {
           headers: {
             Authorization: `Bearer ${user?.token}`, 

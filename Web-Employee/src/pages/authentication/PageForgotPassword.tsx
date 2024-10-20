@@ -18,7 +18,7 @@ import { Input } from "../../components/ui/input"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
 import { useState } from "react"
-
+import {IP } from "../../../config"
 const formSchema = z.object({
   employeeID: z.string().min(1, {
     message: "Invalid EmployeeID",
@@ -42,10 +42,10 @@ export default function ForgotPassword() {
     console.log("generating OTP ---  in front end")
     localStorage.setItem("employeeID", values.employeeID)
     console.log("hehe", values.employeeID)
-    const result = await axios.post("http://localhost:5000/auth/validateID", values)
+    const result = await axios.post(`http://${IP}/auth/validateID`, values)
     console.log(result)
     if(result.data == true){
-      const result =await axios.post("http://localhost:5000/auth/generateOTP", values)
+      const result =await axios.post(`http://${IP}/auth/generateOTP`, values)
       navigate(`/validateOTP?employeeID=${values.employeeID}`)
       console.log(result)}
     else{

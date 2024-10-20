@@ -3,7 +3,7 @@ import { useUser } from '../../authentication/usercontext';
 import axios from 'axios';
 import { DataTable } from './datatablemail';
 import {IReturnMail, columns} from './columnsreturn';
-
+import {IP} from '../../../../config';
 export default function ReturnMail() {
     const {user} = useUser();
     const [loading, setLoading] = useState(true);
@@ -14,7 +14,7 @@ export default function ReturnMail() {
           try { 
             if(user){
             console.log(user?.token)
-            const response = await axios.post('http://localhost:5000/mail/returnmail', 
+            const response = await axios.post(`http://${IP}/mail/returnmail`, 
               {postalCode: user.postalCode},
               {
                 headers: {

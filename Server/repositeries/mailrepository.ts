@@ -63,7 +63,6 @@ class MailRepository {
           mailstatus: mailstatus,
         },
       });
-
       return res;
     } catch (error) {
       throw error;

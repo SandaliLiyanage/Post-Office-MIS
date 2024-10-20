@@ -16,7 +16,7 @@ import axios from 'axios';
 import {Toaster} from "../../../components/ui/toaster"
 import { useToast } from "../../../hooks/use-toast";
 import { useUser } from "@/pages/authentication/usercontext";
-
+import { IP } from "../../../../config";
 const formSchema = z.object({
     addressNo: z.string().min(1, {}),
     streetName: z.string().min(2, {}),
@@ -37,7 +37,7 @@ const form = useForm<z.infer<typeof formSchema>>({
 async function handleSubmit(values: z.infer<typeof formSchema>){
     console.log(values, "hierer")
     const response = await axios.post(
-      "http://localhost:5000/address/addAddress",
+      `http://${IP}/address/addAddress`,
       {
         values
       },

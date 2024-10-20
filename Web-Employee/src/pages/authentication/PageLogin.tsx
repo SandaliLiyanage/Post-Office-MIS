@@ -19,7 +19,7 @@ import { useUser } from './usercontext';
 import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
 import logo from "../../assets/logo1.jpg"
-
+import { IP} from "../../../config"
 
 
 const formSchema = z.object({
@@ -44,9 +44,9 @@ export default function Login() {
   async function handleLoginData(values: z.infer<typeof formSchema>) {
     try {
       console.log("Submitting login data", values)
-      const validateID = await axios.post("http://localhost:5000/auth/validateID", values)
+      const validateID = await axios.post(`http://${IP}/auth/validateID`, values)
       if(validateID.data == true){
-      const user = await axios.post("http://localhost:5000/auth/login", values)
+      const user = await axios.post(`http://${IP}/auth/login`, values)
       if(user.data.login == true){
       console.log(user.data.login)
       console.log("Data submitted successfully", user.data)

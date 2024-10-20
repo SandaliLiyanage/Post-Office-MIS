@@ -17,7 +17,7 @@ import {
 import { Input } from "../../components/ui/input"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
-
+import { IP } from "../../../config" 
 const formSchema = z.object({
   newPassword: z.string(),
   passwordCopy: z.string().min(5, {
@@ -41,7 +41,7 @@ export default function SetPassword() {
     const employeeID = queryParams.get('employeeID'); 
     console.log(employeeID)
     if(employeeID){
-    const response = await axios.post("http://localhost:5000/auth/setpassword", {
+    const response = await axios.post(`http://${IP}/auth/setpassword`, {
       values, employeeID} );
     console.log(response.data)
     form.reset()

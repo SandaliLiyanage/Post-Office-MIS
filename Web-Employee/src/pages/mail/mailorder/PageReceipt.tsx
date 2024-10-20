@@ -1,6 +1,5 @@
 import { Button } from "../../../components/ui/button";
 import { Printer } from 'lucide-react';
-import { Trash } from 'lucide-react';
 import JsBarcode from 'jsbarcode';
 import { useRef } from "react";
 import { useReactToPrint } from 'react-to-print';

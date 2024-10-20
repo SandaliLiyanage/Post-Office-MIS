@@ -9,7 +9,7 @@ import { IP } from '../../../config';
 
 
 export default function EmployeeRecords() {
-  const {removeUser, user} = useUser()
+  const {user} = useUser()
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);

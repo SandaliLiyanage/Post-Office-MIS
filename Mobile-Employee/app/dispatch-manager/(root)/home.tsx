@@ -118,7 +118,7 @@ const Home = () => {
           <Text style={styles.deliveriesTitle}>Bundles Remaining</Text>
 
           <View style={styles.deliveryTypes}>
-            {/* Normal mail */}
+            {/* Created */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
                 {deliveryCounts.NORMAL_MAIL !== undefined
@@ -128,7 +128,7 @@ const Home = () => {
               <Text style={styles.deliveryLabel}>Created</Text>
             </View>
 
-            {/* Parcel */}
+            {/* Arrived */}
             <View style={styles.deliveryItem}>
               <Text style={styles.deliveryCount}>
                 {deliveryCounts.COURIER !== undefined

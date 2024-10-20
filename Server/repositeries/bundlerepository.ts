@@ -105,11 +105,11 @@ class BundleRepository {
           return null;
         }
 
-        // Then, fetch the bundles where the bundle status is ARRIVED and the current postal code matches the employee's postal code
+        // Then, fetch the bundles where the bundle status is CREATED and the current postal code matches the employee's postal code
         const res = await this.prisma.bundle.findMany({
           where: {
             currentPostCode: employee.postalCode, // Match the postal code of the employee
-            bundleStatus: BundleStatus.CREATED, // Bundle status is ARRIVED
+            bundleStatus: BundleStatus.CREATED, // Bundle status is CREATED
           },
         });
         console.log("Created Bundles List:", res);

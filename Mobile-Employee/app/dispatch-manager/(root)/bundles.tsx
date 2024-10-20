@@ -52,8 +52,8 @@ const SectionHeaderWithEmptyMessage = ({
 // Bundles screen component
 const Bundles = () => {
   const { user } = useUser();
-  //const employeeID = user?.employeeID;
-  const employeeID = "0005";
+  const employeeID = user?.employeeID;
+  //const employeeID = "0005";
   const [bundleSections, setBundleSections] = useState<BundleSection[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedBundle, setselectedBundle] = useState<Bundle | null>(null);

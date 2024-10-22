@@ -1,6 +1,6 @@
 import NavButton from "../components/custom/sidebutton";
 import { useState, useEffect } from "react";
-import { useUser } from "@/pages/authentication/usercontext"
+import { useUser } from "@/pages/auth/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {

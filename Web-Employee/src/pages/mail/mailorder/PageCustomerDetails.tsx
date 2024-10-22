@@ -20,7 +20,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Input } from "../../../components/ui/input";
-import { useUser } from "@/pages/authentication/usercontext";
+import { useUser } from "@/pages/auth/usercontext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";

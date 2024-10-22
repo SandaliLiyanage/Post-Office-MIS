@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useUser } from '../../authentication/usercontext';
+import { useUser } from '../../auth/usercontext';
 import { Label } from "../../../components/ui/label";
 import {IP} from "../../../../config"
 interface AreaAssignments{

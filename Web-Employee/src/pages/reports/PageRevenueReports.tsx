@@ -22,7 +22,7 @@ import {useEffect, useState} from 'react';
 import Chart from './chart'
 import axios from "axios";
 import { cn } from "@/lib/utils" 
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import {IP} from '../../../config'
 
 export interface IChartData {

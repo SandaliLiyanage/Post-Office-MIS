@@ -1,4 +1,4 @@
-import { useUser } from "../pages/authentication/usercontext";
+import { useUser } from "../pages/auth/usercontext";
 import {
   Popover,
   PopoverContent,

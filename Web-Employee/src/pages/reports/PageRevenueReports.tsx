@@ -22,7 +22,7 @@ import {useEffect, useState} from 'react';
 import Chart from './chart'
 import axios from "axios";
 import { cn } from "@/lib/utils" 
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import {IP} from '../../../config'
 
 export interface IChartData {
@@ -32,7 +32,7 @@ export interface IChartData {
   courier: string,
 }
 export default function RevenueReports() {
-  const {user, removeUser} = useUser();
+  const {user} = useUser();
   const today = new Date();  // Get today's date
   const lastYearTimestamp = today.setFullYear(today.getFullYear() - 1);  // Modify the year
   const lastYearDate = new Date(lastYearTimestamp);
@@ -122,7 +122,7 @@ export default function RevenueReports() {
     <Select 
             onValueChange={(newValue) => setType(newValue)}>
       <SelectTrigger className="w-[180px] mt-2">
-        <SelectValue placeholder="Select Report Type" onSelect={()=>setType(Select.name)} />
+        <SelectValue placeholder="Revenue" onSelect={()=>setType(Select.name)} />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>

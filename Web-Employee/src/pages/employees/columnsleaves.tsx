@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { CheckCheck, X } from "lucide-react";
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import axios from "axios";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "../mail/mails/formatdate"
@@ -64,7 +64,7 @@ const columns: ColumnDef<Leave>[] = [
       header: "Request Status",
       cell: ({ row }) => {
         const status = row.original.RequestStatus
-
+       
         const getStatusBadge = (status: string) => {
           switch (status) {
             case "PENDING":
@@ -87,7 +87,7 @@ const columns: ColumnDef<Leave>[] = [
         id: "actions",
         cell: ({ row }) => {
           const employeeID = row.original.employeeID; // Assigning employeeID
-          const {removeUser, user} = useUser()
+          const {user} = useUser()
           async function changeStatus(status: string) {
             const res = await axios.post(`http://${IP}/employee/updateStatus`, 
               {status: status, employeeID: employeeID},
@@ -102,10 +102,10 @@ const columns: ColumnDef<Leave>[] = [
           return (
             <div>
               {row.original.RequestStatus === "PENDING" && <div> 
-              <Button className="btn bg-white hover:bg-slate-300" size="icon" onClick={()=>changeStatus("APPROVED")}>
+              <Button className="btn bg-white hover:bg-slate-300" size="icon" onClick={()=>{changeStatus("APPROVED");  location.reload(); }}>
                 <CheckCheck color="black" size={16} />
               </Button>
-              <Button className="btn bg-white hover:bg-slate-300" size="icon" onClick={()=>changeStatus("REJECTED")}>
+              <Button className="btn bg-white hover:bg-slate-300" size="icon" onClick={()=>{changeStatus("REJECTED"); location.reload()}}>
                 <X color="black" size={16} />
               </Button>
             </div>}

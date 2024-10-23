@@ -1,17 +1,17 @@
 import {Leave, columns} from './columnsleaves';
 import {DataTable} from './dataleaves';
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
 import { IP } from '../../../config';
 
 export default function PageViewLeaves() {
-  const {removeUser, user} = useUser()
+  const {user} = useUser()
   const [leaves, setLeaves] = useState<Leave[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
-  const navigate = useNavigate();
+  
+  //fetching employee records on page load
   useEffect(() => {
     async function fetchEmployees() {
       try {
@@ -46,7 +46,7 @@ export default function PageViewLeaves() {
   return (
     <div className="pl-8 pr-8 ml-60 min-h-screen flex-col bg-stone-300 bg-opacity-15">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
-        <p className="text-xl font-bold">Employee Accounts</p>
+        <p className="text-xl font-bold">Requests for Leaves</p>
     </div>
     <div className="flex flex-col space-y-4 border-0">
       <DataTable columns={columns} data={leaves} />

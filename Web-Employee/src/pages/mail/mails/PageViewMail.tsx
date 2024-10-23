@@ -1,9 +1,8 @@
 import {IMail, columns} from './columnsmail';
 import { DataTable } from './datatablemail';
-import { useUser } from '../../authentication/usercontext';
+import { useUser } from '../../auth/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
-import { Input } from '../../../components/ui/input';
 import {IP} from '../../../../config';
 export default function Mails() {
   const {user} = useUser();

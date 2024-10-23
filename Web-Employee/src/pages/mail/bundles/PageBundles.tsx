@@ -1,6 +1,6 @@
 import {IBundle, columnstoTransfer} from './columnsbundles';
 import {DataTable} from './datatablebundles';
-import { useUser } from '../../authentication/usercontext';
+import { useUser } from '../../auth/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import { Input } from '../../../components/ui/input';
@@ -9,7 +9,7 @@ import {columnsforDelivery} from './columnsdelivery';
 import {IP} from '../../../../config';
 
 export default function Bundle() {
-  const {user, removeUser} = useUser();
+  const {user} = useUser();
   const [transferBundle, setTransferBundle] = useState<IBundle[]>([]);
   const [deliveryBundle, setDeliveryBundle] = useState<IBundle[]>([]);
   const [loading, setLoading] = useState(true);

@@ -38,7 +38,7 @@ const columns: ColumnDef<IMail>[] = [
       },
     },  
     {
-      accessorKey: "transaction.date1",
+      accessorKey: "transaction.date",
       header: "Date",
       cell: ({ row }) => {
 
@@ -59,7 +59,7 @@ const columns: ColumnDef<IMail>[] = [
     { 
       
       header: "Delivery Status",
-      id: "actions",
+      id: "actions1",
       cell: ({ row }) => {
         const mailStatus = row.original.mailstatus; // Access mail status from the row data
     
@@ -80,9 +80,7 @@ const columns: ColumnDef<IMail>[] = [
           }
           
         }
-        const sortByStatus = (status: string) => {
-          
-        }
+        
         return getStatusBadge(mailStatus); 
       }
     },

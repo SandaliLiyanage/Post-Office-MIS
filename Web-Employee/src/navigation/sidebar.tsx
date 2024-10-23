@@ -1,6 +1,6 @@
 import NavButton from "../components/custom/sidebutton";
 import { useState, useEffect } from "react";
-import { useUser } from "@/pages/authentication/usercontext"
+import { useUser } from "@/pages/auth/usercontext"
 import { useNavigate } from "react-router-dom";
 
 export default function SideBar() {
@@ -92,11 +92,13 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
       {user?.role === 'POSTMASTER' && (
           <>
             {ViewMail}
-            {EmployeeRecords}
-            {EmployeeRegistrations}
-            {RevenueReports}
-            {PostmanAssignments}
             {ViewLeaves}
+            {RevenueReports}
+            {EmployeeRecords}
+            {PostmanAssignments}
+            {EmployeeRegistrations}
+            
+            
           </>
         )}
         {user?.role === 'SUPERVISOR' && (

@@ -4,7 +4,6 @@ import { Button } from "../../components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useNavigate } from 'react-router-dom';
 import { Input } from '@/components/ui/input';
 import {
   FormDescription,
@@ -23,7 +22,7 @@ import {
   SelectValue,
 } from "../../components/ui/select"
 import axios from "axios"
-import {useUser} from "../authentication/usercontext"
+import {useUser} from "../auth/usercontext"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
 import { IP } from "../../../config"
@@ -50,7 +49,6 @@ const formSchema = z.object({
 export default function Employeeupdate() {
   const { toast } = useToast()
 
-  const navigate = useNavigate();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,13 +57,13 @@ export default function Employeeupdate() {
     },});	
   const location = useLocation();
   const employee = location.state;
-  const {removeUser, user} = useUser()
+  const { user} = useUser()
 
+  //submitting the form to update employee records	
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
       const employeeID =employee.employeeID;
       console.log(employeeID);
-      console.log("heeh");
       const response = await axios.post(
         `http://${IP}employee/update`,
         {values,
@@ -132,9 +130,6 @@ export default function Employeeupdate() {
                 </FormItem>
                  )}
                 />
-            {/* <div className='grid grid-2'>
-            <AddressSearch/>
-            </div> */}
             <FormField
               control={form.control}
               name="telephone"
@@ -164,7 +159,6 @@ export default function Employeeupdate() {
                   <FormMessage />
                   <FormDescription>
                 Existing email: {employee.email}
-
               </FormDescription>
                 </FormItem>
                  )}

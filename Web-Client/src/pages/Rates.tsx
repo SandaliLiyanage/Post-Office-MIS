@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import NavBar from "../components/ui/NavBar";
 import axios from "axios"; // Import axios for HTTP requests
+import {IP} from '../../config'
+
 
 const CalculatePostalRates: React.FC = () => {
   const [weight, setWeight] = useState<string>(""); // Stores the weight input by the user
@@ -29,7 +31,7 @@ const CalculatePostalRates: React.FC = () => {
     try {
       // Make a POST request to the backend to calculate the postal rate
       const response = await axios.post(
-        "http://localhost:5000/mail/calculatePrice",
+        `http://${IP}/mail/calculatePrice`,
         {
           mailType,
           weight: weightNumber,

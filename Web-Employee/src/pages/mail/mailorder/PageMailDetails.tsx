@@ -1,7 +1,6 @@
 "use client";
-import { generateInvoice } from "./generatePDF";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import { useState } from "react";
@@ -15,7 +14,7 @@ import {
   FormMessage,
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
-import { useUser } from "@/pages/authentication/usercontext";
+import { useUser } from "@/pages/auth/usercontext";
 import { useNavigate } from "react-router-dom";
 import {
   Command,
@@ -87,11 +86,8 @@ export default function MailDetails() {
     [key: string]: number;
   } | null>(null);
   const [mailArray, setMailArray] = useState<MailDetailsType[]>([]);
-  const [transaction, setTransaction] = useState<boolean>(false);
+  const transaction = false;
   const navigate = useNavigate();
-  const [confirmedMailArray, setConfrimedMailArray] = useState<MailResponse[]>(
-    []
-  );
   const [customerName, setCustomerName] = useState<String>("");
   const [customerAddress, setCustomerAddress] = useState<String>("");
   const form = useForm<z.infer<typeof formSchema>>({

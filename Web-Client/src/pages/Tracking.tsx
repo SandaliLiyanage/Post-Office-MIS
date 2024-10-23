@@ -21,9 +21,7 @@ const TrackYourMail: React.FC = () => {
   const [error, setError] = useState<string | null>(null); // State for error message
 
   // Function to fetch tracking information from the backend API
-  const fetchTrackingInfo = async (
-    transactionID: number
-  ): Promise<TrackingInfo | null> => {
+  const fetchTrackingInfo = async (transactionID: number): Promise<TrackingInfo | null> => {
     try {
       const response = await axios.post(`http://${IP}/mail/track`, {
         transactionID,
@@ -34,8 +32,7 @@ const TrackYourMail: React.FC = () => {
         const resData = response.data.data[0]; // Use the first item in the array
 
         // Optional: map enum to user-friendly status
-        const userFriendlyMailStatus =
-          MailStatus[resData.mailstatus as keyof typeof MailStatus];
+        const userFriendlyMailStatus = MailStatus[resData.mailstatus as keyof typeof MailStatus];
 
         return {
           recepientName: resData.recepientName,
@@ -43,6 +40,7 @@ const TrackYourMail: React.FC = () => {
           postOfficeName: resData.postOfficeName,
         };
       } else {
+        // If the response indicates failure, throw an error
         throw new Error(response.data.message);
       }
     } catch (error) {
@@ -62,18 +60,14 @@ const TrackYourMail: React.FC = () => {
     setError(null); // Clear any previous errors
     try {
       const info = await fetchTrackingInfo(num);
-      //console.log("Fetched dataaaaaa");
-      //console.log(info);
       if (info) {
         setTrackingInfo(info); // Set the tracking information
-        //console.log(trackingInfo);
       } else {
         setTrackingInfo(null); // No info found
         setError("No tracking information found for this number.");
       }
     } catch (error) {
-      const errorMessage =
-        (error as Error).message || "Failed to fetch tracking information.";
+      const errorMessage = (error as Error).message || "Failed to fetch tracking information.";
       setError(errorMessage); // Set the error message
       setTrackingInfo(null); // Clear previous tracking info
     }
@@ -83,12 +77,7 @@ const TrackYourMail: React.FC = () => {
     <div>
       <NavBar />
       <Container>
-        <Typography
-          variant="h3"
-          gutterBottom
-          align="center"
-          sx={{ marginY: "20px" }}
-        >
+        <Typography variant="h3" gutterBottom align="center" sx={{ marginY: "20px" }}>
           Track Your Mail
         </Typography>
 

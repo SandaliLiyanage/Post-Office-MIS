@@ -42,7 +42,7 @@ export default function MailDelivery() {
     <div className="pl-8 pr-8 ml-60 bg-stone-300 bg-opacity-15 min-h-screen flex-col">
       <div className="top-16 pt-8 pb-8 mt-16 flex justify-between ">
         <div className="flex justify-start">
-          <p className="text-xl font-bold">Mail and Area Assignments</p>
+          <p className="text-xl font-bold" data-testId="cypress-postmanAssignments-title">Mail and Area Assignments</p>
         </div>
       {/* <div className="flex justify-end">
         <Button className="btn bg-white " variant="outline"  size="icon"><Edit color="black" size={18} className="hover:none"></Edit></Button>

@@ -233,13 +233,11 @@ export const updateMailStatus = async (req: Request, res: Response) => {
 export const getTrackingDetails = async (req: Request, res: Response) => {
   try {
     const { transactionID } = req.body; // Get transactionID from the request body
-    console.log(
-      `Fetching tracking details for Transaction ID: ${transactionID}`
-    );
+    console.log(`Fetching tracking details for Transaction ID: ${transactionID}`);
 
     const mailDetails = await mailRepository.trackMail(transactionID);
 
-    if (mailDetails) {
+    if (mailDetails && mailDetails.length > 0) { // Check if mailDetails is an array and has elements
       res.status(200).json({
         success: true,
         data: mailDetails,
@@ -258,6 +256,7 @@ export const getTrackingDetails = async (req: Request, res: Response) => {
     });
   }
 };
+
 
 export const estimateDeliveryTime = async (req: Request, res: Response) => {
   try {

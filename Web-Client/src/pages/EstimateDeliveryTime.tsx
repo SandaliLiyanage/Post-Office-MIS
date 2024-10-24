@@ -75,6 +75,7 @@ const EstimateDeliveryTime: React.FC = () => {
           value={trackingNumber}
           onChange={(e) => setTrackingNumber(e.target.value)}
           sx={{ marginBottom: "20px", width: "300px" }}
+          placeholder="Tracking Number"
         />
 
         {/* Estimate Button */}

@@ -47,30 +47,32 @@ export default function Nav() {
     console.log("user iss", user);
   }
   return (
-    <div className="fixed top-0 w-full z-10 bg-slate-800 h-16 flex justify-between shadow-sm">
+    <div className="fixed top-0 w-full z-10 bg-slate-900 h-16 flex justify-between shadow-sm">
       <div className="p-4 flex justify-start">
         {/* <img src={logo} alt="Post Office Logo"  /> */}
         <p className="text-xl text-white">Post-Office-{user?.postOfficeName}</p>
       </div>
       <div className="flex justify-end">
-        {/* <Button onClick={handleClick} className="mt-3 bg-slate-800"><Bell className="bg-slate-800"></Bell></Button> */}
-
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button onClick={handleClick} className="mt-3 bg-slate-800">
+        <Sheet>
+          <SheetTrigger asChild>
+          <Button onClick={handleClick} className="mt-3 bg-slate-900">
               <User className="bg-slate-800"></User>
             </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-80 bg-slate-200 border-none border mr-5">
+          </SheetTrigger>
+          <SheetContent>
+            <SheetDescription></SheetDescription>
+            <SheetHeader>
+              <SheetTitle className="text-black">Profile</SheetTitle>
+            </SheetHeader>
             <div className="grid gap-4 ">
               <div className="space-y-2 ">
-                <h4 className="font-medium leading-none flex justify-center text-black">
+                <h4 className="font-medium leading-none text-black">
                   You are logged in as: {user?.name}
                 </h4>
-                <p className="text-sm flex justify-center text-black">
+                <p className="text-sm  text-black">
                   {user?.email}
                 </p>
-                <p className="text-sm flex justify-center text-black">
+                <p className="text-sm text-black">
                   {user?.role.toLocaleLowerCase()}
                 </p>
               </div>
@@ -94,11 +96,17 @@ export default function Nav() {
                 </Button>
               </div>
             </div>
-          </PopoverContent>
-        </Popover>
+
+            <SheetFooter>
+              <SheetClose asChild>
+                {/* <Button type="submit">Save changes</Button> */}
+              </SheetClose>
+            </SheetFooter>
+          </SheetContent>
+        </Sheet>
         <Sheet>
           <SheetTrigger asChild>
-            <Button className="mt-3 bg-slate-800 ">
+            <Button className="mt-3 bg-slate-900 ">
               <Bell
                 className="bg-slate-800"
                 onClick={() => {
@@ -135,7 +143,7 @@ export default function Nav() {
           </SheetContent>
         </Sheet>
         <Button
-          className="mt-3 pt-1 pb-1 mr-5 bg-slate-800 rounded-full text-white border border-white hover:bg-slate-600 hover:text-white"
+          className="mt-3 pt-1 pb-1 mr-5 bg-slate-900 rounded-full text-white border border-white hover:bg-slate-600 hover:text-white"
           variant="outline"
         >
           {user?.role}

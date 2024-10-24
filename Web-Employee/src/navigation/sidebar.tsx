@@ -2,9 +2,9 @@ import NavButton from "../components/custom/sidebutton";
 import { useState, useEffect } from "react";
 import { useUser } from "@/pages/auth/usercontext"
 import { useNavigate } from "react-router-dom";
-
+import { HandIcon } from "lucide-react";
 export default function SideBar() {
-  const clickedColour: string = 'bg-slate-500 bg-blue-300 bg-opacity-90 text-black rounded-sm ';
+  const clickedColour: string = 'bg-slate-900 bg-blue-300 bg-opacity-90 text-white rounded-sm ';
   const normalColour: string = 'hover:bg-slate-90 text-white hover:bg-opacity-90 rounded-sm p-2';
 
   // const clickedColour: string = 'bg-slate-800   rounded text-white';
@@ -35,7 +35,7 @@ export default function SideBar() {
                           navigate("/dashboard/revenueReports")
                         }}>Reports</NavButton>
 
-  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' || activeButton === 'receipt'? clickedColour : normalColour}`} 
+  const MailOrder = <NavButton className={`${activeButton === 'mailorder'|| activeButton === 'maildetails' || activeButton === 'receipt'? clickedColour : normalColour} `} 
                         onClick={() => {
                           handleClick('mailorder');
                           navigate("/dashboard/mailorder");
@@ -87,10 +87,12 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
 
   return (
     <div className="mt-16 fixed left-0 top-0 h-full shadow-lg">
-      <nav className="w-60 h-full bg-slate-800 shadow-xl">
+      <nav className="w-60 h-full bg-slate-800 shadow-xl pt-10">
 
       {user?.role === 'POSTMASTER' && (
           <>
+            {MailOrder}
+
             {ViewMail}
             {ViewLeaves}
             {RevenueReports}
@@ -103,6 +105,7 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
         )}
         {user?.role === 'SUPERVISOR' && (
           <>
+            {MailOrder}
             {ViewMail}
             {MailBundles}
             {PostmanAssignments}
@@ -112,8 +115,8 @@ const LeaveRequests = <NavButton className={`${activeButton === 'leaverequests'?
         )}
         {user?.role === 'RECEPTIONIST' && (
           <>
-            {ViewMail}
             {MailOrder}
+            {ViewMail}
             {FailedToDeliver}
             {AddNewAddress}
             {LeaveRequests}

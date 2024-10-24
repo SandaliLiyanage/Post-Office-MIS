@@ -67,7 +67,13 @@ class TrackMail {
         // Get the estimated duration from the response
         if (response.data.routes.length > 0) {
             const duration = response.data.routes[0].legs[0].duration; // Get estimated duration
-            return `Estimated delivery time is ${duration.text}`; // Return the estimated time
+            // Extract the duration in minutes
+            const durationInMinutes = duration.value / 60; // 'duration.value' is in seconds, so we convert to minutes
+
+            // Format the time to include 1 day
+            const formattedDuration = `1 day and ${Math.round(durationInMinutes)} minutes`;
+
+            return `Estimated delivery time is ${formattedDuration}`;
         } else {
             throw new Error("No routes found for the given locations");
         }

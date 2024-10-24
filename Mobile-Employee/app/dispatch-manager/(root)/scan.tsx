@@ -13,13 +13,14 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../../auth/usercontext";
-//const { user } = useUser();
-//const employeeID = user?.employeeID;
-const employeeID = "0005";
+
+//const employeeID = "0005";
 import { IP } from "../../../config";
 
 // Scan screen
 export default function Scan() {
+  const { user } = useUser();
+  const employeeID = user?.employeeID;
   const [hasPermission, setHasPermission] = useState(false); // State variable to track if the user has granted camera permissions
   interface BundleData {
     bundleID: string;

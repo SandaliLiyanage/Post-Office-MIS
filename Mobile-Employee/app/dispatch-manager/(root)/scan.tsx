@@ -99,6 +99,8 @@ export default function Scan() {
   const markAsArrived = async () => {
     if (bundleData) {
       try {
+        console.log("Bundle Data3", bundleData);
+        console.log("Bundle ID", bundleData.bundleID);
         const response = await fetch(
           `http://${IP}:5000/bundles/update-arrived`,
           {

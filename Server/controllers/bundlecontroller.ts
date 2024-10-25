@@ -327,8 +327,8 @@ export const findBundle = async (req: Request, res: Response) => {
       routeNameArray = [];
     }
 
-    console.log("Bundle found:", bundle);
-    return res.status(200).json(bundle);
+    console.log("Bundle found:", bundle[0]);
+    return res.status(200).json(bundle[0]);
   } catch (error) {
     console.error("Error in findBundle controller:", error);
     return res.status(500).json({ error: "Internal server error" });

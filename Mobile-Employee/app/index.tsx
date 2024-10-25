@@ -7,7 +7,6 @@ const Index = () => {
   return <Redirect href="/auth/log-in" />;
   //return <Redirect href="/postman/home" />;
   //return <Redirect href="/dispatch-manager/home" />;
-  //return <Redirect href="/postman/add-address" />;
 };
 
 export default Index;

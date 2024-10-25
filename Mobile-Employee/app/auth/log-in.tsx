@@ -5,7 +5,15 @@ import { useForm, Controller } from "react-hook-form";
 import { router } from "expo-router";
 import { z } from "zod";
 import axios from "axios";
-import { View, Text, TextInput, StyleSheet, Button } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import { useToast } from "react-native-toast-notifications";
 import { useUser } from "./usercontext";
 import { IP } from "../../config";
@@ -153,13 +161,23 @@ export default function Login() {
         />
       </View>
 
-      <View style={styles.buttonContainer}>
+      {/* <View style={styles.buttonContainer}>
         <Button
           title="Log in"
           onPress={form.handleSubmit(handleLoginData)}
           color="#282828"
         />
-      </View>
+      </View> */}
+
+      <Pressable
+        style={({ pressed }) => [
+          styles.button,
+          { backgroundColor: pressed ? "#565656" : "#282828" }, // Change color when pressed
+        ]}
+        onPress={form.handleSubmit(handleLoginData)}
+      >
+        <Text style={styles.buttonText}>Log in</Text>
+      </Pressable>
     </SafeAreaView>
   );
 }
@@ -190,8 +208,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
   },
-  buttonContainer: {
-    width: "30%",
-    marginTop: 10,
+  // buttonContainer: {
+  //   width: "30%",
+  //   marginTop: 10,
+  // },
+  button: {
+    width: "28%",
+    paddingVertical: 10,
+    paddingHorizontal: 5,
+    alignItems: "center",
+    borderRadius: 3,
+    marginTop: 11,
+  },
+  buttonText: {
+    color: "white",
+    fontWeight: "bold",
+    textTransform: "uppercase",
+    fontSize: 14,
   },
 });

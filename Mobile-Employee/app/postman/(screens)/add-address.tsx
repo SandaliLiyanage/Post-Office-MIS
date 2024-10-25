@@ -9,6 +9,7 @@ import {
 import { useRouter } from "expo-router";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { IP } from "../../../config";
+import { useUser } from "../../auth/usercontext";
 
 interface Address {
   addressID: string;
@@ -19,6 +20,8 @@ interface Address {
 }
 
 const AddAddressScreen = () => {
+  const { user } = useUser();
+  const employeeID = user?.employeeID;
   const [addresses, setAddresses] = useState<Address[]>([]);
   const router = useRouter();
   const navigation = useNavigation();
@@ -27,7 +30,7 @@ const AddAddressScreen = () => {
   const fetchAddresses = async () => {
     try {
       const response = await fetch(
-        `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=0002`
+        `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=${employeeID}`
       );
       const data = await response.json();
       setAddresses(data);

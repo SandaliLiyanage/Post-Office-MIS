@@ -14,7 +14,7 @@ import {
 } from "@expo/vector-icons";
 import { useUser } from "../../auth/usercontext";
 import { useNavigation } from "@react-navigation/native";
-import { ROUTES } from "./routes";
+import { ROUTES } from "../routes";
 import { useRouter } from "expo-router";
 
 const Settings = () => {

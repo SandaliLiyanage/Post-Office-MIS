@@ -13,13 +13,15 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../../auth/usercontext";
-//const { user } = useUser();
-//const employeeID = user?.employeeID;
-const employeeID = "0005";
+
+//const employeeID = "0005";
 import { IP } from "../../../config";
 
 // Scan screen
 export default function Scan() {
+  const { user } = useUser();
+  const employeeID = user?.employeeID;
+  const thisPostOffice = user?.postalCode;
   const [hasPermission, setHasPermission] = useState(false); // State variable to track if the user has granted camera permissions
   interface BundleData {
     bundleID: string;
@@ -59,13 +61,6 @@ export default function Scan() {
     };
   }, []);
 
-  useEffect(() => {
-    if (bundleData) {
-      console.log("Bundle Data Updated:", bundleData);
-      setModalVisible(true); // Show the modal only when bundleData is available
-    }
-  }, [bundleData]); // This effect runs whenever bundleData changes
-
   // Fetch bundle data from backend using barcode data
   const fetchBundleData = async (bundleID: string) => {
     try {
@@ -85,7 +80,7 @@ export default function Scan() {
       console.log("Bundle Data1:", data);
       setBundleData(data); // Set the fetched bundle data
       console.log("Bundle Data2", bundleData);
-      //setModalVisible(true); // Show the modal
+      setModalVisible(true); // Show the modal
     } catch (error) {
       Alert.alert(
         "Error",
@@ -98,6 +93,8 @@ export default function Scan() {
   const markAsArrived = async () => {
     if (bundleData) {
       try {
+        console.log("Bundle Data3", bundleData);
+        console.log("Bundle ID", bundleData.bundleID);
         const response = await fetch(
           `http://${IP}:5000/bundles/update-arrived`,
           {
@@ -238,20 +235,23 @@ export default function Scan() {
                   </View> */}
 
                   <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.markArrivedButton}
-                      // onPress={markAsArrived}
-                      onPress={() => {
-                        markAsArrived();
-                        qrLock.current = false; // Unlock the scanner
-                        setModalVisible(false);
-                        setBundleData(null); // Clear bundle data on close
-                      }}
-                    >
-                      <Text style={styles.markArrivedButtonText}>
-                        Mark as Arrived
-                      </Text>
-                    </TouchableOpacity>
+                    {bundleData &&
+                      bundleData.bundleStatus === "DISPATCHED" &&
+                      bundleData.currentPostCode != thisPostOffice && (
+                        <TouchableOpacity
+                          style={styles.markArrivedButton}
+                          onPress={() => {
+                            markAsArrived();
+                            qrLock.current = false; // Unlock the scanner
+                            setModalVisible(false);
+                            setBundleData(null); // Clear bundle data on close
+                          }}
+                        >
+                          <Text style={styles.markArrivedButtonText}>
+                            Mark as Arrived
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                     <TouchableOpacity
                       style={styles.closeButton}
                       onPress={() => {

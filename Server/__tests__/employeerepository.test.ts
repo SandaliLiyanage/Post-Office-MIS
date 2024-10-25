@@ -1,4 +1,4 @@
-import { EmployeeRepository } from "../repositeries/employeerepository";
+import { EmployeeRepository } from '../repositeries/employeerepository';
 import { prismaMock } from '../singleton'
 
 jest.mock('@prisma/client', () => ({

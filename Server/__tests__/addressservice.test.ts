@@ -2,7 +2,7 @@ import AddressService from '../services/addressservice';
 import { AddressRepository } from '../repositeries/addressrepository';
 
 // Mocking the AddressRepository
-jest.mock('../../repositeries/addressrepository');
+jest.mock('../repositeries/addressrepository');
 
 describe('searchSuggestions', () => {
     let addressService: AddressService;

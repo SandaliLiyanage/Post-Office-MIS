@@ -5,10 +5,10 @@ import BcryptService from "../services/cryptservice";
 import JwtService from "../services/jwtservice";
 import SessionStore from "../services/sessionstore";
 
-jest.mock('../../repositeries/employeerepository');
-jest.mock("../../services/cryptservice");
-jest.mock("../../services/jwtservice");
-jest.mock("../../services/sessionstore");
+jest.mock('../repositeries/employeerepository');
+jest.mock("../services/cryptservice");
+jest.mock("../services/jwtservice");
+jest.mock("../services/sessionstore");
 
 describe("AuthService", () => {
   let authService: AuthService;
@@ -36,7 +36,7 @@ describe("AuthService", () => {
       const res = {} as Response;
       const next = jest.fn();
 
-      jwtService.verify.mockReturnValue({ sessionId: "mockSessionId" });
+      jwtService.verify.mockReturnValue({ sessionId: "mockSessionId", role: "mockRole" });
 
       await authService.authorize(req, res, next);
 

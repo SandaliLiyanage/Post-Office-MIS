@@ -2,7 +2,7 @@ import EmployeeManagementService from '../services/employeemanagementservice';
 import { EmployeeRepository } from '../repositeries/employeerepository';
 import LeaveRepository from '../repositeries/leaverepository';
 
-jest.mock('../../repositeries/employeerepository');  // Mock the EmployeeRepository
+jest.mock('../repositeries/employeerepository');  // Mock the EmployeeRepository
 
 describe('EmployeeService', () => {
     let employeeService: EmployeeManagementService;

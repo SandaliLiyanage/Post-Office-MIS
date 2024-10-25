@@ -217,13 +217,13 @@ class BundleRepository {
   async findBundle2(bundleID: number): Promise<Bundle[]> {
     console.log("in find bundle");
     try {
-      const res = await this.prisma.bundle.findUnique({
+      const res = await this.prisma.bundle.findMany({
         where: {
           bundleID: bundleID,
         },
       });
       console.log("bundle found", res);
-      return res ? [res] : [];
+      return res;
     } catch (error) {
       throw error;
     }

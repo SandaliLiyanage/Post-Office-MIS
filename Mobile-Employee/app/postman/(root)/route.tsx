@@ -18,13 +18,18 @@ const Route = () => {
   >([]);
   const [error, setError] = useState<string | null>(null);
 
-  const API_KEY = "key"; // AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk
+  const API_KEY = "AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk"; // AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk
 
   // Fetch post office and mail item locations from the backend
   const fetchLocations = async () => {
     try {
       const { data: postOfficeData } = await axios.get(
-        `http://${IP}:5000/employee/user?employeeID=${employeeID}`
+        `http://${IP}:5000/employee/user?employeeID=${employeeID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
 
       const postOfficeStart = {
@@ -40,7 +45,12 @@ const Route = () => {
       };
 
       const { data: mailLocations } = await axios.get(
-        `http://${IP}:5000/mail/addresses?employeeID=${employeeID}`
+        `http://${IP}:5000/mail/addresses?employeeID=${employeeID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
 
       const addresses = mailLocations.map((loc: any, index: number) => ({
@@ -78,7 +88,7 @@ const Route = () => {
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&waypoints=optimize:true|${waypoints}&key=${API_KEY}`;
 
       const response = await axios.get(url);
-
+      console.log("Directions fetched:", response.data);
       if (response.data.routes && response.data.routes.length > 0) {
         const optimizedWaypoints = response.data.routes[0].waypoint_order;
 

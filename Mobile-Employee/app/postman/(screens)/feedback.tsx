@@ -9,7 +9,7 @@ import { useUser } from "../../auth/usercontext"; // Assuming you have a user co
 export default function Feedback() {
   const [feedback, setFeedback] = useState("");
   const { show } = useToast();
-  const { user } = useUser(); // Assuming user data contains employeeID
+  const { user } = useUser();
 
   const handleSubmit = async () => {
     if (feedback.trim() === "") {
@@ -25,6 +25,9 @@ export default function Feedback() {
       const response = await axios.post(`http://${IP}:5000/employee/feedback`, {
         employeeID: user?.employeeID,
         feedback,
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
       });
 
       if (response.status === 200) {

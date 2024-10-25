@@ -30,7 +30,12 @@ const AddAddressScreen = () => {
   const fetchAddresses = async () => {
     try {
       const response = await fetch(
-        `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=${employeeID}`
+        `http://${IP}:5000/address/getUnverifiedAddresses?employeeID=${employeeID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
       const data = await response.json();
       setAddresses(data);

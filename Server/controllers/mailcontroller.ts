@@ -233,11 +233,14 @@ export const updateMailStatus = async (req: Request, res: Response) => {
 export const getTrackingDetails = async (req: Request, res: Response) => {
   try {
     const { transactionID } = req.body; // Get transactionID from the request body
-    console.log(`Fetching tracking details for Transaction ID: ${transactionID}`);
+    console.log(
+      `Fetching tracking details for Transaction ID: ${transactionID}`
+    );
 
     const mailDetails = await mailRepository.trackMail(transactionID);
 
-    if (mailDetails && mailDetails.length > 0) { // Check if mailDetails is an array and has elements
+    if (mailDetails && mailDetails.length > 0) {
+      // Check if mailDetails is an array and has elements
       res.status(200).json({
         success: true,
         data: mailDetails,
@@ -257,7 +260,6 @@ export const getTrackingDetails = async (req: Request, res: Response) => {
   }
 };
 
-
 export const estimateDeliveryTime = async (req: Request, res: Response) => {
   try {
     const { bundleID } = req.body;
@@ -274,6 +276,20 @@ export const estimateDeliveryTime = async (req: Request, res: Response) => {
         .status(500)
         .json({ success: false, message: "An unknown error occurred." });
     }
+  }
+};
+
+export const getFirstMailItem = async (mailID: number) => {
+  try {
+    const mailItems = await mailRepository.getMailItem(mailID);
+    if (mailItems.length > 0) {
+      console.log("Mail items fetched:", mailItems[0]);
+      return mailItems[0]; // Return the first mail item
+    }
+    return null; // Return null if no mail items were found
+  } catch (error) {
+    console.error("Error fetching the first mail item:", error);
+    throw error; // Propagate the error
   }
 };
 

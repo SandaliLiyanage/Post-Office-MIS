@@ -17,8 +17,8 @@ import { useUser } from "../../auth/usercontext";
 const AddAddress = () => {
   const { user } = useUser();
   const [region, setRegion] = useState({
-    latitude: 6.924172260546507,
-    longitude: 79.96982292945405,
+    latitude: 6.794220242129716,
+    longitude: 79.89809827754978,
     latitudeDelta: 0.02,
     longitudeDelta: 0.02,
   });

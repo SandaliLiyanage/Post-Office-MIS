@@ -18,7 +18,7 @@ const Route = () => {
   >([]);
   const [error, setError] = useState<string | null>(null);
 
-  const API_KEY = "key"; // AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk
+  const API_KEY = "AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk"; // AIzaSyDe3AFPl_peaJB8FjA_D7uvfT66h0XuDNk
 
   // Fetch post office and mail item locations from the backend
   const fetchLocations = async () => {
@@ -88,7 +88,7 @@ const Route = () => {
       const url = `https://maps.googleapis.com/maps/api/directions/json?origin=${origin}&destination=${destination}&waypoints=optimize:true|${waypoints}&key=${API_KEY}`;
 
       const response = await axios.get(url);
-
+      console.log("Directions fetched:", response.data);
       if (response.data.routes && response.data.routes.length > 0) {
         const optimizedWaypoints = response.data.routes[0].waypoint_order;
 

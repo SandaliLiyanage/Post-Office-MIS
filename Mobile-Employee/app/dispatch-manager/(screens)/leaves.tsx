@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -6,6 +6,8 @@ import {
   TextInput,
   View,
   StyleSheet,
+  Alert,
+  ScrollView,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,6 +30,7 @@ const LeaveRequest = () => {
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(formSchema),
@@ -39,134 +42,146 @@ const LeaveRequest = () => {
       description: "",
     },
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (values: any) => {
     try {
-      console.log("Submitting leave request", values);
       const response = await axios.post(
         `http://${IP}:5000/employee/leaveRequests`,
-        values,
+        {
+          ...values,
+          leaveType: values.requestType,
+        },
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
           },
         }
       );
-      console.log("Leave request submitted", response.data);
+      setSuccessMessage("Leave request submitted successfully!");
+      reset(); // Clear the form
+      setTimeout(() => setSuccessMessage(""), 3000); // Hide the message after 3 seconds
     } catch (error) {
       console.error("Error submitting leave request", error);
+      Alert.alert("Submission Failed", "Please try again.");
     }
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <Text style={styles.header}>Leave Request</Text>
+      <ScrollView>
+        <Text style={styles.header}>Leave Request</Text>
 
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>Employee ID</Text>
-        <Controller
-          control={control}
-          name="employeeid"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Enter Employee ID"
-              onChangeText={onChange}
-              value={value}
-            />
+        {successMessage ? (
+          <Text style={styles.successText}>{successMessage}</Text>
+        ) : null}
+
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Employee ID</Text>
+          <Controller
+            control={control}
+            name="employeeid"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.input}
+                placeholder="Enter Employee ID"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.employeeid && (
+            <Text style={styles.errorText}>{errors.employeeid.message}</Text>
           )}
-        />
-        {errors.employeeid && (
-          <Text style={styles.errorText}>{errors.employeeid.message}</Text>
-        )}
-      </View>
+        </View>
 
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>Leave Type</Text>
-        <Controller
-          control={control}
-          name="requestType"
-          render={({ field: { onChange, value } }) => (
-            <RNPickerSelect
-              onValueChange={onChange}
-              value={value}
-              items={[
-                { label: "Full Day", value: "FULL_DAY" },
-                { label: "Half Day", value: "HALF_DAY" },
-              ]}
-              style={pickerSelectStyles}
-              placeholder={{
-                label: "Select Leave Type",
-                value: null,
-              }}
-            />
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Leave Type</Text>
+          <Controller
+            control={control}
+            name="requestType"
+            render={({ field: { onChange, value } }) => (
+              <RNPickerSelect
+                onValueChange={onChange}
+                value={value}
+                items={[
+                  { label: "Full Day", value: "FULL_DAY" },
+                  { label: "Half Day", value: "HALF_DAY" },
+                ]}
+                style={pickerSelectStyles}
+                placeholder={{
+                  label: "Select Leave Type",
+                  value: null,
+                }}
+              />
+            )}
+          />
+          {errors.requestType && (
+            <Text style={styles.errorText}>{errors.requestType.message}</Text>
           )}
-        />
-        {errors.requestType && (
-          <Text style={styles.errorText}>{errors.requestType.message}</Text>
-        )}
-      </View>
+        </View>
 
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>Start Date</Text>
-        <Controller
-          control={control}
-          name="startDate"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="YYYY-MM-DD"
-              onChangeText={onChange}
-              value={value}
-            />
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Start Date</Text>
+          <Controller
+            control={control}
+            name="startDate"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.input}
+                placeholder="YYYY-MM-DD"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.startDate && (
+            <Text style={styles.errorText}>{errors.startDate.message}</Text>
           )}
-        />
-        {errors.startDate && (
-          <Text style={styles.errorText}>{errors.startDate.message}</Text>
-        )}
-      </View>
+        </View>
 
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>End Date</Text>
-        <Controller
-          control={control}
-          name="endDate"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="YYYY-MM-DD"
-              onChangeText={onChange}
-              value={value}
-            />
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>End Date</Text>
+          <Controller
+            control={control}
+            name="endDate"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.input}
+                placeholder="YYYY-MM-DD"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+          {errors.endDate && (
+            <Text style={styles.errorText}>{errors.endDate.message}</Text>
           )}
-        />
-        {errors.endDate && (
-          <Text style={styles.errorText}>{errors.endDate.message}</Text>
-        )}
-      </View>
+        </View>
 
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>Description</Text>
-        <Controller
-          control={control}
-          name="description"
-          render={({ field: { onChange, value } }) => (
-            <TextInput
-              style={styles.input}
-              placeholder="Optional"
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-        />
-      </View>
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>Description</Text>
+          <Controller
+            control={control}
+            name="description"
+            render={({ field: { onChange, value } }) => (
+              <TextInput
+                style={styles.input}
+                placeholder="Optional"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+          />
+        </View>
 
-      <TouchableOpacity
-        onPress={handleSubmit(onSubmit)}
-        style={styles.submitButton}
-      >
-        <Text style={styles.submitButtonText}>Submit Request</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={handleSubmit(onSubmit)}
+          style={styles.submitButton}
+        >
+          <Text style={styles.submitButtonText}>Submit Request</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -201,6 +216,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
+  },
+  successText: {
+    color: "#d4edda",
+    textAlign: "center",
+    marginBottom: 20,
+    fontSize: 16,
   },
   formGroup: {
     marginBottom: 20,

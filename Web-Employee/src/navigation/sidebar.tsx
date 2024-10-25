@@ -2,7 +2,6 @@ import NavButton from "../components/custom/sidebutton";
 import { useState, useEffect } from "react";
 import { useUser } from "@/pages/auth/usercontext"
 import { useNavigate } from "react-router-dom";
-import { HandIcon } from "lucide-react";
 export default function SideBar() {
   const clickedColour: string = 'bg-slate-600 bg-opacity-90 text-white  ';
   const normalColour: string = 'hover:bg-slate-90 text-white hover:bg-opacity-90  p-2';

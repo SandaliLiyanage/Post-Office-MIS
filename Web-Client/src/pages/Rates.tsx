@@ -31,7 +31,7 @@ const CalculatePostalRates: React.FC = () => {
     try {
       // Make a POST request to the backend to calculate the postal rate
       const response = await axios.post(
-        `http://${IP}/mail/calculatePrice`,
+        `http://${IP}/api/calculatePrice`,
         {
           mailType,
           weight: weightNumber,

@@ -13,6 +13,7 @@ import { z } from "zod";
 import axios from "axios";
 import { useUser } from "../../auth/usercontext";
 import RNPickerSelect from "react-native-picker-select";
+import { IP } from "../../../config";
 
 const formSchema = z.object({
   employeeid: z.string().min(1, { message: "Employee ID is required" }),
@@ -41,8 +42,9 @@ const LeaveRequest = () => {
 
   const onSubmit = async (values: any) => {
     try {
+      console.log("Submitting leave request", values);
       const response = await axios.post(
-        "http://localhost:5000/employee/leaveRequests",
+        `http://${IP}:5000/employee/leaveRequests`,
         values,
         {
           headers: {
@@ -89,9 +91,8 @@ const LeaveRequest = () => {
               onValueChange={onChange}
               value={value}
               items={[
-                { label: "Full Day", value: "Full Day" },
-                { label: "Half Day", value: "Half Day" },
-                { label: "Vacation", value: "Vacation" },
+                { label: "Full Day", value: "FULL_DAY" },
+                { label: "Half Day", value: "HALF_DAY" },
               ]}
               style={pickerSelectStyles}
               placeholder={{

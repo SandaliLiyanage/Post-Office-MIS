@@ -264,11 +264,12 @@ export const updateBundleStatus2 = async (req: Request, res: Response) => {
 };
 
 export const updateAsArrived = async (req: Request, res: Response) => {
-  const { bundleID, newStatus } = req.body;
+  console.log("Request received in updateAsArrived controller", req.body);
+  const { bundleID, status } = req.body;
 
   try {
     let updatedBundle;
-    updatedBundle = await bundleRepository.updateAsArrived(bundleID, newStatus);
+    updatedBundle = await bundleRepository.updateAsArrived(bundleID, status);
     res.status(200).json(updatedBundle);
   } catch (error) {
     console.error("Error updating mail status:", error);

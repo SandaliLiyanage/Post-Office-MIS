@@ -12,8 +12,10 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { IP } from "../../../config"; // Assuming IP is stored in config
+import { useUser } from "../../auth/usercontext";
 
 const AddAddress = () => {
+  const { user } = useUser();
   const [region, setRegion] = useState({
     latitude: 6.924172260546507,
     longitude: 79.96982292945405,
@@ -68,6 +70,7 @@ const AddAddress = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.token}`,
           },
           body: JSON.stringify({
             addressID: addressID, // Sending the address ID

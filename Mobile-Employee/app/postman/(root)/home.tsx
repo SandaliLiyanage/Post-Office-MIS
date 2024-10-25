@@ -54,7 +54,12 @@ const Home = () => {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/employee/user?employeeID=${employeeID}`
+            `http://${IP}:5000/employee/user?employeeID=${employeeID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`,
+              },
+            }
           );
           const data = await response.json();
           setUserData(data);
@@ -66,7 +71,12 @@ const Home = () => {
       const fetchDeliveryCounts = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/mail/employee?employeeID=${employeeID}`
+            `http://${IP}:5000/mail/employee?employeeID=${employeeID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`,
+              },
+            }
           );
           const data = await response.json();
           setDeliveryCounts(data);

@@ -24,7 +24,12 @@ const Route = () => {
   const fetchLocations = async () => {
     try {
       const { data: postOfficeData } = await axios.get(
-        `http://${IP}:5000/employee/user?employeeID=${employeeID}`
+        `http://${IP}:5000/employee/user?employeeID=${employeeID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
 
       const postOfficeStart = {
@@ -40,7 +45,12 @@ const Route = () => {
       };
 
       const { data: mailLocations } = await axios.get(
-        `http://${IP}:5000/mail/addresses?employeeID=${employeeID}`
+        `http://${IP}:5000/mail/addresses?employeeID=${employeeID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
 
       const addresses = mailLocations.map((loc: any, index: number) => ({

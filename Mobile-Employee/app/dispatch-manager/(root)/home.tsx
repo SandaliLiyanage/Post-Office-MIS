@@ -57,7 +57,12 @@ const Home = () => {
       const fetchUserData = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/employee/user?employeeID=${employeeID}`
+            `http://${IP}:5000/employee/user?employeeID=${employeeID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`,
+              },
+            }
           );
           const data = await response.json();
           setUserData(data);
@@ -69,7 +74,12 @@ const Home = () => {
       const fetchArrivedCounts = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/bundles/arrived-count?employeeID=${employeeID}`
+            `http://${IP}:5000/bundles/arrived-count?employeeID=${employeeID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`,
+              },
+            }
           );
           const data = await response.json();
           setArrivedCounts(data);
@@ -81,7 +91,12 @@ const Home = () => {
       const fetchCreatedCounts = async () => {
         try {
           const response = await fetch(
-            `http://${IP}:5000/bundles/created-count?employeeID=${employeeID}`
+            `http://${IP}:5000/bundles/created-count?employeeID=${employeeID}`,
+            {
+              headers: {
+                Authorization: `Bearer ${user?.token}`,
+              },
+            }
           );
           const data = await response.json();
           setCreatedCounts(data);

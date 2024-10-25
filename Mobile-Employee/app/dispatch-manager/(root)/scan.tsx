@@ -65,7 +65,12 @@ export default function Scan() {
   const fetchBundleData = async (bundleID: string) => {
     try {
       const response = await fetch(
-        `http://${IP}:5000/bundles/find?bundleID=${bundleID}`
+        `http://${IP}:5000/bundles/find?bundleID=${bundleID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
       console.log("Response:", response);
       if (!response.ok) {

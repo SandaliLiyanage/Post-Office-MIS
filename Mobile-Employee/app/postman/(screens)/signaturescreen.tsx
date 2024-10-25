@@ -3,9 +3,11 @@ import { View, StyleSheet, Text } from "react-native";
 import Signature from "react-native-signature-canvas";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { IP } from "../../../config";
+import { useUser } from "../../auth/usercontext";
 
 // Signature screen component
 const SignatureScreen = () => {
+  const { user } = useUser();
   const [signature, setSignature] = useState<string | null>(null);
   const navigation = useNavigation();
   const route = useRoute();
@@ -21,6 +23,7 @@ const SignatureScreen = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.token}`,
           },
           body: JSON.stringify({
             mailID,

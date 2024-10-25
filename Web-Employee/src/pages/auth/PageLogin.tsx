@@ -20,7 +20,7 @@ import {Toaster} from "../../components/ui/toaster";
 import { useToast } from '../../hooks/use-toast';
 import logo from "../../assets/logo1.jpg"
 import { IP} from "../../../config"
-
+import { Link } from "react-router-dom";
 
 const formSchema = z.object({
   employeeID: z.string().min(3, {
@@ -124,11 +124,16 @@ export default function Login() {
               )}
             />
           </div >
-          <div className="gap-2 pb-20 flex ">
-            <Button type="submit" className="bg-slate-800" >Log in</Button>
-            <Toaster/>
-            <Button type="button" className="bg-slate-700" onClick={() => navigate('/forgotpassword')}>Forgot Password</Button>
-          </div>
+          <div className="flex flex-col items-center ">
+        <Button type="submit" className="bg-slate-800 mb-2 flex w-full">
+          Log in
+        </Button>
+        <Toaster />
+        
+        <Link to="/forgotpassword" className="text-blue-500 hover:underline mb-6 ">
+          Forgot Password?
+        </Link>
+      </div>
           
         </form>
       </Form>

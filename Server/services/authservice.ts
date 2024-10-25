@@ -48,8 +48,8 @@ class AuthService {
         const sessionId = new Date().toISOString();
         // await session.storeSession(username)
         const role = employee.role;
-        const token = this.jwtToken.sign({ sessionId });
-        console.log(token, "hehe");
+        const token = this.jwtToken.sign({ sessionId, role});
+        console.log(token,);
         const user = await this.employeeRepository.getUserData(username);
         console.log(user.employeeName);
         console.log("User:", user);

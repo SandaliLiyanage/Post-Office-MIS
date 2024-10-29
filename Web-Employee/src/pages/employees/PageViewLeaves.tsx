@@ -1,6 +1,6 @@
 import {Leave, columns} from './columnsleaves';
 import {DataTable} from './dataleaves';
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import { IP } from '../../../config';
@@ -10,6 +10,8 @@ export default function PageViewLeaves() {
   const [leaves, setLeaves] = useState<Leave[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
+  
+  //fetching employee records on page load
   useEffect(() => {
     async function fetchEmployees() {
       try {

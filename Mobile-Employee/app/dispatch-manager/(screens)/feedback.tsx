@@ -25,6 +25,9 @@ export default function Feedback() {
       const response = await axios.post(`http://${IP}:5000/employee/feedback`, {
         employeeID: user?.employeeID,
         feedback,
+        headers: {
+          Authorization: `Bearer ${user?.token}`,
+        },
       });
 
       if (response.status === 200) {

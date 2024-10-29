@@ -23,7 +23,7 @@ const TrackYourMail: React.FC = () => {
   // Function to fetch tracking information from the backend API
   const fetchTrackingInfo = async (transactionID: number): Promise<TrackingInfo | null> => {
     try {
-      const response = await axios.post(`http://${IP}/mail/track`, {
+      const response = await axios.post(`http://${IP}/api/track`, {
         transactionID,
       });
       console.log("Response from server:", response.data);

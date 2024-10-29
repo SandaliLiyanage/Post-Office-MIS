@@ -1,5 +1,5 @@
 import jsPDFInvoiceTemplate, { OutputType } from "jspdf-invoice-template";
-import img from '../../../assets/logo.png';
+import img from "../../../assets/logo.png";
 
 type MailDetails = {
   price: number | null;
@@ -9,15 +9,21 @@ type MailDetails = {
   weight: number;
 };
 
-const generateInvoice = (name: string, telephone: string, mailArray: MailDetails[], total: string) => {
+//generating invoice pdf using jspdf-invoice-template
+const generateInvoice = (
+  name: string,
+  telephone: string,
+  mailArray: MailDetails[],
+  total: string
+) => {
   console.log("generating pdf");
-  const date = new Date().toDateString()
+  const date = new Date().toDateString();
   const props = {
     outputType: OutputType.Save, // To save the PDF
-    returnJsPDFDocObject: true,  // Return jsPDF object if needed
-    fileName: "Invoice 2024",    // Name of the PDF file
+    returnJsPDFDocObject: true, // Return jsPDF object if needed
+    fileName: "Invoice 2024", // Name of the PDF file
     orientationLandscape: false, // PDF orientation
-    compress: true,              // Compress PDF
+    compress: true, // Compress PDF
     logo: {
       src: "",
       type: "PNG",
@@ -33,7 +39,6 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
     },
     business: {
       name: "Post Office",
-   
     },
     contact: {
       label: "Customer Name:",
@@ -42,30 +47,31 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
       phone: telephone,
     },
     invoice: {
-      
       invDate: date,
       header: [
         { title: "#", style: { width: 10 } },
         { title: "Mail Type", style: { width: 30 } },
         { title: "Recepient's Address", style: { width: 100 } },
         { title: "Weight", style: { width: 20 } },
-        { title: "Price", style: { width: 20 } }
+        { title: "Price", style: { width: 20 } },
       ],
-      
+
       table: mailArray.map((m, i) => [
         i + 1,
         m.mailType,
         m.address,
         m.weight,
-        m.price
+        m.price,
       ]),
-      additionalRows: [{
-        col1: 'Total:',
-        col2: total,
-        style: {
-            fontSize: 12 //optional, default 12
-        }
-    }],
+      additionalRows: [
+        {
+          col1: "Total:",
+          col2: total,
+          style: {
+            fontSize: 12, //optional, default 12
+          },
+        },
+      ],
       invDescLabel: "Invoice Note",
       invDesc: "Thank you for your business!",
     },
@@ -77,9 +83,7 @@ const generateInvoice = (name: string, telephone: string, mailArray: MailDetails
   };
 
   const pdfObject = jsPDFInvoiceTemplate(props);
-  console.log(pdfObject); // This will log the PDF object if needed
+  console.log(pdfObject); 
 };
-
-
 
 export { generateInvoice };

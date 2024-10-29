@@ -66,7 +66,12 @@ const Mail = () => {
   const fetchMails = async () => {
     try {
       const response = await fetch(
-        `http://${IP}:5000/mail/employee2?employeeID=${employeeID}`
+        `http://${IP}:5000/mail/employee2?employeeID=${employeeID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
       const data = await response.json(); // Parse JSON data into a JavaScript object
 
@@ -159,6 +164,7 @@ const Mail = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
         },
         body: JSON.stringify({ mailID: selectedMail?.mailID, newStatus }),
       });

@@ -10,7 +10,7 @@ import { useState } from "react";
 import axios from "axios";
 import { Button } from "../../../components/ui/button";
 import { useLocation } from 'react-router-dom';
-import { useUser } from '../../authentication/usercontext';
+import { useUser } from '../../auth/usercontext';
 import { Toaster } from "../../../components/ui/toaster";
 import { useToast } from "../../../hooks/use-toast";
 import {IP} from "../../../../config"

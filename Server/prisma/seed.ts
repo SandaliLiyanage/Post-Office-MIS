@@ -85,6 +85,11 @@ async function main() {
       { bundleID: 76, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.CREATED, route: ["10640", "20850", "30600", "10250"] },
       { bundleID: 77, destPostalCode: "10250", currentPostCode: "20850", bundleStatus: BundleStatus.ARRIVED, route: ["00100", "10640", "20850", "10250"] },
       { bundleID: 58, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
+      { bundleID: 59, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
+      { bundleID: 60, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
+      { bundleID: 61, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
+      { bundleID: 62, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
+      { bundleID: 63, destPostalCode: "10640", currentPostCode: "20000", bundleStatus: BundleStatus.DISPATCHED, route: ["20850", "20000", "10640"] },
     ],
   });
 
@@ -229,8 +234,6 @@ async function main() {
   await prisma.leave.createMany({
     data: [
       { employeeID: "0008", leaveType: LeaveType.FULL_DAY, startDate: new Date("2024-09-10"), endDate: new Date("2024-09-11"), description: "Annual Leave", RequestStatus: RequestStatus.PENDING, requstedDate: new Date("2024-09-03"), },
-      { employeeID: "0002", leaveType: LeaveType.FULL_DAY, startDate: new Date("2024-11-10"), endDate: new Date("2024-09-11"), description: "Annual Leave", RequestStatus: RequestStatus.PENDING, requstedDate: new Date("2024-09-03"), },
-
     ],
   });
 

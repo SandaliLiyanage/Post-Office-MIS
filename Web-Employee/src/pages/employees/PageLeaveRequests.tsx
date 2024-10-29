@@ -17,7 +17,7 @@ import {
   FormMessage,
 } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
-import { useUser } from "@/pages/authentication/usercontext";
+import { useUser } from "@/pages/auth/usercontext";
 import {
   Select,
   SelectContent,
@@ -58,9 +58,10 @@ export default function LeaveRequest() {
     try {
       const role = user?.role;
       console.log("This is the postmaster", role);
+      console.log("Submitting data", values);
       const response = await axios.post(
         `http://${IP}/employee/leaveRequests`,
-        { employeeID: user?.employeeID, values: values },
+        values,
         {
           headers: {
             Authorization: `Bearer ${user?.token}`,
@@ -84,6 +85,20 @@ export default function LeaveRequest() {
           <div className="grid grid-cols-2 gap-4 mb-4">
             <FormField
               control={form.control}
+              name="employeeid"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Employee ID</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Employee ID" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
               name="requestType"
               render={({ field }) => (
                 <FormItem>
@@ -101,9 +116,8 @@ export default function LeaveRequest() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Half_Day">Half Day</SelectItem>
-                      <SelectItem value="Full_Day">Full Day</SelectItem>
-                      <SelectItem value="Vacation">Vacation</SelectItem>
+                      <SelectItem value="HALF_DAY">Half Day</SelectItem>
+                      <SelectItem value="FULL_DAY">Full Day</SelectItem>
                     </SelectContent>
                   </Select>
 

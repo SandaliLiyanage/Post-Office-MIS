@@ -13,13 +13,15 @@ import {
 
 import { useEffect, useRef, useState } from "react";
 import { useUser } from "../../auth/usercontext";
-//const { user } = useUser();
-//const employeeID = user?.employeeID;
-const employeeID = "0005";
+
+//const employeeID = "0005";
 import { IP } from "../../../config";
 
 // Scan screen
 export default function Scan() {
+  const { user } = useUser();
+  const employeeID = user?.employeeID;
+  const thisPostOffice = user?.postalCode;
   const [hasPermission, setHasPermission] = useState(false); // State variable to track if the user has granted camera permissions
   interface BundleData {
     bundleID: string;
@@ -59,18 +61,16 @@ export default function Scan() {
     };
   }, []);
 
-  useEffect(() => {
-    if (bundleData) {
-      console.log("Bundle Data Updated:", bundleData);
-      setModalVisible(true); // Show the modal only when bundleData is available
-    }
-  }, [bundleData]); // This effect runs whenever bundleData changes
-
   // Fetch bundle data from backend using barcode data
   const fetchBundleData = async (bundleID: string) => {
     try {
       const response = await fetch(
-        `http://${IP}:5000/bundles/find?bundleID=${bundleID}`
+        `http://${IP}:5000/bundles/find?bundleID=${bundleID}`,
+        {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        }
       );
       console.log("Response:", response);
       if (!response.ok) {
@@ -85,7 +85,7 @@ export default function Scan() {
       console.log("Bundle Data1:", data);
       setBundleData(data); // Set the fetched bundle data
       console.log("Bundle Data2", bundleData);
-      //setModalVisible(true); // Show the modal
+      setModalVisible(true); // Show the modal
     } catch (error) {
       Alert.alert(
         "Error",
@@ -98,6 +98,8 @@ export default function Scan() {
   const markAsArrived = async () => {
     if (bundleData) {
       try {
+        console.log("Bundle Data3", bundleData);
+        console.log("Bundle ID", bundleData.bundleID);
         const response = await fetch(
           `http://${IP}:5000/bundles/update-arrived`,
           {
@@ -154,33 +156,6 @@ export default function Scan() {
     );
   }
 
-  // Show alert with bundle data
-  // if (bundleData) {
-  //   Alert.alert(
-  //     "Bundle Details",
-  //     `Bundle ID: ${bundleData.bundleID}\n` +
-  //       `Destination Postal Code: ${bundleData.destPostalCode}\n` +
-  //       `Current Post Code: ${bundleData.currentPostCode}\n` +
-  //       `Status: ${bundleData.bundleStatus}`,
-  //     [
-  //       {
-  //         text: "Mark as Arrived",
-  //         onPress: () => {
-  //           qrLock.current = false; // Unlock the scanner
-  //           setBundleData(null); // Clear bundle data
-  //         },
-  //       },
-  //       {
-  //         text: "Scan Again",
-  //         onPress: () => {
-  //           qrLock.current = false; // Unlock the scanner
-  //           setBundleData(null); // Clear bundle data
-  //         },
-  //       },
-  //     ]
-  //   );
-  // }
-
   // Render the camera view
   return (
     <SafeAreaView style={styles.container}>
@@ -217,41 +192,25 @@ export default function Scan() {
                   <Text style={styles.bundleText}>
                     Status: {bundleData.bundleStatus}
                   </Text>
-                  {/* <View>
-                    <Text style={styles.label}>Bundle ID:</Text>
-                    <Text style={styles.value}>58</Text>
-
-                    <Text style={styles.label}>Current Post Office:</Text>
-                    <Text style={styles.value}>Kandy</Text>
-
-                    <Text style={styles.label}>Next Post Office:</Text>
-                    <Text style={styles.value}>Kaduwela</Text>
-
-                    <Text style={styles.label}>Destination Post Office:</Text>
-                    <Text style={styles.value}>Kaduwela</Text>
-
-                    <Text style={styles.label}>Route:</Text>
-                    <Text style={styles.value}>Akurana, Kandy, Kaduwela</Text>
-
-                    <Text style={styles.label}>Current Status:</Text>
-                    <Text style={styles.value}>Dispatched</Text>
-                  </View> */}
 
                   <View style={styles.buttonContainer}>
-                    <TouchableOpacity
-                      style={styles.markArrivedButton}
-                      // onPress={markAsArrived}
-                      onPress={() => {
-                        markAsArrived();
-                        qrLock.current = false; // Unlock the scanner
-                        setModalVisible(false);
-                        setBundleData(null); // Clear bundle data on close
-                      }}
-                    >
-                      <Text style={styles.markArrivedButtonText}>
-                        Mark as Arrived
-                      </Text>
-                    </TouchableOpacity>
+                    {bundleData &&
+                      bundleData.bundleStatus === "DISPATCHED" &&
+                      bundleData.currentPostCode != thisPostOffice && (
+                        <TouchableOpacity
+                          style={styles.markArrivedButton}
+                          onPress={() => {
+                            markAsArrived();
+                            qrLock.current = false; // Unlock the scanner
+                            setModalVisible(false);
+                            setBundleData(null); // Clear bundle data on close
+                          }}
+                        >
+                          <Text style={styles.markArrivedButtonText}>
+                            Mark as Arrived
+                          </Text>
+                        </TouchableOpacity>
+                      )}
                     <TouchableOpacity
                       style={styles.closeButton}
                       onPress={() => {
@@ -304,27 +263,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 12,
   },
-  // markArrivedButton: {
-  //   backgroundColor: "#28a745",
-  //   padding: 10,
-  //   borderRadius: 5,
-  //   flex: 1,
-  //   marginRight: 10,
-  // },
-  // markArrivedButtonText: {
-  //   color: "white",
-  //   textAlign: "center",
-  // },
-  // closeButton: {
-  //   backgroundColor: "#007bff",
-  //   padding: 10,
-  //   borderRadius: 5,
-  //   flex: 1,
-  // },
-  // closeButtonText: {
-  //   color: "white",
-  //   textAlign: "center",
-  // },
   title: {
     textAlign: "center",
     fontSize: 22,

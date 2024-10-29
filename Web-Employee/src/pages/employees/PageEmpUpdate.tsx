@@ -22,7 +22,7 @@ import {
   SelectValue,
 } from "../../components/ui/select"
 import axios from "axios"
-import {useUser} from "../authentication/usercontext"
+import {useUser} from "../auth/usercontext"
 import {Toaster} from "../../components/ui/toaster"
 import { useToast } from '../../hooks/use-toast';
 import { IP } from "../../../config"
@@ -59,6 +59,7 @@ export default function Employeeupdate() {
   const employee = location.state;
   const { user} = useUser()
 
+  //submitting the form to update employee records	
   async function handleUpdate(values: z.infer<typeof formSchema>){
     try{
       const employeeID =employee.employeeID;

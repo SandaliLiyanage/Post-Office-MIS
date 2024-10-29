@@ -12,7 +12,7 @@ type CardMailProps = {
   price: number | null;
   transaction: boolean;
 };
-import { useUser } from "@/pages/authentication/usercontext";
+import { useUser } from "@/pages/auth/usercontext";
 import axios from "axios";
 import { generateInvoice } from "./generatePDF";
 import { useNavigate } from "react-router-dom";

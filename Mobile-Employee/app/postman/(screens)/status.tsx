@@ -63,6 +63,7 @@ const Status = () => {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${user?.token}`,
           },
           body: JSON.stringify({ mailID: mail?.mailID, newStatus }),
         });

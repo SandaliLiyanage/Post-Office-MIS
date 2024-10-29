@@ -1,6 +1,6 @@
 import {Employee, columns} from './columnsemp';
 import {DataTable} from './datatableemp';
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import { Button } from '../../components/ui/button';
@@ -14,6 +14,8 @@ export default function EmployeeRecords() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<null|string>(null);
   const navigate = useNavigate();
+
+  //fetching employee records on page load
   useEffect(() => {
     async function fetchEmployees() {
       try {

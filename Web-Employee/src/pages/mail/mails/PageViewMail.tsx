@@ -1,6 +1,6 @@
 import {IMail, columns} from './columnsmail';
 import { DataTable } from './datatablemail';
-import { useUser } from '../../authentication/usercontext';
+import { useUser } from '../../auth/usercontext';
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {IP} from '../../../../config';

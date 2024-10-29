@@ -2,26 +2,26 @@ import { Request, Response } from "express";
 import { EmployeeRepository } from "../repositeries/employeerepository";
 import EmployeeManagementService from "../services/employeemanagementservice";
 import LeaveRepository from "../repositeries/leaverepository";
-
+import { LeaveType, RequestStatus } from "@prisma/client";
 
 const UpdateLeaveStatus = async (req: Request, res: Response) => {
   const empRepo = EmployeeRepository.getInstance();
-  const leaveRepo = new LeaveRepository
+  const leaveRepo = new LeaveRepository();
   const empService = new EmployeeManagementService(empRepo, leaveRepo);
   const { status, employeeID } = req.body;
   console.log(employeeID);
   console.log("in update status");
   const response = await empService.updateStatus(employeeID, status);
   return res.json(response);
-}
+};
 
 const getNotifications = async (req: Request, res: Response) => {
   const empRepo = EmployeeRepository.getInstance();
-  const leaveRepo = new LeaveRepository
+  const leaveRepo = new LeaveRepository();
   const empService = new EmployeeManagementService(empRepo, leaveRepo);
   const result = await empService.getNotifications(req.body.employeeID);
   return res.status(200).json(result);
-}
+};
 const EmployeeDetails = async (req: Request, res: Response) => {
   const employeeRepo = EmployeeRepository.getInstance();
   const employees = await employeeRepo.getEmployees(req.body.postalCode);
@@ -139,11 +139,38 @@ const SubmitFeedback = async (req: Request, res: Response) => {
 
 const getLeaves = async (req: Request, res: Response) => {
   const empRepo = EmployeeRepository.getInstance();
-  const leaveRepo = new LeaveRepository
+  const leaveRepo = new LeaveRepository();
   const empService = new EmployeeManagementService(empRepo, leaveRepo);
   const result = await empService.getLeaves(req.body.postalCode);
   return res.status(200).json(result);
-}
+};
+
+const submitLeaveRequest = async (req: Request, res: Response) => {
+  const { employeeid, requestType, startDate, endDate, description } = req.body;
+  const leaveRepo = new LeaveRepository();
+
+  // Validate that requestType is of type LeaveType
+  if (!Object.values(LeaveType).includes(requestType)) {
+    return res.status(400).json({ error: "Invalid leave type" });
+  }
+
+  try {
+    const leaveRequest = await leaveRepo.saveLeaveRequest({
+      employeeid,
+      leaveType: requestType as LeaveType,
+      startDate,
+      endDate,
+      description,
+    });
+
+    res
+      .status(201)
+      .json({ message: "Leave request submitted successfully", leaveRequest });
+  } catch (error) {
+    console.error("Error saving leave request", error);
+    res.status(500).json({ error: "Failed to submit leave request" });
+  }
+};
 
 export {
   getLeaves,
@@ -154,5 +181,6 @@ export {
   DeleteEmployee,
   SubmitFeedback,
   UpdateLeaveStatus as UpdateStatus,
-  getNotifications
+  getNotifications,
+  submitLeaveRequest,
 };

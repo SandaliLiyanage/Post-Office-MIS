@@ -100,6 +100,36 @@ class MailRepository {
     }
   }
 
+  async getMailItem(mailID: number): Promise<any[]> {
+    try {
+      const mailItems = await this.prisma.$queryRaw<any[]>`
+            SELECT 
+                m."mailID",
+                m."recepientName", 
+                m."recepientAddressID",
+                m."mailType",
+                m."mailstatus",
+                m."weight",
+                m."price",
+                a."addressNo",
+                a."streetName",
+                a."Locality",
+                ar."areaName"
+            FROM "Mail" AS m
+            JOIN "Address" AS a ON m."recepientAddressID" = a."addressID"
+            JOIN "Area" AS ar ON a."areaID" = ar."areaID"
+            JOIN "Employee" AS e ON ar."employeeID" = e."employeeID"
+            WHERE m."mailID" = ${mailID}
+            ORDER BY m."mailID"
+        `;
+      console.log("Mail items fetched:", mailItems);
+      return mailItems;
+    } catch (error) {
+      console.error("Error fetching mail items:", error);
+      throw error;
+    }
+  }
+
   // Fetch all unique delivery addresses for the given employee
   async getDeliveryAddressesByEmployeeID(employeeID: string): Promise<any[]> {
     try {

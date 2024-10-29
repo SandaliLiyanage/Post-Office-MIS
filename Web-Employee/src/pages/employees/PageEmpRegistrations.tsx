@@ -23,7 +23,7 @@ import {
 } from "../../components/ui/select"
 import { Toaster } from "../../components/ui/toaster";
 import { useToast } from "../../hooks/use-toast";
-import { useUser } from "../authentication/usercontext";
+import { useUser } from "../auth/usercontext";
 import { IP} from "../../../config"
 const ROLES = [
   "SUPERVISOR",
@@ -53,7 +53,8 @@ export default function EmpRegistration() {
       email: "",
     },
   });
-
+  
+  //submitting the form
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(user, "user", user?.role, user?.postalCode);
     try {

@@ -14,7 +14,7 @@ import {
   FormMessage,
 } from "../../../components/ui/form";
 import { Input } from "../../../components/ui/input";
-import { useUser } from "@/pages/authentication/usercontext";
+import { useUser } from "@/pages/auth/usercontext";
 import { useNavigate } from "react-router-dom";
 import {
   Command,

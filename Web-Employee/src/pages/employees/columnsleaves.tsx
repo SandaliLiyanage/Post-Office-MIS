@@ -1,7 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table"
 import { Button } from "@/components/ui/button"
 import { CheckCheck, X } from "lucide-react";
-import { useUser } from '../authentication/usercontext';
+import { useUser } from '../auth/usercontext';
 import axios from "axios";
 import { Badge } from "@/components/ui/badge";
 import { formatDate } from "../mail/mails/formatdate"

@@ -1,10 +1,11 @@
 import {OTPService} from "../services/otpservice";
 import OTPRepository from "../repositeries/otprepository";
 import { EmailService } from "../services/emailservice";
-import { EmployeeRepository } from "../repositeries/employeerepository";
+import { EmployeeRepository } from '../repositeries/employeerepository';
 
-jest.mock("../../repositeries/otprepository");
-jest.mock("../../services/emailservice");
+
+jest.mock("../repositeries/otprepository");
+jest.mock("../services/emailservice");
 
 describe("OTPService", () => {
     let otpService: OTPService;

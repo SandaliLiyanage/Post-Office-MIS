@@ -21,6 +21,7 @@ import { EmployeeRepository } from "../repositeries/employeerepository";
 import BcryptService from "../services/cryptservice";
 import JwtService from "../services/jwtservice";
 import SessionStore from "../services/sessionstore";
+import { getFirstMailItem } from "../controllers/mailcontroller";
 
 const employeRepository = new EmployeeRepository();
 const cryptService = new BcryptService();
@@ -51,4 +52,6 @@ router.post("/returnmail", ReturnMail);
 router.post("/changeaddress", ChangeAddress);
 router.post("/track", getTrackingDetails);
 router.post("/estimate-delivery-time", estimateDeliveryTime);
+router.post("/get-mail-item", getFirstMailItem);
+
 export default router;

@@ -162,6 +162,7 @@ const Bundles = () => {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${user?.token}`,
         },
         body: JSON.stringify({ bundleID: selectedBundle?.bundleID, newStatus }),
       });

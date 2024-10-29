@@ -234,8 +234,6 @@ async function main() {
   await prisma.leave.createMany({
     data: [
       { employeeID: "0008", leaveType: LeaveType.FULL_DAY, startDate: new Date("2024-09-10"), endDate: new Date("2024-09-11"), description: "Annual Leave", RequestStatus: RequestStatus.PENDING, requstedDate: new Date("2024-09-03"), },
-      //{ employeeID: "0002", leaveType: LeaveType.FULL_DAY, startDate: new Date("2024-11-10"), endDate: new Date("2024-09-11"), description: "Annual Leave", RequestStatus: RequestStatus.PENDING, requstedDate: new Date("2024-09-03"), },
-
     ],
   });
 

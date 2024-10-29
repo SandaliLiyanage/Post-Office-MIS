@@ -1,9 +1,4 @@
 import { useUser } from "../pages/auth/usercontext";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "../components/ui/popover";
 import { Button } from "../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { User, Bell } from "lucide-react";

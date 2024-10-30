@@ -3,90 +3,135 @@ import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import NavBar from '../components/ui/NavBar';  // Import the NavBar component
 import {IP} from '../../config'
 import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import axios from 'axios';
 
 const PayMoneyOrder: React.FC = () => {
-  const stripe = useStripe();
-  const elements = useElements();
+const stripe = useStripe();
+const elements = useElements();
 
-  const [recipientName, setRecipientName] = useState<string>('');  // Stores the recipient's name
-  const [recipientAddress, setRecipientAddress] = useState<string>('');  // Stores the recipient's address
-  const [recipientNIC, setRecipientNIC] = useState<string>('');  // Stores the recipient's NIC
-  const [amount, setAmount] = useState<string>('');  // Stores the money order amount
-  const [senderName, setSenderName] = useState<string>('');  // Stores the sender's name
-  const [senderPhoneNumber, setPhoneNumber] = useState<string>('');  // Stores the sender's phone number
-  const [error, setError] = useState<string | null>(null);  // Stores validation errors
+const [recipientName, setRecipientName] = useState<string>('');  // Stores the recipient's name
+const [recipientAddress, setRecipientAddress] = useState<string>('');  // Stores the recipient's address
+const [recipientNIC, setRecipientNIC] = useState<string>('');  // Stores the recipient's NIC
+const [amount, setAmount] = useState<string>('');  // Stores the money order amount
+const [senderName, setSenderName] = useState<string>('');  // Stores the sender's name
+const [senderPhoneNumber, setPhoneNumber] = useState<string>('');  // Stores the sender's phone number
+const [error, setError] = useState<string | null>(null);  // Stores validation errors
 
-  // Function to handle payment processing
-  const handlePayment = async () => {
-    const amountNumber = Number(amount);
 
-    // Validate form inputs
-    if (!recipientName || !recipientAddress || !recipientNIC || !amount || !senderName || !senderPhoneNumber) {
+const resetForm = () => {
+  setRecipientName('');
+  setRecipientAddress('');
+  setRecipientNIC('');
+  setAmount('');
+  setSenderName('');
+  setPhoneNumber('');
+  setError(null);  // Reset error state
+};
+
+
+// Function to handle payment processing
+const handlePayment = async () => {
+  const amountNumber = Number(amount);
+
+  // Validate form inputs
+  if (!recipientName || !recipientAddress || !recipientNIC || !amount || !senderName || !senderPhoneNumber) {
       setError('All fields are required.');
       return;
-    }
-    if (isNaN(amountNumber) || amountNumber <= 0) {
+  }
+  if (isNaN(amountNumber) || amountNumber <= 0) {
       setError('Please enter a valid amount.');
       return;
-    }
-    if (amountNumber > 50000) {
+  }
+  if (amountNumber > 50000) {
       setError('The maximum amount for a Money Order is Rs. 50,000.');
       return;
-    }
+  }
 
-    // Reset error if validation passes
-    setError(null);
+  // Reset error if validation passes
+  setError(null);
 
-    // Call your backend to create the payment intent
-    const response = await fetch('/money-order', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        recipientName,
-        recipientAddress,
-        recipientNIC,
-        amount: amountNumber,
-        senderName,
-        senderPhoneNumber,
-      }),
-    });
-
-    const paymentIntentData = await response.json();
-
-    if (response.ok && stripe && elements) {
-      const cardElement = elements.getElement(CardElement);
-      
-      if (!cardElement) {
-        setError('Card element is not available.');
-        return;
-      }
-
-      // Confirm the card payment with the client secret returned from your backend
-      const result = await stripe.confirmCardPayment(paymentIntentData.clientSecret, {
-        payment_method: {
-          card: cardElement,
-          billing_details: {
-            name: senderName,
-            phone: senderPhoneNumber,
-          },
-        },
+  try {
+      // Call your backend to create the payment intent using Axios
+      const response = await axios.post(`http://${IP}/money-order`, {
+          recipientName,
+          recipientAddress,
+          recipientNIC,
+          amount: amountNumber,
+          senderName,
+          senderPhoneNumber,
       });
 
-      if (result.error) {
-        setError(result.error.message || 'An unknown error occurred.');
+      const paymentIntentData = response.data;
+
+      if (stripe && elements) {
+          const cardElement = elements.getElement(CardElement);
+
+          if (!cardElement) {
+              setError('Card element is not available.');
+              return;
+          }
+
+          // Confirm the card payment with the client secret returned from your backend
+          const result = await stripe.confirmCardPayment(paymentIntentData.clientSecret, {
+              payment_method: {
+                  card: cardElement,
+                  billing_details: {
+                      name: senderName,
+                      phone: senderPhoneNumber,
+                  },
+              },
+          });
+
+          if (result.error) {
+              setError(result.error.message || 'An unknown error occurred.');
+          } else {
+              // Payment successful
+              if (result.paymentIntent.status === 'succeeded') {
+                alert('Payment succeeded!');
+            
+                try {
+                    const webhookResponse = await axios.post(`http://${IP}/money-order/stripe-webhook`, 
+                      {
+                        id: "evt_test_webhook", // This is a test webhook event ID
+                        type: "payment_intent.succeeded",
+                        data: {
+                          object: {
+                            id: `${paymentIntentData.id}`, // Payment intent ID from your paymentIntentData
+                            metadata: {
+                              orderId: `${paymentIntentData.orderID}`, // Replace with your actual order ID from your DB
+                            },
+                            status: "succeeded",
+                          },
+                        },
+                      }
+                    );
+            
+                    console.log(webhookResponse.data); // Log the response from the webhook
+                    resetForm();
+                    cardElement.clear();
+
+                } catch (error) {
+                    console.error('Error sending webhook:', error);
+                    setError('Failed to send webhook after payment success.');
+                }
+              }
+
+            }
+          
       } else {
-        // Payment successful
-        if (result.paymentIntent.status === 'succeeded') {
-          // Handle successful payment here (e.g., show a success message, redirect, etc.)
-          alert('Payment succeeded!');
-        }
+          setError('Stripe or elements not initialized.');
       }
+} catch (error) {
+    // Handle errors from the Axios request
+    if (axios.isAxiosError(error)) {
+        setError(error.response?.data.message || 'Failed to create payment intent.');
     } else {
-      setError(paymentIntentData.message);
+        setError('An unknown error occurred.');
     }
-  };
+  }
+};
+
+
 
   return (
     <div>
